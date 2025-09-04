@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>在你现有 uvue 登录页集成“一键通行密钥登录”（含回退注册），完整代码可直接替换 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="目标把我们讨论的“先尝试通行密钥登录 → 失败自动回退到 JIT 注册并登录”接到你这份 uvue（uni-app x）页面 上，保留原有微信登录按钮，新增一个“通行密钥登录”按钮。支持：  App 端（Android&#x2F;iOS）：走你自定义的 UTS 插件 @&#x2F;uni_modules&#x2F;pass-keys（getPasskey&#x2F;createPasskey）。 H5 端：走浏览器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在你现有 uvue 登录页集成“一键通行密钥登录”（含回退注册），完整代码可直接替换">
+<meta property="og:url" content="https://herongdev.github.io/blog/2025/09/05/requirement-realization-2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="目标把我们讨论的“先尝试通行密钥登录 → 失败自动回退到 JIT 注册并登录”接到你这份 uvue（uni-app x）页面 上，保留原有微信登录按钮，新增一个“通行密钥登录”按钮。支持：  App 端（Android&#x2F;iOS）：走你自定义的 UTS 插件 @&#x2F;uni_modules&#x2F;pass-keys（getPasskey&#x2F;createPasskey）。 H5 端：走浏览器">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-09-05T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-04T17:23:53.670Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="uni-app x">
+<meta property="article:tag" content="UTS 插件">
+<meta property="article:tag" content="Passkeys">
+<meta property="article:tag" content="WebAuthn">
+<meta property="article:tag" content="一键直登">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/blog/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://herongdev.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-requirement-realization-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2025/09/05/requirement-realization-2/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T00:00:00.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      在你现有 uvue 登录页集成“一键通行密钥登录”（含回退注册），完整代码可直接替换
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>把我们讨论的“<strong>先尝试通行密钥登录 → 失败自动回退到 JIT 注册并登录</strong>”接到你这份 <strong>uvue（uni-app x）页面</strong> 上，<strong>保留原有微信登录按钮</strong>，新增一个“通行密钥登录”按钮。<br>支持：</p>
+<ul>
+<li><strong>App 端（Android&#x2F;iOS）</strong>：走你自定义的 <strong>UTS 插件</strong> <code>@/uni_modules/pass-keys</code>（<code>getPasskey</code>&#x2F;<code>createPasskey</code>）。</li>
+<li><strong>H5 端</strong>：走浏览器 WebAuthn（<code>navigator.credentials.get/create</code>）。</li>
+<li><strong>设备唯一</strong>：用 <code>deviceIdentifier</code>（App 用 <code>plus.device.uuid</code>，H5 用本地生成）传后端，便于 <code>deviceId -&gt; userId</code> 绑定。</li>
+</ul>
+<blockquote>
+<p>复杂逻辑均在代码<strong>上一行加中文注释</strong>。下面给出<strong>整文件覆盖式代码</strong>（符合你“Passkeys 项目优先给完整文件”的约定）。</p>
+</blockquote>
+<hr>
+<h2 id="完整代码（直接替换你当前页面）"><a href="#完整代码（直接替换你当前页面）" class="headerlink" title="完整代码（直接替换你当前页面）"></a>完整代码（直接替换你当前页面）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;view class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;view class=&quot;header&quot;&gt;</span><br><span class="line">      &lt;text class=&quot;title&quot;&gt;欢迎使用商户平台&lt;/text&gt;</span><br><span class="line">    &lt;/view&gt;</span><br><span class="line"></span><br><span class="line">    &lt;view v-if=&quot;!baseUrl&quot; class=&quot;tip&quot;&gt;</span><br><span class="line">      &lt;text class=&quot;tip-text&quot;&gt;未配置后端地址，请先配置&lt;/text&gt;</span><br><span class="line">      &lt;button size=&quot;mini&quot; @tap=&quot;openConfig&quot;&gt;去配置&lt;/button&gt;</span><br><span class="line">    &lt;/view&gt;</span><br><span class="line"></span><br><span class="line">    &lt;view class=&quot;actions&quot;&gt;</span><br><span class="line">      &lt;button</span><br><span class="line">        type=&quot;primary&quot;</span><br><span class="line">        :disabled=&quot;!baseUrl || loading&quot;</span><br><span class="line">        @tap=&quot;onWeChatLogin&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &#123;&#123;</span><br><span class="line">          baseUrl</span><br><span class="line">            ? isWeChatInstalled</span><br><span class="line">              ? &quot;微信登录&quot;</span><br><span class="line">              : &quot;登录&quot;</span><br><span class="line">            : &quot;请先配置后端地址&quot;</span><br><span class="line">        &#125;&#125;</span><br><span class="line">      &lt;/button&gt;</span><br><span class="line"></span><br><span class="line">      &lt;!-- 新增：通行密钥一键登录（失败自动回退注册并登录） --&gt;</span><br><span class="line">      &lt;button</span><br><span class="line">        style=&quot;margin-top:12rpx&quot;</span><br><span class="line">        :disabled=&quot;!baseUrl || loading&quot;</span><br><span class="line">        @tap=&quot;onPasskeyLogin&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &#123;&#123; loading ? &quot;处理中...&quot; : &quot;通行密钥登录&quot; &#125;&#125;</span><br><span class="line">      &lt;/button&gt;</span><br><span class="line">    &lt;/view&gt;</span><br><span class="line"></span><br><span class="line">    &lt;view v-if=&quot;loading&quot; class=&quot;loading-mask&quot;&gt;</span><br><span class="line">      &lt;view class=&quot;loading-box&quot;&gt;&lt;text&gt;处理中...&lt;/text&gt;&lt;/view&gt;</span><br><span class="line">    &lt;/view&gt;</span><br><span class="line"></span><br><span class="line">    &lt;view v-if=&quot;showConfig&quot; class=&quot;modal-mask&quot; @tap=&quot;closeConfig&quot;&gt;</span><br><span class="line">      &lt;view class=&quot;modal&quot; @tap.stop&gt;</span><br><span class="line">        &lt;text class=&quot;modal-title&quot;&gt;配置后端地址&lt;/text&gt;</span><br><span class="line">        &lt;input</span><br><span class="line">          class=&quot;modal-input&quot;</span><br><span class="line">          type=&quot;text&quot;</span><br><span class="line">          v-model=&quot;configInput&quot;</span><br><span class="line">          placeholder=&quot;例如：https://api.example.com&quot;</span><br><span class="line">        /&gt;</span><br><span class="line">        &lt;view class=&quot;modal-actions&quot;&gt;</span><br><span class="line">          &lt;button size=&quot;mini&quot; @tap=&quot;closeConfig&quot;&gt;取消&lt;/button&gt;</span><br><span class="line">          &lt;button type=&quot;primary&quot; size=&quot;mini&quot; @tap=&quot;saveConfig&quot;&gt;保存&lt;/button&gt;</span><br><span class="line">        &lt;/view&gt;</span><br><span class="line">      &lt;/view&gt;</span><br><span class="line">    &lt;/view&gt;</span><br><span class="line">  &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">// #ifdef APP-PLUS</span><br><span class="line">// 复杂逻辑：App 端引入你的 UTS 插件（Android/iOS 调平台原生 Credential/AuthenticationServices）</span><br><span class="line">import * as passkeys from &quot;@/uni_modules/pass-keys&quot;;</span><br><span class="line">// #endif</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      baseUrl: &quot;&quot;,</span><br><span class="line">      loading: false,</span><br><span class="line">      isWeChatInstalled: true,</span><br><span class="line">      showConfig: false,</span><br><span class="line">      configInput: &quot;&quot;,</span><br><span class="line">      // 复杂逻辑：设备唯一标识；App=plus.device.uuid；H5=本地生成并持久化</span><br><span class="line">      deviceId: &quot;&quot;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad() &#123;</span><br><span class="line">    this.baseUrl = uni.getStorageSync(&quot;BASE_URL&quot;) || &quot;&quot;;</span><br><span class="line">    // 复杂逻辑：初始化设备ID（用于 deviceId -&gt; userId 绑定与风控）</span><br><span class="line">    // #ifdef APP-PLUS</span><br><span class="line">    this.deviceId =</span><br><span class="line">      plus &amp;&amp; plus.device &amp;&amp; plus.device.uuid</span><br><span class="line">        ? plus.device.uuid</span><br><span class="line">        : &quot;app-&quot; + Date.now();</span><br><span class="line">    // #endif</span><br><span class="line">    // #ifdef H5</span><br><span class="line">    const key = &quot;DEVICE_ID&quot;;</span><br><span class="line">    this.deviceId = localStorage.getItem(key);</span><br><span class="line">    if (!this.deviceId) &#123;</span><br><span class="line">      this.deviceId =</span><br><span class="line">        crypto?.randomUUID?.() ||</span><br><span class="line">        &quot;web-&quot; + Date.now() + &quot;-&quot; + Math.random().toString(16).slice(2);</span><br><span class="line">      localStorage.setItem(key, this.deviceId);</span><br><span class="line">    &#125;</span><br><span class="line">    // #endif</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    openConfig() &#123;</span><br><span class="line">      this.configInput = this.baseUrl;</span><br><span class="line">      this.showConfig = true;</span><br><span class="line">    &#125;,</span><br><span class="line">    closeConfig() &#123;</span><br><span class="line">      this.showConfig = false;</span><br><span class="line">    &#125;,</span><br><span class="line">    saveConfig() &#123;</span><br><span class="line">      this.baseUrl = (this.configInput || &quot;&quot;).trim();</span><br><span class="line">      uni.setStorageSync(&quot;BASE_URL&quot;, this.baseUrl);</span><br><span class="line">      this.showConfig = false;</span><br><span class="line">      uni.showToast(&#123; title: &quot;已保存&quot;, icon: &quot;success&quot; &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    // 复杂逻辑：统一 POST 封装；把 deviceIdentifier 一并传给后端（也可由 Header 传）</span><br><span class="line">    async post(path, body) &#123;</span><br><span class="line">      return await new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">        uni.request(&#123;</span><br><span class="line">          url: `$&#123;this.baseUrl&#125;$&#123;path&#125;`,</span><br><span class="line">          method: &quot;POST&quot;,</span><br><span class="line">          data: &#123; deviceIdentifier: this.deviceId, ...(body || &#123;&#125;) &#125;,</span><br><span class="line">          dataType: &quot;json&quot;,</span><br><span class="line">          header: &#123; &quot;content-type&quot;: &quot;application/json&quot; &#125;,</span><br><span class="line">          success: (res) =&gt; resolve(res.data),</span><br><span class="line">          fail: reject,</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    // 保留原有：微信登录</span><br><span class="line">    async onWeChatLogin() &#123;</span><br><span class="line">      if (!this.baseUrl) return;</span><br><span class="line">      this.loading = true;</span><br><span class="line">      try &#123;</span><br><span class="line">        let code = &quot;&quot;;</span><br><span class="line">        // 小程序端获取 code</span><br><span class="line">        // #ifdef MP-WEIXIN</span><br><span class="line">        const res = await new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">          uni.login(&#123; provider: &quot;weixin&quot;, success: resolve, fail: reject &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        code = res.code || &quot;&quot;;</span><br><span class="line">        // #endif</span><br><span class="line"></span><br><span class="line">        // 其他端未集成微信登录，给出提示</span><br><span class="line">        // #ifndef MP-WEIXIN</span><br><span class="line">        throw new Error(&quot;当前平台未集成微信登录&quot;);</span><br><span class="line">        // #endif</span><br><span class="line"></span><br><span class="line">        if (!code) throw new Error(&quot;获取登录凭证失败&quot;);</span><br><span class="line">        const data = await this.post(&quot;/admin/wechat/login&quot;, &#123; code &#125;);</span><br><span class="line">        if (</span><br><span class="line">          data &amp;&amp;</span><br><span class="line">          data.success === true &amp;&amp;</span><br><span class="line">          data.userInfo &amp;&amp;</span><br><span class="line">          data.userInfo.approved === true &amp;&amp;</span><br><span class="line">          data.userInfo.token</span><br><span class="line">        ) &#123;</span><br><span class="line">          uni.setStorageSync(&quot;TOKEN&quot;, data.userInfo.token);</span><br><span class="line">          uni.showToast(&#123; title: &quot;登录成功&quot;, icon: &quot;success&quot; &#125;);</span><br><span class="line">          setTimeout(() =&gt; &#123;</span><br><span class="line">            uni.reLaunch(&#123; url: &quot;/pages/index/index&quot; &#125;);</span><br><span class="line">          &#125;, 600);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          throw new Error(data?.message || &quot;登录失败&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; catch (e) &#123;</span><br><span class="line">        uni.showToast(&#123; title: e?.message || String(e), icon: &quot;none&quot; &#125;);</span><br><span class="line">      &#125; finally &#123;</span><br><span class="line">        this.loading = false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    // ================== 通行密钥一键登录入口（失败回退注册） ==================</span><br><span class="line">    async onPasskeyLogin() &#123;</span><br><span class="line">      if (!this.baseUrl) return;</span><br><span class="line">      this.loading = true;</span><br><span class="line">      try &#123;</span><br><span class="line">        // 复杂逻辑：步骤A——请求登录 options（无用户名直登；后端可按设备ID定向返回 allowCredentials）</span><br><span class="line">        const resp = await this.post(&quot;/passkeys/login/options&quot;, &#123;&#125;);</span><br><span class="line">        const options = resp.options || resp;</span><br><span class="line"></span><br><span class="line">        // #ifdef APP-PLUS</span><br><span class="line">        // 复杂逻辑：App 端调用 UTS 插件进行“使用通行密钥”</span><br><span class="line">        const requestOptionsJson = JSON.stringify(options);</span><br><span class="line">        const authRespJson = await passkeys.getPasskey(requestOptionsJson, &#123;</span><br><span class="line">          conditional: true,</span><br><span class="line">        &#125;);</span><br><span class="line">        const verifyBody = JSON.parse(authRespJson);</span><br><span class="line">        // #endif</span><br><span class="line"></span><br><span class="line">        // #ifdef H5</span><br><span class="line">        // 复杂逻辑：H5 端使用 WebAuthn —— 将 base64url 字段转 ArrayBuffer</span><br><span class="line">        const publicKey = this.toWebAuthnRequestOptions(options);</span><br><span class="line">        // 复杂逻辑：若支持条件UI，mediation=&#x27;conditional&#x27;，否则 &#x27;required&#x27;（需用户手势）</span><br><span class="line">        const mediation = (await this.isConditionalUI())</span><br><span class="line">          ? &quot;conditional&quot;</span><br><span class="line">          : &quot;required&quot;;</span><br><span class="line">        const assertion = await navigator.credentials.get(&#123;</span><br><span class="line">          publicKey,</span><br><span class="line">          mediation,</span><br><span class="line">        &#125;);</span><br><span class="line">        const verifyBody = this.packAssertion(assertion);</span><br><span class="line">        // #endif</span><br><span class="line"></span><br><span class="line">        // 复杂逻辑：步骤B——提交登录 verify</span><br><span class="line">        const verify = await this.post(&quot;/passkeys/login/verify&quot;, verifyBody);</span><br><span class="line">        this.onLoginSucceed(verify);</span><br><span class="line">      &#125; catch (e) &#123;</span><br><span class="line">        // 复杂逻辑：登录失败（无凭据/取消/过期）→ 步骤C——回退到 JIT 注册</span><br><span class="line">        try &#123;</span><br><span class="line">          const jit = await this.post(</span><br><span class="line">            &quot;/passkeys/register-or-login/options&quot;,</span><br><span class="line">            &#123;&#125;</span><br><span class="line">          );</span><br><span class="line">          const userId = jit.userId || jit?.user?.id;</span><br><span class="line">          const creationOptions = jit.options || jit;</span><br><span class="line"></span><br><span class="line">          // #ifdef APP-PLUS</span><br><span class="line">          // 复杂逻辑：App 端调用 UTS 插件“创建通行密钥”</span><br><span class="line">          const creationOptionsJson = JSON.stringify(creationOptions);</span><br><span class="line">          const regRespJson = await passkeys.createPasskey(creationOptionsJson);</span><br><span class="line">          const verifyRegBody = &#123;</span><br><span class="line">            ...JSON.parse(regRespJson),</span><br><span class="line">            userId,</span><br><span class="line">            deviceIdentifier: this.deviceId,</span><br><span class="line">          &#125;;</span><br><span class="line">          // #endif</span><br><span class="line"></span><br><span class="line">          // #ifdef H5</span><br><span class="line">          // 复杂逻辑：H5 端 WebAuthn —— 转换 base64url → ArrayBuffer，发起 create</span><br><span class="line">          const publicKey = this.toWebAuthnCreationOptions(creationOptions);</span><br><span class="line">          const attestation = await navigator.credentials.create(&#123; publicKey &#125;);</span><br><span class="line">          const verifyRegBody = &#123;</span><br><span class="line">            ...this.packAttestation(attestation),</span><br><span class="line">            userId,</span><br><span class="line">            deviceIdentifier: this.deviceId,</span><br><span class="line">          &#125;;</span><br><span class="line">          // #endif</span><br><span class="line"></span><br><span class="line">          // 复杂逻辑：步骤D——提交注册 verify（完成入库+设备唯一绑定+签发会话）</span><br><span class="line">          const verify = await this.post(</span><br><span class="line">            &quot;/passkeys/register-or-login/verify&quot;,</span><br><span class="line">            verifyRegBody</span><br><span class="line">          );</span><br><span class="line">          this.onLoginSucceed(verify, true);</span><br><span class="line">        &#125; catch (e2) &#123;</span><br><span class="line">          uni.showToast(&#123; title: e2?.message || String(e2), icon: &quot;none&quot; &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; finally &#123;</span><br><span class="line">        this.loading = false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    // 复杂逻辑：登录/注册成功后的统一处理（落 token + 跳转）</span><br><span class="line">    onLoginSucceed(verify, isRegister = false) &#123;</span><br><span class="line">      if (verify?.verified) &#123;</span><br><span class="line">        if (verify.token) &#123;</span><br><span class="line">          uni.setStorageSync(&quot;TOKEN&quot;, verify.token);</span><br><span class="line">        &#125;</span><br><span class="line">        uni.showToast(&#123;</span><br><span class="line">          title: isRegister ? &quot;已注册并登录&quot; : &quot;登录成功&quot;,</span><br><span class="line">          icon: &quot;success&quot;,</span><br><span class="line">        &#125;);</span><br><span class="line">        setTimeout(() =&gt; &#123;</span><br><span class="line">          uni.reLaunch(&#123; url: &quot;/pages/index/index&quot; &#125;);</span><br><span class="line">        &#125;, 600);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        throw new Error(&quot;校验失败&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    // ================== H5 专用辅助：WebAuthn 转换与打包 ==================</span><br><span class="line">    // #ifdef H5</span><br><span class="line">    // 复杂逻辑：检测是否支持条件UI</span><br><span class="line">    async isConditionalUI() &#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        return !!(await PublicKeyCredential.isConditionalMediationAvailable?.());</span><br><span class="line">      &#125; catch &#123;</span><br><span class="line">        return false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    // 复杂逻辑：base64url → ArrayBuffer</span><br><span class="line">    b64urlToBuf(b64url) &#123;</span><br><span class="line">      const pad = &quot;=&quot;.repeat((4 - (b64url.length % 4)) % 4);</span><br><span class="line">      const b64 = (b64url + pad).replace(/-/g, &quot;+&quot;).replace(/_/g, &quot;/&quot;);</span><br><span class="line">      const bin = atob(b64);</span><br><span class="line">      const buf = new ArrayBuffer(bin.length);</span><br><span class="line">      const view = new Uint8Array(buf);</span><br><span class="line">      for (let i = 0; i &lt; bin.length; i++) view[i] = bin.charCodeAt(i);</span><br><span class="line">      return buf;</span><br><span class="line">    &#125;,</span><br><span class="line">    // 复杂逻辑：ArrayBuffer/Uint8Array → base64url</span><br><span class="line">    bufToB64url(buf) &#123;</span><br><span class="line">      const b = buf instanceof ArrayBuffer ? new Uint8Array(buf) : buf;</span><br><span class="line">      let s = &quot;&quot;;</span><br><span class="line">      for (let i = 0; i &lt; b.length; i++) s += String.fromCharCode(b[i]);</span><br><span class="line">      return btoa(s)</span><br><span class="line">        .replace(/\+/g, &quot;-&quot;)</span><br><span class="line">        .replace(/\//g, &quot;_&quot;)</span><br><span class="line">        .replace(/=+$/g, &quot;&quot;);</span><br><span class="line">    &#125;,</span><br><span class="line">    // 复杂逻辑：将登录 options（服务端 base64url）转为 WebAuthn 可用结构</span><br><span class="line">    toWebAuthnRequestOptions(serverOpts) &#123;</span><br><span class="line">      const opts = JSON.parse(JSON.stringify(serverOpts));</span><br><span class="line">      if (typeof opts.challenge === &quot;string&quot;)</span><br><span class="line">        opts.challenge = this.b64urlToBuf(opts.challenge);</span><br><span class="line">      if (Array.isArray(opts.allowCredentials)) &#123;</span><br><span class="line">        opts.allowCredentials = opts.allowCredentials.map((c) =&gt; (&#123;</span><br><span class="line">          ...c,</span><br><span class="line">          id: typeof c.id === &quot;string&quot; ? this.b64urlToBuf(c.id) : c.id,</span><br><span class="line">        &#125;));</span><br><span class="line">      &#125;</span><br><span class="line">      return opts;</span><br><span class="line">    &#125;,</span><br><span class="line">    // 复杂逻辑：将注册 options 转为 WebAuthn 可用结构</span><br><span class="line">    toWebAuthnCreationOptions(serverOpts) &#123;</span><br><span class="line">      const opts = JSON.parse(JSON.stringify(serverOpts));</span><br><span class="line">      if (typeof opts.challenge === &quot;string&quot;)</span><br><span class="line">        opts.challenge = this.b64urlToBuf(opts.challenge);</span><br><span class="line">      if (opts.user &amp;&amp; typeof opts.user.id === &quot;string&quot;)</span><br><span class="line">        opts.user.id = this.b64urlToBuf(opts.user.id);</span><br><span class="line">      if (Array.isArray(opts.excludeCredentials)) &#123;</span><br><span class="line">        opts.excludeCredentials = opts.excludeCredentials.map((c) =&gt; (&#123;</span><br><span class="line">          ...c,</span><br><span class="line">          id: typeof c.id === &quot;string&quot; ? this.b64urlToBuf(c.id) : c.id,</span><br><span class="line">        &#125;));</span><br><span class="line">      &#125;</span><br><span class="line">      return opts;</span><br><span class="line">    &#125;,</span><br><span class="line">    // 复杂逻辑：将 get() 结果打包为后端可校验的 JSON（统一 base64url）</span><br><span class="line">    packAssertion(cred) &#123;</span><br><span class="line">      const resp = cred.response;</span><br><span class="line">      return &#123;</span><br><span class="line">        id: cred.id,</span><br><span class="line">        rawId: this.bufToB64url(cred.rawId),</span><br><span class="line">        type: cred.type,</span><br><span class="line">        response: &#123;</span><br><span class="line">          clientDataJSON: this.bufToB64url(resp.clientDataJSON),</span><br><span class="line">          authenticatorData: this.bufToB64url(resp.authenticatorData),</span><br><span class="line">          signature: this.bufToB64url(resp.signature),</span><br><span class="line">          userHandle: resp.userHandle</span><br><span class="line">            ? this.bufToB64url(resp.userHandle)</span><br><span class="line">            : null,</span><br><span class="line">        &#125;,</span><br><span class="line">        clientExtensionResults: cred.getClientExtensionResults?.() || &#123;&#125;,</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    // 复杂逻辑：将 create() 结果打包为后端可校验的 JSON（统一 base64url）</span><br><span class="line">    packAttestation(cred) &#123;</span><br><span class="line">      const resp = cred.response;</span><br><span class="line">      return &#123;</span><br><span class="line">        id: cred.id,</span><br><span class="line">        rawId: this.bufToB64url(cred.rawId),</span><br><span class="line">        type: cred.type,</span><br><span class="line">        response: &#123;</span><br><span class="line">          clientDataJSON: this.bufToB64url(resp.clientDataJSON),</span><br><span class="line">          attestationObject: this.bufToB64url(resp.attestationObject),</span><br><span class="line">        &#125;,</span><br><span class="line">        clientExtensionResults: cred.getClientExtensionResults?.() || &#123;&#125;,</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    // #endif</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">.container &#123;</span><br><span class="line">  padding: 24rpx;</span><br><span class="line">&#125;</span><br><span class="line">.header &#123;</span><br><span class="line">  margin-top: 40rpx;</span><br><span class="line">  margin-bottom: 24rpx;</span><br><span class="line">&#125;</span><br><span class="line">.title &#123;</span><br><span class="line">  font-size: 36rpx;</span><br><span class="line">  font-weight: 600;</span><br><span class="line">  text-align: center;</span><br><span class="line">&#125;</span><br><span class="line">.tip &#123;</span><br><span class="line">  display: flex;</span><br><span class="line">  align-items: center;</span><br><span class="line">  gap: 16rpx;</span><br><span class="line">  padding: 16rpx;</span><br><span class="line">  margin: 12rpx 0;</span><br><span class="line">  border: 1px solid #ffc107;</span><br><span class="line">  background: #fff8e1;</span><br><span class="line">  border-radius: 12rpx;</span><br><span class="line">&#125;</span><br><span class="line">.tip-text &#123;</span><br><span class="line">  color: #8d6e63;</span><br><span class="line">  font-size: 26rpx;</span><br><span class="line">&#125;</span><br><span class="line">.actions &#123;</span><br><span class="line">  margin-top: 24rpx;</span><br><span class="line">  display: flex;</span><br><span class="line">  flex-direction: column;</span><br><span class="line">&#125;</span><br><span class="line">.loading-mask &#123;</span><br><span class="line">  position: fixed;</span><br><span class="line">  left: 0;</span><br><span class="line">  right: 0;</span><br><span class="line">  top: 0;</span><br><span class="line">  bottom: 0;</span><br><span class="line">  background: rgba(0, 0, 0, 0.2);</span><br><span class="line">  display: flex;</span><br><span class="line">  align-items: center;</span><br><span class="line">  justify-content: center;</span><br><span class="line">&#125;</span><br><span class="line">.loading-box &#123;</span><br><span class="line">  padding: 20rpx;</span><br><span class="line">  background: #fff;</span><br><span class="line">  border-radius: 12rpx;</span><br><span class="line">&#125;</span><br><span class="line">.modal-mask &#123;</span><br><span class="line">  position: fixed;</span><br><span class="line">  left: 0;</span><br><span class="line">  right: 0;</span><br><span class="line">  top: 0;</span><br><span class="line">  bottom: 0;</span><br><span class="line">  background: rgba(0, 0, 0, 0.4);</span><br><span class="line">  display: flex;</span><br><span class="line">  align-items: center;</span><br><span class="line">  justify-content: center;</span><br><span class="line">&#125;</span><br><span class="line">.modal &#123;</span><br><span class="line">  width: 80%;</span><br><span class="line">  background: #fff;</span><br><span class="line">  border-radius: 16rpx;</span><br><span class="line">  padding: 24rpx;</span><br><span class="line">&#125;</span><br><span class="line">.modal-title &#123;</span><br><span class="line">  font-size: 30rpx;</span><br><span class="line">  font-weight: 600;</span><br><span class="line">&#125;</span><br><span class="line">.modal-input &#123;</span><br><span class="line">  border: 1px solid #eee;</span><br><span class="line">  margin: 16rpx 0;</span><br><span class="line">  padding: 12rpx;</span><br><span class="line">  border-radius: 8rpx;</span><br><span class="line">&#125;</span><br><span class="line">.modal-actions &#123;</span><br><span class="line">  display: flex;</span><br><span class="line">  justify-content: flex-end;</span><br><span class="line">  gap: 12rpx;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="说明与对接要点"><a href="#说明与对接要点" class="headerlink" title="说明与对接要点"></a>说明与对接要点</h2><ul>
+<li><p><strong>后端路由</strong>保持为：</p>
+<ul>
+<li><code>/passkeys/login/options</code> → 返回 <code>PublicKeyCredentialRequestOptions</code>（<code>challenge</code>&#x2F;<code>allowCredentials[].id</code> 为 <strong>base64url</strong>）。</li>
+<li><code>/passkeys/login/verify</code> → 接收 <code>packAssertion</code> 结果。</li>
+<li><code>/passkeys/register-or-login/options</code> → 返回 <code>&#123; userId, options &#125;</code>（注册用，<code>challenge</code>&#x2F;<code>user.id</code> 为 <strong>base64url</strong>）。</li>
+<li><code>/passkeys/register-or-login/verify</code> → 接收 <code>packAttestation</code> + <code>&#123; userId, deviceIdentifier &#125;</code>。</li>
+</ul>
+</li>
+<li><p><strong>设备唯一</strong>：页面已在所有请求体中带上 <code>deviceIdentifier</code>（<code>this.deviceId</code>），你的服务端即可写入&#x2F;校验 <code>dvc:owner:*</code>。</p>
+</li>
+<li><p><strong>H5 前置条件</strong>：需 HTTPS 或 <code>localhost</code>；Safari&#x2F;移动端有平台限制。</p>
+</li>
+<li><p><strong>App 端</strong>：确保 <code>@/uni_modules/pass-keys</code> 已实现 <code>getPasskey</code>&#x2F;<code>createPasskey</code> 且返回 <strong>JSON 字符串</strong>（与我们前面约定一致）。</p>
+</li>
+</ul>
+<p>需要我把 <strong>“已登录场景的绑定按钮”</strong> 也加到这个页面吗（即 <code>/passkeys/register/options|verify</code>，走绑定而非 JIT）？如果要，加哪个位置，我按你“只给改动段”的规范再补。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/requirement-realization-2/" data-id="cmf5oe7i90007pp4z3fls1eii" data-title="在你现有 uvue 登录页集成“一键通行密钥登录”（含回退注册），完整代码可直接替换" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Passkeys/" rel="tag">Passkeys</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/UTS-%E6%8F%92%E4%BB%B6/" rel="tag">UTS 插件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/WebAuthn/" rel="tag">WebAuthn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/uni-app-x/" rel="tag">uni-app x</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" rel="tag">一键直登</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2025/09/05/requirement-realization/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Web 端一键通行密钥：点击按钮后“先登录，失败再注册”的完整实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2025/09/04/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/passkeys-%E9%80%9A%E8%A1%8C%E5%AF%86%E9%92%A5-%E7%99%BB%E5%BD%95-%E6%B3%A8%E5%86%8C%E4%B8%80%E4%BD%93%E5%8C%96%E6%96%B9%E6%A1%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">passkeys 通行密钥 登录+注册一体化方案</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">web应用开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/GitHub-Pages/" rel="tag">GitHub Pages</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/NexT/" rel="tag">NexT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Passkeys/" rel="tag">Passkeys</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/UTS-%E6%8F%92%E4%BB%B6/" rel="tag">UTS 插件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/WebAuthn/" rel="tag">WebAuthn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/uni-app-x/" rel="tag">uni-app x</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" rel="tag">一键直登</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E7%9B%AE%E5%BD%95/" rel="tag">目录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/GitHub-Pages/" style="font-size: 20px;">GitHub Pages</a> <a href="/blog/tags/Hexo/" style="font-size: 20px;">Hexo</a> <a href="/blog/tags/NexT/" style="font-size: 10px;">NexT</a> <a href="/blog/tags/Passkeys/" style="font-size: 10px;">Passkeys</a> <a href="/blog/tags/UTS-%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">UTS 插件</a> <a href="/blog/tags/WebAuthn/" style="font-size: 10px;">WebAuthn</a> <a href="/blog/tags/uni-app-x/" style="font-size: 10px;">uni-app x</a> <a href="/blog/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" style="font-size: 10px;">一键直登</a> <a href="/blog/tags/%E5%88%86%E7%B1%BB/" style="font-size: 10px;">分类</a> <a href="/blog/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/blog/tags/%E7%9B%AE%E5%BD%95/" style="font-size: 10px;">目录</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2025/09/">September 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2025/09/05/requirement-realization-1/">已登录用户的“绑定通行密钥”最佳实践：把唯一标识安全传给后端（含前后端完整实现）</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/05/requirement-realization/">Web 端一键通行密钥：点击按钮后“先登录，失败再注册”的完整实现</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/05/requirement-realization-2/">在你现有 uvue 登录页集成“一键通行密钥登录”（含回退注册），完整代码可直接替换</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/04/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/passkeys-%E9%80%9A%E8%A1%8C%E5%AF%86%E9%92%A5-%E7%99%BB%E5%BD%95-%E6%B3%A8%E5%86%8C%E4%B8%80%E4%BD%93%E5%8C%96%E6%96%B9%E6%A1%88/">passkeys 通行密钥 登录+注册一体化方案</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/04/%E4%BD%BF%E7%94%A8-hexo-%E5%9C%A8-github-%E9%83%A8%E7%BD%B2%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">使用 hexo 在 github 部署个人博客</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
