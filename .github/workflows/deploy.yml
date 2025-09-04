@@ -1,7 +1,7 @@
 name: Deploy Hexo to GitHub Pages
 on:
   push:
-    branches: [main]
+    branches: [master]
 permissions:
   contents: write
 jobs:
@@ -19,3 +19,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           publish_branch: gh-pages
+
+permissions:
+  contents: write
