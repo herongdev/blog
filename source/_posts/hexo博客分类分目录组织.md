@@ -7,9 +7,7 @@ tags: [Hexo, 分类, 目录, GitHub Pages, NexT]
 
 > 目标：当文章**成千上万**时，既能在磁盘上**分目录管理**，又能在站点里以**目录树（分类层级）**浏览，并让 **URL 跟随分类层级**，同时保持 GitHub Project Pages 的子路径（`/blog/`）不乱。
 
----
-
-## TL;DR（1 屏跑通）
+## 1 屏跑通
 
 1. **物理分目录**：`source/_posts/` 下建多级子目录；`hexo new post 路径/标题` 可直接写入对应子目录。
 2. **URL 跟随分类层级**：把 `permalink` 改成 `:categories/:title/`，并在每篇文章的 front-matter 写层级 `categories: [父, 子]`。
@@ -247,10 +245,3 @@ A：直接移动文件夹即可；只要 front-matter 的 `categories` 不改，
 A：启用 `post_asset_folder: true` 后，文章内用相对路径（如 `![](切片入门/示意图.png)`）即可。
 
 ---
-
-> 以上就是“**物理分目录管理 + 分类层级导航 + 目录式 URL + 脚手架提效**”的完整做法。
-> 你把这篇存进 `source/_posts/建站/Hexo-目录树实战.md`，之后照清单回头复习即可。
-
-```
-::contentReference[oaicite:0]{index=0}
-```
