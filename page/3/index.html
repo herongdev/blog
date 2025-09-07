@@ -71,6 +71,334 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Vue项目请求处理优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2025/09/05/Vue%E9%A1%B9%E7%9B%AE%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T18:07:15.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2025/09/05/Vue%E9%A1%B9%E7%9B%AE%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96/">Vue项目pinia中的Store中的请求时机管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>现在的我的 vue+vite+pinia 项目有个问题，我的有些请求，我在 store 中就直接调用，但 store 的执行时机很早，这时用户可能没有登录，发出这些需要 token 的请求是不合适的，但如果我们把请求放到具体页面中，那每个页面都要请求，违背了我们放入 store 中的初衷，如何处理？</p>
+<p><strong>核心结论</strong>：</p>
+<blockquote>
+<p><strong>把“请求放在 Store”与“何时触发请求”解耦</strong>。<br>数据仍由 Pinia Store 管，但所有“首次加载&#x2F;刷新”的触发统一由<strong>受保护布局(ProtectedLayout)<strong>或</strong>集中启动钩子</strong>在“已登录且当前路由需要鉴权”时一次性触发。<br>请求层（Axios 封装）负责：自动带 Token、401 统一刷新&#x2F;重试、（可选）对标记 <code>auth</code> 的请求在无 Token 时直接拒绝。</p>
+</blockquote>
+<h2 id="路由：只给受保护页面打上-requiresAuth"><a href="#路由：只给受保护页面打上-requiresAuth" class="headerlink" title="路由：只给受保护页面打上 requiresAuth"></a>路由：只给受保护页面打上 <code>requiresAuth</code></h2><p><strong>修改位置：<code>src/router/index.ts</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在需要登录的路由上增加 meta.requiresAuth</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/dashboard&#x27;</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;dashboard&#x27;</span>,</span><br><span class="line">  <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;@/pages/dashboard/index.vue&#x27;</span>),</span><br><span class="line">  <span class="attr">meta</span>: &#123; <span class="attr">requiresAuth</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="受保护布局：只在“已登录-受保护路由”时触发各-Store-的初始化"><a href="#受保护布局：只在“已登录-受保护路由”时触发各-Store-的初始化" class="headerlink" title="受保护布局：只在“已登录 &amp;&amp; 受保护路由”时触发各 Store 的初始化"></a>受保护布局：只在“已登录 &amp;&amp; 受保护路由”时触发各 Store 的初始化</h2><p><strong>新增文件：<code>src/composables/useAppBootstrap.ts</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; watch &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useRouter &#125; <span class="keyword">from</span> <span class="string">&quot;vue-router&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useAuthStore &#125; <span class="keyword">from</span> <span class="string">&quot;@/stores/auth&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useUserStore &#125; <span class="keyword">from</span> <span class="string">&quot;@/stores/user&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useXStore &#125; <span class="keyword">from</span> <span class="string">&quot;@/stores/x&quot;</span>; <span class="comment">// 你的其他数据模块按需引入</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">useAppBootstrap</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> router = <span class="title function_">useRouter</span>();</span><br><span class="line">  <span class="keyword">const</span> auth = <span class="title function_">useAuthStore</span>();</span><br><span class="line">  <span class="keyword">const</span> user = <span class="title function_">useUserStore</span>();</span><br><span class="line">  <span class="keyword">const</span> x = <span class="title function_">useXStore</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：仅在“已登录 &amp;&amp; 当前路由需要鉴权”时做一次性初始化（可幂等）</span></span><br><span class="line">  <span class="title function_">watch</span>(</span><br><span class="line">    [</span><br><span class="line">      <span class="function">() =&gt;</span> auth.<span class="property">isAuthenticated</span>,</span><br><span class="line">      <span class="function">() =&gt;</span> router.<span class="property">currentRoute</span>.<span class="property">value</span>.<span class="property">meta</span>.<span class="property">requiresAuth</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="title function_">async</span> ([ok, need]) =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (ok &amp;&amp; need) &#123;</span><br><span class="line">        <span class="comment">// 复杂逻辑：各 store 的 init() 必须“幂等”，重复调用不重复发请求</span></span><br><span class="line">        <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([user.<span class="title function_">init</span>(), x.<span class="title function_">init</span>()]);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123; <span class="attr">immediate</span>: <span class="literal">true</span> &#125;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在你的受保护布局&#x2F;根布局里调用（例如 <code>src/layouts/ProtectedLayout.vue</code>）</strong>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &lt;script setup&gt;</span></span><br><span class="line"><span class="comment">// 复杂逻辑：在受保护布局挂载时调用集中引导</span></span><br><span class="line"><span class="keyword">import</span> &#123; useAppBootstrap &#125; <span class="keyword">from</span> <span class="string">&quot;@/composables/useAppBootstrap&quot;</span>;</span><br><span class="line"><span class="title function_">useAppBootstrap</span>();</span><br><span class="line"><span class="comment">// &lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果你没有单独的布局文件，可以在 <code>App.vue</code> 里根据 <code>route.meta.requiresAuth</code> 切出一个“受保护区域”再调用 <code>useAppBootstrap()</code>。</p>
+</blockquote>
+<hr>
+<h2 id="Store：移除“定义即请求”的副作用，提供幂等-init"><a href="#Store：移除“定义即请求”的副作用，提供幂等-init" class="headerlink" title="Store：移除“定义即请求”的副作用，提供幂等 init()"></a>Store：移除“定义即请求”的副作用，提供幂等 <code>init()</code></h2><p><strong>修改位置：<code>src/stores/user.ts</code>（示例）</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除：顶层的立即请求（例如 defineStore 里一创建就 fetch 的代码）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 新增：幂等 init()</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">_initPromise</span>: <span class="title class_">Promise</span>&lt;<span class="built_in">void</span>&gt; | <span class="literal">null</span> = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> useUserStore = <span class="title function_">defineStore</span>(<span class="string">&quot;user&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> profile = ref&lt;<span class="title class_">User</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：单例 Promise，保证多处调用只触发一次真实请求</span></span><br><span class="line">  <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">init</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (_initPromise) <span class="keyword">return</span> _initPromise;</span><br><span class="line">    _initPromise = (<span class="title function_">async</span> () =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (profile.<span class="property">value</span>) <span class="keyword">return</span>;</span><br><span class="line">      <span class="keyword">const</span> &#123; data &#125; = <span class="keyword">await</span> http.<span class="title function_">get</span>(<span class="string">&quot;/me&quot;</span>, &#123; <span class="attr">meta</span>: &#123; <span class="attr">auth</span>: <span class="literal">true</span> &#125; &#125;);</span><br><span class="line">      profile.<span class="property">value</span> = data;</span><br><span class="line">    &#125;)();</span><br><span class="line">    <span class="keyword">return</span> _initPromise;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 可选：在登出时清理，便于下次重新 init</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">reset</span>(<span class="params"></span>) &#123;</span><br><span class="line">    profile.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">    _initPromise = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123; profile, init, reset &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>你的其他 Store（如 <code>x.ts</code>、<code>projects.ts</code> 等）都按这个**“删除副作用 + 提供幂等 init()”**的模式改一遍。</p>
+</blockquote>
+<hr>
+<h2 id="请求层：自动带-Token、401-统一刷新并队列重试、无-Token-阻断受保护请求"><a href="#请求层：自动带-Token、401-统一刷新并队列重试、无-Token-阻断受保护请求" class="headerlink" title="请求层：自动带 Token、401 统一刷新并队列重试、无 Token 阻断受保护请求"></a>请求层：自动带 Token、401 统一刷新并队列重试、无 Token 阻断受保护请求</h2><p><strong>修改位置：<code>src/http/axios.ts</code>（或你的请求封装文件）</strong></p>
+<p><strong>（1）扩展 Axios 类型，支持 <code>meta.auth</code> 与 <code>_retry</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：为请求增加自定义元信息与重试标记</span></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;axios&quot;</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">AxiosRequestConfig</span> &#123;</span><br><span class="line">    <span class="attr">meta</span>?: &#123; <span class="attr">auth</span>?: <span class="built_in">boolean</span> &#125;;</span><br><span class="line">    <span class="attr">_retry</span>?: <span class="built_in">boolean</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）请求拦截：自动加 Authorization；无 Token 且需要鉴权时直接拒绝</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useAuthStore &#125; <span class="keyword">from</span> <span class="string">&quot;@/stores/auth&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;@/router&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> http = axios.<span class="title function_">create</span>(&#123; <span class="attr">baseURL</span>: <span class="keyword">import</span>.<span class="property">meta</span>.<span class="property">env</span>.<span class="property">VITE_API_BASE</span> &#125;);</span><br><span class="line"></span><br><span class="line">http.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(<span class="function">(<span class="params">config</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> auth = <span class="title function_">useAuthStore</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：仅对标记了 meta.auth 的请求自动带 token</span></span><br><span class="line">  <span class="keyword">if</span> (config.<span class="property">meta</span>?.<span class="property">auth</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!auth.<span class="property">token</span>) &#123;</span><br><span class="line">      <span class="comment">// 复杂逻辑：阻断未登录时的鉴权请求（避免在 /user/login 等页面误发）</span></span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;AUTH_REQUIRED&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    config.<span class="property">headers</span> = &#123;</span><br><span class="line">      ...config.<span class="property">headers</span>,</span><br><span class="line">      <span class="title class_">Authorization</span>: <span class="string">`Bearer <span class="subst">$&#123;auth.token&#125;</span>`</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>（3）响应拦截：统一处理 401，带刷新队列（避免并发多次刷新）</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> refreshing = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">waitQueue</span>: <span class="title class_">Array</span>&lt;<span class="function">() =&gt;</span> <span class="built_in">void</span>&gt; = [];</span><br><span class="line"></span><br><span class="line">http.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span><br><span class="line">  <span class="function">(<span class="params">r</span>) =&gt;</span> r,</span><br><span class="line">  <span class="title function_">async</span> (error) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> auth = <span class="title function_">useAuthStore</span>();</span><br><span class="line">    <span class="keyword">const</span> &#123; response, config &#125; = error || &#123;&#125;;</span><br><span class="line">    <span class="keyword">if</span> (response?.<span class="property">status</span> === <span class="number">401</span> &amp;&amp; config &amp;&amp; !config.<span class="property">_retry</span>) &#123;</span><br><span class="line">      <span class="comment">// 复杂逻辑：给当前请求打 _retry，防止递归</span></span><br><span class="line">      config.<span class="property">_retry</span> = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!refreshing) &#123;</span><br><span class="line">        refreshing = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">await</span> auth.<span class="title function_">refreshToken</span>(); <span class="comment">// 你在 auth store 中实现这个方法</span></span><br><span class="line">          refreshing = <span class="literal">false</span>;</span><br><span class="line">          <span class="comment">// 复杂逻辑：刷新成功后，放行所有队列中的请求</span></span><br><span class="line">          waitQueue.<span class="title function_">splice</span>(<span class="number">0</span>).<span class="title function_">forEach</span>(<span class="function">(<span class="params">fn</span>) =&gt;</span> <span class="title function_">fn</span>());</span><br><span class="line">          <span class="keyword">return</span> <span class="title function_">http</span>(config);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">          refreshing = <span class="literal">false</span>;</span><br><span class="line">          <span class="comment">// 复杂逻辑：刷新失败，清空队列并跳转登录</span></span><br><span class="line">          waitQueue.<span class="title function_">splice</span>(<span class="number">0</span>).<span class="title function_">forEach</span>(<span class="function">(<span class="params">fn</span>) =&gt;</span> <span class="title function_">fn</span>());</span><br><span class="line">          auth.<span class="title function_">logout</span>();</span><br><span class="line">          router.<span class="title function_">replace</span>(&#123;</span><br><span class="line">            <span class="attr">name</span>: <span class="string">&quot;login&quot;</span>,</span><br><span class="line">            <span class="attr">query</span>: &#123; <span class="attr">redirect</span>: router.<span class="property">currentRoute</span>.<span class="property">value</span>.<span class="property">fullPath</span> &#125;,</span><br><span class="line">          &#125;);</span><br><span class="line">          <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 复杂逻辑：如果正在刷新，把当前请求加入队列，等待刷新完成后重试</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        waitQueue.<span class="title function_">push</span>(<span class="function">() =&gt;</span> <span class="title function_">http</span>(config).<span class="title function_">then</span>(resolve).<span class="title function_">catch</span>(reject));</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Auth-Store：提供-isAuthenticated、refreshToken-、logout"><a href="#Auth-Store：提供-isAuthenticated、refreshToken-、logout" class="headerlink" title="Auth Store：提供 isAuthenticated、refreshToken()、logout()"></a>Auth Store：提供 <code>isAuthenticated</code>、<code>refreshToken()</code>、<code>logout()</code></h2><p><strong>修改位置：<code>src/stores/auth.ts</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> useAuthStore = <span class="title function_">defineStore</span>(<span class="string">&quot;auth&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> token = ref&lt;<span class="built_in">string</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line">  <span class="keyword">const</span> refresh = ref&lt;<span class="built_in">string</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：派生登录态，集中判断是否有有效 token</span></span><br><span class="line">  <span class="keyword">const</span> isAuthenticated = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> !!token.<span class="property">value</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">setToken</span>(<span class="params"><span class="attr">t</span>: <span class="built_in">string</span>, <span class="attr">r</span>?: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    token.<span class="property">value</span> = t;</span><br><span class="line">    <span class="keyword">if</span> (r) refresh.<span class="property">value</span> = r;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">refreshToken</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 复杂逻辑：用 refresh_token 换新 token，失败则抛错</span></span><br><span class="line">    <span class="keyword">const</span> &#123; data &#125; = <span class="keyword">await</span> axios.<span class="title function_">post</span>(<span class="string">&quot;/auth/refresh&quot;</span>, &#123;</span><br><span class="line">      <span class="attr">refresh_token</span>: refresh.<span class="property">value</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    token.<span class="property">value</span> = data.<span class="property">access_token</span>;</span><br><span class="line">    refresh.<span class="property">value</span> = data.<span class="property">refresh_token</span> ?? refresh.<span class="property">value</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">logout</span>(<span class="params"></span>) &#123;</span><br><span class="line">    token.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">    refresh.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// 复杂逻辑：通知其他 store 清空并重置 init()</span></span><br><span class="line">    <span class="title function_">useUserStore</span>().<span class="title function_">reset</span>();</span><br><span class="line">    <span class="comment">// 其他 store 同理按需 reset()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123; token, isAuthenticated, setToken, refreshToken, logout &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="登录成功后：只需设置-token-并跳转，初始化会自动发生"><a href="#登录成功后：只需设置-token-并跳转，初始化会自动发生" class="headerlink" title="登录成功后：只需设置 token 并跳转，初始化会自动发生"></a>登录成功后：只需设置 token 并跳转，初始化会自动发生</h2><p><strong>修改位置：<code>/user/login</code> 提交成功回调处</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：写入 token 并跳到受保护路由；受保护布局会自动触发所有 store.init()</span></span><br><span class="line"><span class="keyword">await</span> authStore.<span class="title function_">setToken</span>(res.<span class="property">access_token</span>, res.<span class="property">refresh_token</span>);</span><br><span class="line">router.<span class="title function_">replace</span>((route.<span class="property">query</span>.<span class="property">redirect</span> <span class="keyword">as</span> <span class="built_in">string</span>) || <span class="string">&quot;/&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="为什么这是“最佳做法”"><a href="#为什么这是“最佳做法”" class="headerlink" title="为什么这是“最佳做法”"></a>为什么这是“最佳做法”</h2><ol>
+<li><strong>单一职责清晰</strong>：Store 只做“状态与方法”，不在定义期发请求；“什么时候发”交给受保护布局的引导钩子统一触发。</li>
+<li><strong>避免重复请求</strong>：<code>init()</code> 使用<strong>单例 Promise</strong>，多次调用只会发一次请求。</li>
+<li><strong>页面无侵入</strong>：页面无需关心是否登录、是否首发，页面只消费 Store 的 state。</li>
+<li><strong>错误集中处理</strong>：401 统一刷新与队列重试，避免因并发导致多次刷新或脏状态。</li>
+<li><strong>登录页零干扰</strong>：登录页不再误发需要 Token 的请求；即使误调，Axios 层也会拦截并拒绝。</li>
+<li><strong>易扩展</strong>：新增数据域时，只需在受保护引导中 <code>store.init()</code> 一行接入。</li>
+</ol>
+<hr>
+<p>如果你愿意，我可以基于你当前的目录结构，把上述“幂等 init + 受保护布局引导 + Axios 刷新队列”的改动<strong>逐个落到你的具体文件</strong>（只贴需要改的片段）。你把相关文件名和关键片段贴给我就行。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/Vue%E9%A1%B9%E7%9B%AE%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96/" data-id="cmf9wf5u90007pf4zfqe6gann" data-title="Vue项目pinia中的Store中的请求时机管理" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/store%E8%AF%B7%E6%B1%82/" rel="tag">store请求</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-GTC-Checkbox-Radio-轻量化重构（支持-Ant-Design-Vue）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T16:25:03.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/">GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）<br>date: 2025-09-05<br>tags: [Vue3, Ant Design Vue, 组件封装, v-model]</p>
+<hr>
+<h2 id="思路概述"><a href="#思路概述" class="headerlink" title="思路概述"></a>思路概述</h2><ul>
+<li>用 <code>defineModel</code> 直接驱动 <code>a-checkbox-group</code> &#x2F; <code>a-radio-group</code>，去掉中间层 <code>innerValue</code> 与 <code>watch</code>，减少响应式开销与同步复杂度。</li>
+<li>加上 <code>defineOptions(&#123; inheritAttrs: false &#125;)</code>，避免 attrs 同时落在根节点与 <code>a-*group</code> 上导致副作用。</li>
+<li><code>Checkbox</code> 明确 <code>value</code> 为 <strong>数组</strong>，默认 <code>[]</code>；<code>Radio</code> 的 <code>value</code> 为任意，默认 <code>null</code>。</li>
+</ul>
+<hr>
+<h2 id="最简实现步骤"><a href="#最简实现步骤" class="headerlink" title="最简实现步骤"></a>最简实现步骤</h2><ol>
+<li>删除 <code>innerValue</code> 与所有 <code>watch</code>。</li>
+<li>用 <code>const value = defineModel&lt;...&gt;(&#39;value&#39;, &#123; default: ... &#125;)</code>，模板直接 <code>v-model:value=&quot;value&quot;</code>。</li>
+<li>设置 <code>inheritAttrs: false</code>，并将 <code>attrs</code> 仅透传给 <code>a-*group</code>。</li>
+</ol>
+<hr>
+<h2 id="完整代码（Checkbox）"><a href="#完整代码（Checkbox）" class="headerlink" title="完整代码（Checkbox）"></a>完整代码（Checkbox）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div</span><br><span class="line">    class=&quot;gtc-checkbox&quot;</span><br><span class="line">    :class=&quot;[`gtc-checkbox-$&#123;size&#125;`, disabled ? &#x27;is-disabled&#x27; : &#x27;&#x27;]&quot;</span><br><span class="line">  &gt;</span><br><span class="line">    &lt;a-checkbox-group v-model:value=&quot;value&quot; :disabled=&quot;disabled&quot; v-bind=&quot;attrs&quot;&gt;</span><br><span class="line">      &lt;slot /&gt;</span><br><span class="line">    &lt;/a-checkbox-group&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; useAttrs &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">// 复杂：避免 attrs 同时落到根节点与 a-checkbox-group</span><br><span class="line">defineOptions(&#123; inheritAttrs: false &#125;);</span><br><span class="line"></span><br><span class="line">const attrs = useAttrs();</span><br><span class="line"></span><br><span class="line">const props = defineProps(&#123;</span><br><span class="line">  size: &#123; type: String, default: &quot;md&quot; &#125;,</span><br><span class="line">  disabled: &#123; type: Boolean, default: false &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 复杂：CheckboxGroup 期望数组；默认应为 []</span><br><span class="line">const value = defineModel&lt;any[]&gt;(&quot;value&quot;, &#123; default: [] &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;less&quot; scoped&gt;</span><br><span class="line">.gtc-checkbox &#123;</span><br><span class="line">  .ant-checkbox-wrapper &#123;</span><br><span class="line">    color: var(--ink-950);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-checkbox &#123;</span><br><span class="line">    &amp;-inner &#123;</span><br><span class="line">      border-color: var(--rim-300);</span><br><span class="line">      background: none;</span><br><span class="line">      box-shadow: none;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;-checked .ant-checkbox-inner &#123;</span><br><span class="line">      background-color: var(--blue-primary);</span><br><span class="line">      border-color: var(--blue-primary);</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;:hover .ant-checkbox-inner &#123;</span><br><span class="line">      border-color: var(--ink-400);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.gtc-checkbox-sm .ant-checkbox-inner &#123;</span><br><span class="line">  width: 14px;</span><br><span class="line">  height: 14px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-checkbox-md .ant-checkbox-inner &#123;</span><br><span class="line">  width: 16px;</span><br><span class="line">  height: 16px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-checkbox-lg .ant-checkbox-inner &#123;</span><br><span class="line">  width: 18px;</span><br><span class="line">  height: 18px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.is-disabled &#123;</span><br><span class="line">  .ant-checkbox-inner &#123;</span><br><span class="line">    background: var(--ground-50);</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="完整代码（Radio）"><a href="#完整代码（Radio）" class="headerlink" title="完整代码（Radio）"></a>完整代码（Radio）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div</span><br><span class="line">    class=&quot;gtc-radio&quot;</span><br><span class="line">    :class=&quot;[`gtc-radio-$&#123;size&#125;`, disabled ? &#x27;is-disabled&#x27; : &#x27;&#x27;]&quot;</span><br><span class="line">  &gt;</span><br><span class="line">    &lt;a-radio-group v-model:value=&quot;value&quot; :disabled=&quot;disabled&quot; v-bind=&quot;attrs&quot;&gt;</span><br><span class="line">      &lt;slot /&gt;</span><br><span class="line">    &lt;/a-radio-group&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; useAttrs &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">// 复杂：避免 attrs 同时落到根节点与 a-radio-group</span><br><span class="line">defineOptions(&#123; inheritAttrs: false &#125;);</span><br><span class="line"></span><br><span class="line">const attrs = useAttrs();</span><br><span class="line"></span><br><span class="line">const props = defineProps(&#123;</span><br><span class="line">  size: &#123; type: String, default: &quot;md&quot; &#125;,</span><br><span class="line">  disabled: &#123; type: Boolean, default: false &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 复杂：RadioGroup 接收单值；默认 null</span><br><span class="line">const value = defineModel&lt;any&gt;(&quot;value&quot;, &#123; default: null &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;less&quot; scoped&gt;</span><br><span class="line">.gtc-radio &#123;</span><br><span class="line">  .ant-radio-wrapper &#123;</span><br><span class="line">    color: var(--ink-950);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">    background: none;</span><br><span class="line">    box-shadow: none;</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-checked .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--blue-primary);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-checked .ant-radio-inner::after &#123;</span><br><span class="line">    background-color: var(--blue-primary);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio:hover .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--ink-400);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.gtc-radio-sm .ant-radio-inner &#123;</span><br><span class="line">  width: 14px;</span><br><span class="line">  height: 14px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-radio-md .ant-radio-inner &#123;</span><br><span class="line">  width: 16px;</span><br><span class="line">  height: 16px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-radio-lg .ant-radio-inner &#123;</span><br><span class="line">  width: 18px;</span><br><span class="line">  height: 18px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.is-disabled &#123;</span><br><span class="line">  .ant-radio-inner &#123;</span><br><span class="line">    background: var(--ground-50);</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><ul>
+<li>现在两个组件都是**“零 watch、零中间层”**：父表单直接通过 <code>v-model:value</code> 与 antd 组件对齐；</li>
+<li>与你表单规则的“复选框至少选一项”自定义校验配合使用即可（在 <code>getValidationRules</code> 里对 <code>checkbox</code> 做长度判断）。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/" data-id="cmf9wf5u30004pf4z3mk5608z" data-title="GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-动态表单「已勾选仍提示必填」的两处修复" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2025/09/05/%E5%8A%A8%E6%80%81%E8%A1%A8%E5%8D%95%E3%80%8C%E5%B7%B2%E5%8B%BE%E9%80%89%E4%BB%8D%E6%8F%90%E7%A4%BA%E5%BF%85%E5%A1%AB%E3%80%8D%E7%9A%84%E4%B8%A4%E5%A4%84%E4%BF%AE%E5%A4%8D/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T16:22:47.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2025/09/05/%E5%8A%A8%E6%80%81%E8%A1%A8%E5%8D%95%E3%80%8C%E5%B7%B2%E5%8B%BE%E9%80%89%E4%BB%8D%E6%8F%90%E7%A4%BA%E5%BF%85%E5%A1%AB%E3%80%8D%E7%9A%84%E4%B8%A4%E5%A4%84%E4%BF%AE%E5%A4%8D/">动态表单「已勾选仍提示必填」的两处修复</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: 动态表单「已勾选仍提示必填」的两处修复<br>date: 2025-09-05<br>tags: [Vue3, Ant Design Vue, 表单校验, 组件封装]</p>
+<hr>
+<h2 id="问题概述"><a href="#问题概述" class="headerlink" title="问题概述"></a>问题概述</h2><p>复选框（<code>a-checkbox-group</code>）在 <strong>必填</strong> 时，即使勾选了第一项仍提示“请选择”。根因有两点：</p>
+<ol>
+<li>你的 <code>Checkbox</code> 包装组件把 <code>v-model:value</code> <strong>定义成了 boolean</strong>（默认 <code>false</code>），而 <code>a-checkbox-group</code> 需要 <strong>数组</strong>；</li>
+<li>通用的 <code>required: true</code> 规则对 <strong>数组长度</strong> 不做判断，需要为复选框补一条“至少选一项”的自定义校验。</li>
+</ol>
+<p>下面给出<strong>最小修改</strong>代码片段（仅展示需要调整的部分）。</p>
+<blockquote>
+<p>说明：按你的偏好，复杂逻辑的代码段我在<strong>上一行加了注释</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="修改-1：Checkbox-组件把模型改为数组"><a href="#修改-1：Checkbox-组件把模型改为数组" class="headerlink" title="修改 1：Checkbox 组件把模型改为数组"></a>修改 1：<code>Checkbox</code> 组件把模型改为数组</h2><p>把 <code>defineModel&lt;boolean&gt;</code> 改为 <strong><code>defineModel&lt;any[]&gt;</code></strong>，默认值设为 <code>[]</code>，并确保内部状态是数组。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂：CheckboxGroup 期望数组类型；默认值必须为 []，否则 antd 校验无法判定“是否已选择”</span></span><br><span class="line"><span class="keyword">const</span> model = defineModel&lt;<span class="built_in">any</span>[]&gt;(<span class="string">&quot;value&quot;</span>, &#123; <span class="attr">default</span>: [] &#125;);</span><br><span class="line"><span class="keyword">const</span> innerValue = ref&lt;<span class="built_in">any</span>[]&gt;(<span class="title class_">Array</span>.<span class="title function_">isArray</span>(model.<span class="property">value</span>) ? model.<span class="property">value</span> : []);</span><br><span class="line"></span><br><span class="line"><span class="title function_">watch</span>(model, <span class="function">(<span class="params">v</span>) =&gt;</span> (innerValue.<span class="property">value</span> = <span class="title class_">Array</span>.<span class="title function_">isArray</span>(v) ? v : []));</span><br><span class="line"><span class="title function_">watch</span>(innerValue, <span class="function">(<span class="params">v</span>) =&gt;</span> (model.<span class="property">value</span> = <span class="title class_">Array</span>.<span class="title function_">isArray</span>(v) ? v : []));</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="修改-2：为复选框补充“至少选一项”的校验规则"><a href="#修改-2：为复选框补充“至少选一项”的校验规则" class="headerlink" title="修改 2：为复选框补充“至少选一项”的校验规则"></a>修改 2：为复选框补充“至少选一项”的校验规则</h2><p>在 <code>getValidationRules</code> 中，为 <code>controlType === &#39;checkbox&#39;</code> 增加自定义校验（<strong>在你现有的特殊控件分支里添加一段即可</strong>）。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂：CheckboxGroup 的必填校验——至少选择 1 项</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (field.<span class="property">controlType</span> === <span class="string">&#x27;checkbox&#x27;</span>) &#123;</span><br><span class="line">  rules.<span class="title function_">push</span>(&#123;</span><br><span class="line">    <span class="attr">validator</span>: <span class="title function_">async</span> (<span class="attr">_</span>: <span class="built_in">any</span>, <span class="attr">v</span>: <span class="built_in">any</span>[]) =&gt; &#123;</span><br><span class="line">      <span class="keyword">const</span> ok = <span class="title class_">Array</span>.<span class="title function_">isArray</span>(v) &amp;&amp; v.<span class="property">length</span> &gt; <span class="number">0</span></span><br><span class="line">      <span class="keyword">if</span> (!ok &amp;&amp; field.<span class="property">required</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="title function_">t</span>(<span class="string">&#x27;files.form.rule.required&#x27;</span>, &#123; <span class="attr">label</span>: field.<span class="property">label</span> &#125;))</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">trigger</span>: [<span class="string">&#x27;change&#x27;</span>, <span class="string">&#x27;blur&#x27;</span>],</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>放置位置建议：就放在你现有的 <code>/* 特殊控件校验 */</code> 分支里，和 <code>stockholder / image / file</code> 同级。</p>
+</blockquote>
+<hr>
+<h2 id="可选增强：初始化把错误类型矫正为数组"><a href="#可选增强：初始化把错误类型矫正为数组" class="headerlink" title="可选增强：初始化把错误类型矫正为数组"></a>可选增强：初始化把错误类型矫正为数组</h2><p>若后端历史数据里该字段可能是 <code>false/null/&#39;&#39;/单值</code>，可以在你已有的 <code>watch(_fields, ...)</code> 预处理里顺手矫正为数组，避免初始值导致“已选中但校验失败”。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂：把历史/异常初始值统一矫正为 CheckboxGroup 需要的数组</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (f.<span class="property">controlType</span> === <span class="string">&#x27;checkbox&#x27;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> v = formData[f.<span class="property">name</span>]</span><br><span class="line">  <span class="keyword">if</span> (!<span class="title class_">Array</span>.<span class="title function_">isArray</span>(v)) formData[f.<span class="property">name</span>] = v == <span class="literal">null</span> || v === <span class="literal">false</span> ? [] : [v]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li><strong>关键修复</strong>在于：复选框的 <code>v-model</code> 类型必须是 <strong>数组</strong>；</li>
+<li><strong>规则层面</strong>补充“至少一项”的自定义校验，避免通用 <code>required</code> 漏判。</li>
+</ul>
+<p>应用以上两处修改后，勾选第一项即可通过校验，不再提示“请选择”。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/%E5%8A%A8%E6%80%81%E8%A1%A8%E5%8D%95%E3%80%8C%E5%B7%B2%E5%8B%BE%E9%80%89%E4%BB%8D%E6%8F%90%E7%A4%BA%E5%BF%85%E5%A1%AB%E3%80%8D%E7%9A%84%E4%B8%A4%E5%A4%84%E4%BF%AE%E5%A4%8D/" data-id="cmf9wf5um000ypf4z5r3nelrk" data-title="动态表单「已勾选仍提示必填」的两处修复" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Web-Push-推送简介" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2025/09/05/Web-Push-%E6%8E%A8%E9%80%81%E7%AE%80%E4%BB%8B/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T14:10:59.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/blog/2025/09/05/Web-Push-%E6%8E%A8%E9%80%81%E7%AE%80%E4%BB%8B/">Web Push 推送简介</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: Web Push 推送简介<br>date: 2025-09-05<br>categories: [Web 实时通讯, 浏览器推送]<br>tags: [Web Push, Service Worker, PWA, VAPID, 离线通知, 实时消息]<br>description: 全面介绍 Web Push 技术的原理、特点、实现步骤和典型应用场景，帮助前端&#x2F;全栈开发者理解并快速落地。</p>
+<hr>
+<h1 id="什么是-Web-Push？"><a href="#什么是-Web-Push？" class="headerlink" title="什么是 Web Push？"></a>什么是 Web Push？</h1><p><strong>Web Push</strong> 是浏览器层面的 <strong>推送通知机制</strong>。与 WebSocket 或 SSE 不同，它不依赖页面是否处于前台，甚至用户没有打开网页也能收到通知。核心依赖：</p>
+<ul>
+<li><strong>Service Worker</strong>：浏览器的后台脚本，常驻运行。</li>
+<li><strong>Push API</strong>：浏览器与推送服务（FCM、APNs 等）之间的推送通道。</li>
+<li><strong>Notification API</strong>：展示系统级通知。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li><strong>跨平台</strong>：Chrome、Firefox、Edge、Safari（部分版本）均支持。</li>
+<li><strong>后台可达</strong>：即使网页未激活或浏览器最小化也能收到。</li>
+<li><strong>需用户授权</strong>：必须 HTTPS，且用户点击“允许通知”。</li>
+<li><strong>带有身份机制</strong>：通过 VAPID（Voluntary Application Server Identification for Web Push）实现应用级认证。</li>
+</ul>
+<hr>
+<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">  participant User as 用户浏览器</span><br><span class="line">  participant SW as Service Worker</span><br><span class="line">  participant PushSrv as 浏览器厂商推送服务(FCM等)</span><br><span class="line">  participant Server as 应用服务端</span><br><span class="line"></span><br><span class="line">  User-&gt;&gt;Server: 注册并获取 VAPID 公钥</span><br><span class="line">  User-&gt;&gt;SW: 注册 Service Worker</span><br><span class="line">  User-&gt;&gt;PushSrv: 订阅推送 (PushSubscription)</span><br><span class="line">  User-&gt;&gt;Server: 上报订阅信息 (endpoint+keys)</span><br><span class="line"></span><br><span class="line">  Server-&gt;&gt;PushSrv: 使用 VAPID 私钥加密并发送消息</span><br><span class="line">  PushSrv-&gt;&gt;SW: 转发推送</span><br><span class="line">  SW-&gt;&gt;User: Notification API 展示通知</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="核心实现步骤"><a href="#核心实现步骤" class="headerlink" title="核心实现步骤"></a>核心实现步骤</h1><h2 id="1-生成-VAPID-密钥对"><a href="#1-生成-VAPID-密钥对" class="headerlink" title="1. 生成 VAPID 密钥对"></a>1. 生成 VAPID 密钥对</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx web-push generate-vapid-keys</span><br></pre></td></tr></table></figure>
+
+<p>会得到 <strong>公钥 &#x2F; 私钥</strong>，公钥发给前端，私钥保存在服务端。</p>
+<hr>
+<h2 id="2-前端注册-Service-Worker"><a href="#2-前端注册-Service-Worker" class="headerlink" title="2. 前端注册 Service Worker"></a>2. 前端注册 Service Worker</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> reg = <span class="keyword">await</span> navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&quot;/sw.js&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 申请通知权限</span></span><br><span class="line"><span class="keyword">const</span> permission = <span class="keyword">await</span> <span class="title class_">Notification</span>.<span class="title function_">requestPermission</span>();</span><br><span class="line"><span class="keyword">if</span> (permission === <span class="string">&quot;granted&quot;</span>) &#123;</span><br><span class="line">  <span class="comment">// 订阅推送</span></span><br><span class="line">  <span class="keyword">const</span> sub = <span class="keyword">await</span> reg.<span class="property">pushManager</span>.<span class="title function_">subscribe</span>(&#123;</span><br><span class="line">    <span class="attr">userVisibleOnly</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">applicationServerKey</span>: <span class="string">&quot;&lt;VAPID_PUBLIC_KEY_BASE64URL&gt;&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 上报给服务端保存</span></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&quot;/push/subscribe&quot;</span>, &#123; <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>, <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(sub) &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-Service-Worker-处理推送"><a href="#3-Service-Worker-处理推送" class="headerlink" title="3. Service Worker 处理推送"></a>3. Service Worker 处理推送</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sw.js</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&quot;push&quot;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> data = event.<span class="property">data</span>?.<span class="title function_">json</span>() ?? &#123;&#125;;</span><br><span class="line">  event.<span class="title function_">waitUntil</span>(</span><br><span class="line">    self.<span class="property">registration</span>.<span class="title function_">showNotification</span>(data.<span class="property">title</span> || <span class="string">&quot;通知&quot;</span>, &#123;</span><br><span class="line">      <span class="attr">body</span>: data.<span class="property">body</span>,</span><br><span class="line">      <span class="attr">icon</span>: <span class="string">&quot;/icon.png&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-服务端发送推送"><a href="#4-服务端发送推送" class="headerlink" title="4. 服务端发送推送"></a>4. 服务端发送推送</h2><p>以 Node.js 为例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> webpush <span class="keyword">from</span> <span class="string">&quot;web-push&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置 VAPID</span></span><br><span class="line">webpush.<span class="title function_">setVapidDetails</span>(</span><br><span class="line">  <span class="string">&quot;mailto:admin@example.com&quot;</span>,</span><br><span class="line">  process.<span class="property">env</span>.<span class="property">VAPID_PUBLIC</span>,</span><br><span class="line">  process.<span class="property">env</span>.<span class="property">VAPID_PRIVATE</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// subs 存储用户的 PushSubscription</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">sendPush</span>(<span class="params">sub, payload</span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> webpush.<span class="title function_">sendNotification</span>(sub, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(payload));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h1><ul>
+<li><strong>消息提醒</strong>：聊天应用收到新消息。</li>
+<li><strong>电商营销</strong>：用户未登录页面也能收到促销信息。</li>
+<li><strong>系统告警</strong>：后台监控推送紧急故障。</li>
+<li><strong>PWA（渐进式 Web 应用）</strong>：接近原生 App 的体验。</li>
+</ul>
+<hr>
+<h1 id="优缺点对比"><a href="#优缺点对比" class="headerlink" title="优缺点对比"></a>优缺点对比</h1><p>✅ 优点：</p>
+<ul>
+<li>浏览器级支持，后台可达。</li>
+<li>无需页面常驻，适合通知类消息。</li>
+<li>跨浏览器标准（W3C Push API）。</li>
+</ul>
+<p>⚠️ 缺点：</p>
+<ul>
+<li>依赖用户同意，存在拒绝率。</li>
+<li>Safari 支持有限制（macOS 较晚才全面支持）。</li>
+<li>消息大小有限制（通常 4KB）。</li>
+<li>不适合大流量&#x2F;高频推送（需 WebSocket&#x2F;SSE）。</li>
+</ul>
+<hr>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p><strong>Web Push</strong> &#x3D; <strong>Service Worker + Push API + Notification API</strong><br>适合“提醒&#x2F;通知”类场景，不适合实时高频通信。生产实践里常和 <strong>WebSocket&#x2F;SSE</strong> 组合：</p>
+<ul>
+<li><strong>WebSocket</strong>：前台实时互动。</li>
+<li><strong>Web Push</strong>：后台&#x2F;离线通知兜底。</li>
+</ul>
+<hr>
+<p>要不要我帮你写一个 <strong>完整的最小 Web Push DEMO 项目（前端+后端）</strong>，可以直接跑通并测试浏览器推送？</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/Web-Push-%E6%8E%A8%E9%80%81%E7%AE%80%E4%BB%8B/" data-id="cmf9wf5u90008pf4z3e0677jd" data-title="Web Push 推送简介" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-web应用开发-前端-Web-应用如何做到实时消息通知" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/blog/2025/09/05/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-%E5%89%8D%E7%AB%AF-Web-%E5%BA%94%E7%94%A8%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E5%AE%9E%E6%97%B6%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/" class="article-date">
@@ -220,7 +548,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://herongdev.github.io/blog/2025/09/05/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-%E5%89%8D%E7%AB%AF-Web-%E5%BA%94%E7%94%A8%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E5%AE%9E%E6%97%B6%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/" data-id="cmf9bg0k7000nnv4zcmogele4" data-title="web应用开发/前端/Web 应用如何做到实时消息通知" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-%E5%89%8D%E7%AB%AF-Web-%E5%BA%94%E7%94%A8%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E5%AE%9E%E6%97%B6%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/" data-id="cmf9wf5uj000opf4z8gi3268m" data-title="web应用开发/前端/Web 应用如何做到实时消息通知" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -331,7 +659,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://herongdev.github.io/blog/2025/09/05/requirement-realization-1/" data-id="cmf9bg0k5000gnv4z8fkzfe1y" data-title="已登录用户的“绑定通行密钥”最佳实践：把唯一标识安全传给后端（含前后端完整实现）" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/requirement-realization-1/" data-id="cmf9wf5ug000gpf4z88d0fgy3" data-title="已登录用户的“绑定通行密钥”最佳实践：把唯一标识安全传给后端（含前后端完整实现）" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -462,7 +790,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://herongdev.github.io/blog/2025/09/05/requirement-realization/" data-id="cmf9bg0k6000jnv4zcgtuavrq" data-title="Web 端一键通行密钥：点击按钮后“先登录，失败再注册”的完整实现" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/requirement-realization/" data-id="cmf9wf5ui000kpf4zamw68tpm" data-title="Web 端一键通行密钥：点击按钮后“先登录，失败再注册”的完整实现" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -530,7 +858,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://herongdev.github.io/blog/2025/09/05/requirement-realization-2/" data-id="cmf9bg0k5000hnv4z648q98vn" data-title="在你现有 uvue 登录页集成“一键通行密钥登录”（含回退注册），完整代码可直接替换" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/requirement-realization-2/" data-id="cmf9wf5uh000ipf4z3end7c6a" data-title="在你现有 uvue 登录页集成“一键通行密钥登录”（含回退注册），完整代码可直接替换" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -627,7 +955,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://herongdev.github.io/blog/2025/09/04/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/passkeys-%E9%80%9A%E8%A1%8C%E5%AF%86%E9%92%A5-%E7%99%BB%E5%BD%95-%E6%B3%A8%E5%86%8C%E4%B8%80%E4%BD%93%E5%8C%96%E6%96%B9%E6%A1%88/" data-id="cmf9bg0kt0036nv4za0k03lvb" data-title="passkeys 通行密钥 登录+注册一体化方案" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://herongdev.github.io/blog/2025/09/04/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/passkeys-%E9%80%9A%E8%A1%8C%E5%AF%86%E9%92%A5-%E7%99%BB%E5%BD%95-%E6%B3%A8%E5%86%8C%E4%B8%80%E4%BD%93%E5%8C%96%E6%96%B9%E6%A1%88/" data-id="cmf9wf5ur001epf4zfjl299jj" data-title="passkeys 通行密钥 登录+注册一体化方案" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -750,7 +1078,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://herongdev.github.io/blog/2025/09/04/%E4%BD%BF%E7%94%A8-hexo-%E5%9C%A8-github-%E9%83%A8%E7%BD%B2%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" data-id="cmf9bg0kb000wnv4zer56eyf2" data-title="使用 hexo 在 github 部署个人博客" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://herongdev.github.io/blog/2025/09/04/%E4%BD%BF%E7%94%A8-hexo-%E5%9C%A8-github-%E9%83%A8%E7%BD%B2%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" data-id="cmf9wf5um000xpf4z0fvg33w2" data-title="使用 hexo 在 github 部署个人博客" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -764,166 +1092,11 @@
 
 
   
-    <article id="post-hexo博客分类分目录组织" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/blog/2025/09/04/hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E7%B1%BB%E5%88%86%E7%9B%AE%E5%BD%95%E7%BB%84%E7%BB%87/" class="article-date">
-  <time class="dt-published" datetime="2025-09-04T00:00:00.000Z" itemprop="datePublished">2025-09-04</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/blog/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">web应用开发</a>►<a class="article-category-link" href="/blog/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/">前端</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/blog/2025/09/04/hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E7%B1%BB%E5%88%86%E7%9B%AE%E5%BD%95%E7%BB%84%E7%BB%87/">Hexo 千篇文章的“分目录存储 + 目录树导航”实战（含 URL、分类、脚手架）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>目标：当文章<strong>成千上万</strong>时，既能在磁盘上<strong>分目录管理</strong>，又能在站点里以**目录树（分类层级）**浏览，并让 <strong>URL 跟随分类层级</strong>，同时保持 GitHub Project Pages 的子路径（<code>/blog/</code>）不乱。</p>
-</blockquote>
-<h2 id="1-屏跑通"><a href="#1-屏跑通" class="headerlink" title="1 屏跑通"></a>1 屏跑通</h2><ol>
-<li><strong>物理分目录</strong>：<code>source/_posts/</code> 下建多级子目录；<code>hexo new post 路径/标题</code> 可直接写入对应子目录。</li>
-<li><strong>URL 跟随分类层级</strong>：把 <code>permalink</code> 改成 <code>:categories/:title/</code>，并在每篇文章的 front-matter 写层级 <code>categories: [父, 子]</code>。</li>
-<li><strong>目录树页面</strong>：确认有 <code>source/categories/index.md</code>（<code>type: categories</code>），NexT 会按层级展示。</li>
-<li><strong>脚手架（scaffolds）</strong>：为高频目录建模板，一键新建时自动带好层级分类。</li>
-<li><strong>GitHub Pages 子路径</strong>：你是项目页 → 继续保持 <code>url: https://&lt;你&gt;.github.io/&lt;仓库名&gt;</code> 与 <code>root: /&lt;仓库名&gt;/</code>。</li>
-</ol>
-<hr>
-<h2 id="一、物理分目录（递归扫描，直接可用）"><a href="#一、物理分目录（递归扫描，直接可用）" class="headerlink" title="一、物理分目录（递归扫描，直接可用）"></a>一、物理分目录（递归扫描，直接可用）</h2><p>Hexo 会<strong>递归</strong>读取 <code>source/_posts/</code> 的子目录，所以可以放心分层管理。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 _posts 下建立层级目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="built_in">source</span>/_posts/GIS/GeoServer</span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="built_in">source</span>/_posts/前端/NextJS</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建文章时直接带路径（两种都行）</span></span><br><span class="line">hexo new post GIS/GeoServer/切片入门</span><br><span class="line">hexo new <span class="string">&quot;GIS/GeoServer/缓存与预热&quot;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复杂：建议开启“同名资源文件夹”，让每篇文章的图片等资产跟随文章文件夹</span></span><br><span class="line"><span class="comment"># _config.yml（站点根配置）只需改这一行</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>开启后，<code>hexo new post GIS/GeoServer/切片入门</code> 会生成<br><code>source/_posts/GIS/GeoServer/切片入门.md</code> 与 <code>source/_posts/GIS/GeoServer/切片入门/</code>（放图）。</p>
-</blockquote>
-<h2 id="二、URL-页面跟“分类层级”走（而不是物理目录名）"><a href="#二、URL-页面跟“分类层级”走（而不是物理目录名）" class="headerlink" title="二、URL &amp; 页面跟“分类层级”走（而不是物理目录名）"></a>二、URL &amp; 页面跟“分类层级”走（而不是物理目录名）</h2><p><strong>关键点</strong>：页面导航与 URL 建议依赖 <strong>front-matter 的 categories</strong>，而不是物理目录。<br>这样<strong>更可控</strong>（物理目录可随时重构、不影响 URL）。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复杂：让文章链接包含“分类层级”</span></span><br><span class="line"><span class="comment"># _config.yml（站点根配置）</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:categories/:title/</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>你在 GitHub Project Pages（项目页），<strong>继续保持子路径</strong>（别动就对了）：</p>
-</blockquote>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复杂：站点部署在 /blog/ 子路径下</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://herongxhr-netizen.github.io/blog</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/blog/</span></span><br></pre></td></tr></table></figure>
-
-<p>在每篇文章顶部写<strong>层级分类</strong>（数组顺序即层级）：</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 切片入门</span><br><span class="line">date: 2025-09-04</span><br><span class="line"><span class="section"># 复杂：层级分类会生成 /GIS/GeoServer/ 的目录层级与 URL</span></span><br><span class="line">categories: [GIS, GeoServer]</span><br><span class="line">tags: [GeoServer, 切片, 缓存]</span><br><span class="line"><span class="section"># （可选）若想自定义更友好的英文链接</span></span><br><span class="line"><span class="section"># slug: geoserver-tiling-intro</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-<h2 id="三、目录树页面与导航菜单"><a href="#三、目录树页面与导航菜单" class="headerlink" title="三、目录树页面与导航菜单"></a>三、目录树页面与导航菜单</h2><p>确认你已有分类页与标签页（否则先创建）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
-
-<p>编辑索引页 front-matter（<strong>只需这几行</strong>）：</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 分类</span><br><span class="line"><span class="section">type: categories</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 标签</span><br><span class="line"><span class="section">type: tags</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
-
-<p>在 NexT 主题菜单里露出入口（<code>themes/next/_config.yml</code>）：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复杂：在菜单里显示分类/标签</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="四、批量高效新建：自定义脚手架（scaffolds）"><a href="#四、批量高效新建：自定义脚手架（scaffolds）" class="headerlink" title="四、批量高效新建：自定义脚手架（scaffolds）"></a>四、批量高效新建：自定义脚手架（scaffolds）</h2><p>为高频目录做脚手架，自动带上层级分类与常用字段。</p>
-<p><strong>示例 1：GIS 系列脚手架</strong><br>创建 <code>scaffolds/gis.md</code>：</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: &#123; &#123; title &#125; &#125;</span><br><span class="line">date: &#123; &#123; date &#125; &#125;</span><br><span class="line"><span class="section"># 复杂：预置层级分类，后续文章自动套用</span></span><br><span class="line">categories: [GIS, GeoServer]</span><br><span class="line"><span class="section">tags:</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
-
-<p>使用（指定脚手架名）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复杂：--s 指定使用自定义脚手架 &quot;gis&quot;</span></span><br><span class="line">hexo new --s gis <span class="string">&quot;瓦片缓存策略&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2：NextJS 系列脚手架</strong><br><code>scaffolds/nextjs.md</code>：</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: &#123; &#123; title &#125; &#125;</span><br><span class="line">date: &#123; &#123; date &#125; &#125;</span><br><span class="line">categories: [前端, NextJS]</span><br><span class="line"><span class="section">tags:</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
-
-<p>使用：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new --s nextjs <span class="string">&quot;App Router 与 RBAC&quot;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>贴士（可选）：在 <code>package.json</code> 里加脚本别名，敲更短：</p>
-</blockquote>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;new:gis&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hexo new --s gis&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;new:next&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hexo new --s nextjs&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>使用：<code>npm run new:gis &quot;OpenLayers 点聚合最佳实践&quot;</code></p>
-<hr>
-<h2 id="五、目录结构示例（仅供参考）"><a href="#五、目录结构示例（仅供参考）" class="headerlink" title="五、目录结构示例（仅供参考）"></a>五、目录结构示例（仅供参考）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">source/_posts/</span><br><span class="line">├─ GIS/</span><br><span class="line">│  └─ GeoServer/</span><br><span class="line">│     ├─ 切片入门.md</span><br><span class="line">│     ├─ 切片入门/         # 文章同名资源文件夹（图片等）</span><br><span class="line">│     └─ 缓存与预热.md</span><br><span class="line">└─ 前端/</span><br><span class="line">   └─ NextJS/</span><br><span class="line">      └─ App Router 与 RBAC.md</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>注意</strong>：物理目录<strong>不会</strong>自动变成 URL；URL 由 <code>permalink</code> + 文章的 <code>categories</code> 决定。</p>
-</blockquote>
-<hr>
-<h2 id="六、搜索与站点生成（与你现有配置兼容）"><a href="#六、搜索与站点生成（与你现有配置兼容）" class="headerlink" title="六、搜索与站点生成（与你现有配置兼容）"></a>六、搜索与站点生成（与你现有配置兼容）</h2><p>你已使用 <code>hexo-generator-searchdb</code>（本地搜索），与分目录&#x2F;层级分类<strong>无冲突</strong>，无需额外改动。<br>每次发文后按旧流程即可：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br><span class="line"><span class="comment"># 自动部署（GitHub Actions）仍是：git add . &amp;&amp; git commit &amp;&amp; git push</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="七、常见坑位（快速定位）"><a href="#七、常见坑位（快速定位）" class="headerlink" title="七、常见坑位（快速定位）"></a>七、常见坑位（快速定位）</h2><ul>
-<li><p><strong>页面 404 &#x2F; 样式丢失</strong>：<code>_config.yml</code> 的 <code>url/root</code> 未按<strong>项目页子路径</strong>设置（应为 <code>/blog/</code>）。</p>
-</li>
-<li><p><strong>URL 没有层级</strong>：缺少 <code>permalink: :categories/:title/</code> 或文章没写 <code>categories: [父, 子]</code>。</p>
-</li>
-<li><p><strong>分类页不展示树</strong>：<code>source/categories/index.md</code> 的 <code>type</code> 不是 <code>categories</code>；或主题菜单未加入口。</p>
-</li>
-<li><p><strong>物理目录改变但 URL 想保持不变</strong>：别动 front-matter 的 <code>categories</code>，URL 就不会变。</p>
-</li>
-<li><p><strong>想迁移到“用户页”（根路径）</strong>：把仓库改名为 <code>&lt;用户名&gt;.github.io</code>，并把</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复杂：用户页改为根路径部署</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://&lt;用户名&gt;.github.io</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br></pre></td></tr></table></figure>
-
-<p>重新部署即可。</p>
-</li>
-</ul>
-<hr>
-<h2 id="复盘清单（照这个一项项核对）"><a href="#复盘清单（照这个一项项核对）" class="headerlink" title="复盘清单（照这个一项项核对）"></a>复盘清单（照这个一项项核对）</h2><ul>
-<li><p><input disabled="" type="checkbox"> 
-<code>_config.yml</code> 已设置</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">:categories/:title/</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://herongxhr-netizen.github.io/blog</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/blog/</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-文章 front-matter 用层级分类（<code>[父, 子]</code>）。</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-有 <code>source/categories/index.md</code> 与 <code>type: categories</code>。</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-NexT 菜单里有 <code>/categories/</code> 与 <code>/tags/</code>。</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-脚手架按需要创建（<code>scaffolds/*.md</code>），新建时用 <code>hexo new --s &lt;脚手架&gt; &quot;标题&quot;</code>。</p>
-</li>
-</ul>
-<hr>
-<h3 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h3><p><strong>Q：必须物理分目录吗？</strong><br>A：不是必须，但<strong>强烈建议</strong>。这样 Git 与编辑器里都更可管理；而 URL&#x2F;导航交给分类层级来控制，二者解耦。</p>
-<p><strong>Q：以后想批量重构目录怎么办？</strong><br>A：直接移动文件夹即可；只要 front-matter 的 <code>categories</code> 不改，URL 不会变（避免 SEO 损失）。</p>
-<p><strong>Q：图片怎么引用？</strong><br>A：启用 <code>post_asset_folder: true</code> 后，文章内用相对路径（如 <code>![](切片入门/示意图.png)</code>）即可。</p>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://herongdev.github.io/blog/2025/09/04/hexo%E5%8D%9A%E5%AE%A2%E5%88%86%E7%B1%BB%E5%88%86%E7%9B%AE%E5%BD%95%E7%BB%84%E7%BB%87/" data-id="cmf9bg0k1000anv4zewl06uib" data-title="Hexo 千篇文章的“分目录存储 + 目录树导航”实战（含 URL、分类、脚手架）" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/GitHub-Pages/" rel="tag">GitHub Pages</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Hexo/" rel="tag">Hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/NexT/" rel="tag">NexT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/%E7%9B%AE%E5%BD%95/" rel="tag">目录</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/blog/page/2/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/blog/page/2/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/blog/page/4/">4</a><a class="extend next" rel="next" href="/blog/page/4/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -976,11 +1149,15 @@ NexT 菜单里有 <code>/categories/</code> 与 <code>/tags/</code>。</p>
       <ul>
         
           <li>
-            <a href="/blog/2025/09/07/id-kit%E5%BC%80%E5%8F%91/">id-kit开发</a>
+            <a href="/blog/2025/09/08/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/test/">test</a>
           </li>
         
           <li>
-            <a href="/blog/2025/09/07/id-kit/">id-kit</a>
+            <a href="/blog/2025/09/08/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/preferred%E6%98%AF%E5%95%A5/">userVerification:</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/07/%E5%9C%A8-NestJS-%E4%B8%AD%E5%BC%95%E5%85%A5-Redis%E2%80%94%E2%80%94%E4%BB%8E-0-%E5%88%B0%E5%8F%AF%E7%94%A8%EF%BC%88ioredis-%E7%89%88%EF%BC%89/">在 NestJS 中引入 Redis——从 0 到可用（ioredis 版）</a>
           </li>
         
           <li>
@@ -988,11 +1165,7 @@ NexT 菜单里有 <code>/categories/</code> 与 <code>/tags/</code>。</p>
           </li>
         
           <li>
-            <a href="/blog/2025/09/06/%E7%99%BB%E5%BD%95%E5%90%8E%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%8F%8C%E9%98%B6%E6%AE%B5%E5%90%AF%E5%8A%A8%EF%BC%88%E5%A2%9E%E9%87%8F%E4%BF%AE%E6%94%B9%EF%BC%89/">在 composable 里“公共初始化 + 登录后初始化”的双阶段启动（增量修改）</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2025/09/06/%E4%BD%93%E7%A7%AF%E5%88%86%E5%B8%83%E5%88%86%E6%9E%90%E5%9B%BE/">Vite + Vue3 打包后如何查看“体积分布分析图”</a>
+            <a href="/blog/2025/09/07/OAID-%E5%BA%93%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E8%8E%B7%E5%8F%96/">OAID 库的初始化与获取</a>
           </li>
         
       </ul>

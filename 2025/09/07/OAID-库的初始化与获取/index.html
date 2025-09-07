@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>OAID 库的初始化与获取 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、国内主流 OAID 获取的两条路线 MSA 官方 SDK（闭源）   由“移动安全联盟&#x2F;CAICT”提供。接入要放 oaid_sdk_x.x.x.aar（或早期 miit_mdid_x.x.x.aar）、supplierconfig.json、证书（xxx.cert.pem），并先加载安全库再 MdidSdkHelper.InitSdk(...) 获取 OAID。常见混淆与加载问题官">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OAID 库的初始化与获取">
+<meta property="og:url" content="https://herongdev.github.io/blog/2025/09/07/OAID-%E5%BA%93%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E8%8E%B7%E5%8F%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、国内主流 OAID 获取的两条路线 MSA 官方 SDK（闭源）   由“移动安全联盟&#x2F;CAICT”提供。接入要放 oaid_sdk_x.x.x.aar（或早期 miit_mdid_x.x.x.aar）、supplierconfig.json、证书（xxx.cert.pem），并先加载安全库再 MdidSdkHelper.InitSdk(...) 获取 OAID。常见混淆与加载问题官">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-09-07T15:44:21.000Z">
+<meta property="article:modified_time" content="2025-09-07T16:19:42.418Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/blog/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/blog/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://herongdev.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-OAID-库的初始化与获取" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/blog/2025/09/07/OAID-%E5%BA%93%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E8%8E%B7%E5%8F%96/" class="article-date">
+  <time class="dt-published" datetime="2025-09-07T15:44:21.000Z" itemprop="datePublished">2025-09-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      OAID 库的初始化与获取
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="一、国内主流-OAID-获取的两条路线"><a href="#一、国内主流-OAID-获取的两条路线" class="headerlink" title="一、国内主流 OAID 获取的两条路线"></a>一、国内主流 OAID 获取的两条路线</h1><ol>
+<li><strong>MSA 官方 SDK（闭源）</strong></li>
+</ol>
+<ul>
+<li>由“移动安全联盟&#x2F;CAICT”提供。接入要放 <code>oaid_sdk_x.x.x.aar</code>（或早期 <code>miit_mdid_x.x.x.aar</code>）、<code>supplierconfig.json</code>、证书（<code>xxx.cert.pem</code>），并<strong>先加载安全库</strong>再 <code>MdidSdkHelper.InitSdk(...)</code> 获取 OAID。常见混淆与加载问题官方 FAQ 也有说明。(<a target="_blank" rel="noopener" href="https://mtj.baidu.com/static/userguide/book/android/oaid.html?utm_source=chatgpt.com" title="Android OAID 接入">百度移动统计</a>, <a target="_blank" rel="noopener" href="https://16054554.s21i.faiusr.com/61/ABUIABA9GAAgx5iGjgYo2_j-1AE.pdf?utm_source=chatgpt.com" title="常见问题问答F&amp;Q - 信息资源系统">网站名称</a>)</li>
+</ul>
+<ol start="2">
+<li><strong>开源聚合库（Android_CN_OAID）</strong></li>
+</ol>
+<ul>
+<li>由 gzu-liyujiang 提供，统一封装<strong>各厂商 OAID + 海外 AAID + 多种替代 ID</strong>（AndroidID&#x2F;WidevineID&#x2F;GUID 等），API 友好。常用入口：<code>DeviceIdentifier.register(app)</code> 预取，或者 <code>DeviceID.getOAID(context, IGetter)</code> 异步获取。(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/?utm_source=chatgpt.com" title=":library">李宇江的个人网站</a>)</li>
+</ul>
+<blockquote>
+<p>额外：<strong>华为设备</strong>可直接通过 <strong>HMS Ads Identifier</strong> 获取 OAID（<code>AdvertisingIdClient.getAdvertisingIdInfo(context).getId()</code>），不依赖 MSA（很多三方 SDK 文档也这样说明）。(<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/en/doc/hmscore-references/overview-0000001050066887?utm_source=chatgpt.com" title="Overview-com.huawei.hms.ads.identifier-Android-Java- ...">华为开发者</a>, <a target="_blank" rel="noopener" href="https://dev.adjust.com/zh/sdk/android/plugins/oaid-plugin/?utm_source=chatgpt.com" title="OAID">Adjust</a>)</p>
+</blockquote>
+<hr>
+<h1 id="二、你的两个-UTS-插件实际做法（我已解包查看）"><a href="#二、你的两个-UTS-插件实际做法（我已解包查看）" class="headerlink" title="二、你的两个 UTS 插件实际做法（我已解包查看）"></a>二、你的两个 UTS 插件实际做法（我已解包查看）</h1><ul>
+<li><p><strong><code>android-deviceid</code></strong>（UTS for Android）</p>
+<ul>
+<li>直接 <code>import com.github.gzuliyujiang.oaid.*</code>，调用 <code>DeviceIdentifier.register(UTSAndroid.getUniActivity()!!.getApplication()!!)</code> 进行预取；随后通过接口把结果回调出去。</li>
+<li>插件内还自带 <strong>华为 HMS ads-identifier AAR</strong>（<code>ads-identifier-*.aar</code>），作为获取 OAID 的华为路径支撑。</li>
+<li>这是一个**标准的“开源聚合库 + （可选）HMS”**实现范式。</li>
+</ul>
+<p>片段（来自 <code>utssdk/app-android/index.uts</code>）：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">DeviceIdentifier</span> <span class="keyword">from</span> <span class="string">&quot;com.github.gzuliyujiang.oaid.DeviceIdentifier&quot;</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> register = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title class_">DeviceIdentifier</span>.<span class="title function_">register</span>(<span class="title class_">UTSAndroid</span>.<span class="title function_">getUniActivity</span>()!!.<span class="title function_">getApplication</span>()!!);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>（随后通过自定义 <code>MyListener implements IDManger.OnIOAIDListener</code> 回传 JSON 结果）</p>
+</li>
+<li><p><strong><code>zws-uniqueid</code></strong></p>
+<ul>
+<li>不取 OAID，仅根据 <code>android.os.Build</code> 若干字段计算 <code>MD5</code> 作为<strong>伪标识</strong>（PseudoID），没有广告&#x2F;合规可重置特性，仅能用于弱追踪&#x2F;灰度分配等<strong>非广告</strong>用途。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="三、初始化-获取：可直接抄的代码片段库"><a href="#三、初始化-获取：可直接抄的代码片段库" class="headerlink" title="三、初始化 &amp; 获取：可直接抄的代码片段库"></a>三、初始化 &amp; 获取：可直接抄的代码片段库</h1><h2 id="方案-A：开源-Android-CN-OAID（推荐起步用）"><a href="#方案-A：开源-Android-CN-OAID（推荐起步用）" class="headerlink" title="方案 A：开源 Android_CN_OAID（推荐起步用）"></a>方案 A：开源 Android_CN_OAID（推荐起步用）</h2><p><strong>初始化（建议在用户同意隐私后再调用）</strong></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Application.onCreate 或隐私同意后</span></span><br><span class="line">DeviceIdentifier.register(application)  <span class="comment">// 预取 clientId/OAID</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>获取 OAID（两种）</strong></p>
+<ul>
+<li><p>同步拿预取结果（需先 register）：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> oaid = DeviceID.getOAID()  <span class="comment">// 若未预取会为空</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>异步获取（不需要 register）：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DeviceID.getOAID(context, <span class="keyword">object</span> : IGetter &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onOAIDGetComplete</span><span class="params">(result: <span class="type">String</span>)</span></span> &#123; <span class="comment">/* result 即 OAID */</span> &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onOAIDGetError</span><span class="params">(error: <span class="type">Exception</span>)</span></span> &#123; <span class="comment">/* 失败或不支持 */</span> &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>这些方法签名、时机说明都在官方 javadoc 文档中有清晰描述：<code>register(...)</code> 预取、<code>getOAID(...)</code> 异步、<code>supportedOAID(context)</code> 判断支持性、以及 <code>getGUID</code>、<code>getAndroidID</code> 等替代项。(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/com/github/gzuliyujiang/oaid/DeviceID.html" title="DeviceID ">李宇江的个人网站</a>)</p>
+<blockquote>
+<p><strong>优点</strong>：开源、快速落地；<strong>缺点</strong>：在个别厂商&#x2F;系统组合上获取率可能不如官方 MSA；不过开源库会优先尝试 HMS、厂商通道，整体覆盖度已较好。(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/?utm_source=chatgpt.com" title=":library">李宇江的个人网站</a>)</p>
+</blockquote>
+<h2 id="方案-B：MSA-官方-SDK（企业-上量后建议切换或并行）"><a href="#方案-B：MSA-官方-SDK（企业-上量后建议切换或并行）" class="headerlink" title="方案 B：MSA 官方 SDK（企业&#x2F;上量后建议切换或并行）"></a>方案 B：MSA 官方 SDK（企业&#x2F;上量后建议切换或并行）</h2><p><strong>准备</strong></p>
+<ul>
+<li><code>oaid_sdk_x.x.x.aar</code> 放 <code>libs/</code></li>
+<li><code>supplierconfig.json</code>、<code>&lt;package&gt;.cert.pem</code> 放 <code>assets/</code></li>
+<li>Proguard：<code>-keep class com.bun.miitmdid.core.** &#123; *; &#125;</code></li>
+<li><strong>在 Init 前加载安全库</strong>（不同版本库名可能不同，如 <code>msaoaidsec</code> 或文档示例里的 nllvm 加固库名），否则会出现 <code>No implementation found for ... InitCert</code> 之类错误。(<a target="_blank" rel="noopener" href="https://mtj.baidu.com/static/userguide/book/android/oaid.html?utm_source=chatgpt.com" title="Android OAID 接入">百度移动统计</a>, <a target="_blank" rel="noopener" href="https://16054554.s21i.faiusr.com/61/ABUIABA9GAAgx5iGjgYo2_j-1AE.pdf?utm_source=chatgpt.com" title="常见问题问答F&amp;Q - 信息资源系统">网站名称</a>)</li>
+</ul>
+<p><strong>初始化 &amp; 获取</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1) （可选但推荐）在 Application.onCreate 尝试加载安全库</span></span><br><span class="line"><span class="keyword">try</span> &#123; System.loadLibrary(<span class="string">&quot;msaoaidsec&quot;</span>); &#125; <span class="keyword">catch</span>(Throwable ignore) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2) 在合适时机发起初始化与获取（不要在主线程里做耗时 I/O）</span></span><br><span class="line">MdidSdkHelper.InitSdk(</span><br><span class="line">  context.getApplicationContext(),</span><br><span class="line">  <span class="comment">/* isCert = */</span> <span class="literal">true</span>,</span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">IIdentifierListener</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSupport</span><span class="params">(IdSupplier supplier)</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (supplier != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">oaid</span> <span class="operator">=</span> supplier.getOAID();</span><br><span class="line">        <span class="comment">// supplier.isSupported() / isLimited() 等也可读</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>上面这段 init 与回调写法，在各家第三方接入文档里都是类似范式（百度统计、Adjust、AppsFlyer 等均说明“MSA 或 HMS”两路径），并给出了混淆、AAR、<code>supplierconfig.json</code> 的标准放置方法。(<a target="_blank" rel="noopener" href="https://mtj.baidu.com/static/userguide/book/android/oaid.html?utm_source=chatgpt.com" title="Android OAID 接入">百度移动统计</a>, <a target="_blank" rel="noopener" href="https://dev.adjust.com/zh/sdk/android/plugins/oaid-plugin/?utm_source=chatgpt.com" title="OAID">Adjust</a>, <a target="_blank" rel="noopener" href="https://support.appsflyer.com/hc/en-us/articles/360006278797-Android-OAID-implementation-in-the-SDK?utm_source=chatgpt.com" title="Android OAID implementation in the SDK">AppsFlyer 支持中心</a>)</p>
+<h2 id="方案-C：华为设备走-HMS（若接入了-HMS-Core）"><a href="#方案-C：华为设备走-HMS（若接入了-HMS-Core）" class="headerlink" title="方案 C：华为设备走 HMS（若接入了 HMS Core）"></a>方案 C：华为设备走 HMS（若接入了 HMS Core）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不依赖 MSA，在华为设备上直接拿 OAID</span></span><br><span class="line">AdvertisingIdClient.<span class="type">Info</span> <span class="variable">info</span> <span class="operator">=</span></span><br><span class="line">    com.huawei.hms.ads.identifier.AdvertisingIdClient.getAdvertisingIdInfo(context);</span><br><span class="line"><span class="type">String</span> <span class="variable">oaid</span> <span class="operator">=</span> info.getId();</span><br><span class="line"><span class="comment">// info.isLimitAdTrackingEnabled() 可读 “限制个性化广告” 状态</span></span><br></pre></td></tr></table></figure>
+
+<p>HMS 文档对 OAID &#x2F; Identifier Service 的 API 有明确说明。(<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/en/doc/hmscore-references/overview-0000001050066887?utm_source=chatgpt.com" title="Overview-com.huawei.hms.ads.identifier-Android-Java- ...">华为开发者</a>)</p>
+<hr>
+<h1 id="四、UTS（uni-app-x）里的最佳实践总方案"><a href="#四、UTS（uni-app-x）里的最佳实践总方案" class="headerlink" title="四、UTS（uni-app x）里的最佳实践总方案"></a>四、UTS（uni-app x）里的<strong>最佳实践</strong>总方案</h1><blockquote>
+<p>目标：<strong>一个 API 跨 H5 &#x2F; Android</strong>，Android 侧<strong>优先 MSA&#x2F;HMS</strong>，没有则回退到 <strong>Android_CN_OAID</strong>，最后再降级 <strong>AndroidID &#x2F; GUID</strong>；且<strong>必须在取得隐私同意后</strong>再初始化与获取。</p>
+</blockquote>
+<h3 id="1-API-设计（简洁且可扩展）"><a href="#1-API-设计（简洁且可扩展）" class="headerlink" title="1) API 设计（简洁且可扩展）"></a>1) API 设计（简洁且可扩展）</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /uni_modules/uaid-kit/utssdk/index.uts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">UaidInfo</span> = &#123;</span><br><span class="line">  <span class="attr">oaid</span>: <span class="built_in">string</span> | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">source</span>: <span class="string">&quot;MSA&quot;</span> | <span class="string">&quot;HMS&quot;</span> | <span class="string">&quot;GZU&quot;</span> | <span class="string">&quot;NONE&quot;</span>;</span><br><span class="line">  <span class="attr">limitAdTracking</span>?: <span class="built_in">boolean</span> | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">aaid</span>?: <span class="built_in">string</span> | <span class="literal">null</span>; <span class="comment">// 海外广告标识，未来可补</span></span><br><span class="line">  <span class="attr">androidId</span>?: <span class="built_in">string</span> | <span class="literal">null</span>; <span class="comment">// 回退项</span></span><br><span class="line">  <span class="attr">guid</span>?: <span class="built_in">string</span> | <span class="literal">null</span>; <span class="comment">// 本地持久 GUID（Web/低版本回退）</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">initAfterConsent</span>(<span class="params"></span>): <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">getUaid</span>(<span class="params"><span class="attr">callback</span>: (info: UaidInfo) =&gt; <span class="built_in">void</span></span>): <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-UTS-源码（可直接用；Android-Web-双端）"><a href="#2-UTS-源码（可直接用；Android-Web-双端）" class="headerlink" title="2) UTS 源码（可直接用；Android + Web 双端）"></a>2) UTS 源码（<strong>可直接用</strong>；Android + Web 双端）</h3><blockquote>
+<p>说明：</p>
+<ul>
+<li><strong>MSA</strong> 部分需要你把 <code>oaid_sdk_x.x.x.aar</code> 放到 <code>utssdk/app-android/libs/</code>，并在 <code>manifest.json</code> 勾选 UTS 插件；否则请把 <code>// MSA 可选块</code> 注释掉再编译。</li>
+<li><strong>HMS</strong> 部分需要 <code>ads-identifier</code> 依赖；没有就留开源库&#x2F;回退路径。</li>
+<li>Web 端只能<strong>生成&#x2F;持久化 GUID</strong>，OAID 是 Android 概念。</li>
+</ul>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /uni_modules/uaid-kit/utssdk/app-android/index.uts</span></span><br><span class="line"><span class="comment">// #ifdef APP-ANDROID</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Context</span> <span class="keyword">from</span> <span class="string">&quot;android.content.Context&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Application</span> <span class="keyword">from</span> <span class="string">&quot;android.app.Application&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">System</span> <span class="keyword">from</span> <span class="string">&quot;java.lang.System&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 开源库（gzu-liyujiang）</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DeviceIdentifier</span> <span class="keyword">from</span> <span class="string">&quot;com.github.gzuliyujiang.oaid.DeviceIdentifier&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">DeviceID</span> <span class="keyword">from</span> <span class="string">&quot;com.github.gzuliyujiang.oaid.DeviceID&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">IGetter</span> <span class="keyword">from</span> <span class="string">&quot;com.github.gzuliyujiang.oaid.IGetter&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// HMS（若集成）</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">AdvertisingIdClient</span> <span class="keyword">from</span> <span class="string">&quot;com.huawei.hms.ads.identifier.AdvertisingIdClient&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MSA（若集成了 AAR，否则请注释下一行两行以及使用处）</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">MdidSdkHelper</span> <span class="keyword">from</span> <span class="string">&quot;com.bun.miitmdid.core.MdidSdkHelper&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">IIdentifierListener</span> <span class="keyword">from</span> <span class="string">&quot;com.bun.miitmdid.interfaces.IIdentifierListener&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">IdSupplier</span> <span class="keyword">from</span> <span class="string">&quot;com.bun.miitmdid.interfaces.IdSupplier&quot;</span>;</span><br><span class="line"><span class="comment">// #endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// #ifdef H5</span></span><br><span class="line"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="comment">// #endif</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">UaidInfo</span> = &#123;</span><br><span class="line">  <span class="attr">oaid</span>: <span class="built_in">string</span> | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">source</span>: <span class="string">&quot;MSA&quot;</span> | <span class="string">&quot;HMS&quot;</span> | <span class="string">&quot;GZU&quot;</span> | <span class="string">&quot;NONE&quot;</span>;</span><br><span class="line">  <span class="attr">limitAdTracking</span>?: <span class="built_in">boolean</span> | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">aaid</span>?: <span class="built_in">string</span> | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">androidId</span>?: <span class="built_in">string</span> | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">guid</span>?: <span class="built_in">string</span> | <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">initAfterConsent</span>(<span class="params"></span>): <span class="built_in">void</span> &#123;</span><br><span class="line">  <span class="comment">// #ifdef APP-ANDROID</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 优先预取开源库的 clientId/OAID</span></span><br><span class="line">    <span class="title class_">DeviceIdentifier</span>.<span class="title function_">register</span>(</span><br><span class="line">      <span class="title class_">UTSAndroid</span>.<span class="title function_">getUniActivity</span>()!!.<span class="title function_">getApplication</span>()!! <span class="keyword">as</span> <span class="title class_">Application</span></span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// （可选）若你计划走 MSA，尽早加载安全库，避免 InitCert 报错</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="title class_">System</span>.<span class="title function_">loadLibrary</span>(<span class="string">&quot;msaoaidsec&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br><span class="line">  <span class="comment">// #endif</span></span><br><span class="line">  <span class="comment">// #ifdef H5</span></span><br><span class="line">  <span class="comment">// nothing</span></span><br><span class="line">  <span class="comment">// #endif</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">buildGuid</span>(<span class="params"></span>): <span class="built_in">string</span> &#123;</span><br><span class="line">  <span class="comment">// 128bit GUID，H5/Android 均可用，H5 存 localStorage 即可</span></span><br><span class="line">  <span class="keyword">const</span> s = <span class="string">&quot;xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span> s.<span class="title function_">replace</span>(<span class="regexp">/[xy]/g</span>, <span class="function">(<span class="params">c</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> r = (<span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">16</span>) <span class="keyword">as</span> <span class="built_in">number</span>) &amp; <span class="number">0xf</span>;</span><br><span class="line">    <span class="keyword">const</span> v = c === <span class="string">&quot;x&quot;</span> ? r : (r &amp; <span class="number">0x3</span>) | <span class="number">0x8</span>;</span><br><span class="line">    <span class="keyword">return</span> v.<span class="title function_">toString</span>(<span class="number">16</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">getUaid</span>(<span class="params"><span class="attr">cb</span>: (info: UaidInfo) =&gt; <span class="built_in">void</span></span>): <span class="built_in">void</span> &#123;</span><br><span class="line">  <span class="comment">// #ifdef APP-ANDROID</span></span><br><span class="line">  <span class="keyword">const</span> ctx = <span class="title class_">UTSAndroid</span>.<span class="title function_">getUniActivity</span>()!! <span class="keyword">as</span> <span class="title class_">Context</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 1) 尝试 HMS（若集成）</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> info = <span class="title class_">AdvertisingIdClient</span>.<span class="title function_">getAdvertisingIdInfo</span>(ctx);</span><br><span class="line">    <span class="keyword">const</span> id = info.<span class="title function_">getId</span>();</span><br><span class="line">    <span class="keyword">if</span> (id) &#123;</span><br><span class="line">      <span class="title function_">cb</span>(&#123;</span><br><span class="line">        <span class="attr">oaid</span>: id,</span><br><span class="line">        <span class="attr">source</span>: <span class="string">&quot;HMS&quot;</span>,</span><br><span class="line">        <span class="attr">limitAdTracking</span>: info.<span class="title function_">isLimitAdTrackingEnabled</span>(),</span><br><span class="line">      &#125;);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="comment">/* ignore */</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2) 尝试 MSA 官方（若集成了 AAR）</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="title class_">MdidSdkHelper</span>.<span class="title class_">InitSdk</span>(</span><br><span class="line">      ctx,</span><br><span class="line">      <span class="literal">true</span>,</span><br><span class="line">      <span class="title function_">new</span> (<span class="keyword">class</span> <span class="title class_">implements</span> <span class="title class_">IIdentifierListener</span> &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="title function_">onSupport</span>(<span class="params"><span class="attr">supplier</span>: <span class="title class_">IdSupplier</span> | <span class="literal">null</span></span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (supplier != <span class="literal">null</span> &amp;&amp; supplier.<span class="title function_">getOAID</span>() != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="title function_">cb</span>(&#123; <span class="attr">oaid</span>: supplier.<span class="title function_">getOAID</span>(), <span class="attr">source</span>: <span class="string">&quot;MSA&quot;</span> &#125;);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 3) 回退：开源库异步</span></span><br><span class="line">            <span class="title class_">DeviceID</span>.<span class="title function_">getOAID</span>(</span><br><span class="line">              ctx,</span><br><span class="line">              <span class="title function_">new</span> (<span class="keyword">class</span> <span class="title class_">implements</span> <span class="title class_">IGetter</span> &#123;</span><br><span class="line">                <span class="keyword">override</span> <span class="title function_">onOAIDGetComplete</span>(<span class="params"><span class="attr">result</span>: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">                  <span class="title function_">cb</span>(&#123; <span class="attr">oaid</span>: result, <span class="attr">source</span>: <span class="string">&quot;GZU&quot;</span> &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">override</span> <span class="title function_">onOAIDGetError</span>(<span class="params"><span class="attr">err</span>: <span class="built_in">any</span></span>) &#123;</span><br><span class="line">                  <span class="keyword">const</span> androidId = <span class="title class_">DeviceID</span>.<span class="title function_">getAndroidID</span>(ctx);</span><br><span class="line">                  <span class="title function_">cb</span>(&#123; <span class="attr">oaid</span>: <span class="literal">null</span>, <span class="attr">source</span>: <span class="string">&quot;NONE&quot;</span>, androidId &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;)()</span><br><span class="line">            );</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)()</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="comment">// 没集成 MSA 或运行异常，继续走开源库回退</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3) 开源库异步（无预取也能用）</span></span><br><span class="line">  <span class="title class_">DeviceID</span>.<span class="title function_">getOAID</span>(</span><br><span class="line">    ctx,</span><br><span class="line">    <span class="title function_">new</span> (<span class="keyword">class</span> <span class="title class_">implements</span> <span class="title class_">IGetter</span> &#123;</span><br><span class="line">      <span class="keyword">override</span> <span class="title function_">onOAIDGetComplete</span>(<span class="params"><span class="attr">result</span>: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">        <span class="title function_">cb</span>(&#123; <span class="attr">oaid</span>: result, <span class="attr">source</span>: <span class="string">&quot;GZU&quot;</span> &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">override</span> <span class="title function_">onOAIDGetError</span>(<span class="params"><span class="attr">err</span>: <span class="built_in">any</span></span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> androidId = <span class="title class_">DeviceID</span>.<span class="title function_">getAndroidID</span>(ctx);</span><br><span class="line">        <span class="title function_">cb</span>(&#123; <span class="attr">oaid</span>: <span class="literal">null</span>, <span class="attr">source</span>: <span class="string">&quot;NONE&quot;</span>, androidId &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)()</span><br><span class="line">  );</span><br><span class="line">  <span class="comment">// #endif</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// #ifdef H5</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> guid = uni.<span class="title function_">getStorageSync</span>(<span class="string">&quot;UAID_GUID&quot;</span>) <span class="keyword">as</span> <span class="built_in">string</span>;</span><br><span class="line">    <span class="keyword">if</span> (!guid) &#123;</span><br><span class="line">      guid = <span class="title function_">buildGuid</span>();</span><br><span class="line">      uni.<span class="title function_">setStorageSync</span>(<span class="string">&quot;UAID_GUID&quot;</span>, guid);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">cb</span>(&#123; <span class="attr">oaid</span>: <span class="literal">null</span>, <span class="attr">source</span>: <span class="string">&quot;NONE&quot;</span>, guid &#125;);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="title function_">cb</span>(&#123; <span class="attr">oaid</span>: <span class="literal">null</span>, <span class="attr">source</span>: <span class="string">&quot;NONE&quot;</span>, <span class="attr">guid</span>: <span class="title function_">buildGuid</span>() &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// #endif</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>混淆&#x2F;配置建议（Android）</strong></p>
+<ul>
+<li><p>若启用 <strong>MSA</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keep class com.bun.miitmdid.core.** &#123; *; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时把 <code>oaid_sdk_x.x.x.aar</code>、<code>supplierconfig.json</code>、<code>&lt;pkg&gt;.cert.pem</code> 放到对应目录（AAR: <code>libs/</code>，其余在 <code>assets/</code>）。初始化前加载安全库，避免 <code>InitCert</code> 报错。(<a target="_blank" rel="noopener" href="https://mtj.baidu.com/static/userguide/book/android/oaid.html?utm_source=chatgpt.com" title="Android OAID 接入">百度移动统计</a>, <a target="_blank" rel="noopener" href="https://16054554.s21i.faiusr.com/61/ABUIABA9GAAgx5iGjgYo2_j-1AE.pdf?utm_source=chatgpt.com" title="常见问题问答F&amp;Q - 信息资源系统">网站名称</a>)</p>
+</li>
+<li><p>若启用 <strong>HMS</strong>：确保引入 <code>com.huawei.hms:ads-identifier</code>（你现有 <code>android-deviceid</code> 插件已内置两个 ads-identifier AAR）。华为 OAID API 文档参考。(<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/en/doc/hmscore-references/overview-0000001050066887?utm_source=chatgpt.com" title="Overview-com.huawei.hms.ads.identifier-Android-Java- ...">华为开发者</a>)</p>
+</li>
+<li><p>若只用<strong>开源库</strong>：不需要证书，按上面 <code>DeviceID</code> &#x2F; <code>DeviceIdentifier</code> 的调用即可（方法签名见官方 javadoc）。(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/com/github/gzuliyujiang/oaid/DeviceID.html" title="DeviceID ">李宇江的个人网站</a>)</p>
+</li>
+</ul>
+<p><strong>隐私合规关键点</strong></p>
+<ul>
+<li><strong>必须在用户同意隐私政策后</strong>再 <code>initAfterConsent()</code>；开源库文档也特别提示 register&#x2F;获取前需获同意。(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/com/github/gzuliyujiang/oaid/DeviceID.html" title="DeviceID ">李宇江的个人网站</a>)</li>
+</ul>
+<hr>
+<h1 id="五、再回答你“原来的插件中如何实现”的要点"><a href="#五、再回答你“原来的插件中如何实现”的要点" class="headerlink" title="五、再回答你“原来的插件中如何实现”的要点"></a>五、再回答你“原来的插件中如何实现”的要点</h1><ul>
+<li><p>你的 <strong><code>android-deviceid</code></strong> 正是采用<strong>开源库（Android_CN_OAID）+（可选）HMS</strong>的组合：</p>
+<ul>
+<li>预取：<code>DeviceIdentifier.register(...)</code></li>
+<li>异步获取：<code>DeviceID.getOAID(context, IGetter)</code></li>
+<li>附带 ad-identifier AAR，完善华为路径</li>
+</ul>
+<blockquote>
+<p>这与文档推荐用法一致（register 预取、或异步获取；支持 <code>supportedOAID</code> 检查）。(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/com/github/gzuliyujiang/oaid/DeviceID.html" title="DeviceID ">李宇江的个人网站</a>)</p>
+</blockquote>
+</li>
+<li><p>你的 <strong><code>zws-uniqueid</code></strong> 只是<strong>伪 ID</strong>（基于 <code>Build.*</code> 拼接+MD5），<strong>不属于 OAID</strong>，适合作兜底标识，不可用于广告归因。</p>
+</li>
+</ul>
+<hr>
+<h1 id="六、为什么推荐“先开源库-→-再视需要加-MSA-HMS”"><a href="#六、为什么推荐“先开源库-→-再视需要加-MSA-HMS”" class="headerlink" title="六、为什么推荐“先开源库 → 再视需要加 MSA&#x2F;HMS”"></a>六、为什么推荐“先开源库 → 再视需要加 MSA&#x2F;HMS”</h1><ul>
+<li><strong>落地速度</strong>：开源库无证书&#x2F;厂商注册门槛，上线快；API 稳定，文档完整（还有 <code>GUID/AndroidID</code> 兜底）。(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/?utm_source=chatgpt.com" title=":library">李宇江的个人网站</a>)</li>
+<li><strong>兼容与获取率</strong>：有华为设备时可直接走 <strong>HMS OAID</strong>；大盘上量&#x2F;商业化合规要求更高时，再<strong>并行接入 MSA</strong> 提升部分机型覆盖率。(<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/en/doc/hmscore-references/overview-0000001050066887?utm_source=chatgpt.com" title="Overview-com.huawei.hms.ads.identifier-Android-Java- ...">华为开发者</a>, <a target="_blank" rel="noopener" href="https://dev.adjust.com/zh/sdk/android/plugins/oaid-plugin/?utm_source=chatgpt.com" title="OAID">Adjust</a>)</li>
+<li><strong>合规</strong>：始终把 OAID 获取放在<strong>隐私同意之后</strong>。(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/com/github/gzuliyujiang/oaid/DeviceID.html" title="DeviceID ">李宇江的个人网站</a>)</li>
+</ul>
+<hr>
+<h2 id="附：权威-一手资料（便于你对照）"><a href="#附：权威-一手资料（便于你对照）" class="headerlink" title="附：权威&#x2F;一手资料（便于你对照）"></a>附：权威&#x2F;一手资料（便于你对照）</h2><ul>
+<li>Android_CN_OAID 文档（<code>DeviceID.register/getOAID/supportedOAID/...</code> 方法签名）(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/com/github/gzuliyujiang/oaid/DeviceID.html" title="DeviceID ">李宇江的个人网站</a>)</li>
+<li>Android_CN_OAID 项目主页&#x2F;文档导航（含包结构&#x2F;实现原理）(<a target="_blank" rel="noopener" href="https://gzu-liyujiang.github.io/Android_CN_OAID/?utm_source=chatgpt.com" title=":library">李宇江的个人网站</a>)</li>
+<li>MSA 官方接入说明（AAR、<code>supplierconfig.json</code>、混淆、加载安全库&#x2F;InitCert 问题）(<a target="_blank" rel="noopener" href="https://mtj.baidu.com/static/userguide/book/android/oaid.html?utm_source=chatgpt.com" title="Android OAID 接入">百度移动统计</a>, <a target="_blank" rel="noopener" href="https://16054554.s21i.faiusr.com/61/ABUIABA9GAAgx5iGjgYo2_j-1AE.pdf?utm_source=chatgpt.com" title="常见问题问答F&amp;Q - 信息资源系统">网站名称</a>)</li>
+<li>Adjust &#x2F; AppsFlyer 对 OAID 的总述与“MSA 或 HMS”两条路径的明确表述（帮助理解生态）(<a target="_blank" rel="noopener" href="https://dev.adjust.com/zh/sdk/android/plugins/oaid-plugin/?utm_source=chatgpt.com" title="OAID">Adjust</a>, <a target="_blank" rel="noopener" href="https://support.appsflyer.com/hc/en-us/articles/360006278797-Android-OAID-implementation-in-the-SDK?utm_source=chatgpt.com" title="Android OAID implementation in the SDK">AppsFlyer 支持中心</a>)</li>
+<li>华为 HMS Ads Identifier OAID 能力文档（API 参考）(<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/en/doc/hmscore-references/overview-0000001050066887?utm_source=chatgpt.com" title="Overview-com.huawei.hms.ads.identifier-Android-Java- ...">华为开发者</a>)</li>
+</ul>
+<hr>
+<p>如果你同意这套方案，我可以把上面的 <strong>UTS 插件源码</strong>按你项目结构打包成 <code>uni_modules/uaid-kit</code>（含 <code>package.json</code>、<code>utssdk/app-android/config.json</code>、<code>README.md</code>、示例页），并给出在 <strong>uni-app x</strong> 项目里如何调用的示例页（含隐私弹窗 → 同意后初始化 → 展示结果）的完整代码。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/07/OAID-%E5%BA%93%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E8%8E%B7%E5%8F%96/" data-id="cmf9wf5u70005pf4zb9rad9xo" data-title="OAID 库的初始化与获取" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2025/09/07/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2025/09/07/id-kit%E5%BC%80%E5%8F%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">id-kit开发</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">web应用开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/401/" rel="tag">401</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/AbortController/" rel="tag">AbortController</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Axios/" rel="tag">Axios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Fetch/" rel="tag">Fetch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/GitHub-Pages/" rel="tag">GitHub Pages</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/MSW/" rel="tag">MSW</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/NexT/" rel="tag">NexT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/OpenAPI/" rel="tag">OpenAPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Passkeys/" rel="tag">Passkeys</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Pinia/" rel="tag">Pinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TanStack-Query/" rel="tag">TanStack Query</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/UTS-%E6%8F%92%E4%BB%B6/" rel="tag">UTS 插件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vite/" rel="tag">Vite</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vue-3/" rel="tag">Vue 3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vue-Router/" rel="tag">Vue Router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vue3/" rel="tag">Vue3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/WebAuthn/" rel="tag">WebAuthn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/composable/" rel="tag">composable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/rollup-plugin-visualizer/" rel="tag">rollup-plugin-visualizer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/store%E8%AF%B7%E6%B1%82/" rel="tag">store请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/uni-app-x/" rel="tag">uni-app x</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" rel="tag">一键直登</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" rel="tag">前端架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" rel="tag">副作用控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" rel="tag">大厂实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E6%89%93%E5%8C%85%E5%88%86%E6%9E%90/" rel="tag">打包分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" rel="tag">未登录拦截</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E7%9B%AE%E5%BD%95/" rel="tag">目录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" rel="tag">退出登录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%89%B4%E6%9D%83/" rel="tag">鉴权</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/401/" style="font-size: 10px;">401</a> <a href="/blog/tags/AbortController/" style="font-size: 10px;">AbortController</a> <a href="/blog/tags/Axios/" style="font-size: 20px;">Axios</a> <a href="/blog/tags/Fetch/" style="font-size: 10px;">Fetch</a> <a href="/blog/tags/GitHub-Pages/" style="font-size: 15px;">GitHub Pages</a> <a href="/blog/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/blog/tags/MSW/" style="font-size: 10px;">MSW</a> <a href="/blog/tags/NexT/" style="font-size: 10px;">NexT</a> <a href="/blog/tags/OpenAPI/" style="font-size: 10px;">OpenAPI</a> <a href="/blog/tags/Passkeys/" style="font-size: 10px;">Passkeys</a> <a href="/blog/tags/Pinia/" style="font-size: 20px;">Pinia</a> <a href="/blog/tags/TanStack-Query/" style="font-size: 10px;">TanStack Query</a> <a href="/blog/tags/TypeScript/" style="font-size: 20px;">TypeScript</a> <a href="/blog/tags/UTS-%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">UTS 插件</a> <a href="/blog/tags/Vite/" style="font-size: 10px;">Vite</a> <a href="/blog/tags/Vue-3/" style="font-size: 10px;">Vue 3</a> <a href="/blog/tags/Vue-Router/" style="font-size: 10px;">Vue Router</a> <a href="/blog/tags/Vue3/" style="font-size: 15px;">Vue3</a> <a href="/blog/tags/WebAuthn/" style="font-size: 10px;">WebAuthn</a> <a href="/blog/tags/composable/" style="font-size: 10px;">composable</a> <a href="/blog/tags/rollup-plugin-visualizer/" style="font-size: 10px;">rollup-plugin-visualizer</a> <a href="/blog/tags/store%E8%AF%B7%E6%B1%82/" style="font-size: 10px;">store请求</a> <a href="/blog/tags/uni-app-x/" style="font-size: 10px;">uni-app x</a> <a href="/blog/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" style="font-size: 10px;">一键直登</a> <a href="/blog/tags/%E4%B8%8B%E8%BD%BD/" style="font-size: 10px;">下载</a> <a href="/blog/tags/%E5%88%86%E7%B1%BB/" style="font-size: 10px;">分类</a> <a href="/blog/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" style="font-size: 10px;">初始化</a> <a href="/blog/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/blog/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">前端架构</a> <a href="/blog/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">副作用控制</a> <a href="/blog/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/blog/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">大厂实践</a> <a href="/blog/tags/%E6%89%93%E5%8C%85%E5%88%86%E6%9E%90/" style="font-size: 10px;">打包分析</a> <a href="/blog/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" style="font-size: 10px;">未登录拦截</a> <a href="/blog/tags/%E7%9B%AE%E5%BD%95/" style="font-size: 10px;">目录</a> <a href="/blog/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" style="font-size: 10px;">退出登录</a> <a href="/blog/tags/%E9%89%B4%E6%9D%83/" style="font-size: 10px;">鉴权</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2025/09/">September 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2025/09/08/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/test/">test</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/08/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/preferred%E6%98%AF%E5%95%A5/">userVerification:</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/07/%E5%9C%A8-NestJS-%E4%B8%AD%E5%BC%95%E5%85%A5-Redis%E2%80%94%E2%80%94%E4%BB%8E-0-%E5%88%B0%E5%8F%AF%E7%94%A8%EF%BC%88ioredis-%E7%89%88%EF%BC%89/">在 NestJS 中引入 Redis——从 0 到可用（ioredis 版）</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/07/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2025/09/07/OAID-%E5%BA%93%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E8%8E%B7%E5%8F%96/">OAID 库的初始化与获取</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/blog/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/blog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
