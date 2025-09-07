@@ -2,7 +2,7 @@ name: Deploy Hexo to GitHub Pages
 
 on:
   push:
-    branches: [master, main]
+    branches: [master]
   workflow_dispatch:
 
 # Required for GitHub Pages official actions
