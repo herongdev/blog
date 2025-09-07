@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue） | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="title: GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）date: 2025-09-05tags: [Vue3, Ant Design Vue, 组件封装, v-model]  思路概述 用 defineModel 直接驱动 a-checkbox-group &#x2F; a-radio-group，去掉中间层 innerValue 与 w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）">
+<meta property="og:url" content="https://herongdev.github.io/blog/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="title: GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）date: 2025-09-05tags: [Vue3, Ant Design Vue, 组件封装, v-model]  思路概述 用 defineModel 直接驱动 a-checkbox-group &#x2F; a-radio-group，去掉中间层 innerValue 与 w">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-09-05T16:25:03.000Z">
+<meta property="article:modified_time" content="2025-09-07T06:30:26.785Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://herongdev.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-GTC-Checkbox-Radio-轻量化重构（支持-Ant-Design-Vue）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T16:25:03.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）<br>date: 2025-09-05<br>tags: [Vue3, Ant Design Vue, 组件封装, v-model]</p>
+<hr>
+<h2 id="思路概述"><a href="#思路概述" class="headerlink" title="思路概述"></a>思路概述</h2><ul>
+<li>用 <code>defineModel</code> 直接驱动 <code>a-checkbox-group</code> &#x2F; <code>a-radio-group</code>，去掉中间层 <code>innerValue</code> 与 <code>watch</code>，减少响应式开销与同步复杂度。</li>
+<li>加上 <code>defineOptions(&#123; inheritAttrs: false &#125;)</code>，避免 attrs 同时落在根节点与 <code>a-*group</code> 上导致副作用。</li>
+<li><code>Checkbox</code> 明确 <code>value</code> 为 <strong>数组</strong>，默认 <code>[]</code>；<code>Radio</code> 的 <code>value</code> 为任意，默认 <code>null</code>。</li>
+</ul>
+<hr>
+<h2 id="最简实现步骤"><a href="#最简实现步骤" class="headerlink" title="最简实现步骤"></a>最简实现步骤</h2><ol>
+<li>删除 <code>innerValue</code> 与所有 <code>watch</code>。</li>
+<li>用 <code>const value = defineModel&lt;...&gt;(&#39;value&#39;, &#123; default: ... &#125;)</code>，模板直接 <code>v-model:value=&quot;value&quot;</code>。</li>
+<li>设置 <code>inheritAttrs: false</code>，并将 <code>attrs</code> 仅透传给 <code>a-*group</code>。</li>
+</ol>
+<hr>
+<h2 id="完整代码（Checkbox）"><a href="#完整代码（Checkbox）" class="headerlink" title="完整代码（Checkbox）"></a>完整代码（Checkbox）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div</span><br><span class="line">    class=&quot;gtc-checkbox&quot;</span><br><span class="line">    :class=&quot;[`gtc-checkbox-$&#123;size&#125;`, disabled ? &#x27;is-disabled&#x27; : &#x27;&#x27;]&quot;</span><br><span class="line">  &gt;</span><br><span class="line">    &lt;a-checkbox-group v-model:value=&quot;value&quot; :disabled=&quot;disabled&quot; v-bind=&quot;attrs&quot;&gt;</span><br><span class="line">      &lt;slot /&gt;</span><br><span class="line">    &lt;/a-checkbox-group&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; useAttrs &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">// 复杂：避免 attrs 同时落到根节点与 a-checkbox-group</span><br><span class="line">defineOptions(&#123; inheritAttrs: false &#125;);</span><br><span class="line"></span><br><span class="line">const attrs = useAttrs();</span><br><span class="line"></span><br><span class="line">const props = defineProps(&#123;</span><br><span class="line">  size: &#123; type: String, default: &quot;md&quot; &#125;,</span><br><span class="line">  disabled: &#123; type: Boolean, default: false &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 复杂：CheckboxGroup 期望数组；默认应为 []</span><br><span class="line">const value = defineModel&lt;any[]&gt;(&quot;value&quot;, &#123; default: [] &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;less&quot; scoped&gt;</span><br><span class="line">.gtc-checkbox &#123;</span><br><span class="line">  .ant-checkbox-wrapper &#123;</span><br><span class="line">    color: var(--ink-950);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-checkbox &#123;</span><br><span class="line">    &amp;-inner &#123;</span><br><span class="line">      border-color: var(--rim-300);</span><br><span class="line">      background: none;</span><br><span class="line">      box-shadow: none;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;-checked .ant-checkbox-inner &#123;</span><br><span class="line">      background-color: var(--blue-primary);</span><br><span class="line">      border-color: var(--blue-primary);</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;:hover .ant-checkbox-inner &#123;</span><br><span class="line">      border-color: var(--ink-400);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.gtc-checkbox-sm .ant-checkbox-inner &#123;</span><br><span class="line">  width: 14px;</span><br><span class="line">  height: 14px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-checkbox-md .ant-checkbox-inner &#123;</span><br><span class="line">  width: 16px;</span><br><span class="line">  height: 16px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-checkbox-lg .ant-checkbox-inner &#123;</span><br><span class="line">  width: 18px;</span><br><span class="line">  height: 18px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.is-disabled &#123;</span><br><span class="line">  .ant-checkbox-inner &#123;</span><br><span class="line">    background: var(--ground-50);</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="完整代码（Radio）"><a href="#完整代码（Radio）" class="headerlink" title="完整代码（Radio）"></a>完整代码（Radio）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div</span><br><span class="line">    class=&quot;gtc-radio&quot;</span><br><span class="line">    :class=&quot;[`gtc-radio-$&#123;size&#125;`, disabled ? &#x27;is-disabled&#x27; : &#x27;&#x27;]&quot;</span><br><span class="line">  &gt;</span><br><span class="line">    &lt;a-radio-group v-model:value=&quot;value&quot; :disabled=&quot;disabled&quot; v-bind=&quot;attrs&quot;&gt;</span><br><span class="line">      &lt;slot /&gt;</span><br><span class="line">    &lt;/a-radio-group&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; useAttrs &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">// 复杂：避免 attrs 同时落到根节点与 a-radio-group</span><br><span class="line">defineOptions(&#123; inheritAttrs: false &#125;);</span><br><span class="line"></span><br><span class="line">const attrs = useAttrs();</span><br><span class="line"></span><br><span class="line">const props = defineProps(&#123;</span><br><span class="line">  size: &#123; type: String, default: &quot;md&quot; &#125;,</span><br><span class="line">  disabled: &#123; type: Boolean, default: false &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 复杂：RadioGroup 接收单值；默认 null</span><br><span class="line">const value = defineModel&lt;any&gt;(&quot;value&quot;, &#123; default: null &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;less&quot; scoped&gt;</span><br><span class="line">.gtc-radio &#123;</span><br><span class="line">  .ant-radio-wrapper &#123;</span><br><span class="line">    color: var(--ink-950);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">    background: none;</span><br><span class="line">    box-shadow: none;</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-checked .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--blue-primary);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-checked .ant-radio-inner::after &#123;</span><br><span class="line">    background-color: var(--blue-primary);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio:hover .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--ink-400);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.gtc-radio-sm .ant-radio-inner &#123;</span><br><span class="line">  width: 14px;</span><br><span class="line">  height: 14px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-radio-md .ant-radio-inner &#123;</span><br><span class="line">  width: 16px;</span><br><span class="line">  height: 16px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-radio-lg .ant-radio-inner &#123;</span><br><span class="line">  width: 18px;</span><br><span class="line">  height: 18px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.is-disabled &#123;</span><br><span class="line">  .ant-radio-inner &#123;</span><br><span class="line">    background: var(--ground-50);</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><ul>
+<li>现在两个组件都是**“零 watch、零中间层”**：父表单直接通过 <code>v-model:value</code> 与 antd 组件对齐；</li>
+<li>与你表单规则的“复选框至少选一项”自定义校验配合使用即可（在 <code>getValidationRules</code> 里对 <code>checkbox</code> 做长度判断）。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/" data-id="cmf9bdhk40004qq4z24o92d33" data-title="GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/09/05/Vue%E9%A1%B9%E7%9B%AE%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vue项目pinia中的Store中的请求时机管理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/09/05/%E5%8A%A8%E6%80%81%E8%A1%A8%E5%8D%95%E3%80%8C%E5%B7%B2%E5%8B%BE%E9%80%89%E4%BB%8D%E6%8F%90%E7%A4%BA%E5%BF%85%E5%A1%AB%E3%80%8D%E7%9A%84%E4%B8%A4%E5%A4%84%E4%BF%AE%E5%A4%8D/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">动态表单「已勾选仍提示必填」的两处修复</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">web应用开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/401/" rel="tag">401</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AbortController/" rel="tag">AbortController</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Axios/" rel="tag">Axios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fetch/" rel="tag">Fetch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub-Pages/" rel="tag">GitHub Pages</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSW/" rel="tag">MSW</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NexT/" rel="tag">NexT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenAPI/" rel="tag">OpenAPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Passkeys/" rel="tag">Passkeys</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pinia/" rel="tag">Pinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TanStack-Query/" rel="tag">TanStack Query</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UTS-%E6%8F%92%E4%BB%B6/" rel="tag">UTS 插件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vite/" rel="tag">Vite</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-3/" rel="tag">Vue 3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-Router/" rel="tag">Vue Router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue3/" rel="tag">Vue3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAuthn/" rel="tag">WebAuthn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/composable/" rel="tag">composable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup-plugin-visualizer/" rel="tag">rollup-plugin-visualizer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/store%E8%AF%B7%E6%B1%82/" rel="tag">store请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uni-app-x/" rel="tag">uni-app x</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" rel="tag">一键直登</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" rel="tag">前端架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" rel="tag">副作用控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" rel="tag">大厂实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%93%E5%8C%85%E5%88%86%E6%9E%90/" rel="tag">打包分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" rel="tag">未登录拦截</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%AE%E5%BD%95/" rel="tag">目录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" rel="tag">退出登录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%89%B4%E6%9D%83/" rel="tag">鉴权</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/401/" style="font-size: 10px;">401</a> <a href="/tags/AbortController/" style="font-size: 10px;">AbortController</a> <a href="/tags/Axios/" style="font-size: 20px;">Axios</a> <a href="/tags/Fetch/" style="font-size: 10px;">Fetch</a> <a href="/tags/GitHub-Pages/" style="font-size: 15px;">GitHub Pages</a> <a href="/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/tags/MSW/" style="font-size: 10px;">MSW</a> <a href="/tags/NexT/" style="font-size: 10px;">NexT</a> <a href="/tags/OpenAPI/" style="font-size: 10px;">OpenAPI</a> <a href="/tags/Passkeys/" style="font-size: 10px;">Passkeys</a> <a href="/tags/Pinia/" style="font-size: 20px;">Pinia</a> <a href="/tags/TanStack-Query/" style="font-size: 10px;">TanStack Query</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a> <a href="/tags/UTS-%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">UTS 插件</a> <a href="/tags/Vite/" style="font-size: 10px;">Vite</a> <a href="/tags/Vue-3/" style="font-size: 10px;">Vue 3</a> <a href="/tags/Vue-Router/" style="font-size: 10px;">Vue Router</a> <a href="/tags/Vue3/" style="font-size: 15px;">Vue3</a> <a href="/tags/WebAuthn/" style="font-size: 10px;">WebAuthn</a> <a href="/tags/composable/" style="font-size: 10px;">composable</a> <a href="/tags/rollup-plugin-visualizer/" style="font-size: 10px;">rollup-plugin-visualizer</a> <a href="/tags/store%E8%AF%B7%E6%B1%82/" style="font-size: 10px;">store请求</a> <a href="/tags/uni-app-x/" style="font-size: 10px;">uni-app x</a> <a href="/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" style="font-size: 10px;">一键直登</a> <a href="/tags/%E4%B8%8B%E8%BD%BD/" style="font-size: 10px;">下载</a> <a href="/tags/%E5%88%86%E7%B1%BB/" style="font-size: 10px;">分类</a> <a href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" style="font-size: 10px;">初始化</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">前端架构</a> <a href="/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">副作用控制</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">大厂实践</a> <a href="/tags/%E6%89%93%E5%8C%85%E5%88%86%E6%9E%90/" style="font-size: 10px;">打包分析</a> <a href="/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" style="font-size: 10px;">未登录拦截</a> <a href="/tags/%E7%9B%AE%E5%BD%95/" style="font-size: 10px;">目录</a> <a href="/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" style="font-size: 10px;">退出登录</a> <a href="/tags/%E9%89%B4%E6%9D%83/" style="font-size: 10px;">鉴权</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">September 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/09/07/id-kit%E5%BC%80%E5%8F%91/">id-kit开发</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/07/id-kit/">id-kit</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/07/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/06/%E7%99%BB%E5%BD%95%E5%90%8E%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%8F%8C%E9%98%B6%E6%AE%B5%E5%90%AF%E5%8A%A8%EF%BC%88%E5%A2%9E%E9%87%8F%E4%BF%AE%E6%94%B9%EF%BC%89/">在 composable 里“公共初始化 + 登录后初始化”的双阶段启动（增量修改）</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/06/%E4%BD%93%E7%A7%AF%E5%88%86%E5%B8%83%E5%88%86%E6%9E%90%E5%9B%BE/">Vite + Vue3 打包后如何查看“体积分布分析图”</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

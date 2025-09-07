@@ -4,15 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>categories | Hexo</title>
+  <title>/user 会不会匹配根路由 ‘/’？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="https://herongdev.github.io/blog/categories/index.html">
+  <meta name="description" content="title: “&#x2F;user 会不会匹配根路由 ‘&#x2F;’？”date: 2025-09-05tags: [Vue Router 4, 路由匹配, 懒加载]  结论不会。&#x2F;user 不会匹配到你定义的根路由 &#123; path: &#39;&#x2F;&#39; &#125;。它只会匹配到自己这条顶层路由 &#123; path: &#39;&#x2F;user&#39; &#125;，因此也不会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="&#x2F;user 会不会匹配根路由 ‘&#x2F;’？">
+<meta property="og:url" content="https://herongdev.github.io/blog/2025/09/05/user-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E5%8C%B9%E9%85%8D%E6%A0%B9%E8%B7%AF%E7%94%B1-%E2%80%98-%E2%80%99%EF%BC%9F/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="title: “&#x2F;user 会不会匹配根路由 ‘&#x2F;’？”date: 2025-09-05tags: [Vue Router 4, 路由匹配, 懒加载]  结论不会。&#x2F;user 不会匹配到你定义的根路由 &#123; path: &#39;&#x2F;&#39; &#125;。它只会匹配到自己这条顶层路由 &#123; path: &#39;&#x2F;user&#39; &#125;，因此也不会">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-09-04T17:50:28.000Z">
-<meta property="article:modified_time" content="2025-09-07T06:30:26.788Z">
+<meta property="article:published_time" content="2025-09-05T19:00:06.000Z">
+<meta property="article:modified_time" content="2025-09-07T06:30:26.786Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -71,10 +73,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="page-" class="h-entry article article-type-page" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-user-会不会匹配根路由-‘-’？" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/categories/index.html" class="article-date">
-  <time class="dt-published" datetime="2025-09-04T17:50:28.000Z" itemprop="datePublished">2025-09-04</time>
+    <a href="/2025/09/05/user-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E5%8C%B9%E9%85%8D%E6%A0%B9%E8%B7%AF%E7%94%B1-%E2%80%98-%E2%80%99%EF%BC%9F/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T19:00:06.000Z" itemprop="datePublished">2025-09-05</time>
 </a>
     
   </div>
@@ -85,7 +87,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      categories
+      /user 会不会匹配根路由 ‘/’？
     </h1>
   
 
@@ -93,11 +95,27 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <hr>
+<p>title: “&#x2F;user 会不会匹配根路由 ‘&#x2F;’？”<br>date: 2025-09-05<br>tags: [Vue Router 4, 路由匹配, 懒加载]</p>
+<hr>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>不会。<code>/user</code> <strong>不会</strong>匹配到你定义的根路由 <code>&#123; path: &#39;/&#39; &#125;</code>。它只会匹配到<strong>自己</strong>这条顶层路由 <code>&#123; path: &#39;/user&#39; &#125;</code>，因此也<strong>不会</strong>渲染 <code>@/views/(public)/layout.vue</code>。</p>
+<h2 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h2><ul>
+<li>Vue Router 使用基于 <code>path-to-regexp</code> 的<strong>精确匹配</strong>。<code>&#39;/&#39;</code> 不是“前缀匹配一切”，只匹配根路径本身，或作为<strong>父路由</strong>被命中的<strong>相对子路由</strong>所包含。</li>
+<li>你现在把 <code>/user</code> 定义为<strong>顶层</strong>路由（不在 <code>children</code> 里），所以跳转到 <code>/user</code> 时，<code>to.matched</code> 里只有 <code>/user</code> 这一条记录，不会包含 <code>&#39;/&#39;</code> 那个布局。</li>
+</ul>
+<h2 id="什么时候会经过-布局？"><a href="#什么时候会经过-布局？" class="headerlink" title="什么时候会经过 &#39;/&#39; 布局？"></a>什么时候会经过 <code>&#39;/&#39;</code> 布局？</h2><p>只有当你把 <strong>子路由写成相对路径</strong> 时，例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：相对子路由会被拼成 /user，且会渲染父布局</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">  <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;@/views/(public)/layout.vue&#x27;</span>),</span><br><span class="line">  <span class="attr">children</span>: [</span><br><span class="line">    &#123; <span class="attr">path</span>: <span class="string">&#x27;user&#x27;</span>, <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;@/views/user/page.vue&#x27;</span>) &#125; <span class="comment">// 注意没有前导斜杠</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这种写法才会让 <code>/user</code> 经过 <code>layout.vue</code>。而你当前是：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">path</span>: <span class="string">&#x27;/user&#x27;</span>, <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;@/views/user/page.vue&#x27;</span>) &#125; <span class="comment">// 顶层、绝对路径</span></span><br></pre></td></tr></table></figure>
+
+<p>两者行为不同。</p>
+<h2 id="快速自检（可在控制台验证）"><a href="#快速自检（可在控制台验证）" class="headerlink" title="快速自检（可在控制台验证）"></a>快速自检（可在控制台验证）</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：查看匹配链，确认是否包含根布局</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(router.<span class="title function_">resolve</span>(<span class="string">&quot;/user&quot;</span>).<span class="property">matched</span>.<span class="title function_">map</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> r.<span class="property">path</span>));</span><br><span class="line"><span class="comment">// 期望：[&#x27;/user&#x27;]，而不是 [&#x27;/&#x27;, &#x27;/user&#x27;]</span></span><br></pre></td></tr></table></figure>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://herongdev.github.io/blog/categories/index.html" data-id="cmf9bdhjw0000qq4zeim94qin" data-title="categories" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/user-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E5%8C%B9%E9%85%8D%E6%A0%B9%E8%B7%AF%E7%94%B1-%E2%80%98-%E2%80%99%EF%BC%9F/" data-id="cmf9bdhkl000lqq4z78csgcc0" data-title="/user 会不会匹配根路由 ‘/’？" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -105,6 +123,25 @@
   </div>
   
     
+<nav id="article-nav">
+  
+    <a href="/2025/09/05/%E4%BB%8D%E6%9C%89%E8%AF%B7%E6%B1%82%E4%B8%8E401%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Axios 封装优化（登出后“仍有请求”与 401 统一处理）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/09/05/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E5%90%8E%E8%B7%B3%E8%BD%AC%E4%B8%8E%E8%AF%B7%E6%B1%82%E6%98%AF%E5%90%A6%E4%BC%9A%E5%8F%91%E5%87%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">退出登录后跳转与请求是否会发出</div>
+    </a>
+  
+</nav>
+
   
 </article>
 

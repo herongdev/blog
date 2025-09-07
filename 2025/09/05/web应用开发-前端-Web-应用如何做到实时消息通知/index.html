@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>web应用开发/前端/Web 应用如何做到实时消息通知 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="title: Web 应用如何做到“实时消息通知”date: 2025-09-05categories: [Web 实时通讯, 架构设计]tags: [WebSocket, SSE, Web Push, 长轮询, 消息队列, Redis, 可用性, 安全]description: 面向前端&#x2F;全栈开发者，从选型到最小可行代码，教你在 Web 应用中实现稳定的实时消息通知。  总览目标：在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web应用开发&#x2F;前端&#x2F;Web 应用如何做到实时消息通知">
+<meta property="og:url" content="https://herongdev.github.io/blog/2025/09/05/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-%E5%89%8D%E7%AB%AF-Web-%E5%BA%94%E7%94%A8%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E5%AE%9E%E6%97%B6%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="title: Web 应用如何做到“实时消息通知”date: 2025-09-05categories: [Web 实时通讯, 架构设计]tags: [WebSocket, SSE, Web Push, 长轮询, 消息队列, Redis, 可用性, 安全]description: 面向前端&#x2F;全栈开发者，从选型到最小可行代码，教你在 Web 应用中实现稳定的实时消息通知。  总览目标：在">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-09-05T14:10:20.000Z">
+<meta property="article:modified_time" content="2025-09-07T06:30:26.786Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://herongdev.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-web应用开发-前端-Web-应用如何做到实时消息通知" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-%E5%89%8D%E7%AB%AF-Web-%E5%BA%94%E7%94%A8%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E5%AE%9E%E6%97%B6%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T14:10:20.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      web应用开发/前端/Web 应用如何做到实时消息通知
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: Web 应用如何做到“实时消息通知”<br>date: 2025-09-05<br>categories: [Web 实时通讯, 架构设计]<br>tags: [WebSocket, SSE, Web Push, 长轮询, 消息队列, Redis, 可用性, 安全]<br>description: 面向前端&#x2F;全栈开发者，从选型到最小可行代码，教你在 Web 应用中实现稳定的实时消息通知。</p>
+<hr>
+<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><p><strong>目标</strong>：在浏览器里第一时间看到来自服务端的新消息（聊天、新订单、系统告警等）。<br><strong>常见方案</strong>：</p>
+<ul>
+<li><strong>WebSocket</strong>：全双工、低延迟、最通用。</li>
+<li><strong>SSE（Server-Sent Events）</strong>：服务端到客户端的单向推送，轻量、易用。</li>
+<li><strong>长轮询（Long Polling）</strong>：兼容性最佳的兜底方案。</li>
+<li><strong>Web Push（Service Worker）</strong>：浏览器级推送，页面不在前台也能收到（需用户同意）。</li>
+</ul>
+<p><strong>快速选型</strong>（简表）：</p>
+<table>
+<thead>
+<tr>
+<th>需求&#x2F;约束</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>双向通信（聊天&#x2F;协作）</td>
+<td><strong>WebSocket</strong></td>
+</tr>
+<tr>
+<td>只下行推送、需超轻量</td>
+<td><strong>SSE</strong></td>
+</tr>
+<tr>
+<td>公司网络&#x2F;代理限制 WS</td>
+<td><strong>SSE 或 长轮询</strong></td>
+</tr>
+<tr>
+<td>需离线&#x2F;后台通知</td>
+<td><strong>Web Push</strong></td>
+</tr>
+<tr>
+<td>海量连接、水平扩展</td>
+<td><strong>WS + Redis Pub&#x2F;Sub 或 MQ</strong></td>
+</tr>
+<tr>
+<td>服务端易实现、兼容老后端</td>
+<td><strong>长轮询</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="实现思路（一图流）"><a href="#实现思路（一图流）" class="headerlink" title="实现思路（一图流）"></a>实现思路（一图流）</h1><ol>
+<li><strong>连接层</strong>：浏览器（WS&#x2F;SSE&#x2F;HTTP） ↔ 反向代理（Nginx&#x2F;Ingress） ↔ <strong>推送网关服务</strong></li>
+<li><strong>消息路由层</strong>：<strong>Redis Pub&#x2F;Sub &#x2F; Kafka &#x2F; RabbitMQ</strong> 做 fan-out 与广播</li>
+<li><strong>业务层</strong>：订单&#x2F;聊天&#x2F;告警服务把事件写入 <strong>消息总线</strong></li>
+<li><strong>状态与可靠性</strong>：在线用户表、订阅关系、<strong>Ack&#x2F;重试&#x2F;幂等</strong>、<strong>断线重连</strong>、<strong>心跳</strong>、<strong>权限校验</strong></li>
+</ol>
+<hr>
+<h1 id="分步实践"><a href="#分步实践" class="headerlink" title="分步实践"></a>分步实践</h1><h2 id="方案一：WebSocket（最通用）"><a href="#方案一：WebSocket（最通用）" class="headerlink" title="方案一：WebSocket（最通用）"></a>方案一：WebSocket（最通用）</h2><h3 id="最小可行后端（Node-js-ws）"><a href="#最小可行后端（Node-js-ws）" class="headerlink" title="最小可行后端（Node.js + ws）"></a>最小可行后端（Node.js + <code>ws</code>）</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：保存连接、鉴权、心跳、按用户分组转发</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">WebSocketServer</span> &#125; <span class="keyword">from</span> <span class="string">&quot;ws&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> jwt <span class="keyword">from</span> <span class="string">&quot;jsonwebtoken&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> wss = <span class="keyword">new</span> <span class="title class_">WebSocketServer</span>(&#123; <span class="attr">port</span>: <span class="number">8080</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> clients = <span class="keyword">new</span> <span class="title class_">Map</span>(); <span class="comment">// userId -&gt; Set&lt;ws&gt;</span></span><br><span class="line"></span><br><span class="line">wss.<span class="title function_">on</span>(<span class="string">&quot;connection&quot;</span>, <span class="function">(<span class="params">ws, req</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 复杂逻辑：从 ?token= 解析并校验用户身份</span></span><br><span class="line">  <span class="keyword">const</span> token = <span class="keyword">new</span> <span class="title function_">URL</span>(req.<span class="property">url</span>, <span class="string">&quot;http://x&quot;</span>).<span class="property">searchParams</span>.<span class="title function_">get</span>(<span class="string">&quot;token&quot;</span>);</span><br><span class="line">  <span class="keyword">let</span> userId = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    userId = jwt.<span class="title function_">verify</span>(token, process.<span class="property">env</span>.<span class="property">JWT_SECRET</span>).<span class="property">sub</span>;</span><br><span class="line">  &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    ws.<span class="title function_">close</span>();</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!clients.<span class="title function_">has</span>(userId)) clients.<span class="title function_">set</span>(userId, <span class="keyword">new</span> <span class="title class_">Set</span>());</span><br><span class="line">  clients.<span class="title function_">get</span>(userId).<span class="title function_">add</span>(ws);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：心跳保活，清理僵尸连接</span></span><br><span class="line">  ws.<span class="property">isAlive</span> = <span class="literal">true</span>;</span><br><span class="line">  ws.<span class="title function_">on</span>(<span class="string">&quot;pong&quot;</span>, <span class="function">() =&gt;</span> (ws.<span class="property">isAlive</span> = <span class="literal">true</span>));</span><br><span class="line"></span><br><span class="line">  ws.<span class="title function_">on</span>(<span class="string">&quot;message&quot;</span>, <span class="function">(<span class="params">buf</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 这里可处理客户端上行，如已读回执/输入中状态</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  ws.<span class="title function_">on</span>(<span class="string">&quot;close&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    clients.<span class="title function_">get</span>(userId).<span class="title function_">delete</span>(ws);</span><br><span class="line">    <span class="keyword">if</span> (clients.<span class="title function_">get</span>(userId).<span class="property">size</span> === <span class="number">0</span>) clients.<span class="title function_">delete</span>(userId);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 复杂逻辑：定时 ping</span></span><br><span class="line"><span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  wss.<span class="property">clients</span>.<span class="title function_">forEach</span>(<span class="function">(<span class="params">ws</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!ws.<span class="property">isAlive</span>) <span class="keyword">return</span> ws.<span class="title function_">terminate</span>();</span><br><span class="line">    ws.<span class="property">isAlive</span> = <span class="literal">false</span>;</span><br><span class="line">    ws.<span class="title function_">ping</span>();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;, <span class="number">30000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例：向某用户推送</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">pushToUser</span>(<span class="params">userId, payload</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> set = clients.<span class="title function_">get</span>(userId);</span><br><span class="line">  <span class="keyword">if</span> (!set) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">const</span> msg = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(payload);</span><br><span class="line">  set.<span class="title function_">forEach</span>(<span class="function">(<span class="params">ws</span>) =&gt;</span> ws.<span class="property">readyState</span> === ws.<span class="property">OPEN</span> &amp;&amp; ws.<span class="title function_">send</span>(msg));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="前端最小连接封装（浏览器）"><a href="#前端最小连接封装（浏览器）" class="headerlink" title="前端最小连接封装（浏览器）"></a>前端最小连接封装（浏览器）</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：自动重连、指数退避、前台/后台状态感知</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">createWsClient</span>(<span class="params">urlWithToken, onMsg</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> ws,</span><br><span class="line">    retry = <span class="number">0</span>,</span><br><span class="line">    timer;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">connect</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    ws = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(urlWithToken);</span><br><span class="line">    ws.<span class="property">onopen</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      retry = <span class="number">0</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    ws.<span class="property">onmessage</span> = <span class="function">(<span class="params">e</span>) =&gt;</span> <span class="title function_">onMsg</span>(<span class="title class_">JSON</span>.<span class="title function_">parse</span>(e.<span class="property">data</span>));</span><br><span class="line">    ws.<span class="property">onclose</span> = <span class="function">() =&gt;</span> <span class="title function_">scheduleReconnect</span>();</span><br><span class="line">    ws.<span class="property">onerror</span> = <span class="function">() =&gt;</span> ws.<span class="title function_">close</span>();</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">scheduleReconnect</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timer);</span><br><span class="line">    <span class="keyword">const</span> delay = <span class="title class_">Math</span>.<span class="title function_">min</span>(<span class="number">30000</span>, <span class="number">1000</span> * <span class="number">2</span> ** retry++);</span><br><span class="line">    timer = <span class="built_in">setTimeout</span>(connect, delay);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：页面隐藏时减小重连频率</span></span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;visibilitychange&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">document</span>.<span class="property">hidden</span> &amp;&amp; ws?.<span class="property">readyState</span> !== <span class="title class_">WebSocket</span>.<span class="property">OPEN</span>) &#123;</span><br><span class="line">      retry = <span class="title class_">Math</span>.<span class="title function_">max</span>(retry, <span class="number">4</span>); <span class="comment">// 慢一些</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">connect</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timer);</span><br><span class="line">    ws?.<span class="title function_">close</span>();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx-反代（启用-WS-协议升级）"><a href="#Nginx-反代（启用-WS-协议升级）" class="headerlink" title="Nginx 反代（启用 WS 协议升级）"></a>Nginx 反代（启用 WS 协议升级）</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复杂逻辑：确保 upgrade 头转发</span></span><br><span class="line"><span class="section">location</span> /ws/ &#123;</span><br><span class="line">  <span class="attribute">proxy_pass</span> http://realtime:8080;</span><br><span class="line">  <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">  <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">  <span class="attribute">proxy_set_header</span> Connection <span class="string">&quot;upgrade&quot;</span>;</span><br><span class="line">  <span class="attribute">proxy_read_timeout</span> <span class="number">60s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="方案二：SSE（Server-Sent-Events，轻量下行推送）"><a href="#方案二：SSE（Server-Sent-Events，轻量下行推送）" class="headerlink" title="方案二：SSE（Server-Sent Events，轻量下行推送）"></a>方案二：SSE（Server-Sent Events，轻量下行推送）</h2><h3 id="后端（Node-js-Express）"><a href="#后端（Node-js-Express）" class="headerlink" title="后端（Node.js + Express）"></a>后端（Node.js + Express）</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：SSE 连接池、心跳注释行、按用户推送</span></span><br><span class="line"><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">&quot;express&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> jwt <span class="keyword">from</span> <span class="string">&quot;jsonwebtoken&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"><span class="keyword">const</span> streams = <span class="keyword">new</span> <span class="title class_">Map</span>(); <span class="comment">// userId -&gt; res</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/sse&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> token = req.<span class="property">query</span>.<span class="property">token</span>;</span><br><span class="line">  <span class="keyword">let</span> userId;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    userId = jwt.<span class="title function_">verify</span>(token, process.<span class="property">env</span>.<span class="property">JWT_SECRET</span>).<span class="property">sub</span>;</span><br><span class="line">  &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">sendStatus</span>(<span class="number">401</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  res.<span class="title function_">set</span>(&#123;</span><br><span class="line">    <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;text/event-stream&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Cache-Control&quot;</span>: <span class="string">&quot;no-cache&quot;</span>,</span><br><span class="line">    <span class="title class_">Connection</span>: <span class="string">&quot;keep-alive&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  res.<span class="title function_">flushHeaders</span>();</span><br><span class="line">  streams.<span class="title function_">set</span>(userId, res);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：心跳，防止中间设备断开</span></span><br><span class="line">  <span class="keyword">const</span> hb = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> res.<span class="title function_">write</span>(<span class="string">&quot;:hb\n\n&quot;</span>), <span class="number">25000</span>);</span><br><span class="line"></span><br><span class="line">  req.<span class="title function_">on</span>(<span class="string">&quot;close&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">clearInterval</span>(hb);</span><br><span class="line">    streams.<span class="title function_">delete</span>(userId);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">ssePush</span>(<span class="params">userId, data</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> res = streams.<span class="title function_">get</span>(userId);</span><br><span class="line">  <span class="keyword">if</span> (!res) <span class="keyword">return</span>;</span><br><span class="line">  res.<span class="title function_">write</span>(<span class="string">`data: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(data)&#125;</span>\n\n`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8081</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：SSE 自动重连由浏览器原生完成</span></span><br><span class="line"><span class="keyword">const</span> ev = <span class="keyword">new</span> <span class="title class_">EventSource</span>(<span class="string">`/sse?token=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(token)&#125;</span>`</span>);</span><br><span class="line">ev.<span class="property">onmessage</span> = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> payload = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(e.<span class="property">data</span>);</span><br><span class="line">  <span class="comment">// 渲染消息</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>何时用 SSE</strong>：仅需服务端 → 浏览器推送（如系统广播、价格&#x2F;进度更新），无需上行交互；在某些企业代理&#x2F;防火墙下比 WS 更稳定。</p>
+<hr>
+<h2 id="方案三：长轮询（兼容兜底）"><a href="#方案三：长轮询（兼容兜底）" class="headerlink" title="方案三：长轮询（兼容兜底）"></a>方案三：长轮询（兼容兜底）</h2><h3 id="后端（Koa-Express-任意）"><a href="#后端（Koa-Express-任意）" class="headerlink" title="后端（Koa&#x2F;Express 任意）"></a>后端（Koa&#x2F;Express 任意）</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：如果没有新消息就挂起请求，直到有消息或超时</span></span><br><span class="line"><span class="keyword">const</span> waiters = <span class="keyword">new</span> <span class="title class_">Map</span>(); <span class="comment">// userId -&gt; res[]</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/poll&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> userId = <span class="title function_">auth</span>(req); <span class="comment">// 自行实现鉴权</span></span><br><span class="line">  (waiters.<span class="title function_">get</span>(userId) ?? waiters.<span class="title function_">set</span>(userId, []).<span class="title function_">get</span>(userId)).<span class="title function_">push</span>(res);</span><br><span class="line">  req.<span class="built_in">setTimeout</span>(<span class="number">65000</span>); <span class="comment">// 与前端超时一致</span></span><br><span class="line">  req.<span class="title function_">on</span>(<span class="string">&quot;close&quot;</span>, <span class="function">() =&gt;</span> <span class="title function_">cleanup</span>(userId, res));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">notify</span>(<span class="params">userId, payload</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> list = waiters.<span class="title function_">get</span>(userId) || [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> res <span class="keyword">of</span> list) res.<span class="title function_">json</span>(payload);</span><br><span class="line">  waiters.<span class="title function_">set</span>(userId, []);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="前端-1"><a href="#前端-1" class="headerlink" title="前端"></a>前端</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：递归调用保持“长连接”效果</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">longPoll</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> r = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&quot;/poll&quot;</span>, &#123; <span class="attr">credentials</span>: <span class="string">&quot;include&quot;</span> &#125;);</span><br><span class="line">    <span class="keyword">if</span> (r.<span class="property">ok</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> data = <span class="keyword">await</span> r.<span class="title function_">json</span>();</span><br><span class="line">      <span class="comment">// 处理消息</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (_) &#123;</span><br><span class="line">    <span class="comment">/* 忽略网络错误 */</span></span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(longPoll, <span class="number">100</span>);</span><br><span class="line">  &#125; <span class="comment">// 轻微间隔</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">longPoll</span>();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="方案四：Web-Push（离线-后台通知）"><a href="#方案四：Web-Push（离线-后台通知）" class="headerlink" title="方案四：Web Push（离线&#x2F;后台通知）"></a>方案四：Web Push（离线&#x2F;后台通知）</h2><blockquote>
+<p>适合 <strong>提醒类</strong> 场景：即便用户没打开页面、浏览器在后台，仍可收到通知（需 HTTPS 与用户授权）。</p>
+</blockquote>
+<h3 id="前端注册-Service-Worker"><a href="#前端注册-Service-Worker" class="headerlink" title="前端注册 Service Worker"></a>前端注册 Service Worker</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：注册 SW 并申请通知权限，然后向后端上报订阅</span></span><br><span class="line"><span class="keyword">const</span> reg = <span class="keyword">await</span> navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&quot;/sw.js&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> permission = <span class="keyword">await</span> <span class="title class_">Notification</span>.<span class="title function_">requestPermission</span>();</span><br><span class="line"><span class="keyword">if</span> (permission === <span class="string">&quot;granted&quot;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> sub = <span class="keyword">await</span> reg.<span class="property">pushManager</span>.<span class="title function_">subscribe</span>(&#123;</span><br><span class="line">    <span class="attr">userVisibleOnly</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">applicationServerKey</span>: <span class="string">&quot;&lt;VAPID_PUBLIC_KEY_BASE64URL&gt;&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&quot;/push/subscribe&quot;</span>, &#123; <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>, <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(sub) &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Service-Worker-接收"><a href="#Service-Worker-接收" class="headerlink" title="Service Worker 接收"></a>Service Worker 接收</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：展示系统级通知</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&quot;push&quot;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> data = e.<span class="property">data</span>?.<span class="title function_">json</span>() ?? &#123;&#125;;</span><br><span class="line">  e.<span class="title function_">waitUntil</span>(</span><br><span class="line">    self.<span class="property">registration</span>.<span class="title function_">showNotification</span>(data.<span class="property">title</span> || <span class="string">&quot;通知&quot;</span>, &#123;</span><br><span class="line">      <span class="attr">body</span>: data.<span class="property">body</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="后端发送（Node-js-web-push）"><a href="#后端发送（Node-js-web-push）" class="headerlink" title="后端发送（Node.js + web-push）"></a>后端发送（Node.js + web-push）</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：使用 VAPID 签名向浏览器推送</span></span><br><span class="line"><span class="keyword">import</span> webpush <span class="keyword">from</span> <span class="string">&quot;web-push&quot;</span>;</span><br><span class="line">webpush.<span class="title function_">setVapidDetails</span>(</span><br><span class="line">  <span class="string">&quot;mailto:admin@example.com&quot;</span>,</span><br><span class="line">  <span class="variable constant_">VAPID_PUBLIC</span>,</span><br><span class="line">  <span class="variable constant_">VAPID_PRIVATE</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// subs 为持久化的订阅列表</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">sendPush</span>(<span class="params">sub, payload</span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> webpush.<span class="title function_">sendNotification</span>(sub, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(payload));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="可扩展与高可用"><a href="#可扩展与高可用" class="headerlink" title="可扩展与高可用"></a>可扩展与高可用</h1><ul>
+<li><strong>水平扩展</strong>：WS&#x2F;SSE 多实例时，用 <strong>Redis Pub&#x2F;Sub</strong> 或 <strong>消息队列（Kafka&#x2F;RabbitMQ）</strong> 做广播&#x2F;定向投递。</li>
+<li><strong>在线表&#x2F;路由</strong>：<code>userId -&gt; connectionIds</code>（内存 + Redis）。</li>
+<li><strong>可靠性</strong>：业务消息落库 → 推送 → 客户端 <strong>Ack</strong> → 未 Ack 重试；<strong>消息去重键</strong> 防止重复渲染。</li>
+<li><strong>断线重连</strong>：客户端带 <strong>上次 offset&#x2F;lastId</strong> 续传（SSE 原生有 <code>Last-Event-ID</code>）。</li>
+<li><strong>背压控制</strong>：批量合并（coalesce）、节流；超大消息用链接拉取。</li>
+<li><strong>监控告警</strong>：连接数、发送量、队列堆积、投递耗时、重试率、失败率。</li>
+</ul>
+<hr>
+<h1 id="安全与合规"><a href="#安全与合规" class="headerlink" title="安全与合规"></a>安全与合规</h1><ul>
+<li><strong>鉴权</strong>：连接时附带 <strong>短期 JWT</strong>，服务端校验与续期；不同通道（WS&#x2F;SSE&#x2F;HTTP）统一鉴权层。</li>
+<li><strong>权限</strong>：服务端二次校验资源访问（不要把 topic 名称当权限）。</li>
+<li><strong>限流</strong>：IP &#x2F; 用户 &#x2F; 通道维度限速；异常断开与重连风暴保护。</li>
+<li><strong>加密</strong>：HTTPS&#x2F;WSS；敏感字段服务端脱敏。</li>
+<li><strong>审计</strong>：关键通知落库，包含投递结果与阅读状态。</li>
+</ul>
+<hr>
+<h1 id="最简“端到端”范例清单"><a href="#最简“端到端”范例清单" class="headerlink" title="最简“端到端”范例清单"></a>最简“端到端”范例清单</h1><blockquote>
+<p>你可以基于此快速拼装生产可用的实时通知：</p>
+</blockquote>
+<ol>
+<li><strong>连接层</strong>：WebSocket（上面 Node + <code>ws</code> 代码）</li>
+<li><strong>消息总线</strong>：Redis（<code>PUBLISH notifications:user:123 &#123;...&#125;</code>）</li>
+<li><strong>业务写入</strong>：订单服务下单成功 → 发布事件</li>
+<li><strong>推送网关</strong>：订阅 Redis 通道 → <code>pushToUser(userId, payload)</code></li>
+<li><strong>前端</strong>：<code>createWsClient</code> 接收 → 写入本地状态&#x2F;弹出提醒</li>
+<li><strong>兜底</strong>：前端检测 WS 不可用则回退 SSE&#x2F;长轮询</li>
+<li><strong>离线补充</strong>：允许用户开启 Web Push 作后台提醒</li>
+</ol>
+<hr>
+<h1 id="常见坑与排错"><a href="#常见坑与排错" class="headerlink" title="常见坑与排错"></a>常见坑与排错</h1><ul>
+<li><strong>公司代理挡 WS</strong>：优先尝试 <strong>SSE</strong>；Nginx&#x2F;Ingress 需正确配置 <code>Upgrade/Connection</code>。</li>
+<li><strong>连接泄漏</strong>：记得 <strong>清理 close</strong> 事件、设置 <strong>心跳</strong>。</li>
+<li><strong>消息乱序&#x2F;重复</strong>：加入 <strong>自增 offset &#x2F; 事件时间戳 &#x2F; 幂等键</strong>。</li>
+<li><strong>大房间广播</strong>：用 <strong>频道广播 + 客户端过滤</strong> 或 <strong>服务端分片广播</strong>。</li>
+<li><strong>移动网络切换</strong>：重连后用 <strong>lastId</strong> 请求增量补齐。</li>
+</ul>
+<hr>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><ul>
+<li><strong>单点小流量</strong>：直接 <strong>SSE 或 WS</strong> 即可。</li>
+<li><strong>中大型&#x2F;海量</strong>：<strong>WS + Redis&#x2F;MQ</strong>，加上 <strong>Ack&#x2F;重试&#x2F;幂等&#x2F;监控</strong>。</li>
+<li><strong>提醒类</strong>：配上 <strong>Web Push</strong>，覆盖离线&#x2F;后台。</li>
+</ul>
+<p>需要我结合你现有技术栈（如 Next.js、Spring Boot、NestJS、Redis、Kafka）给出<strong>最小改造的落地方案</strong>和<strong>只改动的代码片段</strong>吗？我可以按你的项目结构直接贴可替换的文件&#x2F;增量修改。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-%E5%89%8D%E7%AB%AF-Web-%E5%BA%94%E7%94%A8%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E5%AE%9E%E6%97%B6%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5/" data-id="cmf9bdhkl000nqq4z8tyz6385" data-title="web应用开发/前端/Web 应用如何做到实时消息通知" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/09/05/Web-Push-%E6%8E%A8%E9%80%81%E7%AE%80%E4%BB%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Web Push 推送简介
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/09/05/requirement-realization-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">已登录用户的“绑定通行密钥”最佳实践：把唯一标识安全传给后端（含前后端完整实现）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">web应用开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/401/" rel="tag">401</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AbortController/" rel="tag">AbortController</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Axios/" rel="tag">Axios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fetch/" rel="tag">Fetch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub-Pages/" rel="tag">GitHub Pages</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSW/" rel="tag">MSW</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NexT/" rel="tag">NexT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenAPI/" rel="tag">OpenAPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Passkeys/" rel="tag">Passkeys</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pinia/" rel="tag">Pinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TanStack-Query/" rel="tag">TanStack Query</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UTS-%E6%8F%92%E4%BB%B6/" rel="tag">UTS 插件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vite/" rel="tag">Vite</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-3/" rel="tag">Vue 3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-Router/" rel="tag">Vue Router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue3/" rel="tag">Vue3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAuthn/" rel="tag">WebAuthn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/composable/" rel="tag">composable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup-plugin-visualizer/" rel="tag">rollup-plugin-visualizer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/store%E8%AF%B7%E6%B1%82/" rel="tag">store请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uni-app-x/" rel="tag">uni-app x</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" rel="tag">一键直登</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" rel="tag">前端架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" rel="tag">副作用控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" rel="tag">大厂实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%93%E5%8C%85%E5%88%86%E6%9E%90/" rel="tag">打包分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" rel="tag">未登录拦截</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%AE%E5%BD%95/" rel="tag">目录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" rel="tag">退出登录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%89%B4%E6%9D%83/" rel="tag">鉴权</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/401/" style="font-size: 10px;">401</a> <a href="/tags/AbortController/" style="font-size: 10px;">AbortController</a> <a href="/tags/Axios/" style="font-size: 20px;">Axios</a> <a href="/tags/Fetch/" style="font-size: 10px;">Fetch</a> <a href="/tags/GitHub-Pages/" style="font-size: 15px;">GitHub Pages</a> <a href="/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/tags/MSW/" style="font-size: 10px;">MSW</a> <a href="/tags/NexT/" style="font-size: 10px;">NexT</a> <a href="/tags/OpenAPI/" style="font-size: 10px;">OpenAPI</a> <a href="/tags/Passkeys/" style="font-size: 10px;">Passkeys</a> <a href="/tags/Pinia/" style="font-size: 20px;">Pinia</a> <a href="/tags/TanStack-Query/" style="font-size: 10px;">TanStack Query</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a> <a href="/tags/UTS-%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">UTS 插件</a> <a href="/tags/Vite/" style="font-size: 10px;">Vite</a> <a href="/tags/Vue-3/" style="font-size: 10px;">Vue 3</a> <a href="/tags/Vue-Router/" style="font-size: 10px;">Vue Router</a> <a href="/tags/Vue3/" style="font-size: 15px;">Vue3</a> <a href="/tags/WebAuthn/" style="font-size: 10px;">WebAuthn</a> <a href="/tags/composable/" style="font-size: 10px;">composable</a> <a href="/tags/rollup-plugin-visualizer/" style="font-size: 10px;">rollup-plugin-visualizer</a> <a href="/tags/store%E8%AF%B7%E6%B1%82/" style="font-size: 10px;">store请求</a> <a href="/tags/uni-app-x/" style="font-size: 10px;">uni-app x</a> <a href="/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" style="font-size: 10px;">一键直登</a> <a href="/tags/%E4%B8%8B%E8%BD%BD/" style="font-size: 10px;">下载</a> <a href="/tags/%E5%88%86%E7%B1%BB/" style="font-size: 10px;">分类</a> <a href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" style="font-size: 10px;">初始化</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">前端架构</a> <a href="/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">副作用控制</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">大厂实践</a> <a href="/tags/%E6%89%93%E5%8C%85%E5%88%86%E6%9E%90/" style="font-size: 10px;">打包分析</a> <a href="/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" style="font-size: 10px;">未登录拦截</a> <a href="/tags/%E7%9B%AE%E5%BD%95/" style="font-size: 10px;">目录</a> <a href="/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" style="font-size: 10px;">退出登录</a> <a href="/tags/%E9%89%B4%E6%9D%83/" style="font-size: 10px;">鉴权</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">September 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/09/07/id-kit%E5%BC%80%E5%8F%91/">id-kit开发</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/07/id-kit/">id-kit</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/07/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/06/%E7%99%BB%E5%BD%95%E5%90%8E%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%8F%8C%E9%98%B6%E6%AE%B5%E5%90%AF%E5%8A%A8%EF%BC%88%E5%A2%9E%E9%87%8F%E4%BF%AE%E6%94%B9%EF%BC%89/">在 composable 里“公共初始化 + 登录后初始化”的双阶段启动（增量修改）</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/06/%E4%BD%93%E7%A7%AF%E5%88%86%E5%B8%83%E5%88%86%E6%9E%90%E5%9B%BE/">Vite + Vue3 打包后如何查看“体积分布分析图”</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

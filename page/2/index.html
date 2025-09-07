@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://herongdev.github.io/blog/page/2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://herongdev.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-AbortController-Api的使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/06/AbortController-Api%E7%9A%84%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2025-09-06T11:18:10.000Z" itemprop="datePublished">2025-09-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/06/AbortController-Api%E7%9A%84%E4%BD%BF%E7%94%A8/">什么是 `AbortController`？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="什么是-AbortController？"><a href="#什么是-AbortController？" class="headerlink" title="什么是 AbortController？"></a>什么是 <code>AbortController</code>？</h3><p><code>AbortController</code> 是一个 Web API，允许开发者在 JavaScript 中主动取消某些异步操作，例如网络请求（<code>fetch</code>）、定时器或其他可取消的操作。它是现代 Web 开发中处理异步任务的重要工具，特别是在需要中断或取消正在进行的操作时。<code>AbortController</code> 提供了简单、标准化的方式来实现取消功能，广泛用于浏览器环境。</p>
+<p><code>AbortController</code> 是在 WHATWG 的 DOM 规范中定义的，最初主要与 <code>fetch</code> API 配合使用，但现在也被其他 API（如 <code>ReadableStream</code>）支持。它的核心思想是提供一个信号（<code>AbortSignal</code>），通过这个信号可以通知相关操作停止执行。</p>
+<hr>
+<h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><ol>
+<li><p><strong>AbortController</strong>:</p>
+<ul>
+<li><code>AbortController</code> 是一个构造函数，用于创建控制器对象。</li>
+<li>它有一个 <code>signal</code> 属性，返回一个 <code>AbortSignal</code> 对象，用于监听取消信号。</li>
+<li>它还有一个 <code>abort()</code> 方法，调用后会触发取消信号。</li>
+</ul>
+</li>
+<li><p><strong>AbortSignal</strong>:</p>
+<ul>
+<li><code>AbortSignal</code> 是 <code>AbortController</code> 的信号对象，传递给支持取消的 API（如 <code>fetch</code>）。</li>
+<li>当 <code>AbortController</code> 的 <code>abort()</code> 方法被调用时，<code>AbortSignal</code> 会触发 <code>abort</code> 事件，通知相关操作取消。</li>
+</ul>
+</li>
+<li><p><strong>用途</strong>:</p>
+<ul>
+<li>取消网络请求（例如用户切换页面时取消未完成的 <code>fetch</code> 请求）。</li>
+<li>中止某些异步任务（如文件读取、流操作）。</li>
+<li>提高性能，避免不必要的资源消耗。</li>
+<li>实现用户交互中的取消功能（如取消上传或下载）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p><code>AbortController</code> 的工作流程可以简单总结为以下步骤：</p>
+<ol>
+<li>创建一个 <code>AbortController</code> 实例。</li>
+<li>将其 <code>signal</code> 属性传递给支持取消的 API（如 <code>fetch</code>）。</li>
+<li>在需要取消操作时，调用 <code>AbortController</code> 的 <code>abort()</code> 方法。</li>
+<li>相关的 API 会接收到取消信号并停止操作，同时抛出 <code>AbortError</code> 异常。</li>
+</ol>
+<hr>
+<h3 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h3><p>以下是一个使用 <code>AbortController</code> 取消 <code>fetch</code> 请求的详细代码示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 AbortController 实例</span></span><br><span class="line"><span class="keyword">const</span> controller = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span><br><span class="line"><span class="keyword">const</span> signal = controller.<span class="property">signal</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发起一个 fetch 请求，传入 signal</span></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&quot;https://api.example.com/data&quot;</span>, &#123; signal &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">response</span>) =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">data</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(data))</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (error.<span class="property">name</span> === <span class="string">&quot;AbortError&quot;</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;请求被取消&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;请求失败:&quot;</span>, error);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设 2 秒后取消请求</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  controller.<span class="title function_">abort</span>(); <span class="comment">// 调用 abort() 方法取消请求</span></span><br><span class="line">&#125;, <span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="代码解释："><a href="#代码解释：" class="headerlink" title="代码解释："></a>代码解释：</h4><ul>
+<li><code>new AbortController()</code> 创建控制器。</li>
+<li><code>controller.signal</code> 获取信号对象，传递给 <code>fetch</code> 的 <code>signal</code> 选项。</li>
+<li><code>controller.abort()</code> 触发取消，<code>fetch</code> 请求会立即停止，并抛出 <code>AbortError</code>。</li>
+<li>使用 <code>catch</code> 捕获错误并判断是否为 <code>AbortError</code>。</li>
+</ul>
+<hr>
+<h3 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h3><ol>
+<li><p><strong>取消网络请求</strong>:</p>
+<ul>
+<li>用户在页面上点击“搜索”，但在结果返回前又切换到另一个页面，可以用 <code>AbortController</code> 取消未完成的请求，避免浪费带宽。</li>
+<li>示例：用户在输入框快速输入时，取消之前的搜索请求，只处理最新的请求。</li>
+</ul>
+</li>
+<li><p><strong>清理定时器或事件监听器</strong>:</p>
+<ul>
+<li>虽然 <code>AbortController</code> 本身不直接控制 <code>setTimeout</code> 或事件监听器，但可以通过监听 <code>AbortSignal</code> 的 <code>abort</code> 事件来实现类似功能。</li>
+</ul>
+</li>
+<li><p><strong>流操作</strong>:</p>
+<ul>
+<li>在处理 <code>ReadableStream</code> 或 <code>WritableStream</code> 时，<code>AbortController</code> 可用于取消流传输。</li>
+</ul>
+</li>
+<li><p><strong>用户交互</strong>:</p>
+<ul>
+<li>提供“取消”按钮，让用户手动中止上传、下载或其他耗时操作。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="高级用法：监听-AbortSignal-事件"><a href="#高级用法：监听-AbortSignal-事件" class="headerlink" title="高级用法：监听 AbortSignal 事件"></a>高级用法：监听 <code>AbortSignal</code> 事件</h3><p><code>AbortSignal</code> 是一个 <code>EventTarget</code>，可以监听其 <code>abort</code> 事件，用于自定义取消逻辑。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> controller = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span><br><span class="line"><span class="keyword">const</span> signal = controller.<span class="property">signal</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听 abort 事件</span></span><br><span class="line">signal.<span class="title function_">addEventListener</span>(<span class="string">&quot;abort&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;操作已被取消&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟一个异步任务</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">doWork</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&quot;https://api.example.com/data&quot;</span>, &#123; signal &#125;);</span><br><span class="line">    <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="keyword">if</span> (error.<span class="property">name</span> === <span class="string">&quot;AbortError&quot;</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;任务被取消&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;任务失败:&quot;</span>, error);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">doWork</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3 秒后取消任务</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  controller.<span class="title function_">abort</span>();</span><br><span class="line">&#125;, <span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><ul>
+<li><code>signal.addEventListener(&#39;abort&#39;, ...)</code> 监听取消事件。</li>
+<li>可以在取消时执行额外的清理逻辑，例如关闭资源或更新 UI。</li>
+</ul>
+<hr>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li><p><strong>浏览器兼容性</strong>:</p>
+<ul>
+<li><code>AbortController</code> 在现代浏览器（如 Chrome、Firefox、Safari）中广泛支持，IE 不支持。</li>
+<li>对于旧浏览器，可能需要使用 polyfill。</li>
+</ul>
+</li>
+<li><p><strong>异常处理</strong>:</p>
+<ul>
+<li>调用 <code>abort()</code> 后，相关 API 会抛出 <code>AbortError</code>，需要在代码中捕获并处理。</li>
+</ul>
+</li>
+<li><p><strong>不可恢复</strong>:</p>
+<ul>
+<li>一旦调用 <code>abort()</code>，<code>AbortController</code> 实例不可重用，必须创建新的实例。</li>
+</ul>
+</li>
+<li><p><strong>支持的 API</strong>:</p>
+<ul>
+<li>目前主要与 <code>fetch</code> 和 <code>ReadableStream</code> 等 API 配合使用，其他场景需要开发者手动实现取消逻辑。</li>
+</ul>
+</li>
+<li><p><strong>性能优化</strong>:</p>
+<ul>
+<li>使用 <code>AbortController</code> 可以减少不必要的资源消耗，尤其在高并发或频繁请求的场景下。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="扩展：结合-React-示例"><a href="#扩展：结合-React-示例" class="headerlink" title="扩展：结合 React 示例"></a>扩展：结合 React 示例</h3><p>在 React 中，<code>AbortController</code> 常用于组件卸载时取消请求，避免内存泄漏。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useEffect &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">MyComponent</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> controller = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span><br><span class="line">    <span class="keyword">const</span> signal = controller.<span class="property">signal</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">fetchData</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&quot;https://api.example.com/data&quot;</span>, &#123;</span><br><span class="line">          signal,</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="keyword">if</span> (error.<span class="property">name</span> === <span class="string">&quot;AbortError&quot;</span>) &#123;</span><br><span class="line">          <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;请求被取消&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;请求失败:&quot;</span>, error);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">fetchData</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 组件卸载时取消请求</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      controller.<span class="title function_">abort</span>();</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>加载中...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="说明：-1"><a href="#说明：-1" class="headerlink" title="说明："></a>说明：</h4><ul>
+<li>在 <code>useEffect</code> 中创建 <code>AbortController</code>。</li>
+<li>在组件卸载时（<code>return</code> 回调），调用 <code>abort()</code> 取消请求。</li>
+<li>防止因组件卸载而导致的内存泄漏或状态更新错误。</li>
+</ul>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>AbortController</code> 是一个简单而强大的工具，用于在 Web 开发中取消异步操作。它通过 <code>AbortSignal</code> 提供了一种标准化的取消机制，广泛应用于 <code>fetch</code> 请求、流操作等场景。它的主要优点包括：</p>
+<ul>
+<li><strong>简单易用</strong>：只需要创建控制器并调用 <code>abort()</code> 即可。</li>
+<li><strong>灵活性</strong>：支持多种异步操作的取消。</li>
+<li><strong>性能优化</strong>：避免不必要的资源消耗。</li>
+<li><strong>现代化</strong>：符合现代 Web 开发的需求，特别是在用户交互和性能敏感的场景中。</li>
+</ul>
+<p>通过合理使用 <code>AbortController</code>，开发者可以更好地管理异步任务，提升 Web 应用的性能和用户体验。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/06/AbortController-Api%E7%9A%84%E4%BD%BF%E7%94%A8/" data-id="cmf9bdhjy0001qq4zenqg67an" data-title="什么是 `AbortController`？" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-显式覆盖" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/%E6%98%BE%E5%BC%8F%E8%A6%86%E7%9B%96/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T21:13:27.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/%E6%98%BE%E5%BC%8F%E8%A6%86%E7%9B%96/">鉴权判定“最佳实践”：别维护白名单数组，用“前缀约定 + 显式覆盖”</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="结论（一句话）"><a href="#结论（一句话）" class="headerlink" title="结论（一句话）"></a>结论（一句话）</h2><p><strong>不要维护 <code>noAuthPaths</code> 白名单数组。</strong><br>大厂常用是<strong>约定式路径前缀</strong>（如 <code>/api/pub/**</code> 全部公开，其余默认鉴权）+ <strong>显式 <code>auth:false</code> 覆盖</strong>个别特殊接口（如登录&#x2F;注册）。必要时再做<strong>双实例</strong>（<code>authHttp</code>&#x2F;<code>pubHttp</code>）隔离。</p>
+<h2 id="你只需做的最小改动（片段）"><a href="#你只需做的最小改动（片段）" class="headerlink" title="你只需做的最小改动（片段）"></a>你只需做的最小改动（片段）</h2><h3 id="1-用“前缀约定”替换白名单数组"><a href="#1-用“前缀约定”替换白名单数组" class="headerlink" title="1) 用“前缀约定”替换白名单数组"></a>1) 用“前缀约定”替换白名单数组</h3><blockquote>
+<p>复杂逻辑：将“是否需要鉴权”收敛为<strong>实例级默认值</strong> + <strong>URL 前缀</strong> + <strong>每次请求的显式覆盖</strong>。</p>
+</blockquote>
+<p><strong>删除：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除这行</span></span><br><span class="line"><span class="keyword">const</span> noAuthPaths = [</span><br><span class="line">  <span class="string">&quot;/login&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/register&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/public-endpoint&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/api/pub/get_feednews&quot;</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p><strong>在 <code>createAxiosHttp</code> 定义处新增第二个参数（不改已有调用方也能有默认值）：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：通过 opts 控制默认鉴权与公开前缀</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">createAxiosHttp</span>(<span class="params"></span></span><br><span class="line"><span class="params">  <span class="attr">config</span>: <span class="title class_">AxiosRequestConfig</span>,</span></span><br><span class="line"><span class="params">  <span class="attr">opts</span>: &#123; authDefault?: <span class="built_in">boolean</span>; publicPrefixes?: <span class="built_in">string</span>[] &#125; = &#123;&#125;,</span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> authDefault = opts.<span class="property">authDefault</span> ?? <span class="literal">true</span></span><br><span class="line">  <span class="keyword">const</span> publicPrefixes = opts.<span class="property">publicPrefixes</span> ?? [<span class="string">&#x27;/api/pub&#x27;</span>]  <span class="comment">// 仅维护“前缀”，而非逐个接口</span></span><br><span class="line">  <span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>在请求拦截器里替换 needAuth 判定：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">_axios.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(<span class="function">(<span class="params">req</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// ...（保留你已有的 AbortController 代码）</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：先按前缀判定是否公开，再由显式 req.auth 覆盖</span></span><br><span class="line">  <span class="keyword">const</span> url = req.<span class="property">url</span> || <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="keyword">const</span> isPublicByPrefix = publicPrefixes.<span class="title function_">some</span>(<span class="function">(<span class="params">p</span>) =&gt;</span> url.<span class="title function_">startsWith</span>(p));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：优先使用 req.auth（true/false），否则用实例默认值 + 前缀约定</span></span><br><span class="line">  <span class="keyword">const</span> needAuth = (req <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">auth</span> ?? (authDefault &amp;&amp; !isPublicByPrefix);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> accToken = storage.<span class="title function_">get</span>(<span class="variable constant_">ACCESS_TOKEN</span>);</span><br><span class="line">  <span class="keyword">const</span> tokenType = storage.<span class="title function_">get</span>(<span class="variable constant_">TOKEN_TYPE</span>) || <span class="string">&quot;Bearer&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (needAuth &amp;&amp; !accToken) &#123;</span><br><span class="line">    ((req <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">__abortController</span> <span class="keyword">as</span> <span class="title class_">AbortController</span> | <span class="literal">undefined</span>)?.<span class="title function_">abort</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;UNAUTHENTICATED&quot;</span>));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (needAuth &amp;&amp; accToken) &#123;</span><br><span class="line">    req.<span class="property">headers</span> = &#123; ...req.<span class="property">headers</span>, <span class="title class_">Authorization</span>: <span class="string">`<span class="subst">$&#123;tokenType&#125;</span> <span class="subst">$&#123;accToken&#125;</span>`</span> &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> req;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>创建实例时传入前缀约定（一次配置，全局生效）：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：默认需要鉴权，唯独 /api/pub/** 前缀走公开</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="title function_">createAxiosHttp</span>(</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">timeout</span>: <span class="number">10000</span>,</span><br><span class="line">    <span class="attr">baseURL</span>: <span class="variable constant_">API_BASE</span>,</span><br><span class="line">    <span class="attr">withCredentials</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">xsrfCookieName</span>: <span class="string">&quot;Authorization&quot;</span>,</span><br><span class="line">    <span class="attr">xsrfHeaderName</span>: <span class="string">&quot;Authorization&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123; <span class="attr">authDefault</span>: <span class="literal">true</span>, <span class="attr">publicPrefixes</span>: [<span class="string">&quot;/api/pub&quot;</span>] &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-显式覆盖个别公开接口（例如登录-注册）"><a href="#2-显式覆盖个别公开接口（例如登录-注册）" class="headerlink" title="2) 显式覆盖个别公开接口（例如登录&#x2F;注册）"></a>2) 显式覆盖个别公开接口（例如登录&#x2F;注册）</h3><blockquote>
+<p>复杂逻辑：无需继续维护数组；在调用时给 <code>&#123; auth:false &#125;</code>。</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：显式声明无需鉴权</span></span><br><span class="line">http.<span class="title function_">request</span>(<span class="string">&quot;/auth/login&quot;</span>, <span class="string">&quot;POST&quot;</span>, body, &#123; <span class="attr">auth</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">http.<span class="title function_">request</span>(<span class="string">&quot;/auth/register&quot;</span>, <span class="string">&quot;POST&quot;</span>, body, &#123; <span class="attr">auth</span>: <span class="literal">false</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-小修-bug：统一释放键，避免内存泄露"><a href="#3-小修-bug：统一释放键，避免内存泄露" class="headerlink" title="3) 小修 bug：统一释放键，避免内存泄露"></a>3) 小修 bug：统一释放键，避免内存泄露</h3><blockquote>
+<p>你在请求里写的是 <code>__abortController</code>，但错误拦截里读取的是 <code>__ac</code>。统一成同一个键。</p>
+</blockquote>
+<p><strong>在错误拦截器里替换：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：统一用 __abortController</span></span><br><span class="line"><span class="keyword">const</span> abortController = (err?.<span class="property">config</span> <span class="keyword">as</span> <span class="built_in">any</span>)?.<span class="property">__abortController</span> <span class="keyword">as</span></span><br><span class="line">  | <span class="title class_">AbortController</span></span><br><span class="line">  | <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">if</span> (abortController) abortPool.<span class="title function_">delete</span>(abortController);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="为什么这是“更像大厂”的做法"><a href="#为什么这是“更像大厂”的做法" class="headerlink" title="为什么这是“更像大厂”的做法"></a>为什么这是“更像大厂”的做法</h2><ul>
+<li><strong>约定 &gt; 配置</strong>：接口分层（<code>/api/pub/**</code> 公开，其他默认鉴权）是<strong>稳定、低维护</strong>的组织方式；新增公开接口只需放在该前缀下。</li>
+<li><strong>按需覆盖</strong>：极少数“路径不在公开前缀但仍需公开”的接口，用 <code>auth:false</code> <strong>显式声明</strong>，可读性强。</li>
+<li><strong>可扩展</strong>：未来要拆网关&#x2F;多后端时，可用<strong>双实例</strong>进一步隔离（见下方“进阶”）。</li>
+<li><strong>类型友好</strong>：<code>AxiosRequestConfig</code> 扩展 <code>auth?: boolean</code>，IDE 自动提示，避免遗漏。</li>
+</ul>
+<hr>
+<h2 id="进阶可选（按需采纳）"><a href="#进阶可选（按需采纳）" class="headerlink" title="进阶可选（按需采纳）"></a>进阶可选（按需采纳）</h2><h3 id="方案-B：双实例隔离（最常见于中大型前端）"><a href="#方案-B：双实例隔离（最常见于中大型前端）" class="headerlink" title="方案 B：双实例隔离（最常见于中大型前端）"></a>方案 B：双实例隔离（最常见于中大型前端）</h3><blockquote>
+<p>公有与鉴权接口<strong>不同实例</strong>，互不影响，拦截器更简单。</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：一个实例默认鉴权，一个实例默认公开</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> authHttp = <span class="title function_">createAxiosHttp</span>(config, &#123;</span><br><span class="line">  <span class="attr">authDefault</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">publicPrefixes</span>: [],</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> pubHttp = <span class="title function_">createAxiosHttp</span>(config, &#123;</span><br><span class="line">  <span class="attr">authDefault</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">publicPrefixes</span>: [<span class="string">&quot;/api/pub&quot;</span>],</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用时不再传 auth:false</span></span><br><span class="line">pubHttp.<span class="title function_">request</span>(<span class="string">&quot;/api/pub/get_feednews&quot;</span>, <span class="string">&quot;GET&quot;</span>);</span><br><span class="line">authHttp.<span class="title function_">request</span>(<span class="string">&quot;/api/secure/profile&quot;</span>, <span class="string">&quot;GET&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="方案-C：API-分层封装（类型安全）"><a href="#方案-C：API-分层封装（类型安全）" class="headerlink" title="方案 C：API 分层封装（类型安全）"></a>方案 C：API 分层封装（类型安全）</h3><blockquote>
+<p>给每个后端接口包一层函数：在函数里固定 <code>auth:true/false</code>，业务层不再关心 <code>auth</code>。</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：在 API 层固定鉴权语义</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">Api</span> = &#123;</span><br><span class="line">  <span class="attr">getFeedNews</span>: <span class="function">() =&gt;</span></span><br><span class="line">    http.<span class="property">request</span>&lt;<span class="title class_">Feed</span>[]&gt;(<span class="string">&quot;/api/pub/get_feednews&quot;</span>, <span class="string">&quot;GET&quot;</span>, <span class="literal">undefined</span>, &#123;</span><br><span class="line">      <span class="attr">auth</span>: <span class="literal">false</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">  <span class="attr">getProfile</span>: <span class="function">() =&gt;</span> http.<span class="property">request</span>&lt;<span class="title class_">Profile</span>&gt;(<span class="string">&quot;/api/secure/profile&quot;</span>, <span class="string">&quot;GET&quot;</span>), <span class="comment">// 默认为鉴权</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li><strong>最佳实践</strong>：<strong>前缀约定 + 显式覆盖</strong>，别再维护接口白名单数组。</li>
+<li>这样新增公开接口只要放到 <code>/api/pub/**</code>，其余默认鉴权；个别例外 <code>auth:false</code> 即可。</li>
+<li>若项目更复杂，进一步采用<strong>双实例</strong>或<strong>API 分层</strong>，把鉴权语义固化到“调用入口”，彻底杜绝分散判断。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/%E6%98%BE%E5%BC%8F%E8%A6%86%E7%9B%96/" data-id="cmf9bdhko000wqq4z0fg60u0k" data-title="鉴权判定“最佳实践”：别维护白名单数组，用“前缀约定 + 显式覆盖”" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Axios/" rel="tag">Axios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" rel="tag">前端架构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" rel="tag">大厂实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%89%B4%E6%9D%83/" rel="tag">鉴权</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-退出登录要不要-resetAllStores" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E8%A6%81%E4%B8%8D%E8%A6%81-resetAllStores/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T20:45:33.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E8%A6%81%E4%B8%8D%E8%A6%81-resetAllStores/">退出登录要不要 resetAllStores</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li><strong>应该保留 <code>resetAllStores()</code></strong>（避免残留用户数据&#x2F;权限态），但<strong>直接在登出时先重置</strong>会触发一堆 <code>watchEffect</code> &#x2F; <code>watch</code> 的依赖变化，从而在组件卸载前<strong>又发出请求</strong>。</li>
+<li>正确做法：<strong>先撤鉴权与在途请求 → 跳公开页卸载组件 → 最后再 <code>resetAllStores()</code></strong>；同时在页面副作用里用 <code>isAuthenticated</code>&#x2F;<code>isLoggingOut</code> 做<strong>登录短路</strong>。</li>
+</ul>
+<h2 id="推荐顺序（一眼抄）"><a href="#推荐顺序（一眼抄）" class="headerlink" title="推荐顺序（一眼抄）"></a>推荐顺序（一眼抄）</h2><ol>
+<li><strong>标记登出中</strong>（<code>isLoggingOut = true</code>）</li>
+<li><strong>取消所有在途请求</strong>（<code>http.cancelAll()</code>）</li>
+<li><strong>清鉴权</strong>（<code>http.setAuthToken(null)</code> + 清本地 <code>ACCESS_TOKEN/TOKEN_TYPE</code> + 清内存 <code>token</code>）</li>
+<li><strong>跳到公开路由</strong>（<code>router.replace(&#39;/user&#39;)</code>）</li>
+<li><strong>最后</strong> <code>resetAllStores()</code></li>
+<li><strong>清掉登出标记</strong>（<code>isLoggingOut = false</code>）</li>
+</ol>
+<h2 id="仅需修改的代码片段"><a href="#仅需修改的代码片段" class="headerlink" title="仅需修改的代码片段"></a>仅需修改的代码片段</h2><h3 id="A-auth-Store：按顺序登出（在-store-内部做跳转，保证顺序）"><a href="#A-auth-Store：按顺序登出（在-store-内部做跳转，保证顺序）" class="headerlink" title="A) auth Store：按顺序登出（在 store 内部做跳转，保证顺序）"></a>A) <code>auth</code> Store：按顺序登出（在 store 内部做跳转，保证顺序）</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 新增</span></span><br><span class="line"><span class="keyword">import</span> &#123; useRouter &#125; <span class="keyword">from</span> <span class="string">&quot;vue-router&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 新增</span></span><br><span class="line"><span class="keyword">const</span> isLoggingOut = <span class="title function_">ref</span>(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调整 logout（顺序：撤鉴权→跳公开页→reset）</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">logout</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> router = <span class="title function_">useRouter</span>();</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    isLoggingOut.<span class="property">value</span> = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">await</span> http.<span class="title function_">post</span>(<span class="string">&quot;/api/pub/loginOut&quot;</span>).<span class="title function_">catch</span>(<span class="function">() =&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复杂逻辑：统一掐断飞行中的请求，避免“卸载前再打一次”</span></span><br><span class="line">    http.<span class="property">cancelAll</span>?.();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复杂逻辑：清鉴权（默认头 + 本地存储 + 内存）</span></span><br><span class="line">    http.<span class="property">setAuthToken</span>?.(<span class="literal">null</span>);</span><br><span class="line">    storage.<span class="title function_">remove</span>(<span class="variable constant_">ACCESS_TOKEN</span>);</span><br><span class="line">    storage.<span class="title function_">remove</span>(<span class="variable constant_">TOKEN_TYPE</span>);</span><br><span class="line">    token.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">    refresh.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复杂逻辑：先跳到公开页，卸载受保护组件，阻断其副作用</span></span><br><span class="line">    <span class="keyword">await</span> router.<span class="title function_">replace</span>(&#123; <span class="attr">name</span>: <span class="string">&quot;user&quot;</span> &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复杂逻辑：组件已卸载，再重置所有 store，安全不抖动</span></span><br><span class="line">    <span class="title function_">resetAllStores</span>();</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">    <span class="keyword">throw</span> error;</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    isLoggingOut.<span class="property">value</span> = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样<strong>无需</strong>在组件里再 <code>router.push(&#39;/user&#39;)</code>；如果你保留组件层跳转，记得删除那一行以免重复。</p>
+</blockquote>
+<hr>
+<h3 id="B-页面副作用：加“登录短路”（防抖再保险）"><a href="#B-页面副作用：加“登录短路”（防抖再保险）" class="headerlink" title="B) 页面副作用：加“登录短路”（防抖再保险）"></a>B) 页面副作用：加“登录短路”（防抖再保险）</h3><blockquote>
+<p>示例：你在 <code>public/dashboard</code> 页和分析卡片里原来用 <code>watchEffect</code> 拉数据。</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：登出过程/未登录时直接短路，不发请求</span></span><br><span class="line"><span class="keyword">import</span> &#123; useAuthStore &#125; <span class="keyword">from</span> <span class="string">&#x27;@/plugins&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; storeToRefs &#125; <span class="keyword">from</span> <span class="string">&#x27;pinia&#x27;</span></span><br><span class="line"><span class="keyword">const</span> &#123; isAuthenticated, isLoggingOut &#125; = <span class="title function_">storeToRefs</span>(<span class="title function_">useAuthStore</span>())</span><br><span class="line"></span><br><span class="line"><span class="title function_">watch</span>(<span class="comment">/* 精确依赖或 isAuthenticated */</span> , <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!isAuthenticated.<span class="property">value</span>) <span class="keyword">return</span></span><br><span class="line">  <span class="keyword">if</span> (isLoggingOut?.<span class="property">value</span>) <span class="keyword">return</span></span><br><span class="line">  <span class="comment">// 这里再发请求</span></span><br><span class="line">&#125;, &#123; <span class="attr">immediate</span>: <span class="literal">true</span> &#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>说明：<strong>副作用短路 + A 部分的顺序</strong>，两层兜底，基本杜绝“退出时还在请求”。</p>
+</blockquote>
+<hr>
+<h2 id="什么时候可以“不-resetAllStores”？"><a href="#什么时候可以“不-resetAllStores”？" class="headerlink" title="什么时候可以“不 resetAllStores”？"></a>什么时候可以“不 resetAllStores”？</h2><ul>
+<li>仅在<strong>演示&#x2F;临时</strong>场景；正式项目<strong>不建议</strong>。不重置会遗留：上一个用户的<strong>列表数据、选择态、分页、缓存</strong>等，存在隐私与越权风险。</li>
+</ul>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li><strong>不是不要 <code>resetAllStores()</code>，而是要把它放在最后</strong>，并在副作用处加“登录短路”。</li>
+<li>真正能解决“跳转后还在请求”的，是<strong>顺序</strong>（撤鉴权 → 跳公开页 → 重置）+ <strong>取消在途</strong> + <strong>副作用短路</strong>。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E8%A6%81%E4%B8%8D%E8%A6%81-resetAllStores/" data-id="cmf9bdhl70035qq4zdwi8fxmm" data-title="退出登录要不要 resetAllStores" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pinia/" rel="tag">Pinia</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue-Router/" rel="tag">Vue Router</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" rel="tag">副作用控制</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" rel="tag">退出登录</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-仍有请求与401统一处理）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/%E4%BB%8D%E6%9C%89%E8%AF%B7%E6%B1%82%E4%B8%8E401%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T20:15:05.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/%E4%BB%8D%E6%9C%89%E8%AF%B7%E6%B1%82%E4%B8%8E401%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86%EF%BC%89/">Axios 封装优化（登出后“仍有请求”与 401 统一处理）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>只给<strong>需要改的代码片段</strong>；复杂逻辑我都在上一行加了<strong>中文注释</strong>。以下改动基于你贴的这份 <code>http</code> 封装。</p>
+</blockquote>
+<h2 id="1-请求可“集中取消”-退出后不再飞行"><a href="#1-请求可“集中取消”-退出后不再飞行" class="headerlink" title="1) 请求可“集中取消”&amp; 退出后不再飞行"></a>1) 请求可“集中取消”&amp; 退出后不再飞行</h2><p><strong>位置：请求拦截器内（<code>_axios.interceptors.request.use</code>）头部插入</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：为每个请求创建可集中取消的 AbortController，并桥接外部 signal</span></span><br><span class="line"><span class="keyword">const</span> ac = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span><br><span class="line"><span class="keyword">if</span> (req.<span class="property">signal</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> ext = req.<span class="property">signal</span> <span class="keyword">as</span> <span class="title class_">AbortSignal</span>;</span><br><span class="line">  <span class="keyword">if</span> (ext.<span class="property">aborted</span>) ac.<span class="title function_">abort</span>();</span><br><span class="line">  <span class="keyword">else</span> ext.<span class="property">addEventListener</span>?.(<span class="string">&quot;abort&quot;</span>, <span class="function">() =&gt;</span> ac.<span class="title function_">abort</span>());</span><br><span class="line">&#125;</span><br><span class="line">req.<span class="property">signal</span> = ac.<span class="property">signal</span>;</span><br><span class="line">abortPool.<span class="title function_">add</span>(ac);</span><br><span class="line"><span class="comment">// 复杂逻辑：把本次请求的 controller 暂存到 config 上，方便响应阶段释放</span></span><br><span class="line">(req <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">__ac</span> = ac;</span><br></pre></td></tr></table></figure>
+
+<p><strong>位置：响应成功拦截器（<code>res</code> 分支）里，<code>return res</code> 之前插入</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：请求完成后，从取消池中释放 controller</span></span><br><span class="line"><span class="keyword">const</span> ac = (res.<span class="property">config</span> <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">__ac</span> <span class="keyword">as</span> <span class="title class_">AbortController</span> | <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">if</span> (ac) abortPool.<span class="title function_">delete</span>(ac);</span><br></pre></td></tr></table></figure>
+
+<p><strong>位置：响应失败拦截器（<code>err</code> 分支）里，<code>return Promise.reject(err)</code> 之前插入</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：请求失败同样释放 controller，避免池子泄漏</span></span><br><span class="line"><span class="keyword">const</span> ac = (err?.<span class="property">config</span> <span class="keyword">as</span> <span class="built_in">any</span>)?.<span class="property">__ac</span> <span class="keyword">as</span> <span class="title class_">AbortController</span> | <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">if</span> (ac) abortPool.<span class="title function_">delete</span>(ac);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样就和你现有的 <code>cancelAll()</code> 打通了：登出时执行 <code>cancelAll()</code>，所有在途请求立刻中止。</p>
+</blockquote>
+<hr>
+<h2 id="2-“未登录硬拦”鉴权请求（默认需要鉴权）"><a href="#2-“未登录硬拦”鉴权请求（默认需要鉴权）" class="headerlink" title="2) “未登录硬拦”鉴权请求（默认需要鉴权）"></a>2) “未登录硬拦”鉴权请求（默认需要鉴权）</h2><p><strong>位置：请求拦截器内，给你现有的加 Token 逻辑</strong>改为如下**</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：统一鉴权开关——默认需要鉴权，白名单或显式 &#123; auth:false &#125; 不需要</span></span><br><span class="line"><span class="keyword">const</span> needAuth =</span><br><span class="line">  (req <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">auth</span> !== <span class="literal">false</span> &amp;&amp; !noAuthPaths.<span class="title function_">includes</span>(req.<span class="property">url</span> || <span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 复杂逻辑：无 Token 且需要鉴权时，直接阻断请求，避免未登录拉数据</span></span><br><span class="line"><span class="keyword">const</span> at = storage.<span class="title function_">get</span>(<span class="variable constant_">ACCESS_TOKEN</span>);</span><br><span class="line"><span class="keyword">const</span> tt = storage.<span class="title function_">get</span>(<span class="variable constant_">TOKEN_TYPE</span>) || <span class="string">&quot;Bearer&quot;</span>;</span><br><span class="line"><span class="keyword">if</span> (needAuth &amp;&amp; !at) &#123;</span><br><span class="line">  <span class="comment">// 同时中止本次请求，确保不会真正发出</span></span><br><span class="line">  ((req <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">__ac</span> <span class="keyword">as</span> <span class="title class_">AbortController</span> | <span class="literal">undefined</span>)?.<span class="title function_">abort</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;UNAUTHENTICATED&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 复杂逻辑：有 Token 再注入 Authorization 头</span></span><br><span class="line"><span class="keyword">if</span> (needAuth &amp;&amp; at) &#123;</span><br><span class="line">  req.<span class="property">headers</span> = &#123; ...req.<span class="property">headers</span>, <span class="title class_">Authorization</span>: <span class="string">`<span class="subst">$&#123;tt&#125;</span> <span class="subst">$&#123;at&#125;</span>`</span> &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用方式：需要鉴权的 API <strong>不用写任何额外配置</strong>（默认会拦），公开 API（或登录&#x2F;注册）<strong>明确</strong>加上 <code>&#123; auth: false &#125;</code> 即可。</p>
+</blockquote>
+<hr>
+<h2 id="3-统一-401-处理（去掉-useRouter-的非法使用）"><a href="#3-统一-401-处理（去掉-useRouter-的非法使用）" class="headerlink" title="3) 统一 401 处理（去掉 useRouter 的非法使用）"></a>3) 统一 401 处理（去掉 <code>useRouter</code> 的非法使用）</h2><p><strong>位置：你的 <code>codeResponseParser</code> 内，将 401 分支替换为：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：统一未授权处理（不在解析器里用 useRouter）</span></span><br><span class="line"><span class="keyword">if</span> (code === <span class="number">401</span>) &#123;</span><br><span class="line">  storage.<span class="title function_">remove</span>(<span class="variable constant_">ACCESS_TOKEN</span>);</span><br><span class="line">  storage.<span class="title function_">remove</span>(<span class="variable constant_">TOKEN_TYPE</span>);</span><br><span class="line">  <span class="comment">// 复杂逻辑：避免组合式 API 环境限制，使用硬跳转到登录页</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">pathname</span> !== <span class="variable constant_">LOGIN_ROUTE</span>.<span class="property">path</span>) &#123;</span><br><span class="line">    <span class="variable language_">window</span>.<span class="property">location</span>.<span class="title function_">replace</span>(<span class="variable constant_">LOGIN_ROUTE</span>.<span class="property">path</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;未授权，请重新登录&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>位置：响应失败拦截器（<code>err</code> 分支）里，加入 HTTP 401 fallback</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：后端直接返回 HTTP 401 时的兜底处理</span></span><br><span class="line"><span class="keyword">if</span> (err?.<span class="property">response</span>?.<span class="property">status</span> === <span class="number">401</span>) &#123;</span><br><span class="line">  storage.<span class="title function_">remove</span>(<span class="variable constant_">ACCESS_TOKEN</span>);</span><br><span class="line">  storage.<span class="title function_">remove</span>(<span class="variable constant_">TOKEN_TYPE</span>);</span><br><span class="line">  <span class="keyword">if</span> (<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">pathname</span> !== <span class="variable constant_">LOGIN_ROUTE</span>.<span class="property">path</span>) &#123;</span><br><span class="line">    <span class="variable language_">window</span>.<span class="property">location</span>.<span class="title function_">replace</span>(<span class="variable constant_">LOGIN_ROUTE</span>.<span class="property">path</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>说明：<code>useRouter()</code> 不能在解析器（组件外）调用，上面用 <code>window.location.replace</code> 做了上下文无关的重定向。</p>
+</blockquote>
+<hr>
+<h2 id="4-实例方法：供登出调用（清鉴权头-集中取消）"><a href="#4-实例方法：供登出调用（清鉴权头-集中取消）" class="headerlink" title="4) 实例方法：供登出调用（清鉴权头 &amp; 集中取消）"></a>4) 实例方法：供登出调用（清鉴权头 &amp; 集中取消）</h2><p><strong>位置：<code>createAxiosHttp</code> 末尾、<code>return _axios as unknown as AxiosInstance</code> 前插入</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：向实例挂载工具方法，供外部优雅下线使用</span></span><br><span class="line">(_axios <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">cancelAll</span> = cancelAll;</span><br><span class="line">(_axios <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">setAuthToken</span> = <span class="function">(<span class="params"><span class="attr">token</span>?: <span class="built_in">string</span> | <span class="literal">null</span>, <span class="keyword">type</span> = <span class="string">&quot;Bearer&quot;</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (token) &#123;</span><br><span class="line">    _axios.<span class="property">defaults</span>.<span class="property">headers</span>.<span class="property">common</span>.<span class="property">Authorization</span> = <span class="string">`<span class="subst">$&#123;<span class="keyword">type</span>&#125;</span> <span class="subst">$&#123;token&#125;</span>`</span>;</span><br><span class="line">    storage.<span class="title function_">set</span>(<span class="variable constant_">ACCESS_TOKEN</span>, token);</span><br><span class="line">    storage.<span class="title function_">set</span>(<span class="variable constant_">TOKEN_TYPE</span>, <span class="keyword">type</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">delete</span> _axios.<span class="property">defaults</span>.<span class="property">headers</span>.<span class="property">common</span>.<span class="property">Authorization</span>;</span><br><span class="line">    storage.<span class="title function_">remove</span>(<span class="variable constant_">ACCESS_TOKEN</span>);</span><br><span class="line">    storage.<span class="title function_">remove</span>(<span class="variable constant_">TOKEN_TYPE</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样在 <code>logout()</code> 里可以写：<code>http.cancelAll?.(); http.setAuthToken?.(null)</code>。</p>
+</blockquote>
+<hr>
+<h2 id="5-（可选）请求方法支持-formdata-与-auth-透传"><a href="#5-（可选）请求方法支持-formdata-与-auth-透传" class="headerlink" title="5) （可选）请求方法支持 formdata 与 auth 透传"></a>5) （可选）请求方法支持 <code>formdata</code> 与 <code>auth</code> 透传</h2><p><strong>位置：你重写的 <code>(_axios as any).request = async function ...</code> 的</strong>函数签名<strong>与</strong>组装 <code>cfg</code><strong>部分替换为：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：扩展 contentType，支持 formdata；透传 &#123; auth?: boolean, signal?: AbortSignal &#125;</span></span><br><span class="line">(_axios <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">request</span> = <span class="keyword">async</span> <span class="keyword">function</span> &lt;T, P = <span class="title class_">RequestParams</span>&gt;(</span><br><span class="line">  <span class="attr">url</span>: <span class="built_in">string</span>,</span><br><span class="line">  <span class="attr">method</span>: <span class="title class_">Method</span> = <span class="string">&quot;GET&quot;</span>,</span><br><span class="line">  <span class="attr">params</span>?: P,</span><br><span class="line">  <span class="attr">reqCfg</span>?: <span class="title class_">AxiosRequestConfig</span> &amp; &#123; <span class="attr">auth</span>?: <span class="built_in">boolean</span>; <span class="attr">signal</span>?: <span class="title class_">AbortSignal</span> &#125;,</span><br><span class="line">  <span class="attr">contentType</span>: <span class="string">&quot;json&quot;</span> | <span class="string">&quot;urlencoded&quot;</span> | <span class="string">&quot;formdata&quot;</span> = <span class="string">&quot;json&quot;</span></span><br><span class="line">): <span class="title class_">Promise</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="attr">cfg</span>: <span class="title class_">AxiosRequestConfig</span> &amp; &#123; <span class="attr">auth</span>?: <span class="built_in">boolean</span> &#125; = &#123;</span><br><span class="line">    url,</span><br><span class="line">    method,</span><br><span class="line">    ...reqCfg,</span><br><span class="line">    <span class="attr">headers</span>: &#123; ...reqCfg?.<span class="property">headers</span> &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (method === <span class="string">&quot;GET&quot;</span> || method === <span class="string">&quot;HEAD&quot;</span>) &#123;</span><br><span class="line">    cfg.<span class="property">params</span> = params;</span><br><span class="line">    cfg.<span class="property">paramsSerializer</span> = <span class="function">(<span class="params">d</span>) =&gt;</span></span><br><span class="line">      qs.<span class="title function_">stringify</span>(d, &#123; <span class="attr">indices</span>: <span class="literal">false</span>, <span class="attr">skipNulls</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 复杂逻辑：根据 contentType 选择编码方式</span></span><br><span class="line">    <span class="keyword">if</span> (contentType === <span class="string">&quot;formdata&quot;</span>) cfg.<span class="property">data</span> = <span class="title function_">toFormData</span>(params <span class="keyword">as</span> <span class="built_in">any</span>);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (contentType === <span class="string">&quot;urlencoded&quot;</span>)</span><br><span class="line">      cfg.<span class="property">data</span> = <span class="title function_">toUrlencoded</span>(params ?? (&#123;&#125; <span class="keyword">as</span> <span class="built_in">any</span>));</span><br><span class="line">    <span class="keyword">else</span> cfg.<span class="property">data</span> = params;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (contentType === <span class="string">&quot;urlencoded&quot;</span>)</span><br><span class="line">      cfg.<span class="property">headers</span> = &#123;</span><br><span class="line">        ...cfg.<span class="property">headers</span>,</span><br><span class="line">        <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>,</span><br><span class="line">      &#125;;</span><br><span class="line">    <span class="keyword">if</span> (contentType === <span class="string">&quot;json&quot;</span>)</span><br><span class="line">      cfg.<span class="property">headers</span> = &#123; ...cfg.<span class="property">headers</span>, <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span> &#125;;</span><br><span class="line">    <span class="comment">// formdata 让浏览器自动带 boundary，不手动设 Content-Type</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">nativeRequest</span>(cfg) <span class="keyword">as</span> <span class="title class_">Promise</span>&lt;T&gt;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>有了 <code>&#123; auth?: boolean &#125;</code>，你在公开接口（如 <code>/api/pub/get_feednews</code>）调用时可以：</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.<span class="title function_">request</span>(<span class="string">&quot;/api/pub/get_feednews&quot;</span>, <span class="string">&quot;GET&quot;</span>, <span class="literal">undefined</span>, &#123; <span class="attr">auth</span>: <span class="literal">false</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-（配合改动）登出时的两行调用（在你的-authStore-logout-里加）"><a href="#6-（配合改动）登出时的两行调用（在你的-authStore-logout-里加）" class="headerlink" title="6) （配合改动）登出时的两行调用（在你的 authStore.logout() 里加）"></a>6) （配合改动）登出时的两行调用（在你的 <code>authStore.logout()</code> 里加）</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：登出时立即中止所有在途请求 + 清鉴权头</span></span><br><span class="line">http.<span class="property">cancelAll</span>?.();</span><br><span class="line">http.<span class="property">setAuthToken</span>?.(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="7-（可选）类型补充，便于在项目里显式写-auth"><a href="#7-（可选）类型补充，便于在项目里显式写-auth" class="headerlink" title="7) （可选）类型补充，便于在项目里显式写 auth"></a>7) （可选）类型补充，便于在项目里显式写 <code>auth</code></h2><p><strong>新建：<code>types/axios.d.ts</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：为 AxiosRequestConfig 增加自定义字段 auth</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;axios&quot;</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">AxiosRequestConfig</span> &#123;</span><br><span class="line">    <span class="attr">auth</span>?: <span class="built_in">boolean</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="验证-Checklist"><a href="#验证-Checklist" class="headerlink" title="验证 Checklist"></a>验证 Checklist</h3><ul>
+<li>退出登录瞬间 Network 面板<strong>无新的业务请求</strong>（只有静态资源预取不算）。</li>
+<li>任何标记 <code>&#123; auth: true | 默认 &#125;</code> 的请求在<strong>无 Token</strong>时不会发出。</li>
+<li>后端返回 <strong>HTTP 401</strong> 或 <strong>业务码 401</strong>，都能统一清理并跳到登录页。</li>
+<li><code>cancelAll()</code> 能把“已发起未完成”的请求<strong>立即中断</strong>。</li>
+</ul>
+<p>以上改完，你截图里“跳转后还发请求”的现象就会消失；即使有极短时序触发，也会被 <strong>AbortController</strong> 和 <strong>未登录硬拦</strong>兜住。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/%E4%BB%8D%E6%9C%89%E8%AF%B7%E6%B1%82%E4%B8%8E401%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86%EF%BC%89/" data-id="cmf9bdhkn000sqq4z9q526xs8" data-title="Axios 封装优化（登出后“仍有请求”与 401 统一处理）" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/401/" rel="tag">401</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AbortController/" rel="tag">AbortController</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Axios/" rel="tag">Axios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pinia/" rel="tag">Pinia</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue-3/" rel="tag">Vue 3</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" rel="tag">未登录拦截</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-user-会不会匹配根路由-‘-’？" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/user-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E5%8C%B9%E9%85%8D%E6%A0%B9%E8%B7%AF%E7%94%B1-%E2%80%98-%E2%80%99%EF%BC%9F/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T19:00:06.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/user-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E5%8C%B9%E9%85%8D%E6%A0%B9%E8%B7%AF%E7%94%B1-%E2%80%98-%E2%80%99%EF%BC%9F/">/user 会不会匹配根路由 ‘/’？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: “&#x2F;user 会不会匹配根路由 ‘&#x2F;’？”<br>date: 2025-09-05<br>tags: [Vue Router 4, 路由匹配, 懒加载]</p>
+<hr>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>不会。<code>/user</code> <strong>不会</strong>匹配到你定义的根路由 <code>&#123; path: &#39;/&#39; &#125;</code>。它只会匹配到<strong>自己</strong>这条顶层路由 <code>&#123; path: &#39;/user&#39; &#125;</code>，因此也<strong>不会</strong>渲染 <code>@/views/(public)/layout.vue</code>。</p>
+<h2 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h2><ul>
+<li>Vue Router 使用基于 <code>path-to-regexp</code> 的<strong>精确匹配</strong>。<code>&#39;/&#39;</code> 不是“前缀匹配一切”，只匹配根路径本身，或作为<strong>父路由</strong>被命中的<strong>相对子路由</strong>所包含。</li>
+<li>你现在把 <code>/user</code> 定义为<strong>顶层</strong>路由（不在 <code>children</code> 里），所以跳转到 <code>/user</code> 时，<code>to.matched</code> 里只有 <code>/user</code> 这一条记录，不会包含 <code>&#39;/&#39;</code> 那个布局。</li>
+</ul>
+<h2 id="什么时候会经过-布局？"><a href="#什么时候会经过-布局？" class="headerlink" title="什么时候会经过 &#39;/&#39; 布局？"></a>什么时候会经过 <code>&#39;/&#39;</code> 布局？</h2><p>只有当你把 <strong>子路由写成相对路径</strong> 时，例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：相对子路由会被拼成 /user，且会渲染父布局</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">  <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;@/views/(public)/layout.vue&#x27;</span>),</span><br><span class="line">  <span class="attr">children</span>: [</span><br><span class="line">    &#123; <span class="attr">path</span>: <span class="string">&#x27;user&#x27;</span>, <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;@/views/user/page.vue&#x27;</span>) &#125; <span class="comment">// 注意没有前导斜杠</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这种写法才会让 <code>/user</code> 经过 <code>layout.vue</code>。而你当前是：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">path</span>: <span class="string">&#x27;/user&#x27;</span>, <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;@/views/user/page.vue&#x27;</span>) &#125; <span class="comment">// 顶层、绝对路径</span></span><br></pre></td></tr></table></figure>
+
+<p>两者行为不同。</p>
+<h2 id="快速自检（可在控制台验证）"><a href="#快速自检（可在控制台验证）" class="headerlink" title="快速自检（可在控制台验证）"></a>快速自检（可在控制台验证）</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：查看匹配链，确认是否包含根布局</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(router.<span class="title function_">resolve</span>(<span class="string">&quot;/user&quot;</span>).<span class="property">matched</span>.<span class="title function_">map</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> r.<span class="property">path</span>));</span><br><span class="line"><span class="comment">// 期望：[&#x27;/user&#x27;]，而不是 [&#x27;/&#x27;, &#x27;/user&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/user-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E5%8C%B9%E9%85%8D%E6%A0%B9%E8%B7%AF%E7%94%B1-%E2%80%98-%E2%80%99%EF%BC%9F/" data-id="cmf9bdhkl000lqq4z78csgcc0" data-title="/user 会不会匹配根路由 ‘/’？" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-退出登录后跳转与请求是否会发出" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E5%90%8E%E8%B7%B3%E8%BD%AC%E4%B8%8E%E8%AF%B7%E6%B1%82%E6%98%AF%E5%90%A6%E4%BC%9A%E5%8F%91%E5%87%BA/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T18:55:38.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E5%90%8E%E8%B7%B3%E8%BD%AC%E4%B8%8E%E8%AF%B7%E6%B1%82%E6%98%AF%E5%90%A6%E4%BC%9A%E5%8F%91%E5%87%BA/">退出登录后跳转与请求是否会发出</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: 退出登录后跳转与请求是否会发出？（Vue Router 4 实战）<br>date: 2025-09-05<br>tags: [Vue, Vue Router, Pinia, Axios, 登录, 退出]</p>
+<hr>
+<h2 id="TL-DR（先给结论）"><a href="#TL-DR（先给结论）" class="headerlink" title="TL;DR（先给结论）"></a>TL;DR（先给结论）</h2><ul>
+<li><code>router.push(&#39;/user&#39;)</code> <strong>不会</strong>去加载 <code>@/views/(public)/layout.vue</code>；<code>/user</code> 是独立的<strong>公开路由</strong>，全局前置守卫会<strong>先</strong>跑，再决定是否进入目标路由，受保护布局组件不会被解析&#x2F;执行。</li>
+<li>真正会“误发请求”的常见来源是：① 旧页中<strong>已发起但未取消</strong>的请求；② <code>&lt;keep-alive&gt;</code> 相关的激活&#x2F;停用副作用；③ 你在 HTTP 层没有对“无 Token 的鉴权请求”做<strong>硬性拦截</strong>。</li>
+<li>给你三道保险：<strong>彻底清 Token + 取消未决请求 + 请求层强拦</strong>（可选再加根路由 <code>beforeEnter</code>）。</li>
+</ul>
+<hr>
+<h2 id="最小修改（仅给需要改的代码片段）"><a href="#最小修改（仅给需要改的代码片段）" class="headerlink" title="最小修改（仅给需要改的代码片段）"></a>最小修改（仅给需要改的代码片段）</h2><blockquote>
+<p>说明：按你的偏好，只给<strong>需修改</strong>片段；复杂逻辑在上一行加注释。</p>
+</blockquote>
+<h3 id="1-auth-Store：退出时同时清理本地存储-Token、取消所有请求、清默认头"><a href="#1-auth-Store：退出时同时清理本地存储-Token、取消所有请求、清默认头" class="headerlink" title="1) auth Store：退出时同时清理本地存储 Token、取消所有请求、清默认头"></a>1) <code>auth</code> Store：退出时同时清理本地存储 Token、取消所有请求、清默认头</h3><p><strong>文件：</strong> <code>useAuthStore</code> 所在文件</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 新增导入</span></span><br><span class="line"><span class="keyword">import</span> storage <span class="keyword">from</span> <span class="string">&quot;store&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="variable constant_">STORAGE_KEYS</span> &#125; <span class="keyword">from</span> <span class="string">&quot;@/constants&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="variable constant_">ACCESS_TOKEN</span> &#125; = <span class="variable constant_">STORAGE_KEYS</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 新增：统一清空本地 Token（Pinia + 本地存储）</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">clearToken</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 复杂逻辑：双通道清理，避免路由守卫误判已登录</span></span><br><span class="line">  token.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">  refresh.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">  storage.<span class="title function_">remove</span>(<span class="variable constant_">ACCESS_TOKEN</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调整 logout 函数（仅贴需要增加的片段）</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">logout</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> http.<span class="title function_">post</span>(<span class="string">&quot;/api/pub/loginOut&quot;</span>).<span class="title function_">catch</span>(<span class="function">() =&gt;</span> &#123;&#125;);</span><br><span class="line">    <span class="comment">// 复杂逻辑：优雅下线——取消所有还在飞行中的请求，防止“未登录也发请求”</span></span><br><span class="line">    http.<span class="property">cancelAll</span>?.();</span><br><span class="line">    <span class="comment">// 复杂逻辑：清掉默认鉴权头，防止后续请求夹带旧 Token</span></span><br><span class="line">    http.<span class="property">setAuthToken</span>?.(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">clearToken</span>();</span><br><span class="line">    <span class="title function_">resetAllStores</span>();</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">    <span class="keyword">throw</span> error;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>你现在的调用 <code>await authStore.logout(); router.push(&#39;/user&#39;)</code> 没问题；若不想留下历史记录，可换成：</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可选：避免回退到已登录页</span></span><br><span class="line"><span class="keyword">await</span> router.<span class="title function_">replace</span>(&#123; <span class="attr">name</span>: <span class="string">&quot;user&quot;</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-http-工具：加“全局取消池-无-Token-时硬拦需要鉴权的请求”"><a href="#2-http-工具：加“全局取消池-无-Token-时硬拦需要鉴权的请求”" class="headerlink" title="2) http 工具：加“全局取消池 + 无 Token 时硬拦需要鉴权的请求”"></a>2) <code>http</code> 工具：加“全局取消池 + 无 Token 时硬拦需要鉴权的请求”</h3><p><strong>文件：</strong> 你的 <code>@/utils/http</code>（或创建一个轻量封装）</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 新增：全局取消池</span></span><br><span class="line"><span class="keyword">const</span> abortPool = <span class="keyword">new</span> <span class="title class_">Set</span>&lt;<span class="title class_">AbortController</span>&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">cancelAll</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 复杂逻辑：退出登录时集中取消所有未决请求</span></span><br><span class="line">  abortPool.<span class="title function_">forEach</span>(<span class="function">(<span class="params">c</span>) =&gt;</span> c.<span class="title function_">abort</span>());</span><br><span class="line">  abortPool.<span class="title function_">clear</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">setAuthToken</span>(<span class="params"><span class="attr">token</span>?: <span class="built_in">string</span> | <span class="literal">null</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 复杂逻辑：动态设置/清除默认鉴权头</span></span><br><span class="line">  <span class="keyword">if</span> (token) &#123;</span><br><span class="line">    axios.<span class="property">defaults</span>.<span class="property">headers</span>.<span class="property">common</span>.<span class="property">Authorization</span> = <span class="string">`Bearer <span class="subst">$&#123;token&#125;</span>`</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">delete</span> axios.<span class="property">defaults</span>.<span class="property">headers</span>.<span class="property">common</span>.<span class="property">Authorization</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在请求拦截里增加以下片段（保留你已有逻辑）</span></span><br><span class="line">http.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(<span class="function">(<span class="params">config</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 复杂逻辑：为每个请求绑定 AbortController，纳入全局取消池</span></span><br><span class="line">  <span class="keyword">const</span> ac = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span><br><span class="line">  (config <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">signal</span> = ac.<span class="property">signal</span>;</span><br><span class="line">  abortPool.<span class="title function_">add</span>(ac);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：对标记了 &#123; auth: true &#125; 的请求做硬性校验，无 Token 直接终止</span></span><br><span class="line">  <span class="keyword">const</span> needAuth = (config <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">auth</span> === <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">const</span> token = storage.<span class="title function_">get</span>(<span class="variable constant_">ACCESS_TOKEN</span>);</span><br><span class="line">  <span class="keyword">if</span> (needAuth &amp;&amp; !token) &#123;</span><br><span class="line">    ac.<span class="title function_">abort</span>();</span><br><span class="line">    <span class="comment">// 用标准错误中断；也可自定义错误码</span></span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> axios.<span class="title class_">Cancel</span>(<span class="string">&quot;UNAUTHENTICATED&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在响应/错误拦截里释放对应的 controller（保持池干净）</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">detach</span> = (<span class="params"><span class="attr">cfg</span>?: <span class="built_in">any</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (!cfg?.<span class="property">signal</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> ac <span class="keyword">of</span> abortPool) &#123;</span><br><span class="line">    <span class="keyword">if</span> (cfg.<span class="property">signal</span> === ac.<span class="property">signal</span>) &#123;</span><br><span class="line">      abortPool.<span class="title function_">delete</span>(ac);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">http.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span><br><span class="line">  <span class="function">(<span class="params">resp</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">detach</span>(resp.<span class="property">config</span>);</span><br><span class="line">    <span class="keyword">return</span> resp;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">detach</span>(err?.<span class="property">config</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(err);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用方式：<strong>凡是需要登录才能访问的接口</strong>，在调用时带上 <code>&#123; auth: true &#125;</code>：</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：打上鉴权标记，无 Token 时在请求层被硬拦</span></span><br><span class="line">http.<span class="title function_">get</span>(<span class="string">&quot;/api/secure/profile&quot;</span>, &#123; <span class="attr">auth</span>: <span class="literal">true</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-根布局路由（可选加固）：未登录禁止进入，阻止懒加载-layout-vue"><a href="#3-根布局路由（可选加固）：未登录禁止进入，阻止懒加载-layout-vue" class="headerlink" title="3) 根布局路由（可选加固）：未登录禁止进入，阻止懒加载 layout.vue"></a>3) 根布局路由（可选加固）：未登录禁止进入，阻止懒加载 <code>layout.vue</code></h3><blockquote>
+<p>这是“冗余但稳”的<strong>第四道锁</strong>：即使有人误配了守卫，根布局也进不去。</p>
+</blockquote>
+<p><strong>文件：</strong> 路由表所在文件</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 新增导入（如果本文件里还没有）</span></span><br><span class="line"><span class="keyword">import</span> storage <span class="keyword">from</span> <span class="string">&quot;store&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="variable constant_">STORAGE_KEYS</span> &#125; <span class="keyword">from</span> <span class="string">&quot;@/constants&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="variable constant_">LOGIN_ROUTE</span> &#125; <span class="keyword">from</span> <span class="string">&quot;./constants&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="variable constant_">ACCESS_TOKEN</span> &#125; = <span class="variable constant_">STORAGE_KEYS</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 path: &#x27;/&#x27; 那个根路由对象上新增 beforeEnter（只贴新增的属性）</span></span><br><span class="line"><span class="attr">beforeEnter</span>: <span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 复杂逻辑：未登录直接拒绝进入受保护根布局，避免解析/执行 layout.vue</span></span><br><span class="line">  <span class="keyword">const</span> token = storage.<span class="title function_">get</span>(<span class="variable constant_">ACCESS_TOKEN</span>)</span><br><span class="line">  <span class="keyword">if</span> (!token) <span class="keyword">return</span> <span class="title function_">next</span>(&#123; <span class="attr">name</span>: <span class="variable constant_">LOGIN_ROUTE</span>.<span class="property">name</span>, <span class="attr">replace</span>: <span class="literal">true</span> &#125;)</span><br><span class="line">  <span class="title function_">next</span>()</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="为什么你会怀疑-layout-vue-被加载？"><a href="#为什么你会怀疑-layout-vue-被加载？" class="headerlink" title="为什么你会怀疑 layout.vue 被加载？"></a>为什么你会怀疑 <code>layout.vue</code> 被加载？</h2><p>常见场景有三种（任选对号入座）：</p>
+<ol>
+<li><strong>旧页未决请求</strong>：你还在“受保护页面”时就发出了请求，<code>push(&#39;/user&#39;)</code> 后这些请求仍会完成，除非你<strong>主动取消</strong>（上面第 2 步已解决）。</li>
+<li><strong><code>&lt;keep-alive&gt;</code> 激活&#x2F;停用副作用</strong>：离开&#x2F;进入时有数据拉取，需要在未登录时短路。</li>
+<li><strong>预加载 Chunk</strong>：如果手动开启过 <code>webpackPrefetch</code> 等，会看到静态资源拉取，但这不等同于“业务请求”发出。</li>
+</ol>
+<hr>
+<h2 id="排查清单（按优先级）"><a href="#排查清单（按优先级）" class="headerlink" title="排查清单（按优先级）"></a>排查清单（按优先级）</h2><ol>
+<li>退出后 <code>localStorage</code>&#x2F;<code>store</code> 里是否还残留 <code>ACCESS_TOKEN</code>？（第 1 步已处理）</li>
+<li>所有<strong>需要登录</strong>的接口是否统一加了 <code>&#123; auth: true &#125;</code> 并被请求拦截器“硬拦”？（第 2 步）</li>
+<li>页面里有没有在 <code>onMounted</code> <strong>直接拉数据</strong>但无 Token 校验的逻辑？（在组件中加早返回）</li>
+<li>是否使用了 <code>&lt;keep-alive&gt;</code> 并在 <code>activated</code>&#x2F;<code>deactivated</code> 发请求？（同样做登录短路）</li>
+<li>仍担心懒加载？给根布局加 <code>beforeEnter</code>（第 3 步“加固锁”）。</li>
+</ol>
+<hr>
+<h2 id="你最关心的那句直白话"><a href="#你最关心的那句直白话" class="headerlink" title="你最关心的那句直白话"></a>你最关心的那句直白话</h2><ul>
+<li><strong>不会</strong>：<code>router.push(&#39;/user&#39;)</code> 不会去跑 <code>@/views/(public)/layout.vue</code> 里的业务请求。</li>
+<li><strong>会</strong>：如果<strong>旧页</strong>的请求已经发出且你没有取消，它们<strong>会继续完成</strong>。上面给的三段修改能把这类“该停的请求”全部截住。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E5%90%8E%E8%B7%B3%E8%BD%AC%E4%B8%8E%E8%AF%B7%E6%B1%82%E6%98%AF%E5%90%A6%E4%BC%9A%E5%8F%91%E5%87%BA/" data-id="cmf9bdhks0017qq4z9ns13h5q" data-title="退出登录后跳转与请求是否会发出" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Vue项目请求处理优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/Vue%E9%A1%B9%E7%9B%AE%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T18:07:15.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/Vue%E9%A1%B9%E7%9B%AE%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96/">Vue项目pinia中的Store中的请求时机管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>现在的我的 vue+vite+pinia 项目有个问题，我的有些请求，我在 store 中就直接调用，但 store 的执行时机很早，这时用户可能没有登录，发出这些需要 token 的请求是不合适的，但如果我们把请求放到具体页面中，那每个页面都要请求，违背了我们放入 store 中的初衷，如何处理？</p>
+<p><strong>核心结论</strong>：</p>
+<blockquote>
+<p><strong>把“请求放在 Store”与“何时触发请求”解耦</strong>。<br>数据仍由 Pinia Store 管，但所有“首次加载&#x2F;刷新”的触发统一由<strong>受保护布局(ProtectedLayout)<strong>或</strong>集中启动钩子</strong>在“已登录且当前路由需要鉴权”时一次性触发。<br>请求层（Axios 封装）负责：自动带 Token、401 统一刷新&#x2F;重试、（可选）对标记 <code>auth</code> 的请求在无 Token 时直接拒绝。</p>
+</blockquote>
+<h2 id="路由：只给受保护页面打上-requiresAuth"><a href="#路由：只给受保护页面打上-requiresAuth" class="headerlink" title="路由：只给受保护页面打上 requiresAuth"></a>路由：只给受保护页面打上 <code>requiresAuth</code></h2><p><strong>修改位置：<code>src/router/index.ts</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在需要登录的路由上增加 meta.requiresAuth</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/dashboard&#x27;</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;dashboard&#x27;</span>,</span><br><span class="line">  <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;@/pages/dashboard/index.vue&#x27;</span>),</span><br><span class="line">  <span class="attr">meta</span>: &#123; <span class="attr">requiresAuth</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="受保护布局：只在“已登录-受保护路由”时触发各-Store-的初始化"><a href="#受保护布局：只在“已登录-受保护路由”时触发各-Store-的初始化" class="headerlink" title="受保护布局：只在“已登录 &amp;&amp; 受保护路由”时触发各 Store 的初始化"></a>受保护布局：只在“已登录 &amp;&amp; 受保护路由”时触发各 Store 的初始化</h2><p><strong>新增文件：<code>src/composables/useAppBootstrap.ts</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; watch &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useRouter &#125; <span class="keyword">from</span> <span class="string">&quot;vue-router&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useAuthStore &#125; <span class="keyword">from</span> <span class="string">&quot;@/stores/auth&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useUserStore &#125; <span class="keyword">from</span> <span class="string">&quot;@/stores/user&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useXStore &#125; <span class="keyword">from</span> <span class="string">&quot;@/stores/x&quot;</span>; <span class="comment">// 你的其他数据模块按需引入</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">useAppBootstrap</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> router = <span class="title function_">useRouter</span>();</span><br><span class="line">  <span class="keyword">const</span> auth = <span class="title function_">useAuthStore</span>();</span><br><span class="line">  <span class="keyword">const</span> user = <span class="title function_">useUserStore</span>();</span><br><span class="line">  <span class="keyword">const</span> x = <span class="title function_">useXStore</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：仅在“已登录 &amp;&amp; 当前路由需要鉴权”时做一次性初始化（可幂等）</span></span><br><span class="line">  <span class="title function_">watch</span>(</span><br><span class="line">    [</span><br><span class="line">      <span class="function">() =&gt;</span> auth.<span class="property">isAuthenticated</span>,</span><br><span class="line">      <span class="function">() =&gt;</span> router.<span class="property">currentRoute</span>.<span class="property">value</span>.<span class="property">meta</span>.<span class="property">requiresAuth</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="title function_">async</span> ([ok, need]) =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (ok &amp;&amp; need) &#123;</span><br><span class="line">        <span class="comment">// 复杂逻辑：各 store 的 init() 必须“幂等”，重复调用不重复发请求</span></span><br><span class="line">        <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([user.<span class="title function_">init</span>(), x.<span class="title function_">init</span>()]);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123; <span class="attr">immediate</span>: <span class="literal">true</span> &#125;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在你的受保护布局&#x2F;根布局里调用（例如 <code>src/layouts/ProtectedLayout.vue</code>）</strong>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &lt;script setup&gt;</span></span><br><span class="line"><span class="comment">// 复杂逻辑：在受保护布局挂载时调用集中引导</span></span><br><span class="line"><span class="keyword">import</span> &#123; useAppBootstrap &#125; <span class="keyword">from</span> <span class="string">&quot;@/composables/useAppBootstrap&quot;</span>;</span><br><span class="line"><span class="title function_">useAppBootstrap</span>();</span><br><span class="line"><span class="comment">// &lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果你没有单独的布局文件，可以在 <code>App.vue</code> 里根据 <code>route.meta.requiresAuth</code> 切出一个“受保护区域”再调用 <code>useAppBootstrap()</code>。</p>
+</blockquote>
+<hr>
+<h2 id="Store：移除“定义即请求”的副作用，提供幂等-init"><a href="#Store：移除“定义即请求”的副作用，提供幂等-init" class="headerlink" title="Store：移除“定义即请求”的副作用，提供幂等 init()"></a>Store：移除“定义即请求”的副作用，提供幂等 <code>init()</code></h2><p><strong>修改位置：<code>src/stores/user.ts</code>（示例）</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除：顶层的立即请求（例如 defineStore 里一创建就 fetch 的代码）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 新增：幂等 init()</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">_initPromise</span>: <span class="title class_">Promise</span>&lt;<span class="built_in">void</span>&gt; | <span class="literal">null</span> = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> useUserStore = <span class="title function_">defineStore</span>(<span class="string">&quot;user&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> profile = ref&lt;<span class="title class_">User</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：单例 Promise，保证多处调用只触发一次真实请求</span></span><br><span class="line">  <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">init</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (_initPromise) <span class="keyword">return</span> _initPromise;</span><br><span class="line">    _initPromise = (<span class="title function_">async</span> () =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (profile.<span class="property">value</span>) <span class="keyword">return</span>;</span><br><span class="line">      <span class="keyword">const</span> &#123; data &#125; = <span class="keyword">await</span> http.<span class="title function_">get</span>(<span class="string">&quot;/me&quot;</span>, &#123; <span class="attr">meta</span>: &#123; <span class="attr">auth</span>: <span class="literal">true</span> &#125; &#125;);</span><br><span class="line">      profile.<span class="property">value</span> = data;</span><br><span class="line">    &#125;)();</span><br><span class="line">    <span class="keyword">return</span> _initPromise;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 可选：在登出时清理，便于下次重新 init</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">reset</span>(<span class="params"></span>) &#123;</span><br><span class="line">    profile.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">    _initPromise = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123; profile, init, reset &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>你的其他 Store（如 <code>x.ts</code>、<code>projects.ts</code> 等）都按这个**“删除副作用 + 提供幂等 init()”**的模式改一遍。</p>
+</blockquote>
+<hr>
+<h2 id="请求层：自动带-Token、401-统一刷新并队列重试、无-Token-阻断受保护请求"><a href="#请求层：自动带-Token、401-统一刷新并队列重试、无-Token-阻断受保护请求" class="headerlink" title="请求层：自动带 Token、401 统一刷新并队列重试、无 Token 阻断受保护请求"></a>请求层：自动带 Token、401 统一刷新并队列重试、无 Token 阻断受保护请求</h2><p><strong>修改位置：<code>src/http/axios.ts</code>（或你的请求封装文件）</strong></p>
+<p><strong>（1）扩展 Axios 类型，支持 <code>meta.auth</code> 与 <code>_retry</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：为请求增加自定义元信息与重试标记</span></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;axios&quot;</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">AxiosRequestConfig</span> &#123;</span><br><span class="line">    <span class="attr">meta</span>?: &#123; <span class="attr">auth</span>?: <span class="built_in">boolean</span> &#125;;</span><br><span class="line">    <span class="attr">_retry</span>?: <span class="built_in">boolean</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）请求拦截：自动加 Authorization；无 Token 且需要鉴权时直接拒绝</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useAuthStore &#125; <span class="keyword">from</span> <span class="string">&quot;@/stores/auth&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;@/router&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> http = axios.<span class="title function_">create</span>(&#123; <span class="attr">baseURL</span>: <span class="keyword">import</span>.<span class="property">meta</span>.<span class="property">env</span>.<span class="property">VITE_API_BASE</span> &#125;);</span><br><span class="line"></span><br><span class="line">http.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(<span class="function">(<span class="params">config</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> auth = <span class="title function_">useAuthStore</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：仅对标记了 meta.auth 的请求自动带 token</span></span><br><span class="line">  <span class="keyword">if</span> (config.<span class="property">meta</span>?.<span class="property">auth</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!auth.<span class="property">token</span>) &#123;</span><br><span class="line">      <span class="comment">// 复杂逻辑：阻断未登录时的鉴权请求（避免在 /user/login 等页面误发）</span></span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;AUTH_REQUIRED&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    config.<span class="property">headers</span> = &#123;</span><br><span class="line">      ...config.<span class="property">headers</span>,</span><br><span class="line">      <span class="title class_">Authorization</span>: <span class="string">`Bearer <span class="subst">$&#123;auth.token&#125;</span>`</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>（3）响应拦截：统一处理 401，带刷新队列（避免并发多次刷新）</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> refreshing = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">waitQueue</span>: <span class="title class_">Array</span>&lt;<span class="function">() =&gt;</span> <span class="built_in">void</span>&gt; = [];</span><br><span class="line"></span><br><span class="line">http.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span><br><span class="line">  <span class="function">(<span class="params">r</span>) =&gt;</span> r,</span><br><span class="line">  <span class="title function_">async</span> (error) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> auth = <span class="title function_">useAuthStore</span>();</span><br><span class="line">    <span class="keyword">const</span> &#123; response, config &#125; = error || &#123;&#125;;</span><br><span class="line">    <span class="keyword">if</span> (response?.<span class="property">status</span> === <span class="number">401</span> &amp;&amp; config &amp;&amp; !config.<span class="property">_retry</span>) &#123;</span><br><span class="line">      <span class="comment">// 复杂逻辑：给当前请求打 _retry，防止递归</span></span><br><span class="line">      config.<span class="property">_retry</span> = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!refreshing) &#123;</span><br><span class="line">        refreshing = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">await</span> auth.<span class="title function_">refreshToken</span>(); <span class="comment">// 你在 auth store 中实现这个方法</span></span><br><span class="line">          refreshing = <span class="literal">false</span>;</span><br><span class="line">          <span class="comment">// 复杂逻辑：刷新成功后，放行所有队列中的请求</span></span><br><span class="line">          waitQueue.<span class="title function_">splice</span>(<span class="number">0</span>).<span class="title function_">forEach</span>(<span class="function">(<span class="params">fn</span>) =&gt;</span> <span class="title function_">fn</span>());</span><br><span class="line">          <span class="keyword">return</span> <span class="title function_">http</span>(config);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">          refreshing = <span class="literal">false</span>;</span><br><span class="line">          <span class="comment">// 复杂逻辑：刷新失败，清空队列并跳转登录</span></span><br><span class="line">          waitQueue.<span class="title function_">splice</span>(<span class="number">0</span>).<span class="title function_">forEach</span>(<span class="function">(<span class="params">fn</span>) =&gt;</span> <span class="title function_">fn</span>());</span><br><span class="line">          auth.<span class="title function_">logout</span>();</span><br><span class="line">          router.<span class="title function_">replace</span>(&#123;</span><br><span class="line">            <span class="attr">name</span>: <span class="string">&quot;login&quot;</span>,</span><br><span class="line">            <span class="attr">query</span>: &#123; <span class="attr">redirect</span>: router.<span class="property">currentRoute</span>.<span class="property">value</span>.<span class="property">fullPath</span> &#125;,</span><br><span class="line">          &#125;);</span><br><span class="line">          <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 复杂逻辑：如果正在刷新，把当前请求加入队列，等待刷新完成后重试</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        waitQueue.<span class="title function_">push</span>(<span class="function">() =&gt;</span> <span class="title function_">http</span>(config).<span class="title function_">then</span>(resolve).<span class="title function_">catch</span>(reject));</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Auth-Store：提供-isAuthenticated、refreshToken-、logout"><a href="#Auth-Store：提供-isAuthenticated、refreshToken-、logout" class="headerlink" title="Auth Store：提供 isAuthenticated、refreshToken()、logout()"></a>Auth Store：提供 <code>isAuthenticated</code>、<code>refreshToken()</code>、<code>logout()</code></h2><p><strong>修改位置：<code>src/stores/auth.ts</code></strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> useAuthStore = <span class="title function_">defineStore</span>(<span class="string">&quot;auth&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> token = ref&lt;<span class="built_in">string</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line">  <span class="keyword">const</span> refresh = ref&lt;<span class="built_in">string</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 复杂逻辑：派生登录态，集中判断是否有有效 token</span></span><br><span class="line">  <span class="keyword">const</span> isAuthenticated = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> !!token.<span class="property">value</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">setToken</span>(<span class="params"><span class="attr">t</span>: <span class="built_in">string</span>, <span class="attr">r</span>?: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    token.<span class="property">value</span> = t;</span><br><span class="line">    <span class="keyword">if</span> (r) refresh.<span class="property">value</span> = r;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">refreshToken</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 复杂逻辑：用 refresh_token 换新 token，失败则抛错</span></span><br><span class="line">    <span class="keyword">const</span> &#123; data &#125; = <span class="keyword">await</span> axios.<span class="title function_">post</span>(<span class="string">&quot;/auth/refresh&quot;</span>, &#123;</span><br><span class="line">      <span class="attr">refresh_token</span>: refresh.<span class="property">value</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    token.<span class="property">value</span> = data.<span class="property">access_token</span>;</span><br><span class="line">    refresh.<span class="property">value</span> = data.<span class="property">refresh_token</span> ?? refresh.<span class="property">value</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">logout</span>(<span class="params"></span>) &#123;</span><br><span class="line">    token.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">    refresh.<span class="property">value</span> = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// 复杂逻辑：通知其他 store 清空并重置 init()</span></span><br><span class="line">    <span class="title function_">useUserStore</span>().<span class="title function_">reset</span>();</span><br><span class="line">    <span class="comment">// 其他 store 同理按需 reset()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123; token, isAuthenticated, setToken, refreshToken, logout &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="登录成功后：只需设置-token-并跳转，初始化会自动发生"><a href="#登录成功后：只需设置-token-并跳转，初始化会自动发生" class="headerlink" title="登录成功后：只需设置 token 并跳转，初始化会自动发生"></a>登录成功后：只需设置 token 并跳转，初始化会自动发生</h2><p><strong>修改位置：<code>/user/login</code> 提交成功回调处</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂逻辑：写入 token 并跳到受保护路由；受保护布局会自动触发所有 store.init()</span></span><br><span class="line"><span class="keyword">await</span> authStore.<span class="title function_">setToken</span>(res.<span class="property">access_token</span>, res.<span class="property">refresh_token</span>);</span><br><span class="line">router.<span class="title function_">replace</span>((route.<span class="property">query</span>.<span class="property">redirect</span> <span class="keyword">as</span> <span class="built_in">string</span>) || <span class="string">&quot;/&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="为什么这是“最佳做法”"><a href="#为什么这是“最佳做法”" class="headerlink" title="为什么这是“最佳做法”"></a>为什么这是“最佳做法”</h2><ol>
+<li><strong>单一职责清晰</strong>：Store 只做“状态与方法”，不在定义期发请求；“什么时候发”交给受保护布局的引导钩子统一触发。</li>
+<li><strong>避免重复请求</strong>：<code>init()</code> 使用<strong>单例 Promise</strong>，多次调用只会发一次请求。</li>
+<li><strong>页面无侵入</strong>：页面无需关心是否登录、是否首发，页面只消费 Store 的 state。</li>
+<li><strong>错误集中处理</strong>：401 统一刷新与队列重试，避免因并发导致多次刷新或脏状态。</li>
+<li><strong>登录页零干扰</strong>：登录页不再误发需要 Token 的请求；即使误调，Axios 层也会拦截并拒绝。</li>
+<li><strong>易扩展</strong>：新增数据域时，只需在受保护引导中 <code>store.init()</code> 一行接入。</li>
+</ol>
+<hr>
+<p>如果你愿意，我可以基于你当前的目录结构，把上述“幂等 init + 受保护布局引导 + Axios 刷新队列”的改动<strong>逐个落到你的具体文件</strong>（只贴需要改的片段）。你把相关文件名和关键片段贴给我就行。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/Vue%E9%A1%B9%E7%9B%AE%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96/" data-id="cmf9bdhk90006qq4zdra8fcem" data-title="Vue项目pinia中的Store中的请求时机管理" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/store%E8%AF%B7%E6%B1%82/" rel="tag">store请求</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-GTC-Checkbox-Radio-轻量化重构（支持-Ant-Design-Vue）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T16:25:03.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/">GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）<br>date: 2025-09-05<br>tags: [Vue3, Ant Design Vue, 组件封装, v-model]</p>
+<hr>
+<h2 id="思路概述"><a href="#思路概述" class="headerlink" title="思路概述"></a>思路概述</h2><ul>
+<li>用 <code>defineModel</code> 直接驱动 <code>a-checkbox-group</code> &#x2F; <code>a-radio-group</code>，去掉中间层 <code>innerValue</code> 与 <code>watch</code>，减少响应式开销与同步复杂度。</li>
+<li>加上 <code>defineOptions(&#123; inheritAttrs: false &#125;)</code>，避免 attrs 同时落在根节点与 <code>a-*group</code> 上导致副作用。</li>
+<li><code>Checkbox</code> 明确 <code>value</code> 为 <strong>数组</strong>，默认 <code>[]</code>；<code>Radio</code> 的 <code>value</code> 为任意，默认 <code>null</code>。</li>
+</ul>
+<hr>
+<h2 id="最简实现步骤"><a href="#最简实现步骤" class="headerlink" title="最简实现步骤"></a>最简实现步骤</h2><ol>
+<li>删除 <code>innerValue</code> 与所有 <code>watch</code>。</li>
+<li>用 <code>const value = defineModel&lt;...&gt;(&#39;value&#39;, &#123; default: ... &#125;)</code>，模板直接 <code>v-model:value=&quot;value&quot;</code>。</li>
+<li>设置 <code>inheritAttrs: false</code>，并将 <code>attrs</code> 仅透传给 <code>a-*group</code>。</li>
+</ol>
+<hr>
+<h2 id="完整代码（Checkbox）"><a href="#完整代码（Checkbox）" class="headerlink" title="完整代码（Checkbox）"></a>完整代码（Checkbox）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div</span><br><span class="line">    class=&quot;gtc-checkbox&quot;</span><br><span class="line">    :class=&quot;[`gtc-checkbox-$&#123;size&#125;`, disabled ? &#x27;is-disabled&#x27; : &#x27;&#x27;]&quot;</span><br><span class="line">  &gt;</span><br><span class="line">    &lt;a-checkbox-group v-model:value=&quot;value&quot; :disabled=&quot;disabled&quot; v-bind=&quot;attrs&quot;&gt;</span><br><span class="line">      &lt;slot /&gt;</span><br><span class="line">    &lt;/a-checkbox-group&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; useAttrs &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">// 复杂：避免 attrs 同时落到根节点与 a-checkbox-group</span><br><span class="line">defineOptions(&#123; inheritAttrs: false &#125;);</span><br><span class="line"></span><br><span class="line">const attrs = useAttrs();</span><br><span class="line"></span><br><span class="line">const props = defineProps(&#123;</span><br><span class="line">  size: &#123; type: String, default: &quot;md&quot; &#125;,</span><br><span class="line">  disabled: &#123; type: Boolean, default: false &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 复杂：CheckboxGroup 期望数组；默认应为 []</span><br><span class="line">const value = defineModel&lt;any[]&gt;(&quot;value&quot;, &#123; default: [] &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;less&quot; scoped&gt;</span><br><span class="line">.gtc-checkbox &#123;</span><br><span class="line">  .ant-checkbox-wrapper &#123;</span><br><span class="line">    color: var(--ink-950);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-checkbox &#123;</span><br><span class="line">    &amp;-inner &#123;</span><br><span class="line">      border-color: var(--rim-300);</span><br><span class="line">      background: none;</span><br><span class="line">      box-shadow: none;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;-checked .ant-checkbox-inner &#123;</span><br><span class="line">      background-color: var(--blue-primary);</span><br><span class="line">      border-color: var(--blue-primary);</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;:hover .ant-checkbox-inner &#123;</span><br><span class="line">      border-color: var(--ink-400);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.gtc-checkbox-sm .ant-checkbox-inner &#123;</span><br><span class="line">  width: 14px;</span><br><span class="line">  height: 14px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-checkbox-md .ant-checkbox-inner &#123;</span><br><span class="line">  width: 16px;</span><br><span class="line">  height: 16px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-checkbox-lg .ant-checkbox-inner &#123;</span><br><span class="line">  width: 18px;</span><br><span class="line">  height: 18px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.is-disabled &#123;</span><br><span class="line">  .ant-checkbox-inner &#123;</span><br><span class="line">    background: var(--ground-50);</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="完整代码（Radio）"><a href="#完整代码（Radio）" class="headerlink" title="完整代码（Radio）"></a>完整代码（Radio）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div</span><br><span class="line">    class=&quot;gtc-radio&quot;</span><br><span class="line">    :class=&quot;[`gtc-radio-$&#123;size&#125;`, disabled ? &#x27;is-disabled&#x27; : &#x27;&#x27;]&quot;</span><br><span class="line">  &gt;</span><br><span class="line">    &lt;a-radio-group v-model:value=&quot;value&quot; :disabled=&quot;disabled&quot; v-bind=&quot;attrs&quot;&gt;</span><br><span class="line">      &lt;slot /&gt;</span><br><span class="line">    &lt;/a-radio-group&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; useAttrs &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">// 复杂：避免 attrs 同时落到根节点与 a-radio-group</span><br><span class="line">defineOptions(&#123; inheritAttrs: false &#125;);</span><br><span class="line"></span><br><span class="line">const attrs = useAttrs();</span><br><span class="line"></span><br><span class="line">const props = defineProps(&#123;</span><br><span class="line">  size: &#123; type: String, default: &quot;md&quot; &#125;,</span><br><span class="line">  disabled: &#123; type: Boolean, default: false &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 复杂：RadioGroup 接收单值；默认 null</span><br><span class="line">const value = defineModel&lt;any&gt;(&quot;value&quot;, &#123; default: null &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;less&quot; scoped&gt;</span><br><span class="line">.gtc-radio &#123;</span><br><span class="line">  .ant-radio-wrapper &#123;</span><br><span class="line">    color: var(--ink-950);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">    background: none;</span><br><span class="line">    box-shadow: none;</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-checked .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--blue-primary);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio-checked .ant-radio-inner::after &#123;</span><br><span class="line">    background-color: var(--blue-primary);</span><br><span class="line">  &#125;</span><br><span class="line">  .ant-radio:hover .ant-radio-inner &#123;</span><br><span class="line">    border-color: var(--ink-400);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.gtc-radio-sm .ant-radio-inner &#123;</span><br><span class="line">  width: 14px;</span><br><span class="line">  height: 14px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-radio-md .ant-radio-inner &#123;</span><br><span class="line">  width: 16px;</span><br><span class="line">  height: 16px;</span><br><span class="line">&#125;</span><br><span class="line">.gtc-radio-lg .ant-radio-inner &#123;</span><br><span class="line">  width: 18px;</span><br><span class="line">  height: 18px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.is-disabled &#123;</span><br><span class="line">  .ant-radio-inner &#123;</span><br><span class="line">    background: var(--ground-50);</span><br><span class="line">    border-color: var(--rim-300);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><ul>
+<li>现在两个组件都是**“零 watch、零中间层”**：父表单直接通过 <code>v-model:value</code> 与 antd 组件对齐；</li>
+<li>与你表单规则的“复选框至少选一项”自定义校验配合使用即可（在 <code>getValidationRules</code> 里对 <code>checkbox</code> 做长度判断）。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/GTC-Checkbox-Radio-%E8%BD%BB%E9%87%8F%E5%8C%96%E9%87%8D%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Ant-Design-Vue%EF%BC%89/" data-id="cmf9bdhk40004qq4z24o92d33" data-title="GTC Checkbox &amp; Radio 轻量化重构（支持 Ant Design Vue）" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-动态表单「已勾选仍提示必填」的两处修复" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/%E5%8A%A8%E6%80%81%E8%A1%A8%E5%8D%95%E3%80%8C%E5%B7%B2%E5%8B%BE%E9%80%89%E4%BB%8D%E6%8F%90%E7%A4%BA%E5%BF%85%E5%A1%AB%E3%80%8D%E7%9A%84%E4%B8%A4%E5%A4%84%E4%BF%AE%E5%A4%8D/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T16:22:47.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/%E5%8A%A8%E6%80%81%E8%A1%A8%E5%8D%95%E3%80%8C%E5%B7%B2%E5%8B%BE%E9%80%89%E4%BB%8D%E6%8F%90%E7%A4%BA%E5%BF%85%E5%A1%AB%E3%80%8D%E7%9A%84%E4%B8%A4%E5%A4%84%E4%BF%AE%E5%A4%8D/">动态表单「已勾选仍提示必填」的两处修复</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: 动态表单「已勾选仍提示必填」的两处修复<br>date: 2025-09-05<br>tags: [Vue3, Ant Design Vue, 表单校验, 组件封装]</p>
+<hr>
+<h2 id="问题概述"><a href="#问题概述" class="headerlink" title="问题概述"></a>问题概述</h2><p>复选框（<code>a-checkbox-group</code>）在 <strong>必填</strong> 时，即使勾选了第一项仍提示“请选择”。根因有两点：</p>
+<ol>
+<li>你的 <code>Checkbox</code> 包装组件把 <code>v-model:value</code> <strong>定义成了 boolean</strong>（默认 <code>false</code>），而 <code>a-checkbox-group</code> 需要 <strong>数组</strong>；</li>
+<li>通用的 <code>required: true</code> 规则对 <strong>数组长度</strong> 不做判断，需要为复选框补一条“至少选一项”的自定义校验。</li>
+</ol>
+<p>下面给出<strong>最小修改</strong>代码片段（仅展示需要调整的部分）。</p>
+<blockquote>
+<p>说明：按你的偏好，复杂逻辑的代码段我在<strong>上一行加了注释</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="修改-1：Checkbox-组件把模型改为数组"><a href="#修改-1：Checkbox-组件把模型改为数组" class="headerlink" title="修改 1：Checkbox 组件把模型改为数组"></a>修改 1：<code>Checkbox</code> 组件把模型改为数组</h2><p>把 <code>defineModel&lt;boolean&gt;</code> 改为 <strong><code>defineModel&lt;any[]&gt;</code></strong>，默认值设为 <code>[]</code>，并确保内部状态是数组。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂：CheckboxGroup 期望数组类型；默认值必须为 []，否则 antd 校验无法判定“是否已选择”</span></span><br><span class="line"><span class="keyword">const</span> model = defineModel&lt;<span class="built_in">any</span>[]&gt;(<span class="string">&quot;value&quot;</span>, &#123; <span class="attr">default</span>: [] &#125;);</span><br><span class="line"><span class="keyword">const</span> innerValue = ref&lt;<span class="built_in">any</span>[]&gt;(<span class="title class_">Array</span>.<span class="title function_">isArray</span>(model.<span class="property">value</span>) ? model.<span class="property">value</span> : []);</span><br><span class="line"></span><br><span class="line"><span class="title function_">watch</span>(model, <span class="function">(<span class="params">v</span>) =&gt;</span> (innerValue.<span class="property">value</span> = <span class="title class_">Array</span>.<span class="title function_">isArray</span>(v) ? v : []));</span><br><span class="line"><span class="title function_">watch</span>(innerValue, <span class="function">(<span class="params">v</span>) =&gt;</span> (model.<span class="property">value</span> = <span class="title class_">Array</span>.<span class="title function_">isArray</span>(v) ? v : []));</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="修改-2：为复选框补充“至少选一项”的校验规则"><a href="#修改-2：为复选框补充“至少选一项”的校验规则" class="headerlink" title="修改 2：为复选框补充“至少选一项”的校验规则"></a>修改 2：为复选框补充“至少选一项”的校验规则</h2><p>在 <code>getValidationRules</code> 中，为 <code>controlType === &#39;checkbox&#39;</code> 增加自定义校验（<strong>在你现有的特殊控件分支里添加一段即可</strong>）。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂：CheckboxGroup 的必填校验——至少选择 1 项</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (field.<span class="property">controlType</span> === <span class="string">&#x27;checkbox&#x27;</span>) &#123;</span><br><span class="line">  rules.<span class="title function_">push</span>(&#123;</span><br><span class="line">    <span class="attr">validator</span>: <span class="title function_">async</span> (<span class="attr">_</span>: <span class="built_in">any</span>, <span class="attr">v</span>: <span class="built_in">any</span>[]) =&gt; &#123;</span><br><span class="line">      <span class="keyword">const</span> ok = <span class="title class_">Array</span>.<span class="title function_">isArray</span>(v) &amp;&amp; v.<span class="property">length</span> &gt; <span class="number">0</span></span><br><span class="line">      <span class="keyword">if</span> (!ok &amp;&amp; field.<span class="property">required</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="title function_">t</span>(<span class="string">&#x27;files.form.rule.required&#x27;</span>, &#123; <span class="attr">label</span>: field.<span class="property">label</span> &#125;))</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">trigger</span>: [<span class="string">&#x27;change&#x27;</span>, <span class="string">&#x27;blur&#x27;</span>],</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>放置位置建议：就放在你现有的 <code>/* 特殊控件校验 */</code> 分支里，和 <code>stockholder / image / file</code> 同级。</p>
+</blockquote>
+<hr>
+<h2 id="可选增强：初始化把错误类型矫正为数组"><a href="#可选增强：初始化把错误类型矫正为数组" class="headerlink" title="可选增强：初始化把错误类型矫正为数组"></a>可选增强：初始化把错误类型矫正为数组</h2><p>若后端历史数据里该字段可能是 <code>false/null/&#39;&#39;/单值</code>，可以在你已有的 <code>watch(_fields, ...)</code> 预处理里顺手矫正为数组，避免初始值导致“已选中但校验失败”。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复杂：把历史/异常初始值统一矫正为 CheckboxGroup 需要的数组</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (f.<span class="property">controlType</span> === <span class="string">&#x27;checkbox&#x27;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> v = formData[f.<span class="property">name</span>]</span><br><span class="line">  <span class="keyword">if</span> (!<span class="title class_">Array</span>.<span class="title function_">isArray</span>(v)) formData[f.<span class="property">name</span>] = v == <span class="literal">null</span> || v === <span class="literal">false</span> ? [] : [v]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li><strong>关键修复</strong>在于：复选框的 <code>v-model</code> 类型必须是 <strong>数组</strong>；</li>
+<li><strong>规则层面</strong>补充“至少一项”的自定义校验，避免通用 <code>required</code> 漏判。</li>
+</ul>
+<p>应用以上两处修改后，勾选第一项即可通过校验，不再提示“请选择”。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/%E5%8A%A8%E6%80%81%E8%A1%A8%E5%8D%95%E3%80%8C%E5%B7%B2%E5%8B%BE%E9%80%89%E4%BB%8D%E6%8F%90%E7%A4%BA%E5%BF%85%E5%A1%AB%E3%80%8D%E7%9A%84%E4%B8%A4%E5%A4%84%E4%BF%AE%E5%A4%8D/" data-id="cmf9bdhkp000xqq4z3uf56fhr" data-title="动态表单「已勾选仍提示必填」的两处修复" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Web-Push-推送简介" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/05/Web-Push-%E6%8E%A8%E9%80%81%E7%AE%80%E4%BB%8B/" class="article-date">
+  <time class="dt-published" datetime="2025-09-05T14:10:59.000Z" itemprop="datePublished">2025-09-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/05/Web-Push-%E6%8E%A8%E9%80%81%E7%AE%80%E4%BB%8B/">Web Push 推送简介</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: Web Push 推送简介<br>date: 2025-09-05<br>categories: [Web 实时通讯, 浏览器推送]<br>tags: [Web Push, Service Worker, PWA, VAPID, 离线通知, 实时消息]<br>description: 全面介绍 Web Push 技术的原理、特点、实现步骤和典型应用场景，帮助前端&#x2F;全栈开发者理解并快速落地。</p>
+<hr>
+<h1 id="什么是-Web-Push？"><a href="#什么是-Web-Push？" class="headerlink" title="什么是 Web Push？"></a>什么是 Web Push？</h1><p><strong>Web Push</strong> 是浏览器层面的 <strong>推送通知机制</strong>。与 WebSocket 或 SSE 不同，它不依赖页面是否处于前台，甚至用户没有打开网页也能收到通知。核心依赖：</p>
+<ul>
+<li><strong>Service Worker</strong>：浏览器的后台脚本，常驻运行。</li>
+<li><strong>Push API</strong>：浏览器与推送服务（FCM、APNs 等）之间的推送通道。</li>
+<li><strong>Notification API</strong>：展示系统级通知。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li><strong>跨平台</strong>：Chrome、Firefox、Edge、Safari（部分版本）均支持。</li>
+<li><strong>后台可达</strong>：即使网页未激活或浏览器最小化也能收到。</li>
+<li><strong>需用户授权</strong>：必须 HTTPS，且用户点击“允许通知”。</li>
+<li><strong>带有身份机制</strong>：通过 VAPID（Voluntary Application Server Identification for Web Push）实现应用级认证。</li>
+</ul>
+<hr>
+<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">  participant User as 用户浏览器</span><br><span class="line">  participant SW as Service Worker</span><br><span class="line">  participant PushSrv as 浏览器厂商推送服务(FCM等)</span><br><span class="line">  participant Server as 应用服务端</span><br><span class="line"></span><br><span class="line">  User-&gt;&gt;Server: 注册并获取 VAPID 公钥</span><br><span class="line">  User-&gt;&gt;SW: 注册 Service Worker</span><br><span class="line">  User-&gt;&gt;PushSrv: 订阅推送 (PushSubscription)</span><br><span class="line">  User-&gt;&gt;Server: 上报订阅信息 (endpoint+keys)</span><br><span class="line"></span><br><span class="line">  Server-&gt;&gt;PushSrv: 使用 VAPID 私钥加密并发送消息</span><br><span class="line">  PushSrv-&gt;&gt;SW: 转发推送</span><br><span class="line">  SW-&gt;&gt;User: Notification API 展示通知</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="核心实现步骤"><a href="#核心实现步骤" class="headerlink" title="核心实现步骤"></a>核心实现步骤</h1><h2 id="1-生成-VAPID-密钥对"><a href="#1-生成-VAPID-密钥对" class="headerlink" title="1. 生成 VAPID 密钥对"></a>1. 生成 VAPID 密钥对</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx web-push generate-vapid-keys</span><br></pre></td></tr></table></figure>
+
+<p>会得到 <strong>公钥 &#x2F; 私钥</strong>，公钥发给前端，私钥保存在服务端。</p>
+<hr>
+<h2 id="2-前端注册-Service-Worker"><a href="#2-前端注册-Service-Worker" class="headerlink" title="2. 前端注册 Service Worker"></a>2. 前端注册 Service Worker</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> reg = <span class="keyword">await</span> navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&quot;/sw.js&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 申请通知权限</span></span><br><span class="line"><span class="keyword">const</span> permission = <span class="keyword">await</span> <span class="title class_">Notification</span>.<span class="title function_">requestPermission</span>();</span><br><span class="line"><span class="keyword">if</span> (permission === <span class="string">&quot;granted&quot;</span>) &#123;</span><br><span class="line">  <span class="comment">// 订阅推送</span></span><br><span class="line">  <span class="keyword">const</span> sub = <span class="keyword">await</span> reg.<span class="property">pushManager</span>.<span class="title function_">subscribe</span>(&#123;</span><br><span class="line">    <span class="attr">userVisibleOnly</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">applicationServerKey</span>: <span class="string">&quot;&lt;VAPID_PUBLIC_KEY_BASE64URL&gt;&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 上报给服务端保存</span></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&quot;/push/subscribe&quot;</span>, &#123; <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>, <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(sub) &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-Service-Worker-处理推送"><a href="#3-Service-Worker-处理推送" class="headerlink" title="3. Service Worker 处理推送"></a>3. Service Worker 处理推送</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sw.js</span></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&quot;push&quot;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> data = event.<span class="property">data</span>?.<span class="title function_">json</span>() ?? &#123;&#125;;</span><br><span class="line">  event.<span class="title function_">waitUntil</span>(</span><br><span class="line">    self.<span class="property">registration</span>.<span class="title function_">showNotification</span>(data.<span class="property">title</span> || <span class="string">&quot;通知&quot;</span>, &#123;</span><br><span class="line">      <span class="attr">body</span>: data.<span class="property">body</span>,</span><br><span class="line">      <span class="attr">icon</span>: <span class="string">&quot;/icon.png&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-服务端发送推送"><a href="#4-服务端发送推送" class="headerlink" title="4. 服务端发送推送"></a>4. 服务端发送推送</h2><p>以 Node.js 为例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> webpush <span class="keyword">from</span> <span class="string">&quot;web-push&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置 VAPID</span></span><br><span class="line">webpush.<span class="title function_">setVapidDetails</span>(</span><br><span class="line">  <span class="string">&quot;mailto:admin@example.com&quot;</span>,</span><br><span class="line">  process.<span class="property">env</span>.<span class="property">VAPID_PUBLIC</span>,</span><br><span class="line">  process.<span class="property">env</span>.<span class="property">VAPID_PRIVATE</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// subs 存储用户的 PushSubscription</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">sendPush</span>(<span class="params">sub, payload</span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> webpush.<span class="title function_">sendNotification</span>(sub, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(payload));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h1><ul>
+<li><strong>消息提醒</strong>：聊天应用收到新消息。</li>
+<li><strong>电商营销</strong>：用户未登录页面也能收到促销信息。</li>
+<li><strong>系统告警</strong>：后台监控推送紧急故障。</li>
+<li><strong>PWA（渐进式 Web 应用）</strong>：接近原生 App 的体验。</li>
+</ul>
+<hr>
+<h1 id="优缺点对比"><a href="#优缺点对比" class="headerlink" title="优缺点对比"></a>优缺点对比</h1><p>✅ 优点：</p>
+<ul>
+<li>浏览器级支持，后台可达。</li>
+<li>无需页面常驻，适合通知类消息。</li>
+<li>跨浏览器标准（W3C Push API）。</li>
+</ul>
+<p>⚠️ 缺点：</p>
+<ul>
+<li>依赖用户同意，存在拒绝率。</li>
+<li>Safari 支持有限制（macOS 较晚才全面支持）。</li>
+<li>消息大小有限制（通常 4KB）。</li>
+<li>不适合大流量&#x2F;高频推送（需 WebSocket&#x2F;SSE）。</li>
+</ul>
+<hr>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p><strong>Web Push</strong> &#x3D; <strong>Service Worker + Push API + Notification API</strong><br>适合“提醒&#x2F;通知”类场景，不适合实时高频通信。生产实践里常和 <strong>WebSocket&#x2F;SSE</strong> 组合：</p>
+<ul>
+<li><strong>WebSocket</strong>：前台实时互动。</li>
+<li><strong>Web Push</strong>：后台&#x2F;离线通知兜底。</li>
+</ul>
+<hr>
+<p>要不要我帮你写一个 <strong>完整的最小 Web Push DEMO 项目（前端+后端）</strong>，可以直接跑通并测试浏览器推送？</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://herongdev.github.io/blog/2025/09/05/Web-Push-%E6%8E%A8%E9%80%81%E7%AE%80%E4%BB%8B/" data-id="cmf9bdhka0007qq4z9fn9b8y9" data-title="Web Push 推送简介" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">web应用开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/401/" rel="tag">401</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AbortController/" rel="tag">AbortController</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Axios/" rel="tag">Axios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fetch/" rel="tag">Fetch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub-Pages/" rel="tag">GitHub Pages</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSW/" rel="tag">MSW</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NexT/" rel="tag">NexT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenAPI/" rel="tag">OpenAPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Passkeys/" rel="tag">Passkeys</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pinia/" rel="tag">Pinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TanStack-Query/" rel="tag">TanStack Query</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UTS-%E6%8F%92%E4%BB%B6/" rel="tag">UTS 插件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vite/" rel="tag">Vite</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-3/" rel="tag">Vue 3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-Router/" rel="tag">Vue Router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue3/" rel="tag">Vue3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAuthn/" rel="tag">WebAuthn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/composable/" rel="tag">composable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup-plugin-visualizer/" rel="tag">rollup-plugin-visualizer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/store%E8%AF%B7%E6%B1%82/" rel="tag">store请求</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uni-app-x/" rel="tag">uni-app x</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" rel="tag">一键直登</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">初始化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" rel="tag">前端架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" rel="tag">副作用控制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" rel="tag">大厂实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%93%E5%8C%85%E5%88%86%E6%9E%90/" rel="tag">打包分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" rel="tag">未登录拦截</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%AE%E5%BD%95/" rel="tag">目录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" rel="tag">退出登录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%89%B4%E6%9D%83/" rel="tag">鉴权</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/401/" style="font-size: 10px;">401</a> <a href="/tags/AbortController/" style="font-size: 10px;">AbortController</a> <a href="/tags/Axios/" style="font-size: 20px;">Axios</a> <a href="/tags/Fetch/" style="font-size: 10px;">Fetch</a> <a href="/tags/GitHub-Pages/" style="font-size: 15px;">GitHub Pages</a> <a href="/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/tags/MSW/" style="font-size: 10px;">MSW</a> <a href="/tags/NexT/" style="font-size: 10px;">NexT</a> <a href="/tags/OpenAPI/" style="font-size: 10px;">OpenAPI</a> <a href="/tags/Passkeys/" style="font-size: 10px;">Passkeys</a> <a href="/tags/Pinia/" style="font-size: 20px;">Pinia</a> <a href="/tags/TanStack-Query/" style="font-size: 10px;">TanStack Query</a> <a href="/tags/TypeScript/" style="font-size: 20px;">TypeScript</a> <a href="/tags/UTS-%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">UTS 插件</a> <a href="/tags/Vite/" style="font-size: 10px;">Vite</a> <a href="/tags/Vue-3/" style="font-size: 10px;">Vue 3</a> <a href="/tags/Vue-Router/" style="font-size: 10px;">Vue Router</a> <a href="/tags/Vue3/" style="font-size: 15px;">Vue3</a> <a href="/tags/WebAuthn/" style="font-size: 10px;">WebAuthn</a> <a href="/tags/composable/" style="font-size: 10px;">composable</a> <a href="/tags/rollup-plugin-visualizer/" style="font-size: 10px;">rollup-plugin-visualizer</a> <a href="/tags/store%E8%AF%B7%E6%B1%82/" style="font-size: 10px;">store请求</a> <a href="/tags/uni-app-x/" style="font-size: 10px;">uni-app x</a> <a href="/tags/%E4%B8%80%E9%94%AE%E7%9B%B4%E7%99%BB/" style="font-size: 10px;">一键直登</a> <a href="/tags/%E4%B8%8B%E8%BD%BD/" style="font-size: 10px;">下载</a> <a href="/tags/%E5%88%86%E7%B1%BB/" style="font-size: 10px;">分类</a> <a href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" style="font-size: 10px;">初始化</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">前端架构</a> <a href="/tags/%E5%89%AF%E4%BD%9C%E7%94%A8%E6%8E%A7%E5%88%B6/" style="font-size: 10px;">副作用控制</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%A4%A7%E5%8E%82%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">大厂实践</a> <a href="/tags/%E6%89%93%E5%8C%85%E5%88%86%E6%9E%90/" style="font-size: 10px;">打包分析</a> <a href="/tags/%E6%9C%AA%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA/" style="font-size: 10px;">未登录拦截</a> <a href="/tags/%E7%9B%AE%E5%BD%95/" style="font-size: 10px;">目录</a> <a href="/tags/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/" style="font-size: 10px;">退出登录</a> <a href="/tags/%E9%89%B4%E6%9D%83/" style="font-size: 10px;">鉴权</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">September 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/09/07/id-kit%E5%BC%80%E5%8F%91/">id-kit开发</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/07/id-kit/">id-kit</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/07/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/06/%E7%99%BB%E5%BD%95%E5%90%8E%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%8F%8C%E9%98%B6%E6%AE%B5%E5%90%AF%E5%8A%A8%EF%BC%88%E5%A2%9E%E9%87%8F%E4%BF%AE%E6%94%B9%EF%BC%89/">在 composable 里“公共初始化 + 登录后初始化”的双阶段启动（增量修改）</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/06/%E4%BD%93%E7%A7%AF%E5%88%86%E5%B8%83%E5%88%86%E6%9E%90%E5%9B%BE/">Vite + Vue3 打包后如何查看“体积分布分析图”</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
