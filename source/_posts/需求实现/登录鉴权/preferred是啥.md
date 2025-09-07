@@ -8,7 +8,7 @@ tags:
 
 ---
 
-# 1) `"userVerification": "preferred"` 是啥？
+# 1、`"userVerification": "preferred"` 是啥？
 
 **它告诉浏览器/认证器：是否必须做“本地用户验证（UV）”**（指纹/人脸/PIN）。可选值只有 3 个：
 
@@ -27,9 +27,7 @@ tags:
 - 如果这是**员工后台**或敏感操作：前端设 `userVerification: 'required'`，服务端配套 `requireUserVerification: true`。
 - 如果是**大众登录**：`preferred` + 风控/设备指纹/异常登录再二次验证。
 
----
-
-# 2) 这个 `challenge` 看起来“很短”，正常吗？
+# 2、这个 `challenge` 看起来“很短”，正常吗？
 
 **正常。**
 
@@ -40,9 +38,7 @@ tags:
 
 > 若你担心强度，也可以自定义更长挑战（例如 64 字节），但 32 字节已足够随机且是行业常见默认。
 
----
-
-# 3) 大厂实践里返回的也是这种结构吗？
+# 3、大厂实践里返回的也是这种结构吗？
 
 **是的。**这就是 WebAuthn 规范的 **PublicKeyCredentialRequestOptions(JSON)** 的形态，各家（Google、Apple、微软、GitHub、PayPal…）都会返回类似结构。差异主要在**有没有 `allowCredentials`** 和某些可选字段：
 
@@ -66,9 +62,7 @@ tags:
 
 **完全合理**、符合规范，也符合大厂常见做法（本地开发把 `rpId` 设为 `localhost` 没问题，上线要换为你的主域）。
 
----
-
-# 4) 如果你要“更安全”，只改这几行（前后端各一处）
+# 4、如果你要“更安全”，只改这几行（前后端各一处）
 
 **后端·验证时强制 UV（把 `false` 改为 `true`）**
 
@@ -93,12 +87,8 @@ userVerification: 'required',
 
 ---
 
-# 5) 小补充：别名/大小写别差异别担心
+# 5、小补充：别名/大小写别差异别担心
 
 - simplewebauthn（v11+）返回的 JSON 用 `rpId`（小写 d）；
 - 你传入 `generateAuthenticationOptions({ rpID: '…' })` 是库的入参写法；
 - **这是正常的**：入参/出参字段命名略有差异，但库会正确映射。
-
----
-
-要我直接把你当前文件里 **`requireUserVerification: false` → `true`** 的几行替换片段标出来吗？我可以只给**那几行的“旧 → 新”**，不动其他任何代码。
