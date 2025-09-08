@@ -2,9 +2,11 @@ import { Feed } from 'feed'
 import fg from 'fast-glob'
 import fs from 'node:fs/promises'
 import matter from 'gray-matter'
+import path from 'node:path'
 
 const SITE_URL = process.env.SITE_URL || 'https://example.com'
-const OUT_DIR = new URL('../docs/.vitepress/dist', import.meta.url)
+// 输出到构建产物目录：docs/.vitepress/dist
+const OUT_DIR = path.resolve(process.cwd(), 'docs/.vitepress/dist')
 
 function toArticleUrl(file) {
   const rel = file.replace(/^docs\//, '').replace(/index\.md$/, '').replace(/\.md$/, '')
@@ -43,9 +45,9 @@ async function main() {
   }
 
   await fs.mkdir(OUT_DIR, { recursive: true })
-  await fs.writeFile(new URL('rss.xml', OUT_DIR), feed.rss2(), 'utf8')
-  await fs.writeFile(new URL('atom.xml', OUT_DIR), feed.atom1(), 'utf8')
-  await fs.writeFile(new URL('feed.json', OUT_DIR), feed.json1(), 'utf8')
+  await fs.writeFile(path.join(OUT_DIR, 'rss.xml'), feed.rss2(), 'utf8')
+  await fs.writeFile(path.join(OUT_DIR, 'atom.xml'), feed.atom1(), 'utf8')
+  await fs.writeFile(path.join(OUT_DIR, 'feed.json'), feed.json1(), 'utf8')
 }
 
 main().catch((e) => {
