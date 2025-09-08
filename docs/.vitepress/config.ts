@@ -4,6 +4,110 @@ import path from "node:path";
 import matter from "gray-matter";
 const BASE = process.env.BASE || "/";
 const SITE_HOSTNAME = process.env.SITE_URL || "https://example.com";
+const BAIDU_TONGJI_ID = process.env.BAIDU_TONGJI_ID || "";
+const UMAMI_SRC = process.env.UMAMI_SRC || "";
+const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || "";
+const PLAUSIBLE_DOMAIN = process.env.PLAUSIBLE_DOMAIN || "";
+const GA_ID = process.env.GA_ID || "";
+
+const HEAD_LINKS: any[] = [
+  [
+    "link",
+    {
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${BASE}rss.xml`,
+    },
+  ],
+  [
+    "link",
+    {
+      rel: "alternate",
+      type: "application/atom+xml",
+      title: "Atom",
+      href: `${BASE}atom.xml`,
+    },
+  ],
+  [
+    "link",
+    {
+      rel: "alternate",
+      type: "application/feed+json",
+      title: "JSON Feed",
+      href: `${BASE}feed.json`,
+    },
+  ],
+];
+
+// 安装百度统计（适合国内可达性）
+if (BAIDU_TONGJI_ID) {
+  HEAD_LINKS.push([
+    "script",
+    {},
+    `var _hmt = _hmt || []; (function(){ var hm = document.createElement('script'); hm.src = 'https://hm.baidu.com/hm.js?${BAIDU_TONGJI_ID}'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(hm, s); })();`,
+  ]);
+  // 单页应用的 PV 与 CTA 事件埋点
+  HEAD_LINKS.push([
+    "script",
+    {},
+    `
+    (function(){
+      function trackPage(){ try{ if(window._hmt){ window._hmt.push(['_trackPageview', location.pathname + location.search]); } }catch(e){} }
+      // 首次
+      trackPage();
+      // 监听历史路由变化
+      var _pushState = history.pushState; history.pushState = function(){ var r = _pushState.apply(this, arguments); setTimeout(trackPage, 0); return r; };
+      var _replaceState = history.replaceState; history.replaceState = function(){ var r = _replaceState.apply(this, arguments); setTimeout(trackPage, 0); return r; };
+      window.addEventListener('popstate', trackPage);
+
+      // 简单 CTA / 外链点击埋点
+      document.addEventListener('click', function(ev){
+        var el = ev.target && (ev.target.closest ? ev.target.closest('a') : null);
+        if(!el) return;
+        var href = el.getAttribute('href') || '';
+        if(!href) return;
+        var isExternal = /^https?:/i.test(href) && href.indexOf(location.origin) !== 0;
+        var isCTA = href.indexOf('/newsletter') === 0 || href.indexOf('/community') === 0 || href === '/posts/' || href === '/posts';
+        if(!isExternal && !isCTA) return;
+        var category = isExternal ? 'outbound' : 'cta';
+        var label = href;
+        try{ if(window._hmt){ window._hmt.push(['_trackEvent', category, 'click', label]); } }catch(e){}
+      }, true);
+    })();
+    `,
+  ]);
+}
+
+if (UMAMI_SRC && UMAMI_WEBSITE_ID) {
+  HEAD_LINKS.push([
+    "script",
+    { src: UMAMI_SRC, defer: "", "data-website-id": UMAMI_WEBSITE_ID },
+  ]);
+}
+
+if (PLAUSIBLE_DOMAIN) {
+  HEAD_LINKS.push([
+    "script",
+    {
+      defer: "",
+      "data-domain": PLAUSIBLE_DOMAIN,
+      src: "https://plausible.io/js/script.js",
+    },
+  ]);
+}
+
+if (GA_ID) {
+  HEAD_LINKS.push([
+    "script",
+    { async: "", src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}` },
+  ]);
+  HEAD_LINKS.push([
+    "script",
+    {},
+    `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA_ID}');`,
+  ]);
+}
 
 export default {
   lang: "zh-CN",
@@ -35,35 +139,7 @@ export default {
       ),
     },
   },
-  head: [
-    [
-      "link",
-      {
-        rel: "alternate",
-        type: "application/rss+xml",
-        title: "RSS",
-        href: `${BASE}rss.xml`,
-      },
-    ],
-    [
-      "link",
-      {
-        rel: "alternate",
-        type: "application/atom+xml",
-        title: "Atom",
-        href: `${BASE}atom.xml`,
-      },
-    ],
-    [
-      "link",
-      {
-        rel: "alternate",
-        type: "application/feed+json",
-        title: "JSON Feed",
-        href: `${BASE}feed.json`,
-      },
-    ],
-  ],
+  head: HEAD_LINKS,
 };
 
 // —— 以下为自动侧边栏构建逻辑 ——

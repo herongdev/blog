@@ -31,10 +31,14 @@ jobs:
 
       - name: Build site
         env:
-          # 替换为你的 <owner>.github.io 或自定义域名（如有）
-          SITE_URL: https://<owner>.github.io/<repo>
-          # GitHub Pages 子路径需要 base，如 /<repo>/
-          BASE: /<repo>/
+          SITE_URL: https://herongdev.github.io/blog
+          BASE: /blog/
+          # Optional analytics (set in repo secrets and reference here)
+          UMAMI_SRC: ${{ secrets.UMAMI_SRC }}
+          UMAMI_WEBSITE_ID: ${{ secrets.UMAMI_WEBSITE_ID }}
+          PLAUSIBLE_DOMAIN: ${{ secrets.PLAUSIBLE_DOMAIN }}
+          GA_ID: ${{ secrets.GA_ID }}
+          BAIDU_TONGJI_ID: ${{ secrets.BAIDU_TONGJI_ID }}
         run: npm run build
 
       - name: Upload artifact
