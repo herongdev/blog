@@ -1,0 +1,24 @@
+{
+  "name": "my-blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "rss": "node scripts/gen-rss.mjs",
+    "build": "npm run docs:build && npm run rss"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.3",
+    "feed": "^5.1.0",
+    "gray-matter": "^4.0.3"
+  }
+}
