@@ -31,11 +31,19 @@ jobs:
         run: |
           if [ -f package-lock.json ]; then
             echo "Using npm ci"
-            npm ci --no-audit --no-fund
+            npm ci --no-audit --no-fund --include=dev
           else
             echo "No lockfile found, falling back to npm install"
             npm i --no-audit --no-fund
           fi
+
+      - name: Debug Node & paths
+        run: |
+          node -v
+          npm -v
+          npx -v || true
+          ls -la
+          ls -la node_modules/.bin || true
 
       - name: Build site
         env:
