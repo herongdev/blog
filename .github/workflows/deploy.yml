@@ -1,68 +1,41 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (gh-pages)
 
 on:
   push:
     branches: [main]
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-          # cache disabled to avoid lockfile cache errors
 
       - name: Install dependencies
         shell: bash
         run: |
           if [ -f pnpm-lock.yaml ] || [ -f pnpm-lock.yml ]; then
-            echo "Using pnpm"
             corepack enable
             corepack prepare pnpm@8.15.4 --activate || npm i -g pnpm
             pnpm i --frozen-lockfile || pnpm i
           else
             if [ -f package-lock.json ]; then
-              echo "Using npm ci"
               npm ci --no-audit --no-fund --include=dev
             else
-              echo "No lockfile found, using npm install"
               npm i --no-audit --no-fund
             fi
           fi
-
-      - name: Debug Node & paths
-        run: |
-          node -v
-          npm -v
-          npx -v || true
-          ls -la || true
-          ls -la node_modules/.bin || true
-
-      - name: Ensure vitepress is available
-        shell: bash
-        run: |
-          node -e "require.resolve('vitepress/package.json')" 2>/dev/null \
-            || (echo 'vitepress not found, installing as devDependency...' && npm i -D vitepress)
 
       - name: Build site
         env:
           SITE_URL: https://herongdev.github.io/blog
           BASE: /blog/
-          # Optional analytics (set in repo secrets and reference here)
           UMAMI_SRC: ${{ secrets.UMAMI_SRC }}
           UMAMI_WEBSITE_ID: ${{ secrets.UMAMI_WEBSITE_ID }}
           PLAUSIBLE_DOMAIN: ${{ secrets.PLAUSIBLE_DOMAIN }}
@@ -71,23 +44,14 @@ jobs:
         shell: bash
         run: |
           if [ -f pnpm-lock.yaml ] || [ -f pnpm-lock.yml ]; then
-            pnpm run build || (echo "pnpm build failed, trying to ensure vitepress availability" && pnpm add -D vitepress && pnpm run build)
+            pnpm run build || (pnpm add -D vitepress && pnpm run build)
           else
             npm run build
           fi
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: docs/.vitepress/dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/.vitepress/dist
+          publish_branch: gh-pages
