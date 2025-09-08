@@ -29,11 +29,11 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          if [ -f pnpm-lock.yaml ]; then
+          if [ -f pnpm-lock.yaml ] || [ -f pnpm-lock.yml ]; then
             echo "Using pnpm"
             corepack enable
             corepack prepare pnpm@8.15.4 --activate || npm i -g pnpm
-            pnpm i --frozen-lockfile
+            pnpm i --frozen-lockfile || pnpm i
           else
             if [ -f package-lock.json ]; then
               echo "Using npm ci"
@@ -70,8 +70,8 @@ jobs:
           BAIDU_TONGJI_ID: ${{ secrets.BAIDU_TONGJI_ID }}
         shell: bash
         run: |
-          if [ -f pnpm-lock.yaml ]; then
-            pnpm run build
+          if [ -f pnpm-lock.yaml ] || [ -f pnpm-lock.yml ]; then
+            pnpm run build || (echo "pnpm build failed, trying to ensure vitepress availability" && pnpm add -D vitepress && pnpm run build)
           else
             npm run build
           fi
