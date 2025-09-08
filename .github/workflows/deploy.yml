@@ -29,12 +29,19 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          if [ -f package-lock.json ]; then
-            echo "Using npm ci"
-            npm ci --no-audit --no-fund --include=dev
+          if [ -f pnpm-lock.yaml ]; then
+            echo "Using pnpm"
+            corepack enable
+            corepack prepare pnpm@8.15.4 --activate || npm i -g pnpm
+            pnpm i --frozen-lockfile
           else
-            echo "No lockfile found, falling back to npm install"
-            npm i --no-audit --no-fund
+            if [ -f package-lock.json ]; then
+              echo "Using npm ci"
+              npm ci --no-audit --no-fund --include=dev
+            else
+              echo "No lockfile found, using npm install"
+              npm i --no-audit --no-fund
+            fi
           fi
 
       - name: Debug Node & paths
@@ -42,8 +49,14 @@ jobs:
           node -v
           npm -v
           npx -v || true
-          ls -la
+          ls -la || true
           ls -la node_modules/.bin || true
+
+      - name: Ensure vitepress is available
+        shell: bash
+        run: |
+          node -e "require.resolve('vitepress/package.json')" 2>/dev/null \
+            || (echo 'vitepress not found, installing as devDependency...' && npm i -D vitepress)
 
       - name: Build site
         env:
@@ -55,7 +68,13 @@ jobs:
           PLAUSIBLE_DOMAIN: ${{ secrets.PLAUSIBLE_DOMAIN }}
           GA_ID: ${{ secrets.GA_ID }}
           BAIDU_TONGJI_ID: ${{ secrets.BAIDU_TONGJI_ID }}
-        run: npm run build
+        shell: bash
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm run build
+          else
+            npm run build
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
