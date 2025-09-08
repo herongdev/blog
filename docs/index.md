@@ -8,20 +8,24 @@ hero:
   tagline: 基于 VitePress，内置本地搜索、可扩展 RSS 与统计
   actions:
     - theme: brand
-      text: 立即开始
-      link: /posts/hello-world
+      text: 开始阅读
+      link: /posts/
     - theme: alt
       text: GitHub
       link: https://github.com/
 features:
-  - title: SEO 友好
-    details: 预渲染 HTML、站点地图、结构化数据，利于搜索引擎收录
-  - title: 全文搜索
-    details: 使用本地搜索，无需后端即可搜索全文
-  - title: 易写作
-    details: Markdown 写作，开箱即用
+  - title: AI 协作与边界
+    details: 明确人机分工、质控与流程，解决“AI 生成不可用”的落地问题
+  - title: 架构与工程化
+    details: 系统设计、性能与稳定性、可观测性、安全与成本治理
+  - title: 生产问题与深度调试
+    details: 真实生产复盘与最小复现仓库，定位路径与验证手段
+  - title: 前端深水区
+    details: 性能优化、复杂交互、构建与打包体系
+  - title: 后端与平台
+    details: 微服务-DDD、存储与缓存、消息与流处理
+  - title: 商业化与营收
+    details: 课程/训练营、广告与赞助、Newsletter 与社群
 ---
 
 欢迎来到我的博客！
-
-
