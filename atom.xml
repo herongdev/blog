@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://herongdev.github.io/blog</id>
     <title>我的博客</title>
-    <updated>2025-09-09T14:23:19.596Z</updated>
+    <updated>2025-09-10T05:42:53.833Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://herongdev.github.io/blog"/>
     <link rel="self" href="https://herongdev.github.io/blog/atom.xml"/>
@@ -1407,6 +1407,46 @@ export const Api = {
 - 这样新增公开接口只要放到 `/api/pub/**`，其余默认鉴权；个别例外 `auth:false` 即可。
 - 若项目更复杂，进一步采用**双实例**或**API 分层**，把鉴权语义固化到“调用入口”，彻底杜绝分散判断。
 ]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[测试文章]]></title>
+        <id>https://herongdev.github.io/blog/posts/测试文章</id>
+        <link href="https://herongdev.github.io/blog/posts/测试文章"/>
+        <updated>2025-09-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<一句话摘要，便于 SEO>]]></summary>
+        <content type="html"><![CDATA[
+## 背景与目标
+
+- 业务/技术背景
+- 这篇文章要解决什么问题？如何验证？
+
+## 问题分析（可复现）
+
+- 最小复现或真实案例
+- 误区与常见失败路径
+
+## 解决方案（可验证）
+
+- 方案对比与取舍
+- 步骤/代码/配置
+- 验证与指标
+
+## 探索与延伸
+
+- 边界条件、兼容性、性能与安全
+- 与相关专题的链接
+
+## 结论与行动项
+
+- 关键结论
+- 下一步可执行清单
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[简单文章测试]]></title>
+        <id>https://herongdev.github.io/blog/posts/简单文章测试</id>
+        <link href="https://herongdev.github.io/blog/posts/简单文章测试"/>
+        <updated>2025-09-09T00:00:00.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[AI 时代：工程师不可替代的价值与协作边界]]></title>
@@ -6206,6 +6246,33 @@ router.replace((route.query.redirect as string) || "/");
 ]]></content>
     </entry>
     <entry>
+        <title type="html"><![CDATA[<专题导言：描述系列价值与对象>]]></title>
+        <id>https://herongdev.github.io/blog/posts/前端/Vue/vue-系列导言</id>
+        <link href="https://herongdev.github.io/blog/posts/前端/Vue/vue-系列导言"/>
+        <updated>2025-09-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<系列摘要与读者收益>]]></summary>
+        <content type="html"><![CDATA[
+## 系列对象与前置
+
+- 适合谁？需要什么前置知识？
+
+## 目录与进度
+
+- [第 1 篇：主题 A](/posts/...) —— 进度：✅/进行中
+- [第 2 篇：主题 B](/posts/...)
+
+## 学习方式
+
+- 推荐阅读顺序
+- 配套 Demo/最小复现仓库
+
+## 常见问题
+
+- FAQ 1
+- FAQ 2
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Vite + Vue3 打包后如何查看“体积分布分析图”]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/Vue/体积分布分析图</id>
         <link href="https://herongdev.github.io/blog/posts/前端/Vue/体积分布分析图"/>
@@ -6593,6 +6660,197 @@ await downloadFile("/api/export", {
 ]]></content>
     </entry>
     <entry>
+        <title type="html"><![CDATA[ArrayBuffer 与字符串互转方法对比]]></title>
+        <id>https://herongdev.github.io/blog/posts/前端/基础/ArrayBuffer 与字符串互转方法对比</id>
+        <link href="https://herongdev.github.io/blog/posts/前端/基础/ArrayBuffer 与字符串互转方法对比"/>
+        <updated>2025-09-10T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[
+# ArrayBuffer 与字符串互转方法对比
+
+在前端开发中，处理二进制数据时经常会遇到 **ArrayBuffer**。如果需要和字符串互转，可以使用多种方式。本文整理了常见方案，并给出对比。
+
+## 1. 使用 TextDecoder / TextEncoder （推荐）
+
+### 思路
+
+- `TextEncoder`：将字符串转为 `Uint8Array`（底层是 `ArrayBuffer`）。
+- `TextDecoder`：将 `ArrayBuffer` 解码为字符串。
+
+### 示例
+
+```js
+// 字符串 -> ArrayBuffer
+const encoder = new TextEncoder();
+const uint8 = encoder.encode("你好，世界");
+const buffer = uint8.buffer;
+
+// ArrayBuffer -> 字符串
+const decoder = new TextDecoder("utf-8");
+const text = decoder.decode(buffer);
+console.log(text); // 你好，世界
+```
+
+✅ 特点：支持多种编码（UTF-8、GBK 等），最标准化。
+❌ 缺点：在老旧浏览器可能不支持。
+
+## 2. 使用 JSON + Buffer（适合传输 JSON 数据）
+
+### 示例
+
+```js
+// 对象 -> ArrayBuffer
+const obj = { msg: "Hello" };
+const str = JSON.stringify(obj);
+const uint8 = new TextEncoder().encode(str);
+
+// ArrayBuffer -> 对象
+const text = new TextDecoder().decode(uint8);
+const data = JSON.parse(text);
+console.log(data.msg); // Hello
+```
+
+✅ 特点：适合结构化数据传输。
+❌ 缺点：仅适合 JSON 格式。
+
+## 3. 使用 base64 中转（跨语言兼容）
+
+### 示例
+
+```js
+// ArrayBuffer -> base64 -> 字符串
+function arrayBufferToBase64(buffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+// base64 -> ArrayBuffer
+function base64ToArrayBuffer(base64) {
+  const binary = atob(base64);
+  const len = binary.length;
+  const buffer = new ArrayBuffer(len);
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return buffer;
+}
+```
+
+✅ 特点：跨平台、跨语言兼容。
+❌ 缺点：编码后体积会增加 \~33%。
+
+## 4. 手工遍历 Uint8Array
+
+### 示例
+
+```js
+// ArrayBuffer -> 字符串（逐字节转码）
+function bufferToString(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let result = "";
+  for (let i = 0; i < bytes.length; i++) {
+    result += String.fromCharCode(bytes[i]);
+  }
+  return result;
+}
+
+// 字符串 -> ArrayBuffer
+function stringToBuffer(str) {
+  const buffer = new ArrayBuffer(str.length);
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < str.length; i++) {
+    bytes[i] = str.charCodeAt(i);
+  }
+  return buffer;
+}
+```
+
+✅ 特点：无依赖，浏览器通用。
+❌ 缺点：只适合 ASCII，遇到中文/emoji 会乱码。
+
+---
+
+# 总结对比
+
+| 方法                    | 优点                 | 缺点             | 适用场景        |
+| ----------------------- | -------------------- | ---------------- | --------------- |
+| **TextDecoder/Encoder** | 标准化，支持多种编码 | 老旧浏览器不支持 | 现代前端项目    |
+| **JSON + Buffer**       | 简单，适合对象       | 限制于 JSON 格式 | 结构化数据      |
+| **base64**              | 跨语言兼容           | 数据体积膨胀     | 网络传输，存储  |
+| **手工遍历**            | 通用，无依赖         | 中文乱码         | 简单 ASCII 数据 |
+
+---
+
+💡 **最佳实践**：
+
+- 处理文本 → 推荐 **TextDecoder/Encoder**
+- 传输 JSON → 用 **JSON.stringify + TextEncoder**
+- 跨语言通信 → 用 **base64**
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整]]></title>
+        <id>https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</id>
+        <link href="https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整"/>
+        <updated>2025-09-10T05:42:53.858Z</updated>
+        <content type="html"><![CDATA[对于 chrome 浏览器，它提供了修改滚动条样式的接口，开发者只需要加上几句 css 脚本，就可轻松实现滚动条样式的修改.
+
+先说一下滚动条的参数：
+::-webkit-scrollbar 滚动条整体部分，可以设置宽度啥的
+::-webkit-scrollbar-button 滚动条两端的按钮
+::-webkit-scrollbar-track 外层轨道
+::-webkit-scrollbar-track-piece 内层滚动槽
+::-webkit-scrollbar-thumb 滚动的滑块
+::-webkit-scrollbar-corner 边角
+::-webkit-resizer 定义右下角拖动块的样式
+/_ 设置滚动条的样式 _/
+::-webkit-scrollbar {
+width: 10px;
+}
+/_ 滚动槽 _/
+::-webkit-scrollbar-track {
+-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+border-radius: 10px;
+}
+/_ 滚动条滑块 _/
+::-webkit-scrollbar-thumb {
+border-radius: 10px;
+background: #bbb;
+-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+background: rgba(255,0,0,0.4);
+}
+
+```css
+/* 滚动条整体样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 5px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-neutral-4);
+  border-radius: 5px;
+}
+/* 滚动条滑块悬停状态 */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-neutral-6);
+}
+```
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[web应用开发/前端/Web 应用如何做到实时消息通知]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/实时通信/web应用开发-前端-Web-应用如何做到实时消息通知</id>
         <link href="https://herongdev.github.io/blog/posts/前端/实时通信/web应用开发-前端-Web-应用如何做到实时消息通知"/>
@@ -6965,6 +7223,111 @@ export async function sendPush(sub, payload) {
 - **提醒类**：配上 **Web Push**，覆盖离线/后台。
 
 需要我结合你现有技术栈（如 Next.js、Spring Boot、NestJS、Redis、Kafka）给出**最小改造的落地方案**和**只改动的代码片段**吗？我可以按你的项目结构直接贴可替换的文件/增量修改。
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[测试文章]]></title>
+        <id>https://herongdev.github.io/blog/posts/前端/常用库/split.js的使用</id>
+        <link href="https://herongdev.github.io/blog/posts/前端/常用库/split.js的使用"/>
+        <updated>2025-09-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<一句话摘要，便于 SEO>]]></summary>
+        <content type="html"><![CDATA[
+# **Split.js** 配置项
+
+## 1. `direction: 'horizontal'`
+
+- **作用**：设置分割方向。
+- **可选值**：
+  - `'horizontal'`：左右分割（垂直分隔条）。
+  - `'vertical'`：上下分割（水平分隔条）。
+- **这里的用法**：`'horizontal'` 表示左边是 SymbolList，右边是 ChartPanel。
+
+## 2. `sizes: [sidebarPanelWidth.value, containerWidth - sidebarPanelWidth.value]`
+
+- **作用**：设置两个面板的初始尺寸（像素或百分比）。
+- **值的含义**：
+  - 第一个值：左侧面板宽度（这里是 `sidebarPanelWidth.value`）。
+  - 第二个值：右侧面板宽度（容器总宽度减去左侧宽度）。
+- **注意**：如果传百分比（如 `[30, 70]`），则按比例分配；传像素值则按固定像素。
+
+## 3. `minSize: [0, 0]`
+
+- **作用**：设置每个面板的最小尺寸。
+- **值的含义**：
+  - `[0, 0]` 表示两个面板都可以被拖到 0 像素（完全隐藏）。
+- **常见用法**：防止面板被拖得太小导致内容不可见，比如 `[200, 300]`。
+
+## 4. `maxSize: [tableWidth, Infinity]`
+
+- **作用**：设置每个面板的最大尺寸。
+- **值的含义**：
+  - 第一个值：左侧最大宽度是 `tableWidth`（表格宽度）。
+  - 第二个值：右侧最大宽度无限制（`Infinity`）。
+- **用途**：避免左侧面板被拖得过宽，影响右侧内容显示。
+
+## 5. `gutterSize: 8`
+
+- **作用**：分隔条的宽度（水平分割时是宽度，垂直分割时是高度）。
+- **值的含义**：`8` 表示分隔条宽度为 8 像素。
+
+## 6. `snapOffset: chartPanelHeight.value < 10 ? 0 : 10`
+
+- **作用**：拖动时的“吸附”距离。
+- **值的含义**：
+  - 如果 `chartPanelHeight` 小于 10，则吸附距离为 0（无吸附）。
+  - 否则为 10 像素，表示拖动接近边界 10 像素时会自动吸附到边界。
+- **用途**：提升拖动体验，方便快速收起或展开面板。
+
+## 7. `elementStyle: (dimension, size, gutterSize) => ({ 'flex-basis': \`calc(${size}px - ${gutterSize}px)\` })`
+
+- **作用**：自定义面板的 CSS 样式。
+- **这里的逻辑**：
+  - `flex-basis` 决定了面板在 Flex 布局中的基础尺寸。
+  - 用 `calc()` 减去分隔条的宽度，保证布局精确。
+
+## 8. `gutterStyle: () => ({ width: '8px', background: 'var(--ground-50)', cursor: 'col-resize' })`
+
+- **作用**：自定义分隔条的样式。
+- **值的含义**：
+  - `width: '8px'`：分隔条宽度。
+  - `background: 'var(--ground-50)'`：背景颜色（CSS 变量）。
+  - `cursor: 'col-resize'`：鼠标悬停时显示左右拖动的光标。
+
+## 9. `onDrag: (sizes) => handleSidebarResizing(sizes)`
+
+- **作用**：拖动分隔条时触发的回调。
+- **值的含义**：
+  - `sizes` 是当前两个面板的尺寸数组。
+  - `handleSidebarResizing(sizes)` 是你自定义的函数，用来更新状态（比如保存用户调整后的宽度）。
+
+### 总结表
+
+| 属性           | 作用            | 常用值示例                    |
+| -------------- | --------------- | ----------------------------- |
+| `direction`    | 分割方向        | `'horizontal'` / `'vertical'` |
+| `sizes`        | 初始尺寸        | `[300, 700]` 或 `[30, 70]`    |
+| `minSize`      | 最小尺寸        | `[200, 300]`                  |
+| `maxSize`      | 最大尺寸        | `[500, Infinity]`             |
+| `gutterSize`   | 分隔条宽度/高度 | `8`                           |
+| `snapOffset`   | 吸附距离        | `0` / `10`                    |
+| `elementStyle` | 面板样式        | 自定义函数                    |
+| `gutterStyle`  | 分隔条样式      | 自定义函数                    |
+| `onDrag`       | 拖动回调        | `(sizes) => { ... }`          |
+
+如果你愿意，我可以帮你画一个 **Split.js 配置可视化示意图**，让你直观理解这些参数是如何影响布局的，这样你在调试时会更快找到合适的值。  
+你想让我帮你画这个示意图吗？
+
+# 如何隐藏侧板
+
+- 将保存侧板宽度的变量的值设置为 0
+- 调用 horizontalSplit.setSizes 方法，重置面板数组中的有面板的宽度值
+- 如果是最外侧的面板，我们隐藏一下 gutter, 主要是通过给分隔面板的父 Ref 添加一个新的 no-gutter 样式类；这个样式主要就是 display: none !important;
+
+# 如何分隔上下面板，并支持最大化、最小化和正常
+
+- 如果只有上下两块，它就只有三个状态：最大化、最小化、在最大和最小之间的任意尺寸；
+- 我们通过调用 setSizes 设置 2 个面板的宽度，同时更新保存这 2 个值的数组；
+- 如果我们想最大或最小化时，隐藏 gutter，可以在到达最大或最小时，给面板的父容器加上 no-gutter 样式类，隐藏 gutter，当切换到最大和最小之间时，我们又移除样式；
 ]]></content>
     </entry>
     <entry>
