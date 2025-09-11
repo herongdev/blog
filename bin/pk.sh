@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#!/usr/bin/env bash
 set -e
 TITLE="$1"
 FILENAME="${2:-$TITLE.md}"
