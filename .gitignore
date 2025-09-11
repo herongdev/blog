@@ -1,8 +1,37 @@
+# Dependencies
+node_modules/
+
+# Vite/VitePress build output
+.docs-temp/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Coverage / test
+coverage/
+.nyc_output/
+
+# Editor & OS files
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
-db.json
-*.log
-node_modules/
-public/
-.deploy*/
-_multiconfig.yml
+
+# Temporary files
+.tmp/
+tmp/
+
+# Optional package manager stores
+.pnpm-store/

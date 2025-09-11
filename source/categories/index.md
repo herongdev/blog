@@ -1,5 +1,0 @@
----
-title: categories
-type: categories
-date: 2025-09-04 17:50:28
----
