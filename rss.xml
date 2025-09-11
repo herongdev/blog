@@ -4,7 +4,7 @@
         <title>我的博客</title>
         <link>https://herongdev.github.io/blog</link>
         <description>个人博客 RSS</description>
-        <lastBuildDate>Wed, 10 Sep 2025 05:42:53 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 11 Sep 2025 17:11:37 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh-CN</language>
@@ -6798,7 +6798,7 @@ function stringToBuffer(str) {
             <title><![CDATA[https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</guid>
-            <pubDate>Wed, 10 Sep 2025 05:42:53 GMT</pubDate>
+            <pubDate>Thu, 11 Sep 2025 17:11:37 GMT</pubDate>
             <content:encoded><![CDATA[对于 chrome 浏览器，它提供了修改滚动条样式的接口，开发者只需要加上几句 css 脚本，就可轻松实现滚动条样式的修改.
 
 先说一下滚动条的参数：

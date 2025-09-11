@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://herongdev.github.io/blog</id>
     <title>我的博客</title>
-    <updated>2025-09-10T05:42:53.833Z</updated>
+    <updated>2025-09-11T17:11:37.131Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://herongdev.github.io/blog"/>
     <link rel="self" href="https://herongdev.github.io/blog/atom.xml"/>
@@ -6797,7 +6797,7 @@ function stringToBuffer(str) {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</id>
         <link href="https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整"/>
-        <updated>2025-09-10T05:42:53.858Z</updated>
+        <updated>2025-09-11T17:11:37.155Z</updated>
         <content type="html"><![CDATA[对于 chrome 浏览器，它提供了修改滚动条样式的接口，开发者只需要加上几句 css 脚本，就可轻松实现滚动条样式的修改.
 
 先说一下滚动条的参数：
