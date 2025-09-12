@@ -4,7 +4,7 @@
         <title>我的博客</title>
         <link>https://herongdev.github.io/blog</link>
         <description>个人博客 RSS</description>
-        <lastBuildDate>Thu, 11 Sep 2025 17:11:37 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 12 Sep 2025 15:06:15 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh-CN</language>
@@ -1410,46 +1410,6 @@ export const Api = {
 ]]></content:encoded>
         </item>
         <item>
-            <title><![CDATA[测试文章]]></title>
-            <link>https://herongdev.github.io/blog/posts/测试文章</link>
-            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/测试文章</guid>
-            <pubDate>Tue, 09 Sep 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[<一句话摘要，便于 SEO>]]></description>
-            <content:encoded><![CDATA[
-## 背景与目标
-
-- 业务/技术背景
-- 这篇文章要解决什么问题？如何验证？
-
-## 问题分析（可复现）
-
-- 最小复现或真实案例
-- 误区与常见失败路径
-
-## 解决方案（可验证）
-
-- 方案对比与取舍
-- 步骤/代码/配置
-- 验证与指标
-
-## 探索与延伸
-
-- 边界条件、兼容性、性能与安全
-- 与相关专题的链接
-
-## 结论与行动项
-
-- 关键结论
-- 下一步可执行清单
-]]></content:encoded>
-        </item>
-        <item>
-            <title><![CDATA[简单文章测试]]></title>
-            <link>https://herongdev.github.io/blog/posts/简单文章测试</link>
-            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/简单文章测试</guid>
-            <pubDate>Tue, 09 Sep 2025 00:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[AI 时代：工程师不可替代的价值与协作边界]]></title>
             <link>https://herongdev.github.io/blog/posts/AI-协作与边界/AI-时代：工程师不可替代的价值与协作边界</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/AI-协作与边界/AI-时代：工程师不可替代的价值与协作边界</guid>
@@ -1633,6 +1593,200 @@ AI 让“生成更快”，工程师让“正确落地”。边界越清晰，�
 
 - FAQ 1
 - FAQ 2
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Kotlin + Swift 快速入门实战课程大纲（AI 驱动版）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/Kotlin + Swift 快速入门实战课程大纲（AI 驱动版）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/Kotlin + Swift 快速入门实战课程大纲（AI 驱动版）</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+## 前言
+
+你的思路非常正确 👍
+
+- 不再像以前一样花几个月甚至一年去“系统化”学习，而是**以开发为目标、遇到问题即学**；
+- 借助 **AI 辅助**，快速查缺补漏、解决问题；
+- 在 **边学边写**的同时，把知识整理成 **系统化的精简教程（博客）**，不仅能加深理解，还能对外输出，吸引同样有需要的读者。
+
+这种方法既能让你快速上手开发项目，又能通过博客积累个人影响力。
+
+下面给你一个适合写成 Hexo 博客系列的**课程大纲**（即后续每篇文章的章节目录）。
+
+---
+
+## 课程大纲（Hexo 博客结构）
+
+### 1. 开篇
+
+- 为什么要学 Kotlin 和 Swift
+- Android vs iOS 开发的差异
+- AI + 实战驱动的学习方法介绍
+- 学习环境准备（HBuilderX、Android Studio、Xcode、模拟器）
+
+---
+
+### 2. Kotlin 入门（Android 开发）
+
+- Kotlin 基础语法速览（变量、函数、类、集合）
+- Android 应用结构（Activity、Manifest、Gradle）
+- 最常用的 Android API：Toast、日志、权限、存储
+- 实战示例：写一个能显示唯一设备 ID 的小工具
+
+---
+
+### 3. Swift 入门（iOS 开发）
+
+- Swift 基础语法速览（变量、函数、类、集合）
+- iOS 应用结构（AppDelegate、SceneDelegate、Info.plist）
+- 最常用的 iOS API：Alert、日志、权限、存储
+- 实战示例：写一个能显示设备 IDFV 的小工具
+
+---
+
+### 4. 跨平台思维：相同功能如何用两种语言实现
+
+- 获取设备唯一标识（Android vs iOS）
+- 调用相机拍照
+- 调用网络请求
+- 本地持久化存储
+
+---
+
+### 5. 与 UTS 插件结合
+
+- 什么是 UTS 插件
+- Kotlin + Swift 混编到 UTS 插件
+- 写一个“ID Kit”插件（即你正在开发的功能）
+- 在 uni-app 项目中调用
+
+---
+
+### 6. AI 驱动的开发学习法
+
+- 如何用 AI 查文档、解释代码
+- 如何把“遇到问题 → 提问 → 得到解答 → 整理成博客”变成习惯
+- 写博客的结构化模板（背景 → 问题 → 解决方案 → 示例代码）
+
+---
+
+### 7. 博客运营与个人影响力
+
+- 如何把教程系统化整理到 Hexo
+- 如何在掘金/知乎/公众号同步
+- 如何加上 SEO 关键词（比如 “Kotlin 教程 快速上手” / “Swift 实用开发”）
+- 如何在写项目的同时吸引读者
+
+---
+
+## 学习路线特点
+
+- **精简**：只覆盖最常用、马上能用的语法/知识
+- **实战驱动**：每一章都有小 Demo，可以直接运行
+- **AI 补充**：不懂的再查，而不是被动死记硬背
+- **博客沉淀**：学习成果 = 系统教程
+
+---
+
+👉 接下来，我们可以从 **第一篇博文**（比如《为什么要学 Kotlin 和 Swift：AI 时代的移动开发学习法》）开始写。
+
+要不要我帮你起草 **第一篇 Hexo 博客内容**（带前言、动机、学习方法和环境准备）？
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[为什么要学 Kotlin 和 Swift：AI 时代的移动开发学习法]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/为什么要学 Kotlin 和 Swift：AI 时代的移动开发学习法</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/为什么要学 Kotlin 和 Swift：AI 时代的移动开发学习法</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+## 前言
+
+在 AI 辅助开发的今天，学习编程语言和框架的方式正在发生巨大变化。
+过去，我们常常需要花费数月甚至一年的时间，去系统地学习一门语言：看书、看视频、上培训班……
+但现在，**AI 就像随身携带的老师**，让我们可以随时提问、随时解决问题。
+
+这篇文章是本系列课程的开篇，目的是带你进入 **Kotlin（Android）** 与 **Swift（iOS）** 的学习世界，
+并告诉你如何用 **实用、精简、快速** 的方式掌握这两门移动开发语言。
+
+---
+
+## 为什么是 Kotlin 和 Swift？
+
+- **Kotlin**：Google 官方推荐的 Android 开发语言，简洁、安全，兼容 Java。
+- **Swift**：Apple 官方推荐的 iOS/macOS 开发语言，语法现代，性能接近 C++。
+- **移动开发的必备技能**：
+  想写原生 App，或者写跨平台插件（比如 UTS 插件），这两门语言绕不开。
+
+---
+
+## 为什么现在学习更容易？
+
+### 1. 有 AI 辅助
+
+不会的地方，可以马上问 AI：
+
+- “Kotlin 中如何写一个单例？”
+- “Swift 怎么调用系统相机？”
+  得到的答案往往比去翻文档快得多。
+
+### 2. 不用从零到一系统学习
+
+过去要学完所有语法，才能开始写项目。
+现在我们可以直接上手写项目，遇到不会的再查。
+**学习和实战并行，不拖延。**
+
+### 3. 学习+输出的闭环
+
+我们不只是学，还要写博客：
+
+- 今天学了 `Kotlin 的数据类` → 写一篇博文分享。
+- 明天学了 `Swift 获取设备唯一 ID` → 写一篇博文总结。
+  这样不仅加深记忆，还能吸引流量，打造个人品牌。
+
+---
+
+## 学习方法论
+
+1. **快速扫盲**：先过一遍最常用的语法（变量、函数、类、集合）。
+2. **马上动手**：写一个小 Demo，比如“获取设备唯一 ID 并打印”。
+3. **遇到问题 → 提问 AI → 记录答案**。
+4. **整理成博客**：一篇篇文章，最终就是一本属于你的“快速入门手册”。
+
+---
+
+## 环境准备
+
+### Android 端
+
+- 安装 **Android Studio**（官方 IDE）
+- 学习使用 Kotlin 文件（.kt）
+- 熟悉 Android 项目结构（`MainActivity.kt`、`AndroidManifest.xml`、Gradle）
+
+### iOS 端
+
+- 安装 **Xcode**（苹果官方 IDE）
+- 学习使用 Swift 文件（.swift）
+- 熟悉 iOS 项目结构（`AppDelegate.swift`、`Info.plist`）
+
+### 跨平台插件（可选）
+
+- 安装 **HBuilderX**，用于开发 uni-app / UTS 插件
+- 未来我们会写一个同时支持 Android + iOS 的 **ID Kit 插件**，实践 Kotlin 与 Swift
+
+---
+
+## 下一步
+
+在下一篇文章中，我们将进入 **Kotlin 入门**，快速掌握 Android 开发中最常用的语法和知识点，并用一个 Demo 展示如何获取 Android 的唯一设备 ID。
+
+---
+
+👉 提问：
+你希望下一篇 **Kotlin 入门** 的博文风格是：
+
+- **“语法精简速览 + Demo 实战”**（适合快速入门）
+  还是
+- **“从 0 开始循序渐进”**（更系统，但内容会多一些）？
 ]]></content:encoded>
         </item>
         <item>
@@ -4998,6 +5152,1644 @@ onMounted(async () => {
 ]]></content:encoded>
         </item>
         <item>
+            <title><![CDATA[Kotlin 入门（1）：Hello World 与变量常量]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（1）：Hello World 与变量常量</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（1）：Hello World 与变量常量</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Kotlin 入门（1）：Hello World 与变量常量
+
+在 AI 时代，我们学习 Kotlin 的目标不是背诵语法，而是 **快速能看懂 AI 生成的代码**，并能写出简单功能。本篇文章带你用最短的路径跑通第一个 Kotlin 程序，并掌握「变量与常量」的写法。
+
+## 1. 第一个 Kotlin 程序
+
+Kotlin 的入口和其它语言类似，一个 `main` 函数就能跑起来。
+
+```kotlin
+fun main() {
+    println("Hello, Kotlin!")
+}
+```
+
+运行后输出：
+
+```
+Hello, Kotlin!
+```
+
+- `fun` 表示函数
+- `main` 是程序入口
+- `println` 用来打印内容到控制台
+
+## 2. 变量与常量
+
+在 Kotlin 中，声明变量有两种方式：
+
+### 可变变量：`var`
+
+```kotlin
+fun main() {
+    var age = 18
+    println(age)   // 输出 18
+
+    age = 20
+    println(age)   // 输出 20
+}
+```
+
+- `var` 声明的变量可以修改
+- Kotlin 会自动推断类型（这里 `age` 是 `Int` 类型）
+
+### 不可变变量：`val`
+
+```kotlin
+fun main() {
+    val name = "Alice"
+    println(name)  // 输出 Alice
+
+    // name = "Bob"  // ❌ 报错：val 不能重新赋值
+}
+```
+
+- `val` 相当于常量，只能赋值一次
+- 推荐 **能用 `val` 就用 `val`**，保证安全性
+
+## 3. 指定类型
+
+Kotlin 通常能自动推断类型，但你也可以显式声明：
+
+```kotlin
+val score: Int = 100
+val pi: Double = 3.14
+val username: String = "admin"
+```
+
+常见类型有：
+
+- `Int`：整数
+- `Double`：小数
+- `Boolean`：布尔值
+- `String`：字符串
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Kotlin 入门（2）：语法速览（数据类型、字符串模板、空安全）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（2）：语法速览（数据类型、字符串模板、空安全）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（2）：语法速览（数据类型、字符串模板、空安全）</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Kotlin 入门（2）：语法速览（数据类型、字符串模板、空安全）
+
+## 1. 常见数据类型
+
+Kotlin 是强类型语言，常见数据类型包括：
+
+```kotlin
+val age: Int = 20        // 整数
+val price: Double = 9.99 // 小数
+val isVip: Boolean = true // 布尔
+val name: String = "Tom" // 字符串
+```
+
+Kotlin 会自动推断类型，所以一般不用写类型：
+
+```kotlin
+val age = 20
+val price = 9.99
+val isVip = true
+val name = "Tom"
+```
+
+## 2. 字符串模板
+
+Kotlin 内置了「字符串模板」功能，用 `$变量名` 或 `${表达式}` 嵌入变量：
+
+```kotlin
+fun main() {
+    val name = "Alice"
+    val age = 18
+    println("名字: $name, 年龄: $age")
+
+    // 表达式要加 {}
+    println("明年年龄: ${age + 1}")
+}
+```
+
+输出：
+
+```
+名字: Alice, 年龄: 18
+明年年龄: 19
+```
+
+非常常用！比拼接字符串 `+` 更直观。
+
+## 3. 空安全（Null Safety）
+
+Kotlin 最大的特点之一就是「空安全」，尽量避免空指针错误。
+
+### 普通变量（不能为 null）
+
+```kotlin
+val name: String = "Alice"
+// name = null // ❌ 报错，普通变量不能赋值为 null
+```
+
+### 可空变量（可以为 null）
+
+```kotlin
+var nickname: String? = null
+nickname = "小明"
+```
+
+- 加 `?` 表示这个变量可以为 null
+- 读取时要小心
+
+### 安全调用：`?.`
+
+```kotlin
+val length = nickname?.length
+```
+
+如果 `nickname` 为 null，结果就是 `null`，不会报错。
+
+### Elvis 操作符：`?:`
+
+```kotlin
+val length = nickname?.length ?: 0
+```
+
+如果 `nickname` 为 null，就返回 `0`。
+
+### 强制非空：`!!`
+
+```kotlin
+val length = nickname!!.length
+```
+
+如果 `nickname` 是 `null`，会抛出异常。⚠️ 一般少用。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Kotlin 入门（3）：流程控制（if、when、循环）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（3）：流程控制（if、when、循环）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（3）：流程控制（if、when、循环）</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Kotlin 入门（3）：流程控制（if、when、循环）
+
+程序离不开 **条件判断** 和 **循环**。
+
+## 1. if 表达式
+
+Kotlin 的 `if` 不仅能做判断，还能当表达式返回值。
+
+```kotlin
+val age = 20
+
+if (age >= 18) {
+    println("成年人")
+} else {
+    println("未成年人")
+}
+```
+
+也可以直接赋值：
+
+```kotlin
+val category = if (age >= 18) "成年人" else "未成年人"
+println(category) // 成年人
+```
+
+## 2. when 表达式
+
+`when` 是 Kotlin 里的「多分支选择」，比 `switch` 更强大。
+
+### 基本用法
+
+```kotlin
+val score = 85
+
+when {
+    score >= 90 -> println("优秀")
+    score >= 60 -> println("及格")
+    else -> println("不及格")
+}
+```
+
+### 匹配具体值
+
+```kotlin
+val day = 3
+val weekday = when (day) {
+    1 -> "周一"
+    2 -> "周二"
+    3 -> "周三"
+    else -> "未知"
+}
+println(weekday) // 周三
+```
+
+### 多个条件合并
+
+```kotlin
+when (day) {
+    1, 7 -> println("周末")
+    in 2..6 -> println("工作日")
+    else -> println("未知")
+}
+```
+
+## 3. 循环
+
+### for 循环（区间）
+
+```kotlin
+for (i in 1..5) {
+    println(i) // 1,2,3,4,5
+}
+```
+
+### 递减循环
+
+```kotlin
+for (i in 5 downTo 1) {
+    println(i) // 5,4,3,2,1
+}
+```
+
+### 指定步长
+
+```kotlin
+for (i in 0..10 step 2) {
+    println(i) // 0,2,4,6,8,10
+}
+```
+
+### 遍历数组/集合
+
+```kotlin
+val list = listOf("A", "B", "C")
+for (item in list) {
+    println(item)
+}
+```
+
+## 4. while 循环
+
+```kotlin
+var n = 3
+while (n > 0) {
+    println(n)
+    n--
+}
+```
+
+## 5. 小结
+
+- `if` 可以做条件判断，也能当表达式返回值
+- `when` 是 Kotlin 的多分支选择，功能比 `switch` 强大
+- `for` 支持区间、步长、集合遍历
+- `while` 和其他语言差不多，适合条件循环
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Kotlin 入门（4）：函数进阶（默认参数、命名参数、内联函数）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（4）：函数必备（默认参数、命名参数、可变参数）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（4）：函数必备（默认参数、命名参数、可变参数）</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Kotlin 入门（4）：函数进阶（默认参数、命名参数、内联函数）
+
+Kotlin 的函数非常灵活，尤其是 **默认参数、命名参数、内联函数**。
+
+## 1. 默认参数
+
+函数可以为参数提供默认值，调用时就可以省略。
+
+```kotlin
+fun greet(name: String = "游客") {
+    println("你好, $name")
+}
+
+fun main() {
+    greet()          // 输出: 你好, 游客
+    greet("Alice")   // 输出: 你好, Alice
+}
+```
+
+👉 好处：比方法重载更简洁。
+
+## 2. 命名参数
+
+调用函数时，可以按「参数名」指定值，避免记混顺序。
+
+```kotlin
+fun showUser(name: String, age: Int) {
+    println("名字: $name, 年龄: $age")
+}
+
+fun main() {
+    showUser(age = 20, name = "Bob") // 顺序可变
+}
+```
+
+👉 在参数多时特别清晰。
+
+## 3. 结合使用：默认参数 + 命名参数
+
+```kotlin
+fun connect(host: String = "localhost", port: Int = 3306) {
+    println("连接到 $host:$port")
+}
+
+fun main() {
+    connect()                   // localhost:3306
+    connect("192.168.1.1")      // 192.168.1.1:3306
+    connect(port = 8080)        // localhost:8080
+}
+```
+
+## 4. 内联函数（inline）
+
+在高阶函数中，**内联函数**能避免额外开销，提高性能。
+常见于 **lambda 回调**。
+
+```kotlin
+inline fun measureTime(block: () -> Unit) {
+    val start = System.currentTimeMillis()
+    block()
+    val end = System.currentTimeMillis()
+    println("耗时: ${end - start}ms")
+}
+
+fun main() {
+    measureTime {
+        Thread.sleep(500)
+    }
+}
+```
+
+👉 `inline` 的作用：调用时把函数体「内联展开」，避免函数调用栈的开销。
+👉 在 Android/多层回调中用得很多。
+
+## 5. 小结
+
+- **默认参数**：减少重载，让函数调用更灵活
+- **命名参数**：让调用更清晰，不怕顺序错乱
+- **内联函数**：提升高阶函数性能，常见于回调/工具函数
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Kotlin 入门（8）：集合与泛型（List、Set、Map、泛型函数）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（5）：集合操作（List、Set、Map + 常用方法）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（5）：集合操作（List、Set、Map + 常用方法）</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Kotlin 入门（8）：集合与泛型（List、Set、Map、泛型函数）
+
+在实际开发中，数据通常不是一个一个单独存在，而是成组的。  
+Kotlin 提供了功能强大的 **集合 API**，加上 **泛型**，能让代码更安全、更灵活。
+
+## 1. List（有序集合）
+
+```kotlin
+fun main() {
+    // 不可变 List
+    val fruits = listOf("Apple", "Banana", "Orange")
+    println(fruits[0]) // Apple
+
+    // 可变 List
+    val nums = mutableListOf(1, 2, 3)
+    nums.add(4)
+    println(nums) // [1, 2, 3, 4]
+
+    // 常用操作
+    println(nums.first()) // 1
+    println(nums.last())  // 4
+    println(nums.filter { it % 2 == 0 }) // [2, 4]
+    println(nums.map { it * it }) // [1, 4, 9, 16]
+}
+```
+
+## 2. Set（无序且不重复）
+
+```kotlin
+fun main() {
+    val set = mutableSetOf("A", "B", "C", "A")
+    println(set) // [A, B, C] 自动去重
+
+    println(set.contains("B")) // true
+
+    set.remove("C")
+    println(set) // [A, B]
+}
+```
+
+## 3. Map（键值对）
+
+```kotlin
+fun main() {
+    // 不可变 Map
+    val map = mapOf("name" to "Alice", "age" to 20)
+    println(map["name"]) // Alice
+
+    // 可变 Map
+    val scores = mutableMapOf("Tom" to 90, "Jerry" to 85)
+    scores["Lucy"] = 95
+    println(scores) // {Tom=90, Jerry=85, Lucy=95}
+
+    // 遍历
+    for ((k, v) in scores) {
+        println("$k -> $v")
+    }
+}
+```
+
+## 4. 泛型（Generics）
+
+泛型让函数/类支持多种类型，写一次，通用多处。
+
+### 泛型函数
+
+```kotlin
+fun <T> printList(items: List<T>) {
+    for (item in items) {
+        println(item)
+    }
+}
+
+fun main() {
+    printList(listOf(1, 2, 3))        // 打印数字
+    printList(listOf("a", "b", "c"))  // 打印字符串
+}
+```
+
+### 泛型类
+
+```kotlin
+class Box<T>(val value: T)
+
+fun main() {
+    val intBox = Box(123)
+    val strBox = Box("Hello")
+    println(intBox.value) // 123
+    println(strBox.value) // Hello
+}
+```
+
+## 5. 常用集合操作
+
+Kotlin 集合有大量便捷函数：
+
+```kotlin
+fun main() {
+    val nums = listOf(5, 2, 8, 1)
+
+    println(nums.sorted())       // [1, 2, 5, 8]
+    println(nums.sortedDescending()) // [8, 5, 2, 1]
+    println(nums.sum())          // 16
+    println(nums.average())      // 4.0
+    println(nums.maxOrNull())    // 8
+}
+```
+
+## 6. 小结
+
+- **List**：有序，可重复
+- **Set**：无序，不重复
+- **Map**：键值对存储
+- **泛型**：提高代码复用性和类型安全
+- **集合 API**：`filter`、`map`、`sorted` 等非常常用
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Kotlin 入门（5）：类与对象（构造函数、属性、方法）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（6）：类与对象（属性、方法、构造函数）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/Kotlin 入门（6）：类与对象（属性、方法、构造函数）</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Kotlin 入门（5）：类与对象（构造函数、属性、方法）
+
+Kotlin 是面向对象语言，几乎所有功能都依赖 **类与对象**。  
+这一篇我们快速掌握 **构造函数、属性、方法** —— 写应用必备。
+
+## 1. 定义类
+
+```kotlin
+class User(val name: String, var age: Int) {
+    fun sayHello() {
+        println("大家好，我是 $name，今年 $age 岁")
+    }
+}
+```
+
+- `val` → 只读属性
+- `var` → 可变属性
+- 构造函数可以直接写在类名后面。
+
+## 2. 创建对象
+
+```kotlin
+fun main() {
+    val u1 = User("Alice", 20)
+    u1.sayHello()
+}
+```
+
+输出：
+
+```
+大家好，我是 Alice，今年 20 岁
+```
+
+## 3. 主构造函数
+
+上例里的 `(val name: String, var age: Int)` 就是 **主构造函数**。
+
+也可以加 `init` 代码块做初始化逻辑：
+
+```kotlin
+class Person(val name: String, var age: Int) {
+    init {
+        println("创建 Person: $name, $age 岁")
+    }
+}
+```
+
+## 4. 次构造函数
+
+如果需要多个不同的构造方式，可以写 **次构造函数**。
+
+```kotlin
+class Book(val title: String, val price: Double) {
+    constructor(title: String) : this(title, 0.0)
+}
+```
+
+调用：
+
+```kotlin
+val b1 = Book("Kotlin 入门", 39.9)
+val b2 = Book("免费电子书")
+```
+
+## 5. 属性
+
+属性本质上是 **字段 + getter/setter**。
+Kotlin 可以自定义逻辑：
+
+```kotlin
+class Account(var balance: Double) {
+    var isRich: Boolean
+        get() = balance > 1_000_000
+        set(value) {
+            println("忽略设置，isRich 根据余额计算")
+        }
+}
+```
+
+## 6. 方法
+
+类里定义的函数就是 **方法**。
+
+```kotlin
+class Calculator {
+    fun add(a: Int, b: Int): Int = a + b
+}
+```
+
+调用：
+
+```kotlin
+val calc = Calculator()
+println(calc.add(3, 5)) // 8
+```
+
+## 7. 小结
+
+- **主构造函数**：最常用，属性可直接写进去
+- **次构造函数**：提供额外初始化方式
+- **属性**：默认带 getter/setter，可自定义
+- **方法**：就是类中的函数
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Kotlin 入门（7）：常见工具类（String、Date、正则、异常处理）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/otlin 入门（7）：常见工具类（String、Date、正则、异常处理）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第一部分：基础必备/otlin 入门（7）：常见工具类（String、Date、正则、异常处理）</guid>
+            <pubDate>Fri, 12 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Kotlin 入门（7）：常见工具类（String、Date、正则、异常处理）
+
+写应用时，常用到 **字符串、日期、正则、异常处理**。
+
+## 1. String（字符串）
+
+Kotlin 的字符串功能非常强大。
+
+```kotlin
+fun main() {
+    val name = "Alice"
+    val age = 20
+
+    // 模板字符串
+    println("我是 $name，今年 $age 岁")
+
+    // 多行字符串
+    val msg = """
+        第一行
+        第二行
+    """.trimIndent()
+    println(msg)
+
+    // 常用方法
+    val text = "Hello Kotlin"
+    println(text.lowercase())  // hello kotlin
+    println(text.uppercase())  // HELLO KOTLIN
+    println(text.contains("Kot")) // true
+    println(text.replace("Kotlin", "World")) // Hello World
+}
+```
+
+## 2. 日期与时间
+
+Kotlin 推荐使用 **Java 8+ 的 java.time API**。
+
+```kotlin
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+fun main() {
+    val now = LocalDateTime.now()
+    println(now) // 2025-09-12T10:15:30
+
+    // 格式化
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    println(now.format(formatter)) // 2025-09-12 10:15:30
+
+    // 加减时间
+    val tomorrow = now.plusDays(1)
+    println("明天: ${tomorrow.format(formatter)}")
+}
+```
+
+## 3. 正则表达式
+
+```kotlin
+fun main() {
+    val regex = Regex("\\d{3}-\\d{4}")
+    val input = "我的电话是 123-4567"
+
+    // 匹配
+    println(regex.containsMatchIn(input)) // true
+
+    // 查找
+    val match = regex.find(input)
+    println(match?.value) // 123-4567
+
+    // 替换
+    val masked = regex.replace(input, "***-****")
+    println(masked) // 我的电话是 ***-****
+}
+```
+
+## 4. 异常处理
+
+Kotlin 的异常和 Java 类似，用 `try...catch...finally`。
+
+```kotlin
+fun main() {
+    try {
+        val x = 10 / 0
+    } catch (e: ArithmeticException) {
+        println("错误: ${e.message}")
+    } finally {
+        println("无论是否出错都会执行")
+    }
+}
+```
+
+### 自定义异常
+
+```kotlin
+class InvalidInputException(msg: String) : Exception(msg)
+
+fun checkAge(age: Int) {
+    if (age < 0) throw InvalidInputException("年龄不能为负数")
+}
+
+fun main() {
+    try {
+        checkAge(-1)
+    } catch (e: InvalidInputException) {
+        println("捕获异常: ${e.message}")
+    }
+}
+```
+
+## 5. 小结
+
+- **String**：支持模板、常用方法丰富
+- **Date/Time**：推荐用 `java.time.*` API
+- **正则**：`Regex` 类自带匹配/替换
+- **异常处理**：`try-catch-finally`，支持自定义异常
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 1 篇**，保持 Hexo 博客风格，主题是 **高阶函数与 Lambda 表达式**。
+
+---
+
+````markdown
+---
+title: Kotlin 进阶（1）：高阶函数与 Lambda 表达式
+date: 2025-09-12
+categories: [Kotlin 进阶学习]
+tags: [Kotlin, 函数式编程, Lambda, 高阶函数]
+---
+
+# Kotlin 进阶（1）：高阶函数与 Lambda 表达式
+
+Kotlin 支持 **函数式编程**，最核心的就是 **高阶函数** 和 **Lambda 表达式**。  
+掌握它们后，你会发现很多标准库函数（`map`、`filter`、`let`、`apply` 等）原来都在用这些特性。
+
+---
+
+## 1. 什么是高阶函数？
+
+👉 **高阶函数**：把函数当作参数或返回值的函数。
+
+```kotlin
+// 高阶函数：接收一个函数作为参数
+fun operate(x: Int, y: Int, op: (Int, Int) -> Int): Int {
+    return op(x, y)
+}
+
+fun main() {
+    val sum = operate(3, 4) { a, b -> a + b }
+    println(sum) // 7
+}
+```
+````
+
+这里 `op: (Int, Int) -> Int` 就是一个函数类型参数。
+
+---
+
+## 2. Lambda 表达式基础
+
+Lambda 是 **匿名函数**，语法更简洁。
+
+```kotlin
+val add: (Int, Int) -> Int = { a, b -> a + b }
+println(add(2, 3)) // 5
+```
+
+简写规则：
+
+- 参数类型可省略（由上下文推断）
+- 单参数时可用 `it`
+- 最后一行就是返回值
+
+```kotlin
+val square: (Int) -> Int = { it * it }
+println(square(5)) // 25
+```
+
+---
+
+## 3. 常见标准库函数
+
+高阶函数+Lambda 在集合操作里用得最多。
+
+```kotlin
+val nums = listOf(1, 2, 3, 4, 5)
+
+println(nums.filter { it % 2 == 0 }) // [2, 4]
+println(nums.map { it * it })        // [1, 4, 9, 16, 25]
+println(nums.any { it > 3 })         // true
+println(nums.all { it > 0 })         // true
+```
+
+---
+
+## 4. 函数作为返回值
+
+函数也能“生成函数”。
+
+```kotlin
+fun multiplier(factor: Int): (Int) -> Int {
+    return { x -> x * factor }
+}
+
+fun main() {
+    val double = multiplier(2)
+    println(double(5)) // 10
+}
+```
+
+---
+
+## 5. 内联函数（inline）
+
+高阶函数会带来额外的函数对象开销。
+用 `inline` 可以避免多余的对象创建和调用成本。
+
+```kotlin
+inline fun measureTime(block: () -> Unit) {
+    val start = System.currentTimeMillis()
+    block()
+    val end = System.currentTimeMillis()
+    println("耗时: ${end - start} ms")
+}
+
+fun main() {
+    measureTime {
+        Thread.sleep(500)
+    }
+}
+```
+
+---
+
+## 6. 小结
+
+- **高阶函数**：函数可当参数或返回值
+- **Lambda**：简洁的匿名函数
+- **集合操作**：`filter`、`map`、`any`、`all` 等大量使用 Lambda
+- **内联函数**：优化高阶函数性能
+
+---
+
+下一篇我们学习 👉 **《Kotlin 进阶（2）：作用域函数（let、apply、run、also、with）》**，写出更优雅的链式代码。
+
+```
+
+---
+
+要不要我接着帮你写 **《Kotlin 进阶（2）：作用域函数》**？
+```
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 2 篇**，保持 Hexo 博客风格，主题是 **扩展函数**。
+
+---
+
+````markdown
+---
+title: Kotlin 进阶（2）：扩展函数（给类添加新功能）
+date: 2025-09-12
+categories: [Kotlin 进阶学习]
+tags: [Kotlin, 扩展函数, 面向对象, 语法糖]
+---
+
+# Kotlin 进阶（2）：扩展函数（给类添加新功能）
+
+在 Kotlin 里，**扩展函数**让你不用继承或修改源码，就能给现有的类加新功能。  
+这非常适合 **库的增强**、**工具方法封装**、**简化代码**。
+
+---
+
+## 1. 基础语法
+
+扩展函数的定义形式：
+
+```kotlin
+fun 类型名.函数名(参数...): 返回类型 {
+    // this 代表调用对象
+}
+```
+````
+
+示例：
+
+```kotlin
+fun String.lastChar(): Char {
+    return this[this.length - 1]
+}
+
+fun main() {
+    println("Hello".lastChar()) // o
+}
+```
+
+---
+
+## 2. 常用场景示例
+
+### (1) 数字工具函数
+
+```kotlin
+fun Int.isEven(): Boolean = this % 2 == 0
+fun Int.isOdd(): Boolean = this % 2 != 0
+
+println(10.isEven()) // true
+println(3.isOdd())   // true
+```
+
+### (2) 集合扩展
+
+```kotlin
+fun <T> List<T>.secondOrNull(): T? =
+    if (this.size >= 2) this[1] else null
+
+println(listOf(1, 2, 3).secondOrNull()) // 2
+println(emptyList<Int>().secondOrNull()) // null
+```
+
+### (3) 日期格式化（依赖 `java.time`）
+
+```kotlin
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+fun LocalDateTime.format(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
+    return this.format(DateTimeFormatter.ofPattern(pattern))
+}
+
+fun main() {
+    println(LocalDateTime.now().format()) // 2025-09-12 15:30:00
+}
+```
+
+---
+
+## 3. 扩展属性
+
+不仅可以写函数，还能写属性。
+
+```kotlin
+val String.wordCount: Int
+    get() = this.trim().split("\\s+".toRegex()).size
+
+println("Hello Kotlin Extension".wordCount) // 3
+```
+
+---
+
+## 4. 伴生对象扩展
+
+可以给类的伴生对象（类似静态方法）添加扩展。
+
+```kotlin
+class Utils {
+    companion object {}
+}
+
+fun Utils.Companion.now(): Long = System.currentTimeMillis()
+
+println(Utils.now()) // 1694500000000
+```
+
+---
+
+## 5. 注意事项
+
+- 扩展函数 **不会修改原类**，只是 **语法糖**
+- 调用时根据 **静态类型** 决定，不支持多态覆盖
+- 适合用在 **工具类**、**增强库功能**
+
+---
+
+## 6. 小结
+
+- 用 `fun 类型.函数名()` 定义扩展函数
+- 可以扩展 **普通函数**、**属性**、**伴生对象**
+- 常用于 **工具方法封装** 和 **代码简化**
+
+---
+
+下一篇我们学习 👉 **《Kotlin 进阶（3）：协程基础（挂起函数、launch、async）》**，进入并发编程的核心。
+
+```
+
+---
+
+要不要我接着帮你写 **《Kotlin 进阶（3）：协程基础》**？
+```
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 3 篇**，保持 Hexo 博客风格，主题是 **空安全进阶**。
+
+---
+
+````markdown
+---
+title: Kotlin 进阶（3）：空安全进阶
+date: 2025-09-12
+categories: [Kotlin 进阶学习]
+tags: [Kotlin, 空安全, NullPointerException, Elvis, 安全调用]
+---
+
+# Kotlin 进阶（3）：空安全进阶
+
+在 Java 里，`NullPointerException`（简称 NPE）几乎是最常见的运行时错误。  
+而 Kotlin 的设计目标之一就是 **彻底减少空指针错误**。  
+今天我们深入学习 Kotlin 的 **空安全语法** 和 **最佳实践**。
+
+---
+
+## 1. 可空类型与非空类型
+
+Kotlin 把类型分为两种：
+
+- **非空类型**：默认不能为 `null`
+- **可空类型**：在类型后加 `?` 表示
+
+```kotlin
+val a: String = "Hello"
+// a = null ❌ 编译报错
+
+val b: String? = "Hi"
+val c: String? = null
+```
+````
+
+---
+
+## 2. 安全调用（?.）
+
+如果对象可能为 `null`，用 `?.` 来安全调用。
+
+```kotlin
+val name: String? = null
+println(name?.length) // null，而不是抛异常
+```
+
+---
+
+## 3. Elvis 操作符（?:）
+
+如果左边是 `null`，就用右边的值。
+
+```kotlin
+val name: String? = null
+val length = name?.length ?: 0
+println(length) // 0
+```
+
+---
+
+## 4. 非空断言（!!）
+
+把可空类型强制转为非空，如果是 `null` 就抛 NPE。
+⚠️ **慎用！** 一般只在“绝对保证非空”的地方使用。
+
+```kotlin
+val s: String? = "Kotlin"
+println(s!!.length) // 6
+
+val t: String? = null
+println(t!!.length) // ❌ NPE
+```
+
+---
+
+## 5. `let` 与空安全链式调用
+
+`let` 常和 `?.` 一起用，只有非空时才会执行。
+
+```kotlin
+val name: String? = "Kotlin"
+name?.let {
+    println("长度是 ${it.length}") // 6
+}
+```
+
+还能写成链式调用：
+
+```kotlin
+val result = name?.takeIf { it.length > 3 }?.uppercase()
+println(result) // KOTLIN
+```
+
+---
+
+## 6. `lateinit` 与 `by lazy`
+
+如果一个变量在稍后初始化，可以用：
+
+- **`lateinit var`**：必须是 `var`，常用于依赖注入、Android View
+- **`by lazy`**：必须是 `val`，第一次访问时才会初始化
+
+```kotlin
+lateinit var username: String
+
+val config: String by lazy {
+    println("初始化中…")
+    "配置加载完成"
+}
+```
+
+---
+
+## 7. 平台类型与 Java 互操作
+
+从 Java 代码调用来的对象可能是 `null` 也可能不是，Kotlin 把它称为 **平台类型**（不带 `?` 也不带 `!!`）。
+所以在和 Java 互操作时，要特别小心空指针问题。
+
+```java
+// Java
+public String getName() { return null; }
+```
+
+```kotlin
+val name = javaObj.name // 平台类型，不安全
+println(name.length)    // 可能直接 NPE
+```
+
+---
+
+## 8. 小结
+
+- Kotlin 通过 **可空类型** 和 **空安全操作符**，最大限度避免 NPE
+- 常用语法：`?.`、`?:`、`!!`、`let`
+- 初始化场景：`lateinit` 和 `by lazy`
+- 注意 Java 平台类型的潜在风险
+
+---
+
+下一篇我们学习 👉 **《Kotlin 进阶（4）：集合操作进阶（map/filter/flatMap/reduce）》**，写出更简洁优雅的数据处理代码。
+
+```
+
+---
+
+要不要我接着帮你写 **《Kotlin 进阶（4）：集合操作进阶》**？
+```
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 4 篇**，主题是 **数据类、枚举类、密封类**，保持 Hexo 博客风格。
+
+---
+
+````markdown
+---
+title: Kotlin 进阶（4）：数据类、枚举类、密封类
+date: 2025-09-12
+categories: [Kotlin 进阶学习]
+tags: [Kotlin, 数据类, 枚举类, 密封类, 面向对象]
+---
+
+# Kotlin 进阶（4）：数据类、枚举类、密封类
+
+在 Kotlin 中，除了普通的 `class`，还有三类非常常用的特殊类：
+
+- **数据类（data class）**：用来存放数据，自动生成常用方法
+- **枚举类（enum class）**：表示有限个固定常量
+- **密封类（sealed class）**：用于表示有限但可扩展的类型层次结构
+
+---
+
+## 1. 数据类（Data Class）
+
+数据类的主要用途是存放数据，Kotlin 会自动为你生成：
+
+- `toString()`
+- `equals()`
+- `hashCode()`
+- `copy()`
+- `componentN()`（解构用）
+
+### 示例
+
+```kotlin
+data class User(val id: Int, val name: String)
+
+fun main() {
+    val u1 = User(1, "Alice")
+    val u2 = User(1, "Alice")
+    val u3 = u1.copy(name = "Bob")
+
+    println(u1)         // User(id=1, name=Alice)
+    println(u1 == u2)   // true
+    println(u3)         // User(id=1, name=Bob)
+
+    val (id, name) = u1 // 解构
+    println("id=$id, name=$name")
+}
+```
+````
+
+非常适合用在 **模型类 / DTO**。
+
+---
+
+## 2. 枚举类（Enum Class）
+
+枚举表示固定的一组常量。
+每个枚举成员本质上是一个对象。
+
+### 示例
+
+```kotlin
+enum class Direction {
+    NORTH, SOUTH, EAST, WEST
+}
+
+fun main() {
+    val dir = Direction.NORTH
+    println(dir)            // NORTH
+    println(dir.name)       // NORTH
+    println(dir.ordinal)    // 0
+}
+```
+
+---
+
+### 枚举类也能有属性和方法
+
+```kotlin
+enum class Color(val rgb: Int) {
+    RED(0xFF0000),
+    GREEN(0x00FF00),
+    BLUE(0x0000FF);
+
+    fun hex() = "#${rgb.toString(16)}"
+}
+
+fun main() {
+    println(Color.RED.hex()) // #ff0000
+}
+```
+
+---
+
+## 3. 密封类（Sealed Class）
+
+密封类用来表示 **受限的类层次结构**。
+它的子类必须在 **同一个文件** 中声明，因此编译器能知道所有子类。
+
+常用于 **状态机**、**结果类型**。
+
+### 示例：表达式求值
+
+```kotlin
+sealed class Expr
+
+data class Const(val value: Int) : Expr()
+data class Sum(val left: Expr, val right: Expr) : Expr()
+object NotANumber : Expr()
+
+fun eval(expr: Expr): Int = when(expr) {
+    is Const -> expr.value
+    is Sum -> eval(expr.left) + eval(expr.right)
+    NotANumber -> 0
+}
+```
+
+优势：`when` 表达式会 **强制检查所有分支**，防止遗漏。
+
+---
+
+## 4. 小结
+
+- **数据类**：快速建模数据对象，自动生成常用方法
+- **枚举类**：固定集合常量，可带属性与方法
+- **密封类**：有限层次结构，常用于状态或结果建模
+
+---
+
+下一篇我们学习 👉 **《Kotlin 进阶（5）：协程入门（suspend、launch、async）》**，带你进入 Kotlin 最强大的异步编程世界。
+
+```
+
+---
+
+要不要我继续帮你写 **《Kotlin 进阶（5）：协程入门》**？
+```
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 5 篇**，主题是 **协程入门（异步代码最常用写法）**，保持 Hexo 博客风格，简明实用。
+
+---
+
+````markdown
+---
+title: Kotlin 进阶（5）：协程入门（异步代码最常用写法）
+date: 2025-09-12
+categories: [Kotlin 进阶学习]
+tags: [Kotlin, 协程, 异步, 并发, Coroutine]
+---
+
+# Kotlin 进阶（5）：协程入门（异步代码最常用写法）
+
+协程（Coroutine）是 Kotlin 最强大的特性之一，用于 **异步任务** 和 **并发编程**。  
+相比传统的线程，协程更轻量，写法像同步代码一样清晰。
+
+---
+
+## 1. 最小示例
+
+要使用协程，需要引入 `kotlinx.coroutines` 库：
+
+```kotlin
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    launch {
+        delay(1000L)
+        println("协程任务完成")
+    }
+    println("主线程继续执行")
+}
+```
+````
+
+👉 输出：
+
+```
+主线程继续执行
+协程任务完成
+```
+
+- `runBlocking`：阻塞主线程，直到协程执行完毕（通常用在 `main` 或测试）。
+- `launch`：启动一个协程（不会阻塞当前线程）。
+- `delay`：挂起，不阻塞线程。
+
+---
+
+## 2. 并发执行
+
+多个任务可以并行运行：
+
+```kotlin
+fun main() = runBlocking {
+    val job1 = launch {
+        delay(1000)
+        println("任务1完成")
+    }
+    val job2 = launch {
+        delay(500)
+        println("任务2完成")
+    }
+    println("等待子任务完成")
+    joinAll(job1, job2)
+    println("全部完成")
+}
+```
+
+👉 输出顺序：
+
+```
+等待子任务完成
+任务2完成
+任务1完成
+全部完成
+```
+
+---
+
+## 3. async 并发返回结果
+
+`async` 启动协程并返回结果，用 `await()` 获取。
+
+```kotlin
+fun main() = runBlocking {
+    val a = async {
+        delay(1000)
+        10
+    }
+    val b = async {
+        delay(1500)
+        20
+    }
+    println("结果: ${a.await() + b.await()}")
+}
+```
+
+👉 输出：
+
+```
+结果: 30
+```
+
+---
+
+## 4. suspend 挂起函数
+
+`suspend` 关键字表示函数可以挂起，用于协程里。
+
+```kotlin
+suspend fun fetchData(): String {
+    delay(1000)
+    return "网络数据"
+}
+
+fun main() = runBlocking {
+    println("请求中…")
+    val data = fetchData()
+    println("结果: $data")
+}
+```
+
+---
+
+## 5. 协程作用域（scope）
+
+在 Android 中，常用作用域有：
+
+- `GlobalScope.launch {}`：全局协程（不推荐，容易泄露）
+- `lifecycleScope.launch {}`：Activity/Fragment 生命周期范围
+- `viewModelScope.launch {}`：ViewModel 范围
+
+---
+
+## 6. 小结
+
+- `launch`：启动协程（无返回值）
+- `async/await`：并发执行并返回结果
+- `suspend`：挂起函数，用于协程内
+- `delay`：非阻塞延迟
+
+---
+
+下一篇我们学习 👉 **《Kotlin 进阶（6）：协程进阶（异常、取消、作用域）》**，掌握协程的高级用法。
+
+```
+
+---
+
+要不要我现在接着帮你写 **《Kotlin 进阶（6）：协程进阶》**？
+```
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化]]></title>
+            <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 6 篇**，主题是 **内联函数与性能优化**，继续保持 Hexo 博客风格，实用精简。
+
+---
+
+````markdown
+---
+title: Kotlin 进阶（6）：内联函数与性能优化
+date: 2025-09-12
+categories: [Kotlin 进阶学习]
+tags: [Kotlin, 内联函数, inline, 性能优化]
+---
+
+# Kotlin 进阶（6）：内联函数与性能优化
+
+Kotlin 的 **内联函数（inline function）** 主要用于 **性能优化**，尤其是高阶函数中，减少不必要的对象创建和函数调用开销。
+
+---
+
+## 1. 什么是内联函数？
+
+一般高阶函数（接受 Lambda 参数的函数）在运行时会生成额外的对象和调用层级。  
+加上 `inline` 关键字后，编译器会 **把函数体直接拷贝到调用处**，减少开销。
+
+```kotlin
+inline fun logTime(block: () -> Unit) {
+    val start = System.currentTimeMillis()
+    block()
+    val end = System.currentTimeMillis()
+    println("耗时: ${end - start}ms")
+}
+
+fun main() {
+    logTime {
+        Thread.sleep(500)
+    }
+}
+```
+````
+
+👉 输出：
+
+```
+耗时: 500ms
+```
+
+这里 `block()` 会被编译成 **直接调用**，而不是额外的函数对象。
+
+---
+
+## 2. noinline 关键字
+
+如果函数有多个 Lambda 参数，但并不是所有都需要内联，可以用 `noinline` 标记。
+
+```kotlin
+inline fun doSomething(
+    block1: () -> Unit,
+    noinline block2: () -> Unit
+) {
+    block1()
+    block2()
+}
+```
+
+这样 `block1` 会被内联，而 `block2` 仍然是普通对象。
+
+---
+
+## 3. crossinline 关键字
+
+有些 Lambda 要求不能使用 `return` 直接跳出外层函数，可以用 `crossinline` 解决。
+
+```kotlin
+inline fun runTask(crossinline block: () -> Unit) {
+    Thread {
+        block() // 允许调用，但禁止直接 return 外层函数
+    }.start()
+}
+```
+
+---
+
+## 4. reified（具体化类型参数）
+
+通常泛型在运行时会被擦除，用 `reified` 可以让 **内联函数** 保留类型信息。
+
+```kotlin
+inline fun <reified T> printType() {
+    println(T::class.simpleName)
+}
+
+fun main() {
+    printType<String>() // 输出 String
+    printType<Int>()    // 输出 Int
+}
+```
+
+这在写工具函数时非常常用，比如 `startActivity<T>()`。
+
+---
+
+## 5. 使用场景
+
+- **性能优化**：减少 Lambda 对象创建（常见于集合操作、DSL）
+- **泛型工具函数**：结合 `reified`，写更优雅的 API
+- **Android 开发**：`inline fun <reified T : Activity> Context.startActivity()`
+
+---
+
+## 6. 小结
+
+- `inline`：把函数体复制到调用处，减少开销
+- `noinline`：某些参数不内联
+- `crossinline`：禁止 Lambda 非局部返回
+- `reified`：泛型具体化，保留类型信息
+
+---
+
+下一篇我们学习 👉 **《Kotlin 进阶（7）：泛型与约束》**，掌握写通用代码的核心技能。
+
+```
+
+---
+
+要不要我接着帮你写 **《Kotlin 进阶（7）：泛型与约束》**？
+```
+]]></content:encoded>
+        </item>
+        <item>
             <title><![CDATA[passkeys 通行密钥 登录+注册一体化方案]]></title>
             <link>https://herongdev.github.io/blog/posts/web应用开发/前端/passkeys-通行密钥-登录-注册一体化方案</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/web应用开发/前端/passkeys-通行密钥-登录-注册一体化方案</guid>
@@ -5976,6 +7768,191 @@ onBeforeUnmount(() => {
 ]]></content:encoded>
         </item>
         <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）]]></title>
+            <link>https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[````markdown
+---
+title: Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）
+date: 2025-09-11
+tags: [Vue3, reactivity, computed, ref, reactive, 数组依赖, 对象依赖]
+---
+
+## 1. 目标场景回顾
+
+我们有一个计算属性：
+
+```ts
+const selectedAccount = computed(
+  () =>
+    (accountList.value ?? []).find(
+      (a) => a.loginid === selectedLoginid.value
+    ) ?? null
+);
+```
+````
+
+问题：当**只修改选中行的其它字段**（如 `equity/balance/...`）时，为什么 **UI 会更新**，但 `computed` **不一定重新求值**？
+
+---
+
+## 2. Vue3 依赖收集是“所读即所依”
+
+计算属性在**执行 getter 的那一刻**，会对**被读取的响应式源**建立依赖；**只有这些依赖发生变化**时，计算属性才会被标记为脏，从而在下次读取时重新求值。
+
+### 2.1 常见响应式源与依赖粒度
+
+- **`ref`**：访问 `.value` 建立依赖（例如 `selectedLoginid.value`）。
+- **`reactive`/`ref` 包裹的对象**：访问 **某个属性** 时，以“对象 + 属性键”为依赖（例如读取 `row.loginid`）。
+- **数组（`reactive`/`ref` 的数组）**：
+
+  - 访问 **`length`** 会对 `length` 建依赖（影响 push/pop 等修改）。
+  - **按索引读取**（`arr[i]`）会对该 **索引键** 建依赖。
+  - **遍历/查找类方法**（如 `for...of`、`map`、`find` 等）通常会对**迭代键**和**相关索引**建依赖；在遍历过程中，若读取了元素对象的某些属性，也会对这些**属性键**建立依赖（见 2.3）。
+
+- **Map/Set 等集合**：遍历时依赖“迭代键”（内部用 `ITERATE_KEY` 追踪）。
+
+> 要点：**只对“读取过”的键建立依赖**；没读到的字段**不会**成为依赖。
+
+### 2.2 `selectedAccount` 的依赖具体有哪些？
+
+执行 `find()` 的过程中，会读取：
+
+1. `selectedLoginid.value` —— 对这个 `ref` 的 `.value` 建依赖；
+2. `accountList.value` —— 对 **数组引用/长度/迭代** 建依赖；
+3. `a.loginid` —— 对**参与比较的那些元素**的 `loginid` 属性建依赖（直到找到命中的那一个或遍历结束）。
+
+> 注意：此 getter **没有读取** `a.equity/balance/...`，所以**不会**对这些字段建依赖。
+
+### 2.3 “读取时才变成响应式”的懒代理
+
+当 `accountList.value` 是一个响应式数组，**访问数组元素 `a = arr[i]` 时**，Vue 会对该元素对象做**懒代理**（即在 `get` 拦截时把它包装为响应式代理）。此后读取 `a.loginid` 就会被**精确追踪**为“元素对象的 `loginid` 属性依赖”。
+
+---
+
+## 3. 为什么只改 `equity` 也能让 UI 更新？
+
+- 模板或其它计算/侦听，在渲染时**单独读取**了 `selectedAccount.value?.equity`，因而对“**选中行对象的 `equity` 属性**”建立了依赖。
+- 当你执行：
+
+  ```ts
+  // 原地修改选中行的对象字段
+  selectedRow.equity = newEquity;
+  ```
+
+  由于这是 **被依赖的属性本身**，视图会**立即更新**。
+
+- 但 `selectedAccount` 这个 **computed** 的 getter **并没有读取 `equity`**，所以它**不需要**重新求值；返回值（选中行对象的**同一引用**）保持不变，模板依旧能看到它的内部字段变化。
+
+> 结论：**UI 更新**是因为模板对 `equity` 建立了依赖；**computed 不重算**是因为 getter 没依赖 `equity`。
+
+---
+
+## 4. 哪些变更会让 `selectedAccount` 重新求值？
+
+- ✅ `selectedLoginid.value` 改变（切换了要找的 id）。
+- ✅ `accountList.value` **换了新引用**（例如 `accountList.value = [...accountList.value]`）。
+- ✅ 数组结构变化影响到依赖（如 `length` 变化、迭代相关变更）。
+- ✅ 参与比较的元素的 **`loginid` 字段**改变，或该元素对象被**整体替换为新对象**。
+- ❌ 只改**匹配元素的其它字段**（`equity/balance/...`），且**不换数组引用** —— **不会**触发 `selectedAccount` 重算，但模板会更新相应单元格。
+
+---
+
+## 5. 最简代码验证（逐步演示）
+
+### 5.1 基础：只改其它字段，computed 不重算但 UI 会变
+
+```ts
+const selectedLoginid = ref("a1");
+const accountList = ref([
+  { loginid: "a1", equity: 100 },
+  { loginid: "a2", equity: 200 },
+]);
+
+const selectedAccount = computed(
+  () =>
+    accountList.value.find((a) => a.loginid === selectedLoginid.value) ?? null
+);
+
+// ✅ 模板读取 selectedAccount?.equity → 对 “a1.equity” 建依赖
+// 改 equity（不换数组引用），UI 会更新；computed 不一定重算（引用不变）
+accountList.value[0].equity = 120;
+```
+
+### 5.2 换数组引用触发表格类重算（排序/分组等）
+
+```ts
+// 在复杂逻辑上一行加注释：原地改字段后，若还需触发表格模型重算，再“换数组引用”
+accountList.value[0].equity = 130;
+accountList.value = accountList.value.slice();
+```
+
+### 5.3 替换对象会让 computed 重算（因为命中的那一项换了引用）
+
+```ts
+// 在复杂逻辑上一行加注释：替换命中元素对象 → getter 要重新 .find()，computed 重算
+const idx = accountList.value.findIndex((a) => a.loginid === "a1");
+accountList.value.splice(idx, 1, { loginid: "a1", equity: 999 });
+```
+
+### 5.4 仅切换 loginid，一定重算
+
+```ts
+// 在复杂逻辑上一行加注释：selectedLoginid 变化是显式依赖，computed 一定重算
+selectedLoginid.value = "a2";
+```
+
+---
+
+## 6. 数组与对象的依赖“表格”
+
+| 读取操作（在 getter 内）                    | 建立的依赖键                       | 哪些更新会触发重算                      |
+| ------------------------------------------- | ---------------------------------- | --------------------------------------- |
+| `selectedLoginid.value`                     | 该 `ref` 的 `value`                | 任何对 `selectedLoginid.value` 的修改   |
+| `accountList.value`（拿到数组引用）         | 数组 `value` 引用、`length`/迭代键 | 换数组引用、`push/pop/splice`、长度变更 |
+| `accountList.value[i]`                      | 数组索引 `i`                       | 替换该索引处元素、数组结构影响该索引    |
+| `a.loginid`（查找时访问的元素属性）         | **元素对象的 `loginid` 属性**      | 改变该属性、或把该元素整体替换为新对象  |
+| 未读取的字段（如 `a.equity` / `a.balance`） | **不会**建立依赖                   | 改这些字段**不会**让 computed 重算      |
+
+> 模板/其它 computed/侦听如果单独读取了 `a.equity`，它们**会**对 `equity` 建依赖，从而在你改 `equity` 时更新 UI。
+
+---
+
+## 7. 实战建议（与表格场景结合）
+
+1. **selectedAccount 只做“指向哪一行”**：通过 `loginid + accountList` 定位对象引用即可，不要在 getter 里读取无关字段，避免不必要重算。
+2. **更新选中行的业务字段**（如盈亏、净值）：
+
+   - 只需 **原地改对象字段**，UI 就会变。
+   - 若还需要**触发表格模型重算**（排序/分组/聚合），在修改后**再换一次数组引用**：
+
+     ```ts
+     // 在复杂逻辑上一行加注释：需要触发表格重算时再换数组引用
+     Object.assign(accountList.value[idx], patch);
+     accountList.value = accountList.value.slice();
+     ```
+
+3. **避免错误写法**：不要让 `selectedAccount` 变成可写的 `ref` 并随行情去 `Object.assign(selectedAccount.value, ...)`；保持它是**纯派生**，杜绝引用抖动。
+4. **高频更新时合批**：把多次行情更新合并到一帧内，再一次性换数组引用，减小重算与渲染负担。
+
+---
+
+## 8. 一句话总结
+
+- computed **只会**对 getter **读到的键**建立依赖；
+- 模板单独读取的字段，会建立**它自己的依赖**；
+- **只改选中行的其它字段** ⇒ UI 更新，但 `selectedAccount` 不一定重算；
+- **需要表格重排/聚合** ⇒ 修改后再“**换数组引用**”。
+
+如果你愿意，把你当前的 `selectedAccount` 与“盈亏更新”两段代码贴上来；我只改**必要的几行**，并在复杂逻辑上一行加注释，帮你做到“UI 跟随变、computed 不抖动、表格按需重算”。
+
+```
+::contentReference[oaicite:0]{index=0}
+```
+]]></content:encoded>
+        </item>
+        <item>
             <title><![CDATA[Vue项目pinia中的Store中的请求时机管理]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/Vue/Vue项目请求处理优化</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/Vue/Vue项目请求处理优化</guid>
@@ -6541,6 +8518,272 @@ watch(innerValue, (v) => (model.value = Array.isArray(v) ? v : []));
 ]]></content:encoded>
         </item>
         <item>
+            <title><![CDATA[Pinia 并发去重与初始化策略实战：以 SVG 列表为例]]></title>
+            <link>https://herongdev.github.io/blog/posts/前端/下载与文件/Pinia 并发去重与初始化策略实战：以 SVG 列表为例</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/下载与文件/Pinia 并发去重与初始化策略实战：以 SVG 列表为例</guid>
+            <pubDate>Wed, 10 Sep 2025 10:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+> 本文面向在 **Vue 3 + Pinia** 项目中使用 `useFetch`/接口拉取数据的同学，示例围绕「获取品种 SVG 列表」展开，落地三个高频问题：**并发去重（按参数维度）**、**稳健的 reset**、**失败后的可重试**。文末还给出 TTL、Abort、SWR 的可选扩展。
+
+---
+
+# 背景
+
+很多项目会把「字典类/静态资源」放到全局 Store 并懒加载（init）。常见实现：
+
+- 组件 A、B 同时挂载，各自 `init()` ——> **重复请求**
+- 先用参数 `image_type=A` 拉了一次；随后用 `image_type=B` 再 `init()` ——> **错复用旧 Promise**
+- `reset()` 粗暴把 `loading=false` ——> **与请求状态打架**
+- 请求失败后 `_initPromise` 仍被占用 ——> **无法重试**
+
+本文提供一版**通用模板**来避开这些坑。
+
+---
+
+# 常见坑位与根因
+
+1. **并发重复请求**
+   只做了「有无 in-flight Promise」的判断，却**没区分参数**：不同参数也会被“去重”。
+
+2. **参数维度错乱**
+   `init(A)` 正在请求时调用 `init(B)`，因为沿用相同 `_initPromise`，后者**拿到的是 A 的结果**。
+
+3. **reset 不当**
+   直接把 `loading=false`，破坏 `useFetch` 的内部状态机；同时没清掉参数 key，**后续“误以为已加载”**。
+
+4. **失败不可重试**
+   请求失败后 `_initPromise` 仍被引用，下一次 `init` 直接返回失败的 Promise，**卡死**。
+
+---
+
+# 最终方案（可直接复用）
+
+## 设计要点
+
+- **参数去重**：对 `params` 做稳定序列化（`JSON.stringify`）生成 `key`，仅当「key 相同」时复用 in-flight Promise。
+- **失败清理**：出错时**清空** `_initPromise`，让下一次可以重新发起。
+- **reset 温和**：不瞎改 `loading`，只清 `data`、`lastParamsKey`、`_initPromise`。
+- **命中缓存**：当 `data` 已有且 `key` 一致时，直接返回（不再请求）。
+
+## 完整代码
+
+> 可以直接复制到 Hexo 代码块里使用（Pinia Store）。
+
+```ts
+import { defineStore } from "pinia";
+import { useFetch } from "@/composables";
+
+type InitParams = { image_type?: string; symbol?: string[] };
+
+// 复杂逻辑：将参数序列化为稳定的去重 key，避免不同参数误用同一个 Promise/结果
+const toKey = (p?: InitParams) => JSON.stringify(p ?? {});
+
+export const useSvgStore = defineStore("svgStore", () => {
+  const { data, loading, fetchData } = useFetch({
+    url: "/api/symbol/svg_list",
+    autoFetch: false,
+  });
+
+  // 复杂逻辑：只对“相同参数”的并发做去重
+  let _initPromise: Promise<void> | null = null;
+  let lastParamsKey = "";
+
+  // 复杂逻辑：更稳健的 reset——不强改 loading；清空数据、参数 key 与 in-flight Promise
+  const reset = () => {
+    data.value = null;
+    lastParamsKey = "";
+    _initPromise = null;
+  };
+
+  // 复杂逻辑：参数去重 + 并发去重 + 失败后可重试
+  const init = async (params?: InitParams) => {
+    const key = toKey(params);
+
+    // 同参数且已有进行中的请求 => 复用该 Promise；不同参数则允许重新发起
+    if (_initPromise && key === lastParamsKey) return _initPromise;
+
+    _initPromise = (async () => {
+      // 已有数据且是同一参数 => 跳过请求
+      if (
+        Array.isArray(data.value) &&
+        data.value.length > 0 &&
+        key === lastParamsKey
+      )
+        return;
+      try {
+        await fetchData(params);
+        lastParamsKey = key;
+      } catch (e) {
+        // 失败时清除占位，让下一次能重新尝试
+        _initPromise = null;
+        throw e;
+      }
+    })();
+
+    return _initPromise;
+  };
+
+  return {
+    loading,
+    data,
+    init,
+    reset,
+    fetchData,
+  };
+});
+
+export default useSvgStore;
+```
+
+---
+
+# 使用方式
+
+## 1) 首屏懒加载（并发安全）
+
+```ts
+import { onMounted } from "vue";
+import { useSvgStore } from "@/store/svg";
+
+export default {
+  setup() {
+    const svgStore = useSvgStore();
+
+    onMounted(() => {
+      // 多个组件同时调用也没关系：同参数只会发一次请求
+      svgStore.init({ image_type: "all" });
+    });
+
+    return { svgStore };
+  },
+};
+```
+
+## 2) 不同参数的加载
+
+```ts
+await svgStore.init({ image_type: "crypto" }); // 拉取加密品种
+await svgStore.init({ image_type: "forex" }); // 拉取外汇品种（不会复用上一次 Promise）
+```
+
+## 3) 重新拉取
+
+```ts
+svgStore.reset();
+// 下次再调用 init，会重新请求
+await svgStore.init({ image_type: "all" });
+```
+
+---
+
+# FAQ
+
+### Q1：为什么去掉 `watch(data)`？
+
+- 这类全局“静态资源”通常**只需在显示层消费**。在 Store 中 watch `data` 而不做任何处理，属于**冗余依赖**，会引发不必要的响应式开销。
+
+### Q2：为什么 `reset` 不设置 `loading=false`？
+
+- `loading` 由 `useFetch` 内部控制。外部强制改 `loading`，可能与尚在进行的请求状态冲突（比如请求刚开始你就把它改回 false）。**正确做法**是清空数据和并发标记，让下一次调用去自然驱动加载状态。
+
+### Q3：如果我需要**强制刷新**（忽略已存在数据），怎么办？
+
+- 最简单：`reset()` 后再 `init(params)`。
+- 或扩展 `init(params, { force: true })`，当 `force` 为真时跳过“已有数据”判断。
+
+---
+
+# 进阶扩展（可选）
+
+## 1) TTL 缓存（过期后自动重拉）
+
+```ts
+let ttlMs = 10 * 60 * 1000;
+let fetchedAt = 0;
+
+const isExpired = () => Date.now() - fetchedAt > ttlMs;
+
+const init = async (params?: InitParams, opts?: { force?: boolean }) => {
+  const key = toKey(params);
+  if (_initPromise && key === lastParamsKey) return _initPromise;
+
+  _initPromise = (async () => {
+    const hasData = Array.isArray(data.value) && data.value.length > 0;
+    if (!opts?.force && hasData && key === lastParamsKey && !isExpired())
+      return;
+
+    try {
+      await fetchData(params);
+      fetchedAt = Date.now();
+      lastParamsKey = key;
+    } catch (e) {
+      _initPromise = null;
+      throw e;
+    }
+  })();
+
+  return _initPromise;
+};
+```
+
+## 2) AbortController（中止旧请求）
+
+若你的 `useFetch` 支持传入 `AbortSignal`，在「参数变化较频繁」的场景里，可以中止旧请求：
+
+```ts
+let controller: AbortController | null = null;
+
+const init = async (params?: InitParams) => {
+  const key = toKey(params);
+  if (_initPromise && key === lastParamsKey) return _initPromise;
+
+  controller?.abort();
+  controller = new AbortController();
+
+  _initPromise = (async () => {
+    try {
+      await fetchData({ ...(params || {}), signal: controller!.signal });
+      lastParamsKey = key;
+    } catch (e) {
+      if ((e as any)?.name === "AbortError") return;
+      _initPromise = null;
+      throw e;
+    }
+  })();
+
+  return _initPromise;
+};
+```
+
+## 3) SWR（stale-while-revalidate）
+
+- 先用缓存的 `data` 立即显示（哪怕过期）
+- 背景里静默拉最新数据，成功后再更新 `data`
+- 用户体验：**快**且**新**
+
+---
+
+# 调试建议
+
+- 在 `init` 前后打印：`console.log('[svg:init]', params, lastParamsKey, !!_initPromise)`
+- 捕获 `fetchData` 的异常信息：网络失败、接口 4xx/5xx 时，观察 `_initPromise` 是否被清理。
+- 在 DevTools 的 **Network** 面板确认：并发相同参数的请求真的只发了一次，不同参数各自发一次。
+
+---
+
+# 总结
+
+这套模板的核心是：**用参数 key 管理 in-flight Promise**，**reset 只清状态不碰 loading**，**错误要清空占位以便重试**。实际接入后：
+
+- 并发安全 ✅
+- 参数正确 ✅
+- 重置与重试 ✅
+- 扩展能力强（TTL/Abort/SWR）✅
+
+把它抽象成你的「Store 初始化规范」，下次再遇到类似的“字典/基础数据”拉取，就能一把梭～
+]]></content:encoded>
+        </item>
+        <item>
             <title><![CDATA[一个 downloadFile 就够了：直链与鉴权下载自动切换（Vue/TS）]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/下载与文件/一个-downloadFile-就够了：直链与鉴权下载自动切换（Vue-TS）</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/下载与文件/一个-downloadFile-就够了：直链与鉴权下载自动切换（Vue-TS）</guid>
@@ -6798,7 +9041,7 @@ function stringToBuffer(str) {
             <title><![CDATA[https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</guid>
-            <pubDate>Thu, 11 Sep 2025 17:11:37 GMT</pubDate>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
             <content:encoded><![CDATA[对于 chrome 浏览器，它提供了修改滚动条样式的接口，开发者只需要加上几句 css 脚本，就可轻松实现滚动条样式的修改.
 
 先说一下滚动条的参数：
@@ -7227,6 +9470,231 @@ export async function sendPush(sub, payload) {
 ]]></content:encoded>
         </item>
         <item>
+            <title><![CDATA[为什么需要“稳定引用”？——React/Vue 中避免 TanStack Table 无限渲染的原理与实战]]></title>
+            <link>https://herongdev.github.io/blog/posts/前端/常用库/Vue 中避免 TanStack Table 无限渲染的原理与实战</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/常用库/Vue 中避免 TanStack Table 无限渲染的原理与实战</guid>
+            <pubDate>Thu, 11 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+## 背景
+
+- 当 columns/data 引用变化时，表格内部状态会重建，导致表格重新渲染。
+  **当 `columns` 或 `data` 的引用在每次渲染时都变化时，TanStack Table 会认为表格配置变了，从而重建内部状态 → 触发重新渲染 → 如果你又在渲染过程中基于表格状态去更新外部状态，就可能进入无限循环。**
+
+换句话说：
+
+- **根因**：引用变化（不是值变，而是“新建对象/数组”的新引用）。
+- **结果**：表格实例重新初始化，内部状态重建，触发表格渲染。
+- **延伸**：若外部 `setState`/`watch` 又基于表格变化修改 `data/columns`，就会形成闭环 → 无限渲染。
+
+这就是为什么要强调 **保持引用稳定**（React 用 `useMemo/useState`，Vue 用 `ref/shallowRef`）。
+
+要不要我帮你画个 **“渲染循环因果图”**，直观展示这个无限渲染是怎么形成的？
+
+## 核心结论（先看这个）
+
+- **React**：函数组件每次渲染都会重新执行函数体，**字面量对象/数组**在每次渲染都会生成**新引用**；TanStack Table 看到 `data/columns` 引用变了，会重建内部状态并触发更新，若你的代码里又根据表格状态 `setState`，就会形成**渲染 → 新引用 → 重建 → 再渲染**的循环。
+- **Vue 3**：`<script setup>` 顶层只跑一次，不会像 React 每次渲染都新建引用，但若你在 **computed/watch/render function** 里每次都**新建数组/对象**传下去，或用 **watch 回写源数据**，同样会造成**重复重建/回写循环**。
+- 解决：**让 `data` 和 `columns` 的引用稳定**（只在必要时变），并避免 fallback 写法导致每次生成新数组。
+
+## 一、为什么会“无限循环渲染”？
+
+### 在 React 中
+
+1. **引用不稳定**
+
+   ```tsx
+   export default function MyTable() {
+     // ❌ 每次渲染都会创建全新的数组引用
+     const columns = [
+       /* ... */
+     ];
+     const data = [
+       /* ... */
+     ];
+
+     // ⚠️ 这里一旦引用变化，useReactTable 会重建内部模型并触发状态更新
+     const table = useReactTable({ columns, data });
+
+     return <Table table={table} />;
+   }
+   ```
+
+- 组件渲染 ⇒ `columns/data` 新引用 ⇒ 表格内部 `setState` ⇒ 组件再渲染 ⇒ 再次新引用…形成环。
+
+2. **“看似无害”的 fallback 也会制造新引用**
+
+   ```tsx
+   const table = useReactTable({
+     columns,
+     data: data ?? [], // ❌ 每次渲染都会创建一个新的 []
+   });
+   ```
+
+3. **依赖链放大**
+   `useEffect/useMemo` 以**引用相等**判断变化。上游一旦“每次都是新引用”，下游优化全失效，导致更多无效重算、重渲染，甚至你的 `setState` 逻辑被反复触发。
+
+> 额外注意：React 18 严格模式会**额外执行一次初始渲染**来帮助发现副作用问题，这会放大不稳定引用带来的抖动。
+
+### 在 Vue 3 中
+
+- `<script setup>` 顶层只执行一次，**顶层声明的常量/`ref`/`shallowRef` 是稳定的**。但下面几种写法会引发问题：
+
+  1. **在 `computed` 或渲染函数里新建数组/对象**：每次依赖变更都会产出**新引用**传给子组件或表格，导致表格重建。
+  2. **watch 回写源数据**：监听某值变化后又写回同一来源（或其派生），容易形成**自激活循环**。
+  3. **fallback 新建**：`data.value ?? []` 直接写在绑定处，每次求值都产生新数组。
+
+## 二、如何在 React 中正确避免
+
+### ✅ 推荐做法
+
+```tsx
+// 在模块顶层定义稳定的空数组（fallback）
+const FALLBACK_ROWS: User[] = [];
+
+export default function MyTable() {
+  // ✅ columns 用 useMemo 保证引用稳定
+  const columns = useMemo<ColumnDef<User>[]>(
+    () => [
+      // ...
+    ],
+    []
+  );
+
+  // ✅ data 用 useState/useMemo/外部状态管理，避免每次重建
+  const [data, setData] = useState<User[]>(() => [
+    // 初始数据...
+  ]);
+
+  // ✅ fallback 使用模块常量，避免 "data ?? []" 的每次新建
+  const table = useReactTable({
+    columns,
+    data: data ?? FALLBACK_ROWS,
+  });
+
+  return <Table table={table} />;
+}
+```
+
+### ❌ 常见坑位（对照修改）
+
+```tsx
+// ❌ 坑1：直接字面量
+const columns = [
+  /* ... */
+];
+const data = [
+  /* ... */
+];
+
+// ✅ 改：useMemo / useState / 顶层常量
+```
+
+```tsx
+// ❌ 坑2：data ?? [] 每次新建
+const table = useReactTable({ columns, data: data ?? [] });
+
+// ✅ 改：data ?? FALLBACK_ROWS（FALLBACK_ROWS 是模块级常量）
+```
+
+```tsx
+// ❌ 坑3：根据 table 的 getter 做 setState
+useEffect(() => {
+  // 复杂逻辑：每次行模型变就 setState，极易形成环
+  setFilteredIds(table.getRowModel().rows.map((r) => r.id));
+}, [table.getRowModel()]);
+// ✅ 改：用事件/回调或受控参数，避免直接“读→立刻写”成环
+```
+
+## 三、如何在 Vue 3 中正确避免
+
+### ✅ 推荐做法（<script setup>）
+
+```ts
+<script setup lang="ts">
+// ✅ 顶层只执行一次：引用天然稳定
+import type { ColumnDef } from '@tanstack/vue-table'
+import { ref, shallowRef } from 'vue'
+
+// ✅ 列通常用 shallowRef 避免深层代理开销，同时保持引用稳定
+const columns = shallowRef<ColumnDef<User>[]>([
+  // ...
+])
+
+// ✅ data 用 ref 持有；只有你显式赋值时才会变
+const data = ref<User[]>([])
+
+// ✅ fallback：模块级常量
+const FALLBACK_ROWS: User[] = []
+
+</script>
+
+<template>
+  <!-- ✅ 避免 data ?? [] 这样的内联新建 -->
+  <TanStackTable :columns="columns" :data="data || FALLBACK_ROWS" />
+</template>
+```
+
+### ❌ 常见坑位（对照修改）
+
+```ts
+<!-- ❌ 坑1：模板里内联新建数组/对象 -->
+<TanStackTable :columns="[/*...*/]" :data="rows.map(x => ({...x}))" />
+
+<!-- ✅ 改：在 <script setup> 顶层用 ref/shallowRef/computed 提前产出稳定引用 -->
+```
+
+```ts
+// ❌ 坑2：watch 回写自身，形成循环
+watch(data, () => {
+  // 复杂逻辑：对 data 变化又把 data 重新赋值（哪怕值相同也会变引用）
+  data.value = [...data.value]; // ⚠️ 极易自触发
+});
+
+// ✅ 改：只在必要时、且用“变更检测”后再写；或使用防抖/节流；避免对同源数据做无意义回写
+watch(data, (nv, ov) => {
+  if (nv !== ov && needNormalize(nv)) {
+    data.value = normalize(nv);
+  }
+});
+```
+
+```ts
+// ❌ 坑3：computed 每次返回新引用给子组件
+const tableData = computed(() => rows.value.map((r) => ({ ...r })));
+// 子组件把 props 当变化处理，触发表格重建
+
+// ✅ 改：在装配阶段完成一次性结构化；或分片/缓存
+const tableData = ref<User[]>([]);
+watchEffect(() => {
+  tableData.value = buildOnce(rows.value); // 只在 rows 真变时重建
+});
+```
+
+> 小贴士：**columns 用 `shallowRef`** 通常更合适（列定义对象多且深），避免被深度代理带来的性能损耗与不必要的依赖追踪。
+
+---
+
+## 四、原理层面再解释一句话
+
+- **React**：**函数体=渲染时刻**，字面量对象/数组每渲染一次就**新建引用**；库（TanStack Table）根据引用变更重建内部模型，再配合你自己的 `setState`，就可能形成闭环。
+- **Vue**：**响应式=依赖追踪**，若你在响应式计算链条里**每次产出新引用**传递下去，或**监听后回写自身**，一样会形成\*\*“变化 → 重建 → 再变化”\*\*的回路。
+
+---
+
+## 五、实战检查清单
+
+- [ ] `columns` 是否用 `useMemo`（React）或 `shallowRef`（Vue）？
+- [ ] `data` 是否来自 `useState/ref` 或外部状态，而不是每次渲染重建？
+- [ ] 是否避免 `data ?? []` 这类**内联新建** fallback？
+- [ ] 是否存在“监听 A ⇒ 写回 A/其派生”的**自激活 watch/effect**？
+- [ ] 大对象（列定义）是否避免深度代理（Vue 用 `shallowRef`）？
+
+---
+
+如需，我可以把你现有的 React/Vue 表格初始化代码**逐行体检**，只给出**需要修改的片段**并在复杂逻辑上一行加注释，帮你把“稳定引用”彻底梳理好。
+]]></content:encoded>
+        </item>
+        <item>
             <title><![CDATA[测试文章]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/常用库/split.js的使用</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/常用库/split.js的使用</guid>
@@ -7326,9 +9794,155 @@ export async function sendPush(sub, payload) {
 
 # 如何分隔上下面板，并支持最大化、最小化和正常
 
+- 安装库，给要分隔的面板和它的父面板加上类和 ref，便于控制
+- 在 onMounted 后，初始化面板的初始大小，间隔，最大最小的尺寸
 - 如果只有上下两块，它就只有三个状态：最大化、最小化、在最大和最小之间的任意尺寸；
 - 我们通过调用 setSizes 设置 2 个面板的宽度，同时更新保存这 2 个值的数组；
 - 如果我们想最大或最小化时，隐藏 gutter，可以在到达最大或最小时，给面板的父容器加上 no-gutter 样式类，隐藏 gutter，当切换到最大和最小之间时，我们又移除样式；
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新]]></title>
+            <link>https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[结论先说：
+在 **@tanstack/vue-table v8.20+** 中，`useVueTable` 的 `data` 是按 **shallowRef（浅层响应）** 来处理的——**只侦听 `ref` 的 `.value` 本身是否换了新引用**。因此：
+
+- **改数组元素的属性**（例如把某一行的 “报价” 改价）——**需要让 `dataRef.value` 指向一个**新的数组引用，表格才会进行必要的重算/渲染。
+- **增删元素**（push/pop/splice）这种**原地修改**不会更换数组引用，表格**不会**感知，需要**重建一个新数组再赋回 `dataRef.value`**。
+- 官方文档在 “Using Reactive Data” 专章明确说明了这一点，并给了示例：`dataRef.value.push(...)` 不会更新；`dataRef.value = [...dataRef.value, ...]` 才会更新。([tanstack.com][1])
+
+---
+
+## 为什么必须“换引用”？
+
+- 适配层用 **shallowRef** 做了性能优化：**不追踪深层变动**（数组内部元素或其字段的改动），**只在 `.value` 指向新引用时**触发表格的行模型/排序/过滤等重算。
+- TanStack Table 也明确：**当 `data/columns` 的引用变了**，或表格内部 state 变了，就会触发更新；而**稳定引用**避免无谓的重建/循环渲染。([tanstack.com][2])
+
+---
+
+## 实战建议（Vue 3）
+
+### 1）更新单行“报价”字段（不可变更新）
+
+> 逻辑：按 id 找到目标行 → 复制出一个新数组 → 用新对象替换该行 → 把**新数组**赋回 `dataRef.value`
+
+```ts
+// 在复杂逻辑上一行加注释：不可变更新，生成新数组引用以触发表格重算
+function updatePriceById(id: string, price: number) {
+  const idx = indexById.get(id);
+  if (idx === undefined) return;
+  const next = dataRef.value.slice();
+  next[idx] = { ...next[idx], price };
+  dataRef.value = next; // ← 必须换引用，shallowRef 才会触发更新
+}
+```
+
+### 2）新增 / 删除一行
+
+```ts
+// 在复杂逻辑上一行加注释：新增时返回新数组引用（避免 push 原地修改）
+function addRow(row: Row) {
+  dataRef.value = [...dataRef.value, row]; // ← 换引用
+}
+
+// 在复杂逻辑上一行加注释：删除时用 filter 产生新数组引用（避免 splice 原地修改）
+function removeRowById(id: string) {
+  dataRef.value = dataRef.value.filter((r) => r.id !== id); // ← 换引用
+}
+```
+
+### 3）批量高频更新（如行情报价流）
+
+> 逻辑：把多次更新合并为**一帧**（或节流窗口）后再一次性换引用，降低开销
+
+```ts
+// 在复杂逻辑上一行加注释：用 requestAnimationFrame 合批更新，避免每次报价都重建数组
+const pending: Record<string, number> = {};
+let scheduled = false;
+
+export function queuePrice(id: string, price: number) {
+  pending[id] = price;
+  if (scheduled) return;
+  scheduled = true;
+  requestAnimationFrame(() => {
+    const next = dataRef.value.slice();
+    for (const [id, p] of Object.entries(pending)) {
+      const idx = indexById.get(id);
+      if (idx !== undefined) next[idx] = { ...next[idx], price: p };
+      delete pending[id];
+    }
+    dataRef.value = next; // ← 一次性换引用
+    scheduled = false;
+  });
+}
+```
+
+### 4）保持行状态不丢（强烈建议）
+
+> 逻辑：让表格用**稳定的行 id**，避免你替换数组后选中/展开等状态乱跳
+
+```ts
+// 在复杂逻辑上一行加注释：用 getRowId 保持行标识稳定（而非默认的行索引）
+const table = useVueTable({
+  columns,
+  data: dataRef,
+  getRowId: (row) => row.id,
+});
+```
+
+（`getRowId` 的用途与示例详见官方 Rows/Row APIs 文档。) ([tanstack.com][3])
+
+---
+
+## 常见误区对照
+
+- **误区**：`dataRef.value.push(row)` / `splice`
+  **现象**：表格不更新或排序/分组不同步。
+  **正确**：`dataRef.value = [...dataRef.value, row]` / `filter` 产生新数组再赋回。([tanstack.com][1])
+
+- **误区**：`dataRef.value[i].price = x` 只改了对象字段
+  **现象**：某些单元格可能更新，但**排序/汇总/分组**不重算或不一致。
+  **正确**：替换为新对象，并**整体换引用**：`dataRef.value = withUpdatedRow(...)`。([tanstack.com][1])
+
+- **误区**：把列定义/数据字面量写在 `<template>` 或渲染过程中
+  **风险**：频繁生成新引用，引起不必要的重建甚至循环渲染（尤其是 React 端）。
+  **正确**：列用 `shallowRef`、数据用 `ref`，在 `<script setup>` 顶层准备好稳定引用；React 用 `useMemo`/`useState`。([tanstack.com][2])
+
+---
+
+## 回答你的两个关键问题
+
+1）**“难道我必须改变 `data.value` 才会重新渲染吗？”**
+
+> 在 Vue 适配器中，是的——**要让表格识别到变化，需要让 `dataRef.value` 指向一个新数组引用**（哪怕你只是改了某个元素的某个字段）。这是由于官方采用 **shallowRef** 只侦听 `.value` 的引用变化。([tanstack.com][1])
+
+2）**“如果数组元素增加、减少或变化，也不需要（= 不必）用 `.value` 重置数据源吗？”**
+
+> 需要。**增/删/改**都应当以**不可变更新**的方式生成**新数组**并赋给 `dataRef.value`。原地 `push/pop/splice` 或只改对象字段不会触发表格的正确更新路径。官方给出的示例也明确了这一点（`push` 不更新，重新赋值才更新）。([tanstack.com][1])
+
+---
+
+## 性能与工程化补充
+
+- **不可变更新的成本**：一次创建新数组是 O(n)，在“几千行”规模通常可接受；TanStack Table 内部对行模型有优化，配合虚拟滚动使用时依然顺滑。若有**高频行情**，建议合批（见上文 rAF 方案）或**按时间窗节流**。
+- **服务端驱动**：若列表很大且更新频密，可只下发变化集（patch），在客户端\*\*应用 patch 后仍然以“新数组赋回”\*\*的方式触发表格刷新。
+- **列与数据的“稳定引用”策略**：列用 `shallowRef([...])`，数据用 `ref<Row[]>([])`，统一通过“新数组赋回”来驱动更新，避免在模板/计算属性里临时构造数组对象。
+
+---
+
+### 参考
+
+- **Table State (Vue) / Using Reactive Data**：支持 `ref/computed`，但**示例明确：必须给 `dataRef.value` 赋新数组**才会更新；`push` 不会触发。([tanstack.com][1])
+- **FAQ / Data Guide / Table Instance**：强调需要**稳定引用**，错误做法会导致重复重建/循环渲染。([tanstack.com][2])
+- **Rows / Row APIs**：使用 `getRowId` 保持行状态稳定。([tanstack.com][3])
+
+如果你愿意，把你现在的 `useVueTable` 初始化和“报价更新”那段代码贴出来；我只给**需要修改的片段**，并在复杂逻辑上一行加注释，帮你改成**不可变更新 + 合批**的版本。
+
+[1]: https://tanstack.com/table/latest/docs/framework/vue/guide/table-state "Table State (Vue) Guide | TanStack Table Vue Docs"
+[2]: https://tanstack.com/table/latest/docs/faq?utm_source=chatgpt.com "FAQ | TanStack Table Docs"
+[3]: https://tanstack.com/table/latest/docs/guide/rows?utm_source=chatgpt.com "Rows Guide | TanStack Table Docs"
 ]]></content:encoded>
         </item>
         <item>
@@ -7605,6 +10219,141 @@ declare module "axios" {
 - `cancelAll()` 能把“已发起未完成”的请求**立即中断**。
 
 以上改完，你截图里“跳转后还发请求”的现象就会消失；即使有极短时序触发，也会被 **AbortController** 和 **未登录硬拦**兜住。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制]]></title>
+            <link>https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[下面是「在路由 meta 中做权限控制」在大公司里常见、相对稳妥的做法（结合 RBAC/ABAC/ReBAC 与前后端协同）。我给出可落地的 meta 结构与守卫模板，并标注哪些是**用户体验层面的前端拦截**，哪些必须**在服务端强制校验**。
+
+---
+
+## 核心共识（非常重要）
+
+1. **前端路由 meta 只用于“体验层”**（引导、隐藏入口、避免无意义请求）；**真正的授权必须由服务端强制执行**（API/资源级校验）。这是防止“破坏访问控制”类风险的基本原则。([router.vuejs.org][1])
+2. **模型分层**：
+
+   - RBAC：角色/权限（适合“是否能进这个页面/菜单”这类粗粒度）。
+   - ABAC：基于属性（时间、地域、订单所属人等）做细粒度条件判断。
+   - ReBAC：基于关系（如“文档共享/项目成员/上下级”）做复杂共享授权，业界参考 **Zanzibar** / **OpenFGA**。([cheatsheetseries.owasp.org][2])
+
+3. **把鉴权逻辑集中**在全局导航守卫/解析守卫里，避免散落各处；对需要异步确认的权限，放在 `beforeResolve`（确认导航前、组件解析后），以减少无用的请求与白屏。([router.vuejs.org][3])
+4. Vue Router 的 **route meta** 天生就是放“路由附加信息”的地方（如 `requiresAuth`、`requiresCamera` 等），可作为授权“声明”。([router.vuejs.org][3])
+
+---
+
+## 推荐的 meta 结构（示例）
+
+```ts
+// routes.ts
+{
+  path: '/trading',
+  name: 'Trading',
+  component: () => import('@/pages/Trading.vue'),
+  meta: {
+    requiresAuth: true,                    // 需登录
+    rolesAnyOf: ['trader', 'admin'],       // RBAC：满足其一即可
+    permissionsAnyOf: ['trade:order.read'],// RBAC：权限点
+    featureFlagsAllOf: ['trading'],        // 与灰度/开关系统联动
+    // ABAC / ReBAC：交给策略引擎（本地或网关）判断
+    policy: {
+      action: 'page:view',
+      // 可以是对象或函数（从路由参数构造资源）
+      resource: (to) => ({ type: 'page', id: 'trading', tenantId: to.params.tenantId }),
+    },
+    auditEvent: 'page_trading_view',       // 可选：埋点/审计标识
+  }
+}
+```
+
+---
+
+## 全局导航守卫模板（前端体验层 Gate）
+
+```ts
+// router/guards.ts
+import { router } from "./router";
+import { auth, authz, flags } from "@/services"; // 伪代码：身份、授权、灰度
+
+router.beforeEach(async (to) => {
+  // 1) 登录检查
+  if (to.meta.requiresAuth && !auth.isAuthenticated()) {
+    return { name: "Login", query: { redirect: to.fullPath } };
+  }
+
+  // 2) 特性开关（灰度/AB 实验）
+  if (to.meta.featureFlagsAllOf?.length) {
+    const ok = to.meta.featureFlagsAllOf.every((k) => flags.isEnabled(k));
+    if (!ok) return { name: "NotFound" }; // 或展示“功能未开放”
+  }
+
+  // 3) 角色/权限（RBAC）
+  if (to.meta.rolesAnyOf?.length) {
+    const ok = to.meta.rolesAnyOf.some((r) => authz.hasRole(r));
+    if (!ok) return { name: "Forbidden" };
+  }
+  if (to.meta.permissionsAnyOf?.length) {
+    const ok = to.meta.permissionsAnyOf.some((p) => authz.hasPermission(p));
+    if (!ok) return { name: "Forbidden" };
+  }
+});
+
+/** 对需要异步校验（ABAC / ReBAC / 资源维度）的页面再做一次解析前校验 */
+router.beforeResolve(async (to) => {
+  if (!to.meta.policy) return;
+
+  const resource =
+    typeof to.meta.policy.resource === "function"
+      ? to.meta.policy.resource(to)
+      : to.meta.policy.resource;
+
+  // 统一走“策略引擎/网关”查询（可对接 OPA/OpenFGA/自研鉴权服务）
+  const allowed = await authz.can({
+    action: to.meta.policy.action,
+    resource, // 包含 tenantId/ownerId 等上下文
+  });
+  if (!allowed) return { name: "Forbidden" };
+});
+```
+
+> 说明：`beforeEach` 做轻量、同步的快速拦截；`beforeResolve` 放需要异步/昂贵的策略校验（文档也建议在这里做“用户无法进入页面时应避免执行的操作”）。([router.vuejs.org][3])
+
+---
+
+## 服务端必须做的（真正的安全线）
+
+- **所有 API 和资源下载接口都要做同样的授权检查**：携带用户身份（JWT/Session），在网关或服务里按 **RBAC + ABAC/ReBAC 策略**判断能否访问该“资源 + 动作”。不要信任前端路由结果。这个原则对应 OWASP 的建议。([router.vuejs.org][1])
+- 推荐把策略**集中到策略引擎**：如 **OPA**（Policy-as-Code，解耦业务与策略）或 **Zanzibar/OpenFGA**（关系型授权，适合协作/共享）。([Auth0][4], [cheatsheetseries.owasp.org][2])
+- **多租户**：把 `tenantId` 带入策略；禁止跨租户访问（路由参数与后端鉴权都要校验）。
+- **审计与告警**：对拒绝访问/越权尝试做记录，便于排障与风控。
+
+---
+
+## 常见坑
+
+- 只在前端做权限控制（**危险**）：刷新接口照样能被调用（被抓包/脚本命中）。([router.vuejs.org][1])
+- 把大量权限清单打包到前端（**泄露内部枚举**）；建议按最小化下发、或只下发当前会用到的“声明”。
+- 权限变更后的**本地缓存失效**问题：监听 token 刷新/用户信息变更，及时刷新本地 `authz` 状态。
+- **路由切片**过多导致守卫零散：统一在**全局守卫**集中处理，再由页面局部做兜底。([router.vuejs.org][3])
+
+---
+
+## 何时选 RBAC / ABAC / ReBAC？
+
+- **RBAC**：菜单/页面粒度、后管类系统优先（实现简单、维护成本低）。
+- **ABAC**：需要“条件（时间、地域、金额、订单所有者）”时；与策略引擎搭配更灵活。([Auth0][4])
+- **ReBAC（Zanzibar/OpenFGA）**：文档/项目/看板这类“共享关系/层级关系”复杂的业务。([cheatsheetseries.owasp.org][2])
+
+---
+
+如果你愿意，我可以把你现有的路由表整理成上述 meta 结构，并给出可直接落地的 `beforeEach/beforeResolve` 守卫代码（含 TypeScript 类型定义与单元测试样例）。
+
+[1]: https://router.vuejs.org/api/interfaces/routerecordredirect?utm_source=chatgpt.com "Interface: RouteRecordRedirect - Vue Router"
+[2]: https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html?utm_source=chatgpt.com "Authorization - OWASP Cheat Sheet Series"
+[3]: https://router.vuejs.org/zh/guide/advanced/navigation-guards?utm_source=chatgpt.com "导航守卫 - Vue Router"
+[4]: https://auth0.com/docs/manage-users/access-control/configure-core-rbac?utm_source=chatgpt.com "Configure Core Authorization Features for Role-Based ..."
 ]]></content:encoded>
         </item>
         <item>
@@ -11335,6 +14084,37 @@ userVerification: 'required',
             <link>https://herongdev.github.io/blog/posts/需求实现/登录鉴权/test</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/需求实现/登录鉴权/test</guid>
             <pubDate>Mon, 08 Sep 2025 00:19:02 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理]]></title>
+            <link>https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理</guid>
+            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <content:encoded><![CDATA[```ts
+高频行情合批（如果需要）
+// 在复杂逻辑上一行加注释：行情高频更新时合批后再换数组引用，降低重算与渲染频次
+let scheduled = false
+const pending: Record<string, Partial<Account>> = {}
+
+function queueAccountPatch(loginid: string, patch: Partial<Account>) {
+  pending[loginid] = { ...(pending[loginid] ?? {}), ...patch }
+  if (scheduled) return
+  scheduled = true
+  requestAnimationFrame(() => {
+    const list = accountList.value ?? []
+    const next = list.slice()
+    for (const [id, p] of Object.entries(pending)) {
+      const idx = next.findIndex(a => a.loginid === id)
+      if (idx !== -1) Object.assign(next[idx], p)
+      delete pending[id]
+    }
+    accountList.value = next          // ← 一次性换引用
+    scheduled = false
+  })
+}
+
+```
+]]></content:encoded>
         </item>
     </channel>
 </rss>
