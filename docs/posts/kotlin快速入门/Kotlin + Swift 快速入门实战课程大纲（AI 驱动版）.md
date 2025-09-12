@@ -1,15 +1,7 @@
 ---
-
 title: Kotlin + Swift 快速入门实战课程大纲（AI 驱动版）
 date: 2025-09-12
-tags:
-
-* Kotlin
-* Swift
-* 移动开发
-* 实用课程
-* Hexo博客
-
+tags: [Kotlin, Swift, 移动开发, 实用课程, Hexo博客]
 ---
 
 ## 前言

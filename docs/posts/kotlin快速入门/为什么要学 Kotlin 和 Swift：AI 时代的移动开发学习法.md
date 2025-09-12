@@ -1,15 +1,7 @@
 ---
-
 title: 为什么要学 Kotlin 和 Swift：AI 时代的移动开发学习法
 date: 2025-09-12
-tags:
-
-* Kotlin
-* Swift
-* 移动开发
-* AI学习
-* Hexo博客
-
+tags: [Kotlin, Swift, 移动开发, AI学习, Hexo博客]
 ---
 
 ## 前言
