@@ -72,6 +72,160 @@
             "date_modified": "2025-09-12T00:00:00.000Z"
         },
         {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/README",
+            "content_html": "# Swift 第二阶段（专题进阶）目录\n\n本套目录覆盖 iOS 开发常见的 **框架 / 并发 / 网络 / 架构 / 性能 / 安全 / 发布 / 多平台** 等主题，\n作为第一阶段（语法速成）的延续。每篇将包含：\n- 背景与场景\n- 最小可跑示例（可复制）\n- 常见坑与Checklist\n- 延伸阅读与实战练习\n\n> 使用方式：将本目录放入你的 Hexo 源仓库（如 `source/_posts/swift-advanced/`），按专题逐步完善。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/README",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/README",
+            "date_modified": "2025-09-14T05:54:31.887Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/gpt",
+            "content_html": "\n# Swift 第二阶段（专题进阶）说明\n\n在完成 **Swift 入门快速掌握（第一阶段）** 之后，我们将进入 **第二阶段（专题进阶）**。  \n这一阶段的目标是：系统深入学习 Swift 与 iOS 开发生态，涵盖实际开发中必须掌握的各类专题。\n\n---\n\n## 使用说明\n\n当你准备好进入第二阶段时，只需要告诉 AI：\n\n```\n\n进入 Swift 第二阶段（专题进阶）模式，写第 X 篇\n\n```\n\n即可触发进阶教程的生成。\n\n---\n\n## 统一提示词（保存备用）\n\n```\n\n进入 Swift 第二阶段（专题进阶）模式：\n\n* 背景：我已完成 Swift 入门快速掌握（第一阶段），现在要系统深入学习 Swift 与 iOS 开发。\n* 目标：逐个专题生成完整的 Hexo 博文系列（带 YAML front-matter、分节结构、示例代码、实战要点），直到完成所有文章。\n* 范围：按照 “swift-advanced-v2.zip” 提供的目录结构，覆盖 iOS 应用开发、SwiftUI、网络编程、并发与多线程、数据持久化、架构模式、测试质量、性能优化、系统能力、安全合规、发布运营、互操作、多平台扩展、视觉交互进阶、专题案例。\n* 风格：每篇博文需包含：\n\n  1. 简要背景/场景\n  2. 核心概念与语法\n  3. 5 分钟可跑的最简示例\n  4. 实战要点与常见坑\n  5. Checklist 总结\n  6. 延伸阅读\n* 输出形式：Hexo 博文 Markdown（带 front-matter）。\n\n```\n\n---\n\n## 第二阶段目录（示例）\n\n- iOS 应用开发（UIKit、SwiftUI）\n- 网络编程（URLSession、Codable）\n- 并发与多线程（GCD、async/await）\n- 数据持久化（CoreData、SQLite、文件系统）\n- 架构模式（MVC、MVVM、VIPER）\n- 测试与质量保障\n- 性能优化与调试\n- 系统能力（传感器、通知、定位等）\n- 安全与隐私合规\n- 发布与运营（App Store、TestFlight）\n- 互操作（Swift 与 C/Objective-C）\n- 多平台扩展（iPad、macOS、watchOS、tvOS）\n- 视觉与交互进阶（动画、手势）\n- 专题案例实战\n\n---\n\n📌 **提示**  \n第一阶段的课程已经保证你在 8 小时内快速掌握 Swift 核心语法，能读懂 AI 写的代码。  \n第二阶段则是 “实战专题”，深入到各个方面，帮你从“能写”到“能做应用”。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/gpt",
+            "title": "Swift 第二阶段（专题进阶）说明",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/01-语法速览",
+            "content_html": "\n# Swift 入门（1）：语法速览\n\n> 本文属于 Swift 入门速成系列，帮助你在 **8 小时内掌握最常用的语法与特性**，快速读懂 AI 写的代码。  \n> 本篇作为第一篇，带你 **一眼看懂 Swift 的常见语法**，相当于一个“速查表”。\n\n---\n\n## 基本语法特点\n\n- **强类型语言**：所有变量、常量都有确定类型。\n- **类型推断**：大多数时候不用显式写类型，编译器能自动推断。\n- **安全性强**：默认变量必须初始化，避免空指针。\n- **现代简洁**：省去了大量冗余符号，代码更接近自然语言。\n\n---\n\n## 变量与常量\n\n```swift\nlet pi = 3.14159      // 常量，不能修改\nvar age = 18          // 变量，可以修改\n\nage = 20              // ✅ 可以修改\n// pi = 3.14          // ❌ 报错：常量不可修改\n```\n\n````\n\n---\n\n## 常见数据类型\n\n```swift\nlet name: String = \"Swift\"\nlet score: Int = 95\nlet price: Double = 19.99\nlet passed: Bool = true\n```\n\n---\n\n## 字符串插值\n\n```swift\nlet name = \"Alice\"\nlet age = 20\nprint(\"Hello, my name is \\(name), I am \\(age) years old.\")\n```\n\n---\n\n## 数组与字典\n\n```swift\n// 数组\nvar numbers = [1, 2, 3, 4]\nnumbers.append(5)\nprint(numbers[0])  // 输出 1\n\n// 字典\nvar user = [\"name\": \"Bob\", \"age\": \"22\"]\nprint(user[\"name\"] ?? \"Unknown\") // Bob\n```\n\n---\n\n## 条件语句\n\n```swift\nlet score = 85\nif score >= 90 {\n    print(\"优秀\")\n} else if score >= 60 {\n    print(\"及格\")\n} else {\n    print(\"不及格\")\n}\n```\n\n---\n\n## 循环\n\n```swift\nfor i in 1...5 {\n    print(\"第 \\(i) 次\")\n}\n\nvar n = 3\nwhile n > 0 {\n    print(n)\n    n -= 1\n}\n```\n\n---\n\n## 函数\n\n```swift\nfunc greet(name: String) -> String {\n    return \"Hello, \\(name)\"\n}\n\nprint(greet(name: \"Swift\")) // Hello, Swift\n```\n\n---\n\n## 可选类型（Optionals）\n\n```swift\nvar nickname: String? = nil\nnickname = \"小明\"\n\n// 安全解包\nif let nick = nickname {\n    print(\"昵称：\\(nick)\")\n}\n```\n\n---\n\n## 小结\n\n这一篇带你快速扫了一遍 **Swift 最常见的语法**：\n\n- 变量与常量（`var` / `let`）\n- 常见数据类型（`String`、`Int`、`Double`、`Bool`）\n- 数组与字典\n- 条件与循环\n- 函数\n- 可选类型（`?` 和 `if let`）\n\n读完这些，你已经能看懂 70% 以上 AI 写的 Swift 代码。\n\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/01-语法速览",
+            "title": "Swift 入门（1）：语法速览",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/02-变量与常量",
+            "content_html": "\n# Swift 入门（2）：变量与常量\n\n> 在 Swift 中，**变量 (var)** 和 **常量 (let)** 是所有代码的基础。理解它们的区别与用法，能帮你写出更安全、可读性更强的程序。\n\n---\n\n## 基本概念\n\n- **`var`**：变量，可以修改。\n- **`let`**：常量，定义后不可修改。\n\n```swift\nvar age = 18\nage = 20          // ✅ 可以修改\n\nlet pi = 3.14159\n// pi = 3.14      // ❌ 报错：常量不可修改\n```\n\n---\n\n## 类型推断与显式声明\n\nSwift 编译器会自动推断变量的类型，但你也可以显式声明。\n\n```swift\n// 类型推断\nvar name = \"Alice\"     // 自动推断为 String\nvar score = 95         // 自动推断为 Int\n\n// 显式声明\nvar city: String = \"Beijing\"\nlet year: Int = 2025\n```\n\n---\n\n## 命名规范\n\n- 推荐使用 **小驼峰**：`userName`、`totalScore`。\n- 可以使用 Unicode：`let 😊 = \"smile\"`（但实际开发不推荐）。\n- 避免拼音或缩写，代码更清晰。\n\n---\n\n## 多变量声明\n\n```swift\nvar x = 0, y = 1, z = 2\nlet red = 255, green = 128, blue = 64\n```\n\n---\n\n## 懒加载与延迟初始化\n\n有些变量可能要等到第一次用时才计算，可以用 `lazy` 修饰。\n\n```swift\nlazy var data = loadData() // 第一次访问时才会调用 loadData()\n```\n\n> 注意：`lazy` 只能修饰 **var**，不能修饰 **let**。\n\n---\n\n## 可变性原则\n\nSwift 推荐：\n\n- **默认用 `let`**，只有需要修改时才用 `var`。\n- 这样可以避免无意的修改，提高代码安全性。\n\n---\n\n## 小结\n\n- `var` 定义变量，可变。\n- `let` 定义常量，不可变。\n- 默认用 `let`，这是 Swift 的最佳实践。\n- 类型推断让代码更简洁，但在需要时可显式声明。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/02-变量与常量",
+            "title": "Swift 入门（2）：变量与常量",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/03-流程控制",
+            "content_html": "\n# Swift 入门（4）：流程控制（if、switch、循环）\n\n> 程序的核心就是控制执行流程。Swift 提供了清晰的条件判断和循环语法，语义直观，易读易写。\n\n---\n\n## if 条件语句\n\n```swift\nlet score = 85\n\nif score >= 90 {\n    print(\"优秀\")\n} else if score >= 60 {\n    print(\"及格\")\n} else {\n    print(\"不及格\")\n}\n```\n\n> **注意**：条件表达式必须是布尔值，不能像 C 那样用 `1` 或 `0`。\n\n---\n\n## switch 语句\n\n```swift\nlet grade = \"B\"\n\nswitch grade {\ncase \"A\":\n    print(\"非常好\")\ncase \"B\":\n    print(\"良好\")\ncase \"C\":\n    print(\"及格\")\ndefault:\n    print(\"不及格\")\n}\n```\n\n特点：\n\n- **必须覆盖所有情况**，否则要写 `default`。\n- **无需写 `break`**，匹配后自动退出。\n\n---\n\n### switch 的进阶用法\n\n```swift\nlet point = (1, 1)\n\nswitch point {\ncase (0, 0):\n    print(\"原点\")\ncase (let x, 0):\n    print(\"在 X 轴上，x=\\(x)\")\ncase (0, let y):\n    print(\"在 Y 轴上，y=\\(y)\")\ncase (-2...2, -2...2):\n    print(\"在 (-2,2) 范围内\")\ndefault:\n    print(\"其他位置\")\n}\n```\n\n> Swift 的 `switch` 很强大，支持区间、元组、条件匹配。\n\n---\n\n## while 循环\n\n```swift\nvar n = 3\nwhile n > 0 {\n    print(n)\n    n -= 1\n}\n```\n\n---\n\n## repeat-while 循环（至少执行一次）\n\n```swift\nvar m = 0\nrepeat {\n    print(\"执行一次：m=\\(m)\")\n    m += 1\n} while m < 3\n```\n\n---\n\n## for-in 循环\n\n```swift\nfor i in 1...5 {  // 闭区间，包含 5\n    print(i)\n}\n\nfor i in 1..<5 {  // 半开区间，不包含 5\n    print(i)\n}\n\nlet names = [\"Alice\", \"Bob\", \"Charlie\"]\nfor name in names {\n    print(\"Hello, \\(name)\")\n}\n```\n\n---\n\n## 控制跳转\n\n```swift\nfor i in 1...5 {\n    if i == 3 {\n        continue   // 跳过当前循环\n    }\n    if i == 4 {\n        break      // 提前结束循环\n    }\n    print(i)\n}\n```\n\n---\n\n## 小结\n\n- `if-else`：最常见的条件判断。\n- `switch`：比很多语言更强大，支持模式匹配。\n- 循环包括 `while`、`repeat-while`、`for-in`，最后一个最常用。\n- `continue` 和 `break` 用于跳转控制。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/03-流程控制",
+            "title": "Swift 入门（4）：流程控制（if、switch、循环）",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/04-函数",
+            "content_html": "\n# Swift 入门（5）：函数与参数\n\n> 函数是 Swift 程序的基本组成单位，既能封装逻辑，也能复用代码。\n\n---\n\n## 基本函数\n\n```swift\nfunc sayHello() {\n    print(\"Hello, Swift!\")\n}\n\nsayHello()  // 调用\n```\n\n---\n\n## 带参数的函数\n\n```swift\nfunc greet(name: String) {\n    print(\"Hello, \\(name)!\")\n}\n\ngreet(name: \"Alice\")\n```\n\n---\n\n## 多个参数\n\n```swift\nfunc add(a: Int, b: Int) -> Int {\n    return a + b\n}\n\nlet result = add(a: 3, b: 5)\nprint(result)  // 8\n```\n\n> 使用 `->` 指定返回值类型。\n\n---\n\n## 外部参数名\n\nSwift 默认函数参数既有 **外部名**（调用时用的）也有 **内部名**（函数体内用的）。\n\n```swift\nfunc multiply(x a: Int, y b: Int) -> Int {\n    return a * b\n}\n\nlet r = multiply(x: 2, y: 3)\nprint(r)  // 6\n```\n\n---\n\n## 省略外部参数名\n\n用 `_` 可以省略外部参数名，让调用更简洁：\n\n```swift\nfunc divide(_ a: Double, _ b: Double) -> Double {\n    return a / b\n}\n\nprint(divide(10, 2))  // 5.0\n```\n\n---\n\n## 默认参数\n\n```swift\nfunc greet(name: String = \"游客\") {\n    print(\"你好，\\(name)！\")\n}\n\ngreet()            // 你好，游客！\ngreet(name: \"小明\") // 你好，小明！\n```\n\n---\n\n## 可变参数\n\n一个参数可以接收多个值：\n\n```swift\nfunc sum(_ numbers: Int...) -> Int {\n    var total = 0\n    for n in numbers {\n        total += n\n    }\n    return total\n}\n\nprint(sum(1, 2, 3, 4))  // 10\n```\n\n---\n\n## 返回多个值（元组）\n\n```swift\nfunc minMax(_ numbers: [Int]) -> (min: Int, max: Int)? {\n    if numbers.isEmpty { return nil }\n    var minVal = numbers[0]\n    var maxVal = numbers[0]\n    for n in numbers {\n        if n < minVal { minVal = n }\n        if n > maxVal { maxVal = n }\n    }\n    return (minVal, maxVal)\n}\n\nif let result = minMax([3, 7, 2, 9]) {\n    print(\"最小值: \\(result.min), 最大值: \\(result.max)\")\n}\n```\n\n---\n\n## 小结\n\n- `func` 定义函数。\n- 参数可以有外部名，也可以用 `_` 省略。\n- 支持默认参数和可变参数。\n- 函数可以返回单个值，也可以返回元组。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/04-函数",
+            "title": "Swift 入门（5）：函数与参数",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/05-集合",
+            "content_html": "\n# Swift 入门（5）：集合类型（Array、Set、Dictionary）\n\n> Swift 提供了三种常用集合类型：**数组（Array）**、**集合（Set）** 和 **字典（Dictionary）**。掌握它们就能处理大部分数据存储与操作。\n\n---\n\n## 数组（Array）\n\n数组是有序的元素集合，可以包含重复值。\n\n```swift\nvar numbers: [Int] = [1, 2, 3, 4]\n\n// 添加元素\nnumbers.append(5)\n\n// 访问元素\nprint(numbers[0])  // 1\n\n// 遍历\nfor num in numbers {\n    print(num)\n}\n```\n\n````\n\n简写：\n\n```swift\nlet fruits = [\"Apple\", \"Banana\", \"Cherry\"]\nprint(fruits.count)      // 3\nprint(fruits.contains(\"Banana\"))  // true\n```\n\n---\n\n## 集合（Set）\n\n集合是 **无序且唯一** 的元素集合。\n\n```swift\nvar set: Set<String> = [\"A\", \"B\", \"C\"]\n\nset.insert(\"D\")\nset.insert(\"A\")   // 已存在，不会重复\n\nprint(set.contains(\"C\"))  // true\n\n// 遍历（顺序不保证）\nfor item in set {\n    print(item)\n}\n```\n\n集合常用于 **去重**：\n\n```swift\nlet nums = [1, 2, 2, 3, 3, 4]\nlet uniqueNums = Set(nums)\nprint(uniqueNums)  // {2, 3, 1, 4}\n```\n\n---\n\n## 字典（Dictionary）\n\n字典是 **键值对** 的集合。\n\n```swift\nvar dict: [String: Int] = [\n    \"Alice\": 25,\n    \"Bob\": 30\n]\n\n// 访问\nprint(dict[\"Alice\"])  // Optional(25)\n\n// 修改\ndict[\"Alice\"] = 26\n\n// 新增\ndict[\"Charlie\"] = 22\n\n// 遍历\nfor (name, age) in dict {\n    print(\"\\(name): \\(age)\")\n}\n```\n\n---\n\n## 集合运算（Set 特有）\n\n```swift\nlet set1: Set = [1, 2, 3]\nlet set2: Set = [3, 4, 5]\n\n// 交集\nprint(set1.intersection(set2))  // [3]\n\n// 并集\nprint(set1.union(set2))  // [1, 2, 3, 4, 5]\n\n// 差集\nprint(set1.subtracting(set2))  // [1, 2]\n```\n\n---\n\n## 小结\n\n- **Array**：有序，可重复 → 适合顺序存储。\n- **Set**：无序，唯一 → 适合去重、集合运算。\n- **Dictionary**：键值对 → 适合映射关系。\n````\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/05-集合",
+            "title": "Swift 入门（5）：集合类型（Array、Set、Dictionary）",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/06-可选类型与空安全",
+            "content_html": "\n# Swift 入门（6）：可选类型与空安全\n\n> Swift 语言最突出的特性之一就是 **空安全（null safety）**，它通过 **可选类型（Optional）** 来避免常见的空指针错误。\n\n---\n\n## 什么是可选类型？\n\n在 Swift 中，变量默认必须有值。如果可能为空，就要用 `?` 声明为 **可选类型**：\n\n```swift\nvar name: String? = \"Alice\"\nname = nil   // 合法，因为是可选类型\n```\n\n普通变量不能为 `nil`：\n\n```swift\nvar age: Int = 18\n// age = nil   ❌ 错误\n```\n\n---\n\n## 解包（Unwrapping）\n\n### 1. 强制解包（!）\n\n如果确定有值，可以用 `!` 取出：\n\n```swift\nlet name: String? = \"Bob\"\nprint(name!)   // Bob\n```\n\n⚠️ 如果为 `nil` 会崩溃：\n\n```swift\nlet n: String? = nil\nprint(n!)  // ❌ 崩溃\n```\n\n---\n\n### 2. 可选绑定（if let）\n\n更安全的写法：\n\n```swift\nvar name: String? = \"Charlie\"\n\nif let n = name {\n    print(\"Hello, \\(n)\")   // Hello, Charlie\n} else {\n    print(\"No name\")\n}\n```\n\n---\n\n### 3. 可选绑定（guard let）\n\n常用于函数中提前退出：\n\n```swift\nfunc greet(_ name: String?) {\n    guard let n = name else {\n        print(\"No name\")\n        return\n    }\n    print(\"Hello, \\(n)\")\n}\n\ngreet(\"David\")  // Hello, David\ngreet(nil)      // No name\n```\n\n---\n\n### 4. 默认值（?? 运算符）\n\n```swift\nlet nickname: String? = nil\nprint(nickname ?? \"Guest\")   // Guest\n```\n\n---\n\n## 隐式解包（!）\n\n如果一个变量在生命周期内 **一定会有值**，可以用 `String!`：\n\n```swift\nvar username: String! = \"Eve\"\nprint(username)   // 自动解包 → Eve\n```\n\n⚠️ 一般少用，容易出错。\n\n---\n\n## 可选链（Optional Chaining）\n\n访问可能为空的属性/方法时，可以用 `?.`：\n\n```swift\nclass Person {\n    var pet: Pet?\n}\n\nclass Pet {\n    var name: String = \"Dog\"\n}\n\nlet p = Person()\nprint(p.pet?.name)   // nil\n```\n\n---\n\n## 小结\n\n- `?` → 表示可能为空。\n- `!` → 强制解包，危险。\n- `if let` / `guard let` → 安全解包。\n- `??` → 提供默认值。\n- `?.` → 可选链，优雅避免空指针。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/06-可选类型与空安全",
+            "title": "Swift 入门（6）：可选类型与空安全",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/07-字符串与日期",
+            "content_html": "\n# Swift 入门（7）：字符串与日期\n\n> 字符串和日期是开发中最常用的数据类型。Swift 提供了强大且安全的操作方式。\n\n---\n\n## 字符串（String）\n\n### 创建字符串\n\n```swift\nlet s1 = \"Hello\"\nlet s2 = String(\"World\")\n```\n\n---\n\n### 拼接\n\n```swift\nlet name = \"Alice\"\nlet greeting = \"Hello, \" + name\nprint(greeting)   // Hello, Alice\n```\n\n---\n\n### 字符串插值\n\n```swift\nlet age = 20\nprint(\"My age is \\(age)\")   // My age is 20\n```\n\n---\n\n### 遍历字符\n\n```swift\nfor ch in \"Swift\" {\n    print(ch)\n}\n```\n\n---\n\n### 字符串长度\n\n```swift\nlet text = \"Hello\"\nprint(text.count)   // 5\n```\n\n---\n\n### 子串\n\n```swift\nlet str = \"Hello Swift\"\nlet start = str.startIndex\nlet end = str.index(str.startIndex, offsetBy: 4)\nlet sub = str[start...end]\nprint(sub)   // Hello\n```\n\n---\n\n### 常用方法\n\n```swift\nlet msg = \" swift \"\nprint(msg.uppercased())   // \" SWIFT \"\nprint(msg.lowercased())   // \" swift \"\nprint(msg.trimmingCharacters(in: .whitespaces))   // \"swift\"\nprint(msg.contains(\"sw\")) // true\n```\n\n---\n\n## 日期（Date）\n\n### 当前时间\n\n```swift\nlet now = Date()\nprint(now)   // 2025-09-14 12:34:56 +0000\n```\n\n---\n\n### 日期格式化\n\n```swift\nlet formatter = DateFormatter()\nformatter.dateFormat = \"yyyy-MM-dd HH:mm:ss\"\n\nlet now = Date()\nlet str = formatter.string(from: now)\nprint(str)   // 2025-09-14 20:34:56\n```\n\n---\n\n### 字符串转日期\n\n```swift\nlet formatter = DateFormatter()\nformatter.dateFormat = \"yyyy/MM/dd\"\n\nif let date = formatter.date(from: \"2025/09/14\") {\n    print(date)\n}\n```\n\n---\n\n### 日期计算\n\n```swift\nlet now = Date()\nlet tomorrow = now.addingTimeInterval(24 * 60 * 60)\nprint(tomorrow)\n```\n\n---\n\n## 小结\n\n- **字符串**：拼接 `+`，插值 `\\(var)`，常用方法 `uppercased`、`contains`、`trimmingCharacters`。\n- **日期**：`Date()` 获取当前时间，`DateFormatter` 用于格式化和解析。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/07-字符串与日期",
+            "title": "Swift 入门（7）：字符串与日期",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/08-闭包",
+            "content_html": "\n# Swift 入门（8）：闭包\n\n> 闭包（Closure）是 Swift 的核心特性之一，类似匿名函数。它能捕获上下文变量，非常常用。\n\n---\n\n## 基本语法\n\n闭包的基本形式：\n\n```swift\n{ (参数列表) -> 返回类型 in\n    代码块\n}\n```\n\n例如：\n\n```swift\nlet add = { (a: Int, b: Int) -> Int in\n    return a + b\n}\nprint(add(2, 3))   // 5\n```\n\n---\n\n## 作为函数参数\n\n```swift\nfunc operate(_ a: Int, _ b: Int, op: (Int, Int) -> Int) -> Int {\n    return op(a, b)\n}\n\nlet sum = operate(2, 3, op: { (x, y) in x + y })\nprint(sum)   // 5\n```\n\n---\n\n## 闭包简写\n\nSwift 提供了简写规则，使闭包更简洁：\n\n1. **省略参数类型和返回值**\n2. **省略 return**\n3. **使用参数占位符 `$0`, `$1`**\n\n```swift\nlet nums = [3, 1, 5, 2]\nlet sorted = nums.sorted(by: { $0 < $1 })\nprint(sorted)   // [1, 2, 3, 5]\n```\n\n---\n\n## 尾随闭包\n\n当闭包是函数最后一个参数时，可以写在括号外：\n\n```swift\nlet doubled = nums.map { $0 * 2 }\nprint(doubled)   // [6, 2, 10, 4]\n```\n\n---\n\n## 捕获变量\n\n闭包会捕获外部变量：\n\n```swift\nfunc makeCounter() -> () -> Int {\n    var count = 0\n    return {\n        count += 1\n        return count\n    }\n}\n\nlet counter = makeCounter()\nprint(counter())   // 1\nprint(counter())   // 2\n```\n\n---\n\n## 常见应用场景\n\n1. **数组操作（map/filter/reduce）**\n2. **回调（网络请求完成后执行）**\n3. **延迟执行**\n\n---\n\n## 小结\n\n- 闭包 = 匿名函数，可以捕获外部变量。\n- 语法简洁，支持尾随闭包。\n- 常用于集合操作和回调。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/08-闭包",
+            "title": "Swift 入门（8）：闭包",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/09-结构体与类",
+            "content_html": "\n# Swift 入门（9）：结构体与类\n\n> Swift 中既有 **结构体（struct）**，也有 **类（class）**。两者非常相似，但也有重要区别。\n\n---\n\n## 定义结构体\n\n```swift\nstruct Point {\n    var x: Int\n    var y: Int\n}\n\nvar p1 = Point(x: 3, y: 5)\np1.x = 10\nprint(p1)   // Point(x: 10, y: 5)\n```\n\n结构体自动拥有一个 **成员初始化器**，不需要手动写构造函数。\n\n---\n\n## 定义类\n\n```swift\nclass Person {\n    var name: String\n    var age: Int\n\n    init(name: String, age: Int) {\n        self.name = name\n        self.age = age\n    }\n}\n\nlet p = Person(name: \"Tom\", age: 20)\nprint(p.name)   // Tom\n```\n\n类需要写 `init` 构造函数来初始化属性。\n\n---\n\n## 值类型 vs 引用类型\n\n这是两者最大的区别：\n\n- **结构体** 是 **值类型**，赋值时会复制一份。\n- **类** 是 **引用类型**，赋值时多个变量指向同一个对象。\n\n```swift\nvar a = Point(x: 1, y: 2)\nvar b = a\nb.x = 100\nprint(a.x)   // 1（不受影响）\n\nlet p2 = p\np2.name = \"Jerry\"\nprint(p.name)   // Jerry（引用同一个对象）\n```\n\n---\n\n## 选择结构体还是类？\n\n- **结构体**：推荐默认使用，轻量、安全，常用于数据模型。\n- **类**：当需要继承、引用语义时使用（如视图控制器）。\n\n---\n\n## 小结\n\n- `struct` = 值类型，复制独立。\n- `class` = 引用类型，共享同一对象。\n- Swift 鼓励多用结构体，少用类，除非需要继承。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/09-结构体与类",
+            "title": "Swift 入门（9）：结构体与类",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/10-属性与方法",
+            "content_html": "\n# Swift 入门（10）：属性与方法\n\n> Swift 中，结构体和类可以有 **属性（properties）** 和 **方法（methods）**，这是面向对象编程的核心。\n\n---\n\n## 存储属性\n\n直接存储值在实例里的属性。\n\n```swift\nstruct User {\n    var name: String\n    var age: Int\n}\n\nvar u = User(name: \"Tom\", age: 20)\nu.age = 21\nprint(u.age)   // 21\n```\n\n---\n\n## 计算属性\n\n不会直接存储值，而是通过 getter/setter 计算得到。\n\n```swift\nstruct Rectangle {\n    var width: Double\n    var height: Double\n\n    var area: Double {\n        return width * height\n    }\n}\n\nlet r = Rectangle(width: 5, height: 3)\nprint(r.area)   // 15.0\n```\n\n---\n\n## 属性观察器\n\n在属性变化时触发 `willSet` / `didSet`。\n\n```swift\nclass Counter {\n    var count: Int = 0 {\n        willSet {\n            print(\"即将设置为 \\(newValue)\")\n        }\n        didSet {\n            print(\"已从 \\(oldValue) 改为 \\(count)\")\n        }\n    }\n}\n\nlet c = Counter()\nc.count = 5\n// 即将设置为 5\n// 已从 0 改为 5\n```\n\n---\n\n## 方法\n\n方法就是定义在类/结构体中的函数。\n\n```swift\nstruct Circle {\n    var radius: Double\n\n    func area() -> Double {\n        return 3.14 * radius * radius\n    }\n}\n\nlet c1 = Circle(radius: 10)\nprint(c1.area())   // 314.0\n```\n\n---\n\n## mutating 方法\n\n结构体是 **值类型**，默认方法不能修改属性。需要 `mutating` 关键字。\n\n```swift\nstruct Counter {\n    var value = 0\n\n    mutating func increment() {\n        value += 1\n    }\n}\n\nvar ct = Counter()\nct.increment()\nprint(ct.value)   // 1\n```\n\n---\n\n## 静态属性和方法\n\n属于类型本身，而不是某个实例。\n\n```swift\nstruct Math {\n    static let pi = 3.14159\n    static func square(_ x: Int) -> Int {\n        return x * x\n    }\n}\n\nprint(Math.pi)        // 3.14159\nprint(Math.square(5)) // 25\n```\n\n---\n\n## 小结\n\n- **存储属性**：保存值。\n- **计算属性**：动态计算。\n- **属性观察器**：监听变化。\n- **实例方法**：作用于实例。\n- **mutating 方法**：修改结构体/枚举。\n- **静态属性/方法**：属于类型。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/10-属性与方法",
+            "title": "Swift 入门（10）：属性与方法",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/11-枚举",
+            "content_html": "\n# Swift 入门（11）：枚举\n\n> 枚举（`enum`）是 Swift 中非常常见的语法结构，用来表示一组有限的、相关的值。  \n> 它比许多其他语言中的枚举更强大，支持关联值、原始值，还能扩展方法。\n\n---\n\n## 1. 基本用法\n\n```swift\nenum Direction {\n    case north\n    case south\n    case east\n    case west\n}\n\nlet d = Direction.north\nprint(d)   // north\n```\n\n你也可以写在一行：\n\n```swift\nenum Direction { case north, south, east, west }\n```\n\n---\n\n## 2. 搭配 switch 使用\n\n```swift\nfunc move(_ dir: Direction) {\n    switch dir {\n    case .north:\n        print(\"向北走\")\n    case .south:\n        print(\"向南走\")\n    case .east:\n        print(\"向东走\")\n    case .west:\n        print(\"向西走\")\n    }\n}\n\nmove(.east)  // 向东走\n```\n\n> `switch` 必须覆盖所有枚举的情况，否则编译报错。\n\n---\n\n## 3. 枚举的原始值\n\n枚举的每个 case 可以绑定一个 **原始值**（Raw Value），常见于数字或字符串。\n\n```swift\nenum Weekday: Int {\n    case monday = 1, tuesday, wednesday, thursday, friday, saturday, sunday\n}\n\nprint(Weekday.friday.rawValue) // 5\n\nif let day = Weekday(rawValue: 7) {\n    print(day) // sunday\n}\n```\n\n---\n\n## 4. 枚举的关联值\n\n有时 case 需要携带不同的数据，这时可以用 **关联值**。\n\n```swift\nenum LoginState {\n    case success(user: String)\n    case failure(error: String)\n}\n\nlet result = LoginState.success(user: \"Alice\")\n\nswitch result {\ncase .success(let user):\n    print(\"登录成功：\\(user)\")\ncase .failure(let error):\n    print(\"失败：\\(error)\")\n}\n```\n\n---\n\n## 5. 枚举的方法\n\n枚举可以像类和结构体一样添加方法。\n\n```swift\nenum TrafficLight {\n    case red, yellow, green\n\n    func action() -> String {\n        switch self {\n        case .red: return \"停\"\n        case .yellow: return \"等\"\n        case .green: return \"走\"\n        }\n    }\n}\n\nprint(TrafficLight.green.action()) // 走\n```\n\n---\n\n## 总结\n\n- `enum` 用来表示有限集合。\n- 搭配 `switch` 使用非常常见。\n- 可以有 **原始值** 和 **关联值**。\n- 可以定义 **方法**，功能接近类和结构体。\n\nSwift 的枚举很灵活，不只是常量集合，更像“轻量的数据类型”。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/11-枚举",
+            "title": "Swift 入门（11）：枚举",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/12-协议",
+            "content_html": "\n# Swift 入门（12）：协议\n\n> 协议（`protocol`）就像“契约”，规定了 **必须具备的属性和方法**。  \n> 类、结构体、枚举都可以遵循协议。\n\n---\n\n## 1. 定义协议\n\n```swift\nprotocol Drawable {\n    func draw()\n}\n````\n\n---\n\n## 2. 遵循协议\n\n```swift\nstruct Circle: Drawable {\n    func draw() {\n        print(\"画一个圆\")\n    }\n}\n\nlet c = Circle()\nc.draw()  // 画一个圆\n```\n\n---\n\n## 3. 属性要求\n\n协议可以要求属性，但只规定 **读/写权限**，不实现。\n\n```swift\nprotocol Named {\n    var name: String { get set }\n    var description: String { get }\n}\n\nstruct Person: Named {\n    var name: String\n    var description: String {\n        \"我的名字是 \\(name)\"\n    }\n}\n\nlet p = Person(name: \"Alice\")\nprint(p.description) // 我的名字是 Alice\n```\n\n---\n\n## 4. 多协议\n\n一个类型可以同时遵循多个协议。\n\n```swift\nprotocol Flyable { func fly() }\nprotocol Swimmable { func swim() }\n\nstruct Duck: Flyable, Swimmable {\n    func fly() { print(\"鸭子会飞\") }\n    func swim() { print(\"鸭子会游泳\") }\n}\n```\n\n---\n\n## 5. 协议作为类型\n\n协议不仅是规范，也能作为类型使用。\n\n```swift\nfunc test(d: Drawable) {\n    d.draw()\n}\n\ntest(d: Circle()) // 画一个圆\n```\n\n---\n\n## 6. 协议继承\n\n协议可以继承其它协议。\n\n```swift\nprotocol Animal {\n    func eat()\n}\n\nprotocol Pet: Animal {\n    func play()\n}\n\nstruct Dog: Pet {\n    func eat() { print(\"狗在吃\") }\n    func play() { print(\"狗在玩\") }\n}\n```\n\n---\n\n## 总结\n\n* `protocol` 用来定义 **方法和属性的规范**。\n* 类/结构体/枚举都可以遵循协议。\n* 协议也可以 **继承** 和 **组合**。\n* 协议能作为类型使用，是 Swift 面向协议编程的基础。\n\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/12-协议",
+            "title": "Swift 入门（12）：协议",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/13-扩展",
+            "content_html": "\n# Swift 入门（13）：扩展\n\n> **扩展（`extension`）** 可以给已有的类、结构体、枚举、协议 **添加新功能**，而无需修改原有代码。  \n> 这在实际开发中非常常用。\n\n---\n\n## 1. 给已有类型添加方法\n\n```swift\nextension Int {\n    func squared() -> Int {\n        return self * self\n    }\n}\n\nprint(5.squared()) // 25\n```\n\n---\n\n## 2. 添加计算属性\n\n```swift\nextension Double {\n    var km: Double { self * 1000 }\n    var cm: Double { self / 100 }\n}\n\nprint(5.0.km) // 5000.0\nprint(120.0.cm) // 1.2\n```\n\n---\n\n## 3. 初始化器扩展\n\n扩展也能添加新的初始化方法。\n\n```swift\nstruct Point {\n    var x = 0.0, y = 0.0\n}\n\nextension Point {\n    init(value: Double) {\n        self.x = value\n        self.y = value\n    }\n}\n\nlet p = Point(value: 3.0)\nprint(p) // Point(x: 3.0, y: 3.0)\n```\n\n---\n\n## 4. 协议 + 扩展\n\n扩展能给协议提供 **默认实现**。\n\n```swift\nprotocol Greetable {\n    func greet()\n}\n\nextension Greetable {\n    func greet() {\n        print(\"你好，欢迎学习 Swift!\")\n    }\n}\n\nstruct Student: Greetable {}\n\nlet s = Student()\ns.greet() // 你好，欢迎学习 Swift!\n```\n\n---\n\n## 5. 限制扩展\n\n可以通过 `where` 限制扩展只对特定类型生效。\n\n```swift\nextension Collection where Element: Comparable {\n    func isSorted() -> Bool {\n        return self == self.sorted()\n    }\n}\n\nprint([1, 2, 3].isSorted()) // true\nprint([3, 1, 2].isSorted()) // false\n```\n\n---\n\n## 总结\n\n- **扩展** 可以给已有类型添加 **方法、属性、初始化器**。\n- **协议扩展** 能写默认实现，非常常用。\n- 可以用 **`where` 限制扩展范围**。\n- 扩展不会覆盖原有实现，但能让代码更简洁。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/13-扩展",
+            "title": "Swift 入门（13）：扩展",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/14-错误处理",
+            "content_html": "\n# Swift 入门（14）：错误处理\n\n> 在 Swift 中，错误处理主要通过 **`throw` / `try` / `catch`** 来实现。  \n> 和异常不同，Swift 错误必须显式声明和处理，更安全。\n\n---\n\n## 1. 定义错误类型\n\nSwift 的错误必须遵循 `Error` 协议。\n\n```swift\nenum FileError: Error {\n    case notFound\n    case noPermission\n}\n```\n\n---\n\n## 2. 抛出错误\n\n```swift\nfunc readFile(name: String) throws -> String {\n    if name == \"secret.txt\" {\n        throw FileError.noPermission\n    }\n    return \"文件内容\"\n}\n```\n\n---\n\n## 3. 捕获错误\n\n```swift\ndo {\n    let content = try readFile(name: \"secret.txt\")\n    print(content)\n} catch FileError.notFound {\n    print(\"❌ 文件未找到\")\n} catch FileError.noPermission {\n    print(\"⛔ 没有权限\")\n} catch {\n    print(\"⚠️ 其它错误：\\(error)\")\n}\n```\n\n---\n\n## 4. try? 和 try!\n\n- **`try?`**：错误时返回 `nil`。\n- **`try!`**：确定不会出错时使用，出错会崩溃。\n\n```swift\nlet result1 = try? readFile(name: \"a.txt\")  // Optional(\"文件内容\")\nlet result2 = try? readFile(name: \"secret.txt\")  // nil\n\nlet result3 = try! readFile(name: \"a.txt\") // 强制执行\n```\n\n---\n\n## 5. defer（清理资源）\n\n`defer` 块中的代码在函数结束时执行，常用于释放资源。\n\n```swift\nfunc processFile() throws {\n    print(\"开始处理文件\")\n    defer {\n        print(\"关闭文件\")\n    }\n    throw FileError.notFound\n}\n\ntry? processFile()\n// 输出：\n// 开始处理文件\n// 关闭文件\n```\n\n---\n\n## 总结\n\n- 用 `enum` + `Error` 定义错误类型。\n- 用 `throw` 抛出，用 `try` + `catch` 捕获。\n- `try?` 返回可选，`try!` 强制执行。\n- `defer` 用于清理收尾。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/14-错误处理",
+            "title": "Swift 入门（14）：错误处理",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/15-泛型",
+            "content_html": "\n# Swift 入门（15）：泛型\n\n> 泛型（Generics）让你编写 **可复用、灵活、安全** 的代码。  \n> 通过占位符 `T` 表示任意类型，避免重复写同样的函数或类。\n\n---\n\n## 1. 泛型函数\n\n```swift\nfunc swapTwoValues<T>(_ a: inout T, _ b: inout T) {\n    let temp = a\n    a = b\n    b = temp\n}\n\nvar x = 5, y = 10\nswapTwoValues(&x, &y)\nprint(x, y) // 10 5\n\nvar s1 = \"hello\", s2 = \"world\"\nswapTwoValues(&s1, &s2)\nprint(s1, s2) // world hello\n```\n\n---\n\n## 2. 泛型类型（结构体 / 类）\n\n```swift\nstruct Stack<T> {\n    private var items: [T] = []\n\n    mutating func push(_ item: T) {\n        items.append(item)\n    }\n\n    mutating func pop() -> T? {\n        return items.popLast()\n    }\n}\n\nvar intStack = Stack<Int>()\nintStack.push(1)\nintStack.push(2)\nprint(intStack.pop()!) // 2\n```\n\n---\n\n## 3. 类型约束\n\n有时需要限定泛型类型必须遵循某个协议。\n\n```swift\nfunc findIndex<T: Equatable>(of value: T, in array: [T]) -> Int? {\n    for (index, item) in array.enumerated() {\n        if item == value { return index }\n    }\n    return nil\n}\n\nprint(findIndex(of: \"b\", in: [\"a\", \"b\", \"c\"])) // 1\n```\n\n---\n\n## 4. 关联类型（协议里的泛型）\n\n```swift\nprotocol Container {\n    associatedtype Item\n    mutating func add(_ item: Item)\n    var count: Int { get }\n}\n\nstruct IntContainer: Container {\n    var items: [Int] = []\n    mutating func add(_ item: Int) { items.append(item) }\n    var count: Int { items.count }\n}\n```\n\n---\n\n## 总结\n\n- 泛型函数：`func foo<T>(...) {}`\n- 泛型类型：`struct Stack<T> {...}`\n- 类型约束：`<T: Equatable>`\n- 协议可用 `associatedtype` 声明泛型。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/15-泛型",
+            "title": "Swift 入门（15）：泛型",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/16-访问控制",
+            "content_html": "\n# Swift 入门（16）：访问控制\n\n> Swift 提供访问控制（Access Control）来保护代码的内部实现。  \n> 通过 `open`、`public`、`internal`、`fileprivate`、`private` 关键字控制作用范围。\n\n---\n\n## 1. 五种访问级别\n\n1. **open**\n   - 最宽松，允许模块外使用，并且可以继承 / 重写。\n   - 主要用于 **框架对外 API**。\n2. **public**\n   - 模块外可以使用，但不能继承或重写。\n   - 适合对外只读的接口。\n3. **internal**（默认）\n   - 只能在 **同一模块** 内使用。\n   - 一般项目中大部分代码都是 `internal`。\n4. **fileprivate**\n   - 限制在 **同一个文件** 内访问。\n5. **private**\n   - 最严格，限制在 **同一个作用域**（类 / 结构体）内使用。\n\n---\n\n## 2. 使用示例\n\n```swift\nopen class OpenClass {\n    open func openMethod() {}\n    public func publicMethod() {}\n    internal func internalMethod() {}\n    fileprivate func filePrivateMethod() {}\n    private func privateMethod() {}\n}\n\nlet obj = OpenClass()\nobj.publicMethod()   // ✅ 可访问\nobj.internalMethod() // ✅ 同模块可访问\n// obj.filePrivateMethod() ❌ 其他文件不可访问\n// obj.privateMethod() ❌ 作用域外不可访问\n```\n\n---\n\n## 3. 常见使用场景\n\n- **open**：SDK / Framework 提供可继承的基类。\n- **public**：模块对外公开的常量或函数。\n- **internal**：默认级别，适合大部分业务代码。\n- **fileprivate**：隐藏某些工具函数。\n- **private**：保护类内部细节。\n\n---\n\n## 4. 注意事项\n\n- 属性、方法、初始化器、扩展都可以设置访问级别。\n- 子类的访问级别不能高于父类。\n- 协议的访问级别会影响其实现。\n\n---\n\n## 总结\n\n- Swift 默认访问级别是 `internal`。\n- 最常用的是 `internal` + `private`，只在需要开放 API 时用 `public` 或 `open`。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/16-访问控制",
+            "title": "Swift 入门（16）：访问控制",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/17-继承与多态",
+            "content_html": "\n# Swift 入门（17）：继承与多态\n\n> Swift 是面向对象语言，支持 **继承** 与 **多态**，但比起某些语言更强调组合。\n\n---\n\n## 1. 基本继承\n\n```swift\nclass Animal {\n    var name: String\n    init(name: String) {\n        self.name = name\n    }\n    func makeSound() {\n        print(\"...\")\n    }\n}\n\nclass Dog: Animal {\n    func fetch() {\n        print(\"\\(name) is fetching!\")\n    }\n\n    // 重写父类方法\n    override func makeSound() {\n        print(\"Woof!\")\n    }\n}\n\nlet dog = Dog(name: \"Buddy\")\ndog.makeSound()   // Woof!\ndog.fetch()       // Buddy is fetching!\n```\n\n---\n\n## 2. 多态\n\n父类引用可以指向子类对象：\n\n```swift\nlet a: Animal = Dog(name: \"Max\")\na.makeSound()   // 调用的是 Dog 的实现 -> \"Woof!\"\n```\n\n这就是 **多态**：相同的接口，表现不同的行为。\n\n---\n\n## 3. `final` 关键字\n\n如果不希望类被继承，可以用 `final`：\n\n```swift\nfinal class Cat: Animal {\n    override func makeSound() {\n        print(\"Meow!\")\n    }\n}\n\n// ❌ 下面代码会报错：不能继承 final 类\n// class Kitten: Cat {}\n```\n\n---\n\n## 4. 构造器的继承与重写\n\n子类如果没有写构造器，会自动继承父类的构造器。\n\n```swift\nclass Bird: Animal {\n    override func makeSound() {\n        print(\"Chirp!\")\n    }\n}\n\nlet b = Bird(name: \"Tweety\") // ✅ 直接用父类 init\n```\n\n如果写了自己的 `init`，可能需要 `super.init`：\n\n```swift\nclass Parrot: Animal {\n    var color: String\n    init(name: String, color: String) {\n        self.color = color\n        super.init(name: name) // 必须调用父类构造器\n    }\n}\n```\n\n---\n\n## 5. 多态与协议的对比\n\n- **继承**：类与类之间的关系，强调 \"is-a\"。\n- **协议**：行为的抽象，强调 \"can-do\"。\n- 在 Swift 开发中，协议比继承更常用。\n\n---\n\n## 总结\n\n- 继承允许子类扩展和重写父类功能。\n- 多态通过父类引用调用子类实现。\n- 使用 `final` 可以禁止继承。\n- Swift 提倡 **少用继承，多用协议与组合**。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/17-继承与多态",
+            "title": "Swift 入门（17）：继承与多态",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/18-协议进阶",
+            "content_html": "\n# Swift 入门（18）：协议进阶\n\n> 协议（`protocol`）是 Swift 的核心特性之一。它不仅能定义行为接口，还能与扩展、泛型、面向协议编程结合，形成比继承更强大的抽象。\n\n---\n\n## 1. 协议继承\n\n协议可以继承其他协议：\n\n```swift\nprotocol Named {\n    var name: String { get }\n}\n\nprotocol Aged {\n    var age: Int { get }\n}\n\nprotocol Person: Named, Aged {}\n\nstruct Student: Person {\n    var name: String\n    var age: Int\n}\n```\n\n---\n\n## 2. 协议中的构造器\n\n协议可以要求实现某些构造器：\n\n```swift\nprotocol Initializable {\n    init(value: Int)\n}\n\nclass NumberBox: Initializable {\n    var value: Int\n    required init(value: Int) { // required 表示所有子类必须实现\n        self.value = value\n    }\n}\n```\n\n---\n\n## 3. 协议扩展（默认实现）\n\n协议扩展可以提供默认实现，让协议更像“接口 + 实现”：\n\n```swift\nprotocol Drawable {\n    func draw()\n}\n\nextension Drawable {\n    func draw() {\n        print(\"Default drawing...\")\n    }\n}\n\nstruct Circle: Drawable {} // 没实现 draw()，会用默认实现\n\nCircle().draw() // Default drawing...\n```\n\n也可以在扩展里添加新的方法：\n\n```swift\nextension Drawable {\n    func debug() {\n        print(\"Debugging drawable object\")\n    }\n}\n\nCircle().debug() // Debugging drawable object\n```\n\n---\n\n## 4. 协议与泛型\n\n协议常与泛型结合，用 `where` 约束类型：\n\n```swift\nprotocol Summable {\n    static func +(lhs: Self, rhs: Self) -> Self\n}\n\nfunc add<T: Summable>(_ a: T, _ b: T) -> T {\n    return a + b\n}\n\nextension Int: Summable {}\nextension Double: Summable {}\n\nprint(add(3, 5))      // 8\nprint(add(2.5, 7.1))  // 9.6\n```\n\n---\n\n## 5. 面向协议编程（POP）\n\nSwift 鼓励 **Protocol-Oriented Programming**（POP），比继承更灵活：\n\n- 协议定义能力（能做什么）。\n- 结构体/类采用协议，组合出需要的行为。\n- 协议扩展提供默认实现，减少重复代码。\n\n示例：\n\n```swift\nprotocol Flyable {\n    func fly()\n}\n\nextension Flyable {\n    func fly() { print(\"Flying...\") }\n}\n\nstruct Bird: Flyable {}\nstruct Airplane: Flyable {}\n\nBird().fly()      // Flying...\nAirplane().fly()  // Flying...\n```\n\n---\n\n## 总结\n\n- 协议支持继承、构造器要求。\n- 协议扩展提供默认实现，提升代码复用。\n- 协议与泛型结合更强大。\n- 面向协议编程是 Swift 的核心思想。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/18-协议进阶",
+            "title": "Swift 入门（18）：协议进阶",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/19-内存管理",
+            "content_html": "\n# Swift 入门（19）：内存管理\n\n> Swift 使用 **ARC（Automatic Reference Counting）** 自动管理内存，大多数情况下不需要手动释放对象。但理解其工作原理非常重要，尤其是避免循环引用。\n\n---\n\n## 1. ARC 的基本原理\n\n- 每个类实例都有一个 **引用计数**。\n- 当引用 +1 时，实例保留。\n- 当引用变为 0 时，实例被销毁。\n\n```swift\nclass Person {\n    let name: String\n    init(name: String) { self.name = name }\n    deinit { print(\"\\(name) 被销毁\") }\n}\n\nvar p1: Person? = Person(name: \"Tom\")\np1 = nil // 引用计数归零，触发 deinit\n```\n\n---\n\n## 2. 强引用（Strong Reference）\n\n默认情况下，变量保存对象时会创建一个 **强引用**。\n\n```swift\nclass Dog {}\nvar d1: Dog? = Dog()\nvar d2 = d1 // d1, d2 都是强引用\n```\n\n---\n\n## 3. 循环引用问题\n\n如果两个对象相互持有强引用，会导致 **循环引用**，对象无法释放。\n\n```swift\nclass Teacher {\n    var student: Student?\n    deinit { print(\"Teacher deinit\") }\n}\n\nclass Student {\n    var teacher: Teacher?\n    deinit { print(\"Student deinit\") }\n}\n\nvar t: Teacher? = Teacher()\nvar s: Student? = Student()\n\nt?.student = s\ns?.teacher = t\n\nt = nil\ns = nil\n// ❌ Teacher 和 Student 都不会释放\n```\n\n---\n\n## 4. 解决循环引用\n\n### 4.1 弱引用（weak）\n\n- 用 `weak` 修饰，引用不会增加计数。\n- 常用于 **可选类型**，引用对象销毁后会自动设为 `nil`。\n\n```swift\nclass Teacher {\n    var student: Student?\n    deinit { print(\"Teacher deinit\") }\n}\n\nclass Student {\n    weak var teacher: Teacher? // 🔑 解决循环引用\n    deinit { print(\"Student deinit\") }\n}\n```\n\n---\n\n### 4.2 无主引用（unowned）\n\n- 用 `unowned` 修饰，不会增加计数。\n- **不会自动置 nil**，适合生命周期一致的对象。\n\n```swift\nclass CreditCard {\n    unowned let customer: Customer // 永远存在\n    init(customer: Customer) { self.customer = customer }\n    deinit { print(\"Card deinit\") }\n}\n\nclass Customer {\n    var card: CreditCard?\n    deinit { print(\"Customer deinit\") }\n}\n\nvar c: Customer? = Customer()\nc?.card = CreditCard(customer: c!)\nc = nil // 两个对象都释放\n```\n\n---\n\n## 5. 闭包捕获列表\n\n闭包也可能导致循环引用，需要用 `[weak self]` 或 `[unowned self]`。\n\n```swift\nclass ViewController {\n    var name = \"VC\"\n    var callback: (() -> Void)?\n\n    func setup() {\n        callback = { [weak self] in\n            print(self?.name ?? \"nil\")\n        }\n    }\n\n    deinit { print(\"VC deinit\") }\n}\n```\n\n---\n\n## 总结\n\n- Swift 使用 ARC 自动管理内存。\n- 循环引用是主要问题，需要 `weak` 或 `unowned` 解决。\n- 闭包中捕获 `self` 时，注意使用捕获列表。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/19-内存管理",
+            "title": "Swift 入门（19）：内存管理",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-quickstart/20-并发与异步",
+            "content_html": "\n# Swift 入门（20）：并发与异步\n\n> Swift 从 5.5 开始引入了现代化的 **并发模型**，主要包括 `async/await`、`Task`、以及 `Actor`。它让异步代码更直观，也避免了回调地狱。\n\n---\n\n## 1. async/await 基础\n\n用 `async` 标记异步函数，用 `await` 调用它。\n\n```swift\nfunc fetchData() async -> String {\n    return \"数据结果\"\n}\n\nTask {\n    let result = await fetchData()\n    print(result)\n}\n```\n\n---\n\n## 2. 异步任务 Task\n\n`Task {}` 可以在任何地方开启一个并发任务。\n\n```swift\nTask {\n    print(\"开始下载\")\n    let data = await fetchData()\n    print(\"下载完成: \\(data)\")\n}\n```\n\n---\n\n## 3. 并发执行\n\n多个异步任务可以 **并发执行**。\n\n```swift\nfunc task1() async -> String {\n    try? await Task.sleep(nanoseconds: 1_000_000_000)\n    return \"任务1完成\"\n}\n\nfunc task2() async -> String {\n    return \"任务2完成\"\n}\n\nTask {\n    async let r1 = task1()\n    async let r2 = task2()\n    print(await r1, await r2)\n}\n```\n\n---\n\n## 4. 异步序列\n\n异步版本的 `for-in`，用于流式数据。\n\n```swift\nfunc numbers() -> AsyncStream<Int> {\n    AsyncStream { continuation in\n        for i in 1...3 {\n            continuation.yield(i)\n        }\n        continuation.finish()\n    }\n}\n\nTask {\n    for await num in numbers() {\n        print(num)\n    }\n}\n```\n\n---\n\n## 5. Actor（解决共享数据并发问题）\n\n`Actor` 用来保证数据的 **线程安全**。\n\n```swift\nactor Counter {\n    var value = 0\n    func increment() { value += 1 }\n}\n\nlet counter = Counter()\n\nTask {\n    await counter.increment()\n    print(await counter.value)\n}\n```\n\n---\n\n## 6. 与传统回调互操作\n\n老的 **回调 API** 可以通过 `withCheckedContinuation` 转成 `async`。\n\n```swift\nfunc loadData(completion: @escaping (String) -> Void) {\n    DispatchQueue.global().async {\n        completion(\"旧API数据\")\n    }\n}\n\nfunc loadDataAsync() async -> String {\n    await withCheckedContinuation { cont in\n        loadData { result in cont.resume(returning: result) }\n    }\n}\n\nTask {\n    print(await loadDataAsync())\n}\n```\n\n---\n\n## 总结\n\n- `async/await` 让异步代码像同步一样易读。\n- `Task` 开启并发任务，`async let` 并发执行多个任务。\n- `Actor` 提供线程安全的数据访问。\n- 旧回调 API 可以用 `Continuation` 封装成异步。\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-quickstart/20-并发与异步",
+            "title": "Swift 入门（20）：并发与异步",
+            "date_modified": "2025-09-14T00:00:00.000Z"
+        },
+        {
             "id": "https://herongdev.github.io/blog/posts/Web-API-与推送/Web-Push/Web-Push-推送简介",
             "content_html": "\n---\n\ntitle: Web Push 推送简介\ndate: 2025-09-05\ncategories: \\[Web 实时通讯, 浏览器推送]\ntags: \\[Web Push, Service Worker, PWA, VAPID, 离线通知, 实时消息]\ndescription: 全面介绍 Web Push 技术的原理、特点、实现步骤和典型应用场景，帮助前端/全栈开发者理解并快速落地。\n\n---\n\n# 什么是 Web Push？\n\n**Web Push** 是浏览器层面的 **推送通知机制**。与 WebSocket 或 SSE 不同，它不依赖页面是否处于前台，甚至用户没有打开网页也能收到通知。核心依赖：\n\n- **Service Worker**：浏览器的后台脚本，常驻运行。\n- **Push API**：浏览器与推送服务（FCM、APNs 等）之间的推送通道。\n- **Notification API**：展示系统级通知。\n\n特点：\n\n- **跨平台**：Chrome、Firefox、Edge、Safari（部分版本）均支持。\n- **后台可达**：即使网页未激活或浏览器最小化也能收到。\n- **需用户授权**：必须 HTTPS，且用户点击“允许通知”。\n- **带有身份机制**：通过 VAPID（Voluntary Application Server Identification for Web Push）实现应用级认证。\n\n---\n\n# 工作流程\n\n```mermaid\nsequenceDiagram\n  participant User as 用户浏览器\n  participant SW as Service Worker\n  participant PushSrv as 浏览器厂商推送服务(FCM等)\n  participant Server as 应用服务端\n\n  User->>Server: 注册并获取 VAPID 公钥\n  User->>SW: 注册 Service Worker\n  User->>PushSrv: 订阅推送 (PushSubscription)\n  User->>Server: 上报订阅信息 (endpoint+keys)\n\n  Server->>PushSrv: 使用 VAPID 私钥加密并发送消息\n  PushSrv->>SW: 转发推送\n  SW->>User: Notification API 展示通知\n```\n\n---\n\n# 核心实现步骤\n\n## 1. 生成 VAPID 密钥对\n\n```bash\nnpx web-push generate-vapid-keys\n```\n\n会得到 **公钥 / 私钥**，公钥发给前端，私钥保存在服务端。\n\n---\n\n## 2. 前端注册 Service Worker\n\n```js\nconst reg = await navigator.serviceWorker.register(\"/sw.js\");\n\n// 申请通知权限\nconst permission = await Notification.requestPermission();\nif (permission === \"granted\") {\n  // 订阅推送\n  const sub = await reg.pushManager.subscribe({\n    userVisibleOnly: true,\n    applicationServerKey: \"<VAPID_PUBLIC_KEY_BASE64URL>\",\n  });\n  // 上报给服务端保存\n  await fetch(\"/push/subscribe\", { method: \"POST\", body: JSON.stringify(sub) });\n}\n```\n\n---\n\n## 3. Service Worker 处理推送\n\n```js\n// sw.js\nself.addEventListener(\"push\", (event) => {\n  const data = event.data?.json() ?? {};\n  event.waitUntil(\n    self.registration.showNotification(data.title || \"通知\", {\n      body: data.body,\n      icon: \"/icon.png\",\n    })\n  );\n});\n```\n\n---\n\n## 4. 服务端发送推送\n\n以 Node.js 为例：\n\n```js\nimport webpush from \"web-push\";\n\n// 设置 VAPID\nwebpush.setVapidDetails(\n  \"mailto:admin@example.com\",\n  process.env.VAPID_PUBLIC,\n  process.env.VAPID_PRIVATE\n);\n\n// subs 存储用户的 PushSubscription\nexport async function sendPush(sub, payload) {\n  await webpush.sendNotification(sub, JSON.stringify(payload));\n}\n```\n\n---\n\n# 典型应用场景\n\n- **消息提醒**：聊天应用收到新消息。\n- **电商营销**：用户未登录页面也能收到促销信息。\n- **系统告警**：后台监控推送紧急故障。\n- **PWA（渐进式 Web 应用）**：接近原生 App 的体验。\n\n---\n\n# 优缺点对比\n\n✅ 优点：\n\n- 浏览器级支持，后台可达。\n- 无需页面常驻，适合通知类消息。\n- 跨浏览器标准（W3C Push API）。\n\n⚠️ 缺点：\n\n- 依赖用户同意，存在拒绝率。\n- Safari 支持有限制（macOS 较晚才全面支持）。\n- 消息大小有限制（通常 4KB）。\n- 不适合大流量/高频推送（需 WebSocket/SSE）。\n\n---\n\n# 小结\n\n**Web Push** = **Service Worker + Push API + Notification API**\n适合“提醒/通知”类场景，不适合实时高频通信。生产实践里常和 **WebSocket/SSE** 组合：\n\n- **WebSocket**：前台实时互动。\n- **Web Push**：后台/离线通知兜底。\n\n---\n\n要不要我帮你写一个 **完整的最小 Web Push DEMO 项目（前端+后端）**，可以直接跑通并测试浏览器推送？\n",
             "url": "https://herongdev.github.io/blog/posts/Web-API-与推送/Web-Push/Web-Push-推送简介",
@@ -153,63 +307,700 @@
             "content_html": "",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法",
-            "date_modified": "2025-09-12T15:06:15.763Z"
+            "date_modified": "2025-09-14T05:54:31.898Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）",
             "content_html": "",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）",
-            "date_modified": "2025-09-12T15:06:15.763Z"
+            "date_modified": "2025-09-14T05:54:31.898Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）",
             "content_html": "",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）",
-            "date_modified": "2025-09-12T15:06:15.763Z"
+            "date_modified": "2025-09-14T05:54:31.898Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式",
             "content_html": "好的 ✅ 我来帮你写 **进阶系列第 1 篇**，保持 Hexo 博客风格，主题是 **高阶函数与 Lambda 表达式**。\n\n---\n\n````markdown\n---\ntitle: Kotlin 进阶（1）：高阶函数与 Lambda 表达式\ndate: 2025-09-12\ncategories: [Kotlin 进阶学习]\ntags: [Kotlin, 函数式编程, Lambda, 高阶函数]\n---\n\n# Kotlin 进阶（1）：高阶函数与 Lambda 表达式\n\nKotlin 支持 **函数式编程**，最核心的就是 **高阶函数** 和 **Lambda 表达式**。  \n掌握它们后，你会发现很多标准库函数（`map`、`filter`、`let`、`apply` 等）原来都在用这些特性。\n\n---\n\n## 1. 什么是高阶函数？\n\n👉 **高阶函数**：把函数当作参数或返回值的函数。\n\n```kotlin\n// 高阶函数：接收一个函数作为参数\nfun operate(x: Int, y: Int, op: (Int, Int) -> Int): Int {\n    return op(x, y)\n}\n\nfun main() {\n    val sum = operate(3, 4) { a, b -> a + b }\n    println(sum) // 7\n}\n```\n````\n\n这里 `op: (Int, Int) -> Int` 就是一个函数类型参数。\n\n---\n\n## 2. Lambda 表达式基础\n\nLambda 是 **匿名函数**，语法更简洁。\n\n```kotlin\nval add: (Int, Int) -> Int = { a, b -> a + b }\nprintln(add(2, 3)) // 5\n```\n\n简写规则：\n\n- 参数类型可省略（由上下文推断）\n- 单参数时可用 `it`\n- 最后一行就是返回值\n\n```kotlin\nval square: (Int) -> Int = { it * it }\nprintln(square(5)) // 25\n```\n\n---\n\n## 3. 常见标准库函数\n\n高阶函数+Lambda 在集合操作里用得最多。\n\n```kotlin\nval nums = listOf(1, 2, 3, 4, 5)\n\nprintln(nums.filter { it % 2 == 0 }) // [2, 4]\nprintln(nums.map { it * it })        // [1, 4, 9, 16, 25]\nprintln(nums.any { it > 3 })         // true\nprintln(nums.all { it > 0 })         // true\n```\n\n---\n\n## 4. 函数作为返回值\n\n函数也能“生成函数”。\n\n```kotlin\nfun multiplier(factor: Int): (Int) -> Int {\n    return { x -> x * factor }\n}\n\nfun main() {\n    val double = multiplier(2)\n    println(double(5)) // 10\n}\n```\n\n---\n\n## 5. 内联函数（inline）\n\n高阶函数会带来额外的函数对象开销。\n用 `inline` 可以避免多余的对象创建和调用成本。\n\n```kotlin\ninline fun measureTime(block: () -> Unit) {\n    val start = System.currentTimeMillis()\n    block()\n    val end = System.currentTimeMillis()\n    println(\"耗时: ${end - start} ms\")\n}\n\nfun main() {\n    measureTime {\n        Thread.sleep(500)\n    }\n}\n```\n\n---\n\n## 6. 小结\n\n- **高阶函数**：函数可当参数或返回值\n- **Lambda**：简洁的匿名函数\n- **集合操作**：`filter`、`map`、`any`、`all` 等大量使用 Lambda\n- **内联函数**：优化高阶函数性能\n\n---\n\n下一篇我们学习 👉 **《Kotlin 进阶（2）：作用域函数（let、apply、run、also、with）》**，写出更优雅的链式代码。\n\n```\n\n---\n\n要不要我接着帮你写 **《Kotlin 进阶（2）：作用域函数》**？\n```\n",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式",
-            "date_modified": "2025-09-12T15:06:15.763Z"
+            "date_modified": "2025-09-14T05:54:31.899Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）",
             "content_html": "好的 ✅ 我来帮你写 **进阶系列第 2 篇**，保持 Hexo 博客风格，主题是 **扩展函数**。\n\n---\n\n````markdown\n---\ntitle: Kotlin 进阶（2）：扩展函数（给类添加新功能）\ndate: 2025-09-12\ncategories: [Kotlin 进阶学习]\ntags: [Kotlin, 扩展函数, 面向对象, 语法糖]\n---\n\n# Kotlin 进阶（2）：扩展函数（给类添加新功能）\n\n在 Kotlin 里，**扩展函数**让你不用继承或修改源码，就能给现有的类加新功能。  \n这非常适合 **库的增强**、**工具方法封装**、**简化代码**。\n\n---\n\n## 1. 基础语法\n\n扩展函数的定义形式：\n\n```kotlin\nfun 类型名.函数名(参数...): 返回类型 {\n    // this 代表调用对象\n}\n```\n````\n\n示例：\n\n```kotlin\nfun String.lastChar(): Char {\n    return this[this.length - 1]\n}\n\nfun main() {\n    println(\"Hello\".lastChar()) // o\n}\n```\n\n---\n\n## 2. 常用场景示例\n\n### (1) 数字工具函数\n\n```kotlin\nfun Int.isEven(): Boolean = this % 2 == 0\nfun Int.isOdd(): Boolean = this % 2 != 0\n\nprintln(10.isEven()) // true\nprintln(3.isOdd())   // true\n```\n\n### (2) 集合扩展\n\n```kotlin\nfun <T> List<T>.secondOrNull(): T? =\n    if (this.size >= 2) this[1] else null\n\nprintln(listOf(1, 2, 3).secondOrNull()) // 2\nprintln(emptyList<Int>().secondOrNull()) // null\n```\n\n### (3) 日期格式化（依赖 `java.time`）\n\n```kotlin\nimport java.time.LocalDateTime\nimport java.time.format.DateTimeFormatter\n\nfun LocalDateTime.format(pattern: String = \"yyyy-MM-dd HH:mm:ss\"): String {\n    return this.format(DateTimeFormatter.ofPattern(pattern))\n}\n\nfun main() {\n    println(LocalDateTime.now().format()) // 2025-09-12 15:30:00\n}\n```\n\n---\n\n## 3. 扩展属性\n\n不仅可以写函数，还能写属性。\n\n```kotlin\nval String.wordCount: Int\n    get() = this.trim().split(\"\\\\s+\".toRegex()).size\n\nprintln(\"Hello Kotlin Extension\".wordCount) // 3\n```\n\n---\n\n## 4. 伴生对象扩展\n\n可以给类的伴生对象（类似静态方法）添加扩展。\n\n```kotlin\nclass Utils {\n    companion object {}\n}\n\nfun Utils.Companion.now(): Long = System.currentTimeMillis()\n\nprintln(Utils.now()) // 1694500000000\n```\n\n---\n\n## 5. 注意事项\n\n- 扩展函数 **不会修改原类**，只是 **语法糖**\n- 调用时根据 **静态类型** 决定，不支持多态覆盖\n- 适合用在 **工具类**、**增强库功能**\n\n---\n\n## 6. 小结\n\n- 用 `fun 类型.函数名()` 定义扩展函数\n- 可以扩展 **普通函数**、**属性**、**伴生对象**\n- 常用于 **工具方法封装** 和 **代码简化**\n\n---\n\n下一篇我们学习 👉 **《Kotlin 进阶（3）：协程基础（挂起函数、launch、async）》**，进入并发编程的核心。\n\n```\n\n---\n\n要不要我接着帮你写 **《Kotlin 进阶（3）：协程基础》**？\n```\n",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）",
-            "date_modified": "2025-09-12T15:06:15.763Z"
+            "date_modified": "2025-09-14T05:54:31.899Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶",
             "content_html": "好的 ✅ 我来帮你写 **进阶系列第 3 篇**，保持 Hexo 博客风格，主题是 **空安全进阶**。\n\n---\n\n````markdown\n---\ntitle: Kotlin 进阶（3）：空安全进阶\ndate: 2025-09-12\ncategories: [Kotlin 进阶学习]\ntags: [Kotlin, 空安全, NullPointerException, Elvis, 安全调用]\n---\n\n# Kotlin 进阶（3）：空安全进阶\n\n在 Java 里，`NullPointerException`（简称 NPE）几乎是最常见的运行时错误。  \n而 Kotlin 的设计目标之一就是 **彻底减少空指针错误**。  \n今天我们深入学习 Kotlin 的 **空安全语法** 和 **最佳实践**。\n\n---\n\n## 1. 可空类型与非空类型\n\nKotlin 把类型分为两种：\n\n- **非空类型**：默认不能为 `null`\n- **可空类型**：在类型后加 `?` 表示\n\n```kotlin\nval a: String = \"Hello\"\n// a = null ❌ 编译报错\n\nval b: String? = \"Hi\"\nval c: String? = null\n```\n````\n\n---\n\n## 2. 安全调用（?.）\n\n如果对象可能为 `null`，用 `?.` 来安全调用。\n\n```kotlin\nval name: String? = null\nprintln(name?.length) // null，而不是抛异常\n```\n\n---\n\n## 3. Elvis 操作符（?:）\n\n如果左边是 `null`，就用右边的值。\n\n```kotlin\nval name: String? = null\nval length = name?.length ?: 0\nprintln(length) // 0\n```\n\n---\n\n## 4. 非空断言（!!）\n\n把可空类型强制转为非空，如果是 `null` 就抛 NPE。\n⚠️ **慎用！** 一般只在“绝对保证非空”的地方使用。\n\n```kotlin\nval s: String? = \"Kotlin\"\nprintln(s!!.length) // 6\n\nval t: String? = null\nprintln(t!!.length) // ❌ NPE\n```\n\n---\n\n## 5. `let` 与空安全链式调用\n\n`let` 常和 `?.` 一起用，只有非空时才会执行。\n\n```kotlin\nval name: String? = \"Kotlin\"\nname?.let {\n    println(\"长度是 ${it.length}\") // 6\n}\n```\n\n还能写成链式调用：\n\n```kotlin\nval result = name?.takeIf { it.length > 3 }?.uppercase()\nprintln(result) // KOTLIN\n```\n\n---\n\n## 6. `lateinit` 与 `by lazy`\n\n如果一个变量在稍后初始化，可以用：\n\n- **`lateinit var`**：必须是 `var`，常用于依赖注入、Android View\n- **`by lazy`**：必须是 `val`，第一次访问时才会初始化\n\n```kotlin\nlateinit var username: String\n\nval config: String by lazy {\n    println(\"初始化中…\")\n    \"配置加载完成\"\n}\n```\n\n---\n\n## 7. 平台类型与 Java 互操作\n\n从 Java 代码调用来的对象可能是 `null` 也可能不是，Kotlin 把它称为 **平台类型**（不带 `?` 也不带 `!!`）。\n所以在和 Java 互操作时，要特别小心空指针问题。\n\n```java\n// Java\npublic String getName() { return null; }\n```\n\n```kotlin\nval name = javaObj.name // 平台类型，不安全\nprintln(name.length)    // 可能直接 NPE\n```\n\n---\n\n## 8. 小结\n\n- Kotlin 通过 **可空类型** 和 **空安全操作符**，最大限度避免 NPE\n- 常用语法：`?.`、`?:`、`!!`、`let`\n- 初始化场景：`lateinit` 和 `by lazy`\n- 注意 Java 平台类型的潜在风险\n\n---\n\n下一篇我们学习 👉 **《Kotlin 进阶（4）：集合操作进阶（map/filter/flatMap/reduce）》**，写出更简洁优雅的数据处理代码。\n\n```\n\n---\n\n要不要我接着帮你写 **《Kotlin 进阶（4）：集合操作进阶》**？\n```\n",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶",
-            "date_modified": "2025-09-12T15:06:15.764Z"
+            "date_modified": "2025-09-14T05:54:31.899Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类",
             "content_html": "好的 ✅ 我来帮你写 **进阶系列第 4 篇**，主题是 **数据类、枚举类、密封类**，保持 Hexo 博客风格。\n\n---\n\n````markdown\n---\ntitle: Kotlin 进阶（4）：数据类、枚举类、密封类\ndate: 2025-09-12\ncategories: [Kotlin 进阶学习]\ntags: [Kotlin, 数据类, 枚举类, 密封类, 面向对象]\n---\n\n# Kotlin 进阶（4）：数据类、枚举类、密封类\n\n在 Kotlin 中，除了普通的 `class`，还有三类非常常用的特殊类：\n\n- **数据类（data class）**：用来存放数据，自动生成常用方法\n- **枚举类（enum class）**：表示有限个固定常量\n- **密封类（sealed class）**：用于表示有限但可扩展的类型层次结构\n\n---\n\n## 1. 数据类（Data Class）\n\n数据类的主要用途是存放数据，Kotlin 会自动为你生成：\n\n- `toString()`\n- `equals()`\n- `hashCode()`\n- `copy()`\n- `componentN()`（解构用）\n\n### 示例\n\n```kotlin\ndata class User(val id: Int, val name: String)\n\nfun main() {\n    val u1 = User(1, \"Alice\")\n    val u2 = User(1, \"Alice\")\n    val u3 = u1.copy(name = \"Bob\")\n\n    println(u1)         // User(id=1, name=Alice)\n    println(u1 == u2)   // true\n    println(u3)         // User(id=1, name=Bob)\n\n    val (id, name) = u1 // 解构\n    println(\"id=$id, name=$name\")\n}\n```\n````\n\n非常适合用在 **模型类 / DTO**。\n\n---\n\n## 2. 枚举类（Enum Class）\n\n枚举表示固定的一组常量。\n每个枚举成员本质上是一个对象。\n\n### 示例\n\n```kotlin\nenum class Direction {\n    NORTH, SOUTH, EAST, WEST\n}\n\nfun main() {\n    val dir = Direction.NORTH\n    println(dir)            // NORTH\n    println(dir.name)       // NORTH\n    println(dir.ordinal)    // 0\n}\n```\n\n---\n\n### 枚举类也能有属性和方法\n\n```kotlin\nenum class Color(val rgb: Int) {\n    RED(0xFF0000),\n    GREEN(0x00FF00),\n    BLUE(0x0000FF);\n\n    fun hex() = \"#${rgb.toString(16)}\"\n}\n\nfun main() {\n    println(Color.RED.hex()) // #ff0000\n}\n```\n\n---\n\n## 3. 密封类（Sealed Class）\n\n密封类用来表示 **受限的类层次结构**。\n它的子类必须在 **同一个文件** 中声明，因此编译器能知道所有子类。\n\n常用于 **状态机**、**结果类型**。\n\n### 示例：表达式求值\n\n```kotlin\nsealed class Expr\n\ndata class Const(val value: Int) : Expr()\ndata class Sum(val left: Expr, val right: Expr) : Expr()\nobject NotANumber : Expr()\n\nfun eval(expr: Expr): Int = when(expr) {\n    is Const -> expr.value\n    is Sum -> eval(expr.left) + eval(expr.right)\n    NotANumber -> 0\n}\n```\n\n优势：`when` 表达式会 **强制检查所有分支**，防止遗漏。\n\n---\n\n## 4. 小结\n\n- **数据类**：快速建模数据对象，自动生成常用方法\n- **枚举类**：固定集合常量，可带属性与方法\n- **密封类**：有限层次结构，常用于状态或结果建模\n\n---\n\n下一篇我们学习 👉 **《Kotlin 进阶（5）：协程入门（suspend、launch、async）》**，带你进入 Kotlin 最强大的异步编程世界。\n\n```\n\n---\n\n要不要我继续帮你写 **《Kotlin 进阶（5）：协程入门》**？\n```\n",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类",
-            "date_modified": "2025-09-12T15:06:15.764Z"
+            "date_modified": "2025-09-14T05:54:31.899Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）",
             "content_html": "好的 ✅ 我来帮你写 **进阶系列第 5 篇**，主题是 **协程入门（异步代码最常用写法）**，保持 Hexo 博客风格，简明实用。\n\n---\n\n````markdown\n---\ntitle: Kotlin 进阶（5）：协程入门（异步代码最常用写法）\ndate: 2025-09-12\ncategories: [Kotlin 进阶学习]\ntags: [Kotlin, 协程, 异步, 并发, Coroutine]\n---\n\n# Kotlin 进阶（5）：协程入门（异步代码最常用写法）\n\n协程（Coroutine）是 Kotlin 最强大的特性之一，用于 **异步任务** 和 **并发编程**。  \n相比传统的线程，协程更轻量，写法像同步代码一样清晰。\n\n---\n\n## 1. 最小示例\n\n要使用协程，需要引入 `kotlinx.coroutines` 库：\n\n```kotlin\nimport kotlinx.coroutines.*\n\nfun main() = runBlocking {\n    launch {\n        delay(1000L)\n        println(\"协程任务完成\")\n    }\n    println(\"主线程继续执行\")\n}\n```\n````\n\n👉 输出：\n\n```\n主线程继续执行\n协程任务完成\n```\n\n- `runBlocking`：阻塞主线程，直到协程执行完毕（通常用在 `main` 或测试）。\n- `launch`：启动一个协程（不会阻塞当前线程）。\n- `delay`：挂起，不阻塞线程。\n\n---\n\n## 2. 并发执行\n\n多个任务可以并行运行：\n\n```kotlin\nfun main() = runBlocking {\n    val job1 = launch {\n        delay(1000)\n        println(\"任务1完成\")\n    }\n    val job2 = launch {\n        delay(500)\n        println(\"任务2完成\")\n    }\n    println(\"等待子任务完成\")\n    joinAll(job1, job2)\n    println(\"全部完成\")\n}\n```\n\n👉 输出顺序：\n\n```\n等待子任务完成\n任务2完成\n任务1完成\n全部完成\n```\n\n---\n\n## 3. async 并发返回结果\n\n`async` 启动协程并返回结果，用 `await()` 获取。\n\n```kotlin\nfun main() = runBlocking {\n    val a = async {\n        delay(1000)\n        10\n    }\n    val b = async {\n        delay(1500)\n        20\n    }\n    println(\"结果: ${a.await() + b.await()}\")\n}\n```\n\n👉 输出：\n\n```\n结果: 30\n```\n\n---\n\n## 4. suspend 挂起函数\n\n`suspend` 关键字表示函数可以挂起，用于协程里。\n\n```kotlin\nsuspend fun fetchData(): String {\n    delay(1000)\n    return \"网络数据\"\n}\n\nfun main() = runBlocking {\n    println(\"请求中…\")\n    val data = fetchData()\n    println(\"结果: $data\")\n}\n```\n\n---\n\n## 5. 协程作用域（scope）\n\n在 Android 中，常用作用域有：\n\n- `GlobalScope.launch {}`：全局协程（不推荐，容易泄露）\n- `lifecycleScope.launch {}`：Activity/Fragment 生命周期范围\n- `viewModelScope.launch {}`：ViewModel 范围\n\n---\n\n## 6. 小结\n\n- `launch`：启动协程（无返回值）\n- `async/await`：并发执行并返回结果\n- `suspend`：挂起函数，用于协程内\n- `delay`：非阻塞延迟\n\n---\n\n下一篇我们学习 👉 **《Kotlin 进阶（6）：协程进阶（异常、取消、作用域）》**，掌握协程的高级用法。\n\n```\n\n---\n\n要不要我现在接着帮你写 **《Kotlin 进阶（6）：协程进阶》**？\n```\n",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）",
-            "date_modified": "2025-09-12T15:06:15.764Z"
+            "date_modified": "2025-09-14T05:54:31.899Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化",
             "content_html": "好的 ✅ 我来帮你写 **进阶系列第 6 篇**，主题是 **内联函数与性能优化**，继续保持 Hexo 博客风格，实用精简。\n\n---\n\n````markdown\n---\ntitle: Kotlin 进阶（6）：内联函数与性能优化\ndate: 2025-09-12\ncategories: [Kotlin 进阶学习]\ntags: [Kotlin, 内联函数, inline, 性能优化]\n---\n\n# Kotlin 进阶（6）：内联函数与性能优化\n\nKotlin 的 **内联函数（inline function）** 主要用于 **性能优化**，尤其是高阶函数中，减少不必要的对象创建和函数调用开销。\n\n---\n\n## 1. 什么是内联函数？\n\n一般高阶函数（接受 Lambda 参数的函数）在运行时会生成额外的对象和调用层级。  \n加上 `inline` 关键字后，编译器会 **把函数体直接拷贝到调用处**，减少开销。\n\n```kotlin\ninline fun logTime(block: () -> Unit) {\n    val start = System.currentTimeMillis()\n    block()\n    val end = System.currentTimeMillis()\n    println(\"耗时: ${end - start}ms\")\n}\n\nfun main() {\n    logTime {\n        Thread.sleep(500)\n    }\n}\n```\n````\n\n👉 输出：\n\n```\n耗时: 500ms\n```\n\n这里 `block()` 会被编译成 **直接调用**，而不是额外的函数对象。\n\n---\n\n## 2. noinline 关键字\n\n如果函数有多个 Lambda 参数，但并不是所有都需要内联，可以用 `noinline` 标记。\n\n```kotlin\ninline fun doSomething(\n    block1: () -> Unit,\n    noinline block2: () -> Unit\n) {\n    block1()\n    block2()\n}\n```\n\n这样 `block1` 会被内联，而 `block2` 仍然是普通对象。\n\n---\n\n## 3. crossinline 关键字\n\n有些 Lambda 要求不能使用 `return` 直接跳出外层函数，可以用 `crossinline` 解决。\n\n```kotlin\ninline fun runTask(crossinline block: () -> Unit) {\n    Thread {\n        block() // 允许调用，但禁止直接 return 外层函数\n    }.start()\n}\n```\n\n---\n\n## 4. reified（具体化类型参数）\n\n通常泛型在运行时会被擦除，用 `reified` 可以让 **内联函数** 保留类型信息。\n\n```kotlin\ninline fun <reified T> printType() {\n    println(T::class.simpleName)\n}\n\nfun main() {\n    printType<String>() // 输出 String\n    printType<Int>()    // 输出 Int\n}\n```\n\n这在写工具函数时非常常用，比如 `startActivity<T>()`。\n\n---\n\n## 5. 使用场景\n\n- **性能优化**：减少 Lambda 对象创建（常见于集合操作、DSL）\n- **泛型工具函数**：结合 `reified`，写更优雅的 API\n- **Android 开发**：`inline fun <reified T : Activity> Context.startActivity()`\n\n---\n\n## 6. 小结\n\n- `inline`：把函数体复制到调用处，减少开销\n- `noinline`：某些参数不内联\n- `crossinline`：禁止 Lambda 非局部返回\n- `reified`：泛型具体化，保留类型信息\n\n---\n\n下一篇我们学习 👉 **《Kotlin 进阶（7）：泛型与约束》**，掌握写通用代码的核心技能。\n\n```\n\n---\n\n要不要我接着帮你写 **《Kotlin 进阶（7）：泛型与约束》**？\n```\n",
             "url": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化",
             "title": "https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化",
-            "date_modified": "2025-09-12T15:06:15.764Z"
+            "date_modified": "2025-09-14T05:54:31.900Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础",
+            "content_html": "# 01-UIKit基础\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础",
+            "date_modified": "2025-09-14T05:54:31.900Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束",
+            "content_html": "# 02-AutoLayout与约束\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束",
+            "date_modified": "2025-09-14T05:54:31.900Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势",
+            "content_html": "# 03-UI事件与手势\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势",
+            "date_modified": "2025-09-14T05:54:31.900Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转",
+            "content_html": "# 04-导航与页面跳转\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转",
+            "date_modified": "2025-09-14T05:54:31.900Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)",
+            "content_html": "# 05-表格与集合视图(UITableView,UICollectionView)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)",
+            "date_modified": "2025-09-14T05:54:31.900Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)",
+            "content_html": "# 06-动画(CoreAnimation与UIViewPropertyAnimator)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)",
+            "date_modified": "2025-09-14T05:54:31.901Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化",
+            "content_html": "# 07-本地化与国际化\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化",
+            "date_modified": "2025-09-14T05:54:31.901Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)",
+            "content_html": "# 08-无障碍(Accessibility)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)",
+            "date_modified": "2025-09-14T05:54:31.901Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)",
+            "content_html": "# 09-应用生命周期与场景(UIApplication,UIScene)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)",
+            "date_modified": "2025-09-14T05:54:31.901Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)",
+            "content_html": "# 10-资源与资产管理(Assets,SF Symbols)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)",
+            "date_modified": "2025-09-14T05:54:31.901Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)",
+            "content_html": "# 01-视图与状态(State,Binding,ObservedObject)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)",
+            "date_modified": "2025-09-14T05:54:31.901Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由",
+            "content_html": "# 02-NavigationStack与路由\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由",
+            "date_modified": "2025-09-14T05:54:31.902Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)",
+            "content_html": "# 03-布局(Stack,Grid,GeometryReader)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)",
+            "date_modified": "2025-09-14T05:54:31.902Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)",
+            "content_html": "# 04-列表与表单(List,Form)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)",
+            "date_modified": "2025-09-14T05:54:31.902Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡",
+            "content_html": "# 05-动画与过渡\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡",
+            "date_modified": "2025-09-14T05:54:31.902Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)",
+            "content_html": "# 06-数据流与架构(MVVM,TCA概览)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)",
+            "date_modified": "2025-09-14T05:54:31.902Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)",
+            "content_html": "# 07-与UIKit互操作(UIViewRepresentable)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)",
+            "date_modified": "2025-09-14T05:54:31.902Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget",
+            "content_html": "# 08-多平台与Widget\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget",
+            "date_modified": "2025-09-14T05:54:31.903Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础",
+            "content_html": "# 01-URLSession基础\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础",
+            "date_modified": "2025-09-14T05:54:31.903Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器",
+            "content_html": "# 02-请求构建与拦截器\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器",
+            "date_modified": "2025-09-14T05:54:31.903Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析",
+            "content_html": "# 03-Codable与JSON解析\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析",
+            "date_modified": "2025-09-14T05:54:31.903Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup",
+            "content_html": "# 04-并发请求与TaskGroup\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup",
+            "date_modified": "2025-09-14T05:54:31.903Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输",
+            "content_html": "# 05-上传下载与后台传输\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输",
+            "date_modified": "2025-09-14T05:54:31.903Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)",
+            "content_html": "# 06-缓存与离线(HTTP缓存,持久化)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)",
+            "date_modified": "2025-09-14T05:54:31.904Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信",
+            "content_html": "# 07-WebSocket与实时通信\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信",
+            "date_modified": "2025-09-14T05:54:31.904Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略",
+            "content_html": "# 08-网络错误与重试策略\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略",
+            "date_modified": "2025-09-14T05:54:31.904Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)",
+            "content_html": "# 09-安全(ATS,HSTS,证书绑定)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)",
+            "date_modified": "2025-09-14T05:54:31.904Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础",
+            "content_html": "# 01-GCD基础\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础",
+            "date_modified": "2025-09-14T05:54:31.904Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖",
+            "content_html": "# 02-OperationQueue与依赖\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖",
+            "date_modified": "2025-09-14T05:54:31.904Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)",
+            "content_html": "# 03-async-await进阶(结构化并发)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)",
+            "date_modified": "2025-09-14T05:54:31.905Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable",
+            "content_html": "# 04-Actor与Sendable\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable",
+            "date_modified": "2025-09-14T05:54:31.905Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程",
+            "content_html": "# 05-MainActor与UI线程\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程",
+            "date_modified": "2025-09-14T05:54:31.905Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试",
+            "content_html": "# 06-取消,超时与重试\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试",
+            "date_modified": "2025-09-14T05:54:31.905Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接",
+            "content_html": "# 07-Combine与async_await桥接\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接",
+            "date_modified": "2025-09-14T05:54:31.905Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain",
+            "content_html": "# 01-UserDefaults与Keychain\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain",
+            "date_modified": "2025-09-14T05:54:31.905Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox",
+            "content_html": "# 02-文件系统与Sandbox\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox",
+            "date_modified": "2025-09-14T05:54:31.906Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门",
+            "content_html": "# 03-CoreData入门\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门",
+            "date_modified": "2025-09-14T05:54:31.906Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)",
+            "content_html": "# 04-CoreData高级(并发,批量,NSFetchedResultsController)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)",
+            "date_modified": "2025-09-14T05:54:31.906Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)",
+            "content_html": "# 05-Realm入门(可选)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)",
+            "date_modified": "2025-09-14T05:54:31.906Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步",
+            "content_html": "# 06-CloudKit与iCloud同步\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步",
+            "date_modified": "2025-09-14T05:54:31.906Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比",
+            "content_html": "# 01-MVC,MVVM,VIPER,Clean对比\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比",
+            "date_modified": "2025-09-14T05:54:31.906Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化",
+            "content_html": "# 02-依赖注入与模块化\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化",
+            "date_modified": "2025-09-14T05:54:31.907Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信",
+            "content_html": "# 03-路由与模块通信\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信",
+            "date_modified": "2025-09-14T05:54:31.907Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据",
+            "content_html": "# 04-领域建模与不可变数据\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据",
+            "date_modified": "2025-09-14T05:54:31.907Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门",
+            "content_html": "# 05-The Composable Architecture(TCA)入门\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门",
+            "date_modified": "2025-09-14T05:54:31.907Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试",
+            "content_html": "# 01-XCTest单元测试\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试",
+            "date_modified": "2025-09-14T05:54:31.907Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)",
+            "content_html": "# 02-UI测试(XCUITest)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)",
+            "date_modified": "2025-09-14T05:54:31.907Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试",
+            "content_html": "# 03-快照测试\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试",
+            "date_modified": "2025-09-14T05:54:31.908Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置",
+            "content_html": "# 04-测试金字塔,Mock与依赖倒置\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置",
+            "date_modified": "2025-09-14T05:54:31.908Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)",
+            "content_html": "# 05-CI_CD(Xcode Cloud,fastlane)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)",
+            "date_modified": "2025-09-14T05:54:31.908Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)",
+            "content_html": "# 06-代码规范(swiftlint,swiftformat)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)",
+            "date_modified": "2025-09-14T05:54:31.908Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入",
+            "content_html": "# 01-ARC与循环引用深入\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入",
+            "date_modified": "2025-09-14T05:54:31.908Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例",
+            "content_html": "# 02-闭包,定时器与泄漏案例\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例",
+            "date_modified": "2025-09-14T05:54:31.908Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)",
+            "content_html": "# 03-Instruments(Leaks,Allocations,TimeProfiler)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)",
+            "date_modified": "2025-09-14T05:54:31.909Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化",
+            "content_html": "# 04-App启动优化\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化",
+            "date_modified": "2025-09-14T05:54:31.909Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化",
+            "content_html": "# 05-列表与图片性能优化\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化",
+            "date_modified": "2025-09-14T05:54:31.909Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化",
+            "content_html": "# 06-电量与网络流量优化\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化",
+            "date_modified": "2025-09-14T05:54:31.909Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit",
+            "content_html": "# 01-定位与MapKit\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit",
+            "date_modified": "2025-09-14T05:54:31.909Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)",
+            "content_html": "# 02-相机与相册(AVFoundation,Photos)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)",
+            "date_modified": "2025-09-14T05:54:31.909Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)",
+            "content_html": "# 03-推送与通知(APNs,UNUserNotificationCenter)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)",
+            "date_modified": "2025-09-14T05:54:31.909Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks",
+            "content_html": "# 04-后台模式与BackgroundTasks\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks",
+            "date_modified": "2025-09-14T05:54:31.910Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)",
+            "content_html": "# 05-蓝牙(CoreBluetooth)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)",
+            "date_modified": "2025-09-14T05:54:31.910Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)",
+            "content_html": "# 06-健康(HealthKit)与运动(CoreMotion)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)",
+            "date_modified": "2025-09-14T05:54:31.910Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)",
+            "content_html": "# 07-近场通信(NFC)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)",
+            "date_modified": "2025-09-14T05:54:31.910Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明",
+            "content_html": "# 01-隐私权限与InfoPlist说明\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明",
+            "date_modified": "2025-09-14T05:54:31.910Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)",
+            "content_html": "# 02-本地认证与生物识别(LocalAuthentication)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)",
+            "date_modified": "2025-09-14T05:54:31.910Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践",
+            "content_html": "# 03-数据加密与Keychain最佳实践\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践",
+            "date_modified": "2025-09-14T05:54:31.910Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护",
+            "content_html": "# 04-反调试与完整性保护\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护",
+            "date_modified": "2025-09-14T05:54:31.911Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)",
+            "content_html": "# 05-合规(GDPR,CCPA,国内合规)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)",
+            "date_modified": "2025-09-14T05:54:31.911Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning",
+            "content_html": "# 01-证书签名与Provisioning\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning",
+            "date_modified": "2025-09-14T05:54:31.911Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置",
+            "content_html": "# 02-多环境与构建配置\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置",
+            "date_modified": "2025-09-14T05:54:31.911Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据",
+            "content_html": "# 03-App Store提审流程与元数据\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据",
+            "date_modified": "2025-09-14T05:54:31.911Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅",
+            "content_html": "# 04-内购(StoreKit)与订阅\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅",
+            "date_modified": "2025-09-14T05:54:31.911Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)",
+            "content_html": "# 05-崩溃与日志(Firebase Crashlytics等)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)",
+            "date_modified": "2025-09-14T05:54:31.912Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作",
+            "content_html": "# 01-Swift与Objective-C互操作\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作",
+            "date_modified": "2025-09-14T05:54:31.912Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)",
+            "content_html": "# 02-包管理(Swift Package Manager)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)",
+            "date_modified": "2025-09-14T05:54:31.912Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移",
+            "content_html": "# 03-第三方库与CocoaPods迁移\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移",
+            "date_modified": "2025-09-14T05:54:31.912Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案",
+            "content_html": "# 04-KVC_KVO与现代化替代方案\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案",
+            "date_modified": "2025-09-14T05:54:31.912Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础",
+            "content_html": "# 01-CoreAnimation基础\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础",
+            "date_modified": "2025-09-14T05:54:31.912Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制",
+            "content_html": "# 02-CoreGraphics绘制\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制",
+            "date_modified": "2025-09-14T05:54:31.912Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画",
+            "content_html": "# 03-自定义转场与交互动画\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画",
+            "date_modified": "2025-09-14T05:54:31.913Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)",
+            "content_html": "# 04-Metal简述(可选)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)",
+            "date_modified": "2025-09-14T05:54:31.913Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门",
+            "content_html": "# 01-watchOS入门\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门",
+            "date_modified": "2025-09-14T05:54:31.913Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门",
+            "content_html": "# 02-tvOS入门\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门",
+            "date_modified": "2025-09-14T05:54:31.913Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门",
+            "content_html": "# 03-visionOS与RealityKit入门\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门",
+            "date_modified": "2025-09-14T05:54:31.913Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植",
+            "content_html": "# 04-Mac Catalyst移植\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植",
+            "date_modified": "2025-09-14T05:54:31.913Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)",
+            "content_html": "# 01-新闻客户端(网络+缓存+SwiftUI)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)",
+            "date_modified": "2025-09-14T05:54:31.914Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)",
+            "content_html": "# 02-IM聊天(实时通信+本地存储)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)",
+            "date_modified": "2025-09-14T05:54:31.914Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)",
+            "content_html": "# 03-离线优先记事本(CoreData+iCloud)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)",
+            "date_modified": "2025-09-14T05:54:31.914Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)",
+            "content_html": "# 04-音视频小工具(AVFoundation)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)",
+            "date_modified": "2025-09-14T05:54:31.914Z"
+        },
+        {
+            "id": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)",
+            "content_html": "# 05-地图打卡(MapKit+地理围栏)\n\n> 待补充：\n- 背景与常见场景\n- 5分钟最小可跑示例\n- 实战要点与常见坑\n- Checklist\n- 延伸阅读\n",
+            "url": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)",
+            "title": "https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)",
+            "date_modified": "2025-09-14T05:54:31.914Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/web应用开发/前端/passkeys-通行密钥-登录-注册一体化方案",
@@ -244,7 +1035,7 @@
             "content_html": "````markdown\n---\ntitle: Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）\ndate: 2025-09-11\ntags: [Vue3, reactivity, computed, ref, reactive, 数组依赖, 对象依赖]\n---\n\n## 1. 目标场景回顾\n\n我们有一个计算属性：\n\n```ts\nconst selectedAccount = computed(\n  () =>\n    (accountList.value ?? []).find(\n      (a) => a.loginid === selectedLoginid.value\n    ) ?? null\n);\n```\n````\n\n问题：当**只修改选中行的其它字段**（如 `equity/balance/...`）时，为什么 **UI 会更新**，但 `computed` **不一定重新求值**？\n\n---\n\n## 2. Vue3 依赖收集是“所读即所依”\n\n计算属性在**执行 getter 的那一刻**，会对**被读取的响应式源**建立依赖；**只有这些依赖发生变化**时，计算属性才会被标记为脏，从而在下次读取时重新求值。\n\n### 2.1 常见响应式源与依赖粒度\n\n- **`ref`**：访问 `.value` 建立依赖（例如 `selectedLoginid.value`）。\n- **`reactive`/`ref` 包裹的对象**：访问 **某个属性** 时，以“对象 + 属性键”为依赖（例如读取 `row.loginid`）。\n- **数组（`reactive`/`ref` 的数组）**：\n\n  - 访问 **`length`** 会对 `length` 建依赖（影响 push/pop 等修改）。\n  - **按索引读取**（`arr[i]`）会对该 **索引键** 建依赖。\n  - **遍历/查找类方法**（如 `for...of`、`map`、`find` 等）通常会对**迭代键**和**相关索引**建依赖；在遍历过程中，若读取了元素对象的某些属性，也会对这些**属性键**建立依赖（见 2.3）。\n\n- **Map/Set 等集合**：遍历时依赖“迭代键”（内部用 `ITERATE_KEY` 追踪）。\n\n> 要点：**只对“读取过”的键建立依赖**；没读到的字段**不会**成为依赖。\n\n### 2.2 `selectedAccount` 的依赖具体有哪些？\n\n执行 `find()` 的过程中，会读取：\n\n1. `selectedLoginid.value` —— 对这个 `ref` 的 `.value` 建依赖；\n2. `accountList.value` —— 对 **数组引用/长度/迭代** 建依赖；\n3. `a.loginid` —— 对**参与比较的那些元素**的 `loginid` 属性建依赖（直到找到命中的那一个或遍历结束）。\n\n> 注意：此 getter **没有读取** `a.equity/balance/...`，所以**不会**对这些字段建依赖。\n\n### 2.3 “读取时才变成响应式”的懒代理\n\n当 `accountList.value` 是一个响应式数组，**访问数组元素 `a = arr[i]` 时**，Vue 会对该元素对象做**懒代理**（即在 `get` 拦截时把它包装为响应式代理）。此后读取 `a.loginid` 就会被**精确追踪**为“元素对象的 `loginid` 属性依赖”。\n\n---\n\n## 3. 为什么只改 `equity` 也能让 UI 更新？\n\n- 模板或其它计算/侦听，在渲染时**单独读取**了 `selectedAccount.value?.equity`，因而对“**选中行对象的 `equity` 属性**”建立了依赖。\n- 当你执行：\n\n  ```ts\n  // 原地修改选中行的对象字段\n  selectedRow.equity = newEquity;\n  ```\n\n  由于这是 **被依赖的属性本身**，视图会**立即更新**。\n\n- 但 `selectedAccount` 这个 **computed** 的 getter **并没有读取 `equity`**，所以它**不需要**重新求值；返回值（选中行对象的**同一引用**）保持不变，模板依旧能看到它的内部字段变化。\n\n> 结论：**UI 更新**是因为模板对 `equity` 建立了依赖；**computed 不重算**是因为 getter 没依赖 `equity`。\n\n---\n\n## 4. 哪些变更会让 `selectedAccount` 重新求值？\n\n- ✅ `selectedLoginid.value` 改变（切换了要找的 id）。\n- ✅ `accountList.value` **换了新引用**（例如 `accountList.value = [...accountList.value]`）。\n- ✅ 数组结构变化影响到依赖（如 `length` 变化、迭代相关变更）。\n- ✅ 参与比较的元素的 **`loginid` 字段**改变，或该元素对象被**整体替换为新对象**。\n- ❌ 只改**匹配元素的其它字段**（`equity/balance/...`），且**不换数组引用** —— **不会**触发 `selectedAccount` 重算，但模板会更新相应单元格。\n\n---\n\n## 5. 最简代码验证（逐步演示）\n\n### 5.1 基础：只改其它字段，computed 不重算但 UI 会变\n\n```ts\nconst selectedLoginid = ref(\"a1\");\nconst accountList = ref([\n  { loginid: \"a1\", equity: 100 },\n  { loginid: \"a2\", equity: 200 },\n]);\n\nconst selectedAccount = computed(\n  () =>\n    accountList.value.find((a) => a.loginid === selectedLoginid.value) ?? null\n);\n\n// ✅ 模板读取 selectedAccount?.equity → 对 “a1.equity” 建依赖\n// 改 equity（不换数组引用），UI 会更新；computed 不一定重算（引用不变）\naccountList.value[0].equity = 120;\n```\n\n### 5.2 换数组引用触发表格类重算（排序/分组等）\n\n```ts\n// 在复杂逻辑上一行加注释：原地改字段后，若还需触发表格模型重算，再“换数组引用”\naccountList.value[0].equity = 130;\naccountList.value = accountList.value.slice();\n```\n\n### 5.3 替换对象会让 computed 重算（因为命中的那一项换了引用）\n\n```ts\n// 在复杂逻辑上一行加注释：替换命中元素对象 → getter 要重新 .find()，computed 重算\nconst idx = accountList.value.findIndex((a) => a.loginid === \"a1\");\naccountList.value.splice(idx, 1, { loginid: \"a1\", equity: 999 });\n```\n\n### 5.4 仅切换 loginid，一定重算\n\n```ts\n// 在复杂逻辑上一行加注释：selectedLoginid 变化是显式依赖，computed 一定重算\nselectedLoginid.value = \"a2\";\n```\n\n---\n\n## 6. 数组与对象的依赖“表格”\n\n| 读取操作（在 getter 内）                    | 建立的依赖键                       | 哪些更新会触发重算                      |\n| ------------------------------------------- | ---------------------------------- | --------------------------------------- |\n| `selectedLoginid.value`                     | 该 `ref` 的 `value`                | 任何对 `selectedLoginid.value` 的修改   |\n| `accountList.value`（拿到数组引用）         | 数组 `value` 引用、`length`/迭代键 | 换数组引用、`push/pop/splice`、长度变更 |\n| `accountList.value[i]`                      | 数组索引 `i`                       | 替换该索引处元素、数组结构影响该索引    |\n| `a.loginid`（查找时访问的元素属性）         | **元素对象的 `loginid` 属性**      | 改变该属性、或把该元素整体替换为新对象  |\n| 未读取的字段（如 `a.equity` / `a.balance`） | **不会**建立依赖                   | 改这些字段**不会**让 computed 重算      |\n\n> 模板/其它 computed/侦听如果单独读取了 `a.equity`，它们**会**对 `equity` 建依赖，从而在你改 `equity` 时更新 UI。\n\n---\n\n## 7. 实战建议（与表格场景结合）\n\n1. **selectedAccount 只做“指向哪一行”**：通过 `loginid + accountList` 定位对象引用即可，不要在 getter 里读取无关字段，避免不必要重算。\n2. **更新选中行的业务字段**（如盈亏、净值）：\n\n   - 只需 **原地改对象字段**，UI 就会变。\n   - 若还需要**触发表格模型重算**（排序/分组/聚合），在修改后**再换一次数组引用**：\n\n     ```ts\n     // 在复杂逻辑上一行加注释：需要触发表格重算时再换数组引用\n     Object.assign(accountList.value[idx], patch);\n     accountList.value = accountList.value.slice();\n     ```\n\n3. **避免错误写法**：不要让 `selectedAccount` 变成可写的 `ref` 并随行情去 `Object.assign(selectedAccount.value, ...)`；保持它是**纯派生**，杜绝引用抖动。\n4. **高频更新时合批**：把多次行情更新合并到一帧内，再一次性换数组引用，减小重算与渲染负担。\n\n---\n\n## 8. 一句话总结\n\n- computed **只会**对 getter **读到的键**建立依赖；\n- 模板单独读取的字段，会建立**它自己的依赖**；\n- **只改选中行的其它字段** ⇒ UI 更新，但 `selectedAccount` 不一定重算；\n- **需要表格重排/聚合** ⇒ 修改后再“**换数组引用**”。\n\n如果你愿意，把你当前的 `selectedAccount` 与“盈亏更新”两段代码贴上来；我只改**必要的几行**，并在复杂逻辑上一行加注释，帮你做到“UI 跟随变、computed 不抖动、表格按需重算”。\n\n```\n::contentReference[oaicite:0]{index=0}\n```\n",
             "url": "https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）",
             "title": "https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）",
-            "date_modified": "2025-09-12T15:06:15.766Z"
+            "date_modified": "2025-09-14T05:54:31.916Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/前端/Vue/Vue项目请求处理优化",
@@ -301,7 +1092,7 @@
             "content_html": "对于 chrome 浏览器，它提供了修改滚动条样式的接口，开发者只需要加上几句 css 脚本，就可轻松实现滚动条样式的修改.\n\n先说一下滚动条的参数：\n::-webkit-scrollbar 滚动条整体部分，可以设置宽度啥的\n::-webkit-scrollbar-button 滚动条两端的按钮\n::-webkit-scrollbar-track 外层轨道\n::-webkit-scrollbar-track-piece 内层滚动槽\n::-webkit-scrollbar-thumb 滚动的滑块\n::-webkit-scrollbar-corner 边角\n::-webkit-resizer 定义右下角拖动块的样式\n/_ 设置滚动条的样式 _/\n::-webkit-scrollbar {\nwidth: 10px;\n}\n/_ 滚动槽 _/\n::-webkit-scrollbar-track {\n-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);\nborder-radius: 10px;\n}\n/_ 滚动条滑块 _/\n::-webkit-scrollbar-thumb {\nborder-radius: 10px;\nbackground: #bbb;\n-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);\n}\n::-webkit-scrollbar-thumb:window-inactive {\nbackground: rgba(255,0,0,0.4);\n}\n\n```css\n/* 滚动条整体样式 */\n::-webkit-scrollbar {\n  width: 6px;\n  height: 6px;\n}\n/* 滚动条轨道 */\n::-webkit-scrollbar-track {\n  background-color: transparent;\n  border-radius: 5px;\n}\n/* 滚动条滑块 */\n::-webkit-scrollbar-thumb {\n  background-color: var(--color-neutral-4);\n  border-radius: 5px;\n}\n/* 滚动条滑块悬停状态 */\n::-webkit-scrollbar-thumb:hover {\n  background-color: var(--color-neutral-6);\n}\n```\n",
             "url": "https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整",
             "title": "https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整",
-            "date_modified": "2025-09-12T15:06:15.768Z"
+            "date_modified": "2025-09-14T05:54:31.919Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/前端/实时通信/web应用开发-前端-Web-应用如何做到实时消息通知",
@@ -330,7 +1121,7 @@
             "content_html": "结论先说：\n在 **@tanstack/vue-table v8.20+** 中，`useVueTable` 的 `data` 是按 **shallowRef（浅层响应）** 来处理的——**只侦听 `ref` 的 `.value` 本身是否换了新引用**。因此：\n\n- **改数组元素的属性**（例如把某一行的 “报价” 改价）——**需要让 `dataRef.value` 指向一个**新的数组引用，表格才会进行必要的重算/渲染。\n- **增删元素**（push/pop/splice）这种**原地修改**不会更换数组引用，表格**不会**感知，需要**重建一个新数组再赋回 `dataRef.value`**。\n- 官方文档在 “Using Reactive Data” 专章明确说明了这一点，并给了示例：`dataRef.value.push(...)` 不会更新；`dataRef.value = [...dataRef.value, ...]` 才会更新。([tanstack.com][1])\n\n---\n\n## 为什么必须“换引用”？\n\n- 适配层用 **shallowRef** 做了性能优化：**不追踪深层变动**（数组内部元素或其字段的改动），**只在 `.value` 指向新引用时**触发表格的行模型/排序/过滤等重算。\n- TanStack Table 也明确：**当 `data/columns` 的引用变了**，或表格内部 state 变了，就会触发更新；而**稳定引用**避免无谓的重建/循环渲染。([tanstack.com][2])\n\n---\n\n## 实战建议（Vue 3）\n\n### 1）更新单行“报价”字段（不可变更新）\n\n> 逻辑：按 id 找到目标行 → 复制出一个新数组 → 用新对象替换该行 → 把**新数组**赋回 `dataRef.value`\n\n```ts\n// 在复杂逻辑上一行加注释：不可变更新，生成新数组引用以触发表格重算\nfunction updatePriceById(id: string, price: number) {\n  const idx = indexById.get(id);\n  if (idx === undefined) return;\n  const next = dataRef.value.slice();\n  next[idx] = { ...next[idx], price };\n  dataRef.value = next; // ← 必须换引用，shallowRef 才会触发更新\n}\n```\n\n### 2）新增 / 删除一行\n\n```ts\n// 在复杂逻辑上一行加注释：新增时返回新数组引用（避免 push 原地修改）\nfunction addRow(row: Row) {\n  dataRef.value = [...dataRef.value, row]; // ← 换引用\n}\n\n// 在复杂逻辑上一行加注释：删除时用 filter 产生新数组引用（避免 splice 原地修改）\nfunction removeRowById(id: string) {\n  dataRef.value = dataRef.value.filter((r) => r.id !== id); // ← 换引用\n}\n```\n\n### 3）批量高频更新（如行情报价流）\n\n> 逻辑：把多次更新合并为**一帧**（或节流窗口）后再一次性换引用，降低开销\n\n```ts\n// 在复杂逻辑上一行加注释：用 requestAnimationFrame 合批更新，避免每次报价都重建数组\nconst pending: Record<string, number> = {};\nlet scheduled = false;\n\nexport function queuePrice(id: string, price: number) {\n  pending[id] = price;\n  if (scheduled) return;\n  scheduled = true;\n  requestAnimationFrame(() => {\n    const next = dataRef.value.slice();\n    for (const [id, p] of Object.entries(pending)) {\n      const idx = indexById.get(id);\n      if (idx !== undefined) next[idx] = { ...next[idx], price: p };\n      delete pending[id];\n    }\n    dataRef.value = next; // ← 一次性换引用\n    scheduled = false;\n  });\n}\n```\n\n### 4）保持行状态不丢（强烈建议）\n\n> 逻辑：让表格用**稳定的行 id**，避免你替换数组后选中/展开等状态乱跳\n\n```ts\n// 在复杂逻辑上一行加注释：用 getRowId 保持行标识稳定（而非默认的行索引）\nconst table = useVueTable({\n  columns,\n  data: dataRef,\n  getRowId: (row) => row.id,\n});\n```\n\n（`getRowId` 的用途与示例详见官方 Rows/Row APIs 文档。) ([tanstack.com][3])\n\n---\n\n## 常见误区对照\n\n- **误区**：`dataRef.value.push(row)` / `splice`\n  **现象**：表格不更新或排序/分组不同步。\n  **正确**：`dataRef.value = [...dataRef.value, row]` / `filter` 产生新数组再赋回。([tanstack.com][1])\n\n- **误区**：`dataRef.value[i].price = x` 只改了对象字段\n  **现象**：某些单元格可能更新，但**排序/汇总/分组**不重算或不一致。\n  **正确**：替换为新对象，并**整体换引用**：`dataRef.value = withUpdatedRow(...)`。([tanstack.com][1])\n\n- **误区**：把列定义/数据字面量写在 `<template>` 或渲染过程中\n  **风险**：频繁生成新引用，引起不必要的重建甚至循环渲染（尤其是 React 端）。\n  **正确**：列用 `shallowRef`、数据用 `ref`，在 `<script setup>` 顶层准备好稳定引用；React 用 `useMemo`/`useState`。([tanstack.com][2])\n\n---\n\n## 回答你的两个关键问题\n\n1）**“难道我必须改变 `data.value` 才会重新渲染吗？”**\n\n> 在 Vue 适配器中，是的——**要让表格识别到变化，需要让 `dataRef.value` 指向一个新数组引用**（哪怕你只是改了某个元素的某个字段）。这是由于官方采用 **shallowRef** 只侦听 `.value` 的引用变化。([tanstack.com][1])\n\n2）**“如果数组元素增加、减少或变化，也不需要（= 不必）用 `.value` 重置数据源吗？”**\n\n> 需要。**增/删/改**都应当以**不可变更新**的方式生成**新数组**并赋给 `dataRef.value`。原地 `push/pop/splice` 或只改对象字段不会触发表格的正确更新路径。官方给出的示例也明确了这一点（`push` 不更新，重新赋值才更新）。([tanstack.com][1])\n\n---\n\n## 性能与工程化补充\n\n- **不可变更新的成本**：一次创建新数组是 O(n)，在“几千行”规模通常可接受；TanStack Table 内部对行模型有优化，配合虚拟滚动使用时依然顺滑。若有**高频行情**，建议合批（见上文 rAF 方案）或**按时间窗节流**。\n- **服务端驱动**：若列表很大且更新频密，可只下发变化集（patch），在客户端\\*\\*应用 patch 后仍然以“新数组赋回”\\*\\*的方式触发表格刷新。\n- **列与数据的“稳定引用”策略**：列用 `shallowRef([...])`，数据用 `ref<Row[]>([])`，统一通过“新数组赋回”来驱动更新，避免在模板/计算属性里临时构造数组对象。\n\n---\n\n### 参考\n\n- **Table State (Vue) / Using Reactive Data**：支持 `ref/computed`，但**示例明确：必须给 `dataRef.value` 赋新数组**才会更新；`push` 不会触发。([tanstack.com][1])\n- **FAQ / Data Guide / Table Instance**：强调需要**稳定引用**，错误做法会导致重复重建/循环渲染。([tanstack.com][2])\n- **Rows / Row APIs**：使用 `getRowId` 保持行状态稳定。([tanstack.com][3])\n\n如果你愿意，把你现在的 `useVueTable` 初始化和“报价更新”那段代码贴出来；我只给**需要修改的片段**，并在复杂逻辑上一行加注释，帮你改成**不可变更新 + 合批**的版本。\n\n[1]: https://tanstack.com/table/latest/docs/framework/vue/guide/table-state \"Table State (Vue) Guide | TanStack Table Vue Docs\"\n[2]: https://tanstack.com/table/latest/docs/faq?utm_source=chatgpt.com \"FAQ | TanStack Table Docs\"\n[3]: https://tanstack.com/table/latest/docs/guide/rows?utm_source=chatgpt.com \"Rows Guide | TanStack Table Docs\"\n",
             "url": "https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新",
             "title": "https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新",
-            "date_modified": "2025-09-12T15:06:15.769Z"
+            "date_modified": "2025-09-14T05:54:31.920Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/前端/路由/user-会不会匹配根路由-‘-’？",
@@ -351,7 +1142,7 @@
             "content_html": "下面是「在路由 meta 中做权限控制」在大公司里常见、相对稳妥的做法（结合 RBAC/ABAC/ReBAC 与前后端协同）。我给出可落地的 meta 结构与守卫模板，并标注哪些是**用户体验层面的前端拦截**，哪些必须**在服务端强制校验**。\n\n---\n\n## 核心共识（非常重要）\n\n1. **前端路由 meta 只用于“体验层”**（引导、隐藏入口、避免无意义请求）；**真正的授权必须由服务端强制执行**（API/资源级校验）。这是防止“破坏访问控制”类风险的基本原则。([router.vuejs.org][1])\n2. **模型分层**：\n\n   - RBAC：角色/权限（适合“是否能进这个页面/菜单”这类粗粒度）。\n   - ABAC：基于属性（时间、地域、订单所属人等）做细粒度条件判断。\n   - ReBAC：基于关系（如“文档共享/项目成员/上下级”）做复杂共享授权，业界参考 **Zanzibar** / **OpenFGA**。([cheatsheetseries.owasp.org][2])\n\n3. **把鉴权逻辑集中**在全局导航守卫/解析守卫里，避免散落各处；对需要异步确认的权限，放在 `beforeResolve`（确认导航前、组件解析后），以减少无用的请求与白屏。([router.vuejs.org][3])\n4. Vue Router 的 **route meta** 天生就是放“路由附加信息”的地方（如 `requiresAuth`、`requiresCamera` 等），可作为授权“声明”。([router.vuejs.org][3])\n\n---\n\n## 推荐的 meta 结构（示例）\n\n```ts\n// routes.ts\n{\n  path: '/trading',\n  name: 'Trading',\n  component: () => import('@/pages/Trading.vue'),\n  meta: {\n    requiresAuth: true,                    // 需登录\n    rolesAnyOf: ['trader', 'admin'],       // RBAC：满足其一即可\n    permissionsAnyOf: ['trade:order.read'],// RBAC：权限点\n    featureFlagsAllOf: ['trading'],        // 与灰度/开关系统联动\n    // ABAC / ReBAC：交给策略引擎（本地或网关）判断\n    policy: {\n      action: 'page:view',\n      // 可以是对象或函数（从路由参数构造资源）\n      resource: (to) => ({ type: 'page', id: 'trading', tenantId: to.params.tenantId }),\n    },\n    auditEvent: 'page_trading_view',       // 可选：埋点/审计标识\n  }\n}\n```\n\n---\n\n## 全局导航守卫模板（前端体验层 Gate）\n\n```ts\n// router/guards.ts\nimport { router } from \"./router\";\nimport { auth, authz, flags } from \"@/services\"; // 伪代码：身份、授权、灰度\n\nrouter.beforeEach(async (to) => {\n  // 1) 登录检查\n  if (to.meta.requiresAuth && !auth.isAuthenticated()) {\n    return { name: \"Login\", query: { redirect: to.fullPath } };\n  }\n\n  // 2) 特性开关（灰度/AB 实验）\n  if (to.meta.featureFlagsAllOf?.length) {\n    const ok = to.meta.featureFlagsAllOf.every((k) => flags.isEnabled(k));\n    if (!ok) return { name: \"NotFound\" }; // 或展示“功能未开放”\n  }\n\n  // 3) 角色/权限（RBAC）\n  if (to.meta.rolesAnyOf?.length) {\n    const ok = to.meta.rolesAnyOf.some((r) => authz.hasRole(r));\n    if (!ok) return { name: \"Forbidden\" };\n  }\n  if (to.meta.permissionsAnyOf?.length) {\n    const ok = to.meta.permissionsAnyOf.some((p) => authz.hasPermission(p));\n    if (!ok) return { name: \"Forbidden\" };\n  }\n});\n\n/** 对需要异步校验（ABAC / ReBAC / 资源维度）的页面再做一次解析前校验 */\nrouter.beforeResolve(async (to) => {\n  if (!to.meta.policy) return;\n\n  const resource =\n    typeof to.meta.policy.resource === \"function\"\n      ? to.meta.policy.resource(to)\n      : to.meta.policy.resource;\n\n  // 统一走“策略引擎/网关”查询（可对接 OPA/OpenFGA/自研鉴权服务）\n  const allowed = await authz.can({\n    action: to.meta.policy.action,\n    resource, // 包含 tenantId/ownerId 等上下文\n  });\n  if (!allowed) return { name: \"Forbidden\" };\n});\n```\n\n> 说明：`beforeEach` 做轻量、同步的快速拦截；`beforeResolve` 放需要异步/昂贵的策略校验（文档也建议在这里做“用户无法进入页面时应避免执行的操作”）。([router.vuejs.org][3])\n\n---\n\n## 服务端必须做的（真正的安全线）\n\n- **所有 API 和资源下载接口都要做同样的授权检查**：携带用户身份（JWT/Session），在网关或服务里按 **RBAC + ABAC/ReBAC 策略**判断能否访问该“资源 + 动作”。不要信任前端路由结果。这个原则对应 OWASP 的建议。([router.vuejs.org][1])\n- 推荐把策略**集中到策略引擎**：如 **OPA**（Policy-as-Code，解耦业务与策略）或 **Zanzibar/OpenFGA**（关系型授权，适合协作/共享）。([Auth0][4], [cheatsheetseries.owasp.org][2])\n- **多租户**：把 `tenantId` 带入策略；禁止跨租户访问（路由参数与后端鉴权都要校验）。\n- **审计与告警**：对拒绝访问/越权尝试做记录，便于排障与风控。\n\n---\n\n## 常见坑\n\n- 只在前端做权限控制（**危险**）：刷新接口照样能被调用（被抓包/脚本命中）。([router.vuejs.org][1])\n- 把大量权限清单打包到前端（**泄露内部枚举**）；建议按最小化下发、或只下发当前会用到的“声明”。\n- 权限变更后的**本地缓存失效**问题：监听 token 刷新/用户信息变更，及时刷新本地 `authz` 状态。\n- **路由切片**过多导致守卫零散：统一在**全局守卫**集中处理，再由页面局部做兜底。([router.vuejs.org][3])\n\n---\n\n## 何时选 RBAC / ABAC / ReBAC？\n\n- **RBAC**：菜单/页面粒度、后管类系统优先（实现简单、维护成本低）。\n- **ABAC**：需要“条件（时间、地域、金额、订单所有者）”时；与策略引擎搭配更灵活。([Auth0][4])\n- **ReBAC（Zanzibar/OpenFGA）**：文档/项目/看板这类“共享关系/层级关系”复杂的业务。([cheatsheetseries.owasp.org][2])\n\n---\n\n如果你愿意，我可以把你现有的路由表整理成上述 meta 结构，并给出可直接落地的 `beforeEach/beforeResolve` 守卫代码（含 TypeScript 类型定义与单元测试样例）。\n\n[1]: https://router.vuejs.org/api/interfaces/routerecordredirect?utm_source=chatgpt.com \"Interface: RouteRecordRedirect - Vue Router\"\n[2]: https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html?utm_source=chatgpt.com \"Authorization - OWASP Cheat Sheet Series\"\n[3]: https://router.vuejs.org/zh/guide/advanced/navigation-guards?utm_source=chatgpt.com \"导航守卫 - Vue Router\"\n[4]: https://auth0.com/docs/manage-users/access-control/configure-core-rbac?utm_source=chatgpt.com \"Configure Core Authorization Features for Role-Based ...\"\n",
             "url": "https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制",
             "title": "https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制",
-            "date_modified": "2025-09-12T15:06:15.770Z"
+            "date_modified": "2025-09-14T05:54:31.921Z"
         },
         {
             "id": "https://herongdev.github.io/blog/posts/前端/鉴权-登录/登录后初始化的双阶段启动（增量修改）",
@@ -474,7 +1265,7 @@
             "content_html": "```ts\n高频行情合批（如果需要）\n// 在复杂逻辑上一行加注释：行情高频更新时合批后再换数组引用，降低重算与渲染频次\nlet scheduled = false\nconst pending: Record<string, Partial<Account>> = {}\n\nfunction queueAccountPatch(loginid: string, patch: Partial<Account>) {\n  pending[loginid] = { ...(pending[loginid] ?? {}), ...patch }\n  if (scheduled) return\n  scheduled = true\n  requestAnimationFrame(() => {\n    const list = accountList.value ?? []\n    const next = list.slice()\n    for (const [id, p] of Object.entries(pending)) {\n      const idx = next.findIndex(a => a.loginid === id)\n      if (idx !== -1) Object.assign(next[idx], p)\n      delete pending[id]\n    }\n    accountList.value = next          // ← 一次性换引用\n    scheduled = false\n  })\n}\n\n```\n",
             "url": "https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理",
             "title": "https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理",
-            "date_modified": "2025-09-12T15:06:15.777Z"
+            "date_modified": "2025-09-14T05:54:31.928Z"
         }
     ]
 }

@@ -4,7 +4,7 @@
         <title>我的博客</title>
         <link>https://herongdev.github.io/blog</link>
         <description>个人博客 RSS</description>
-        <lastBuildDate>Fri, 12 Sep 2025 15:06:15 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 14 Sep 2025 05:54:31 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh-CN</language>
@@ -1787,6 +1787,2526 @@ AI 让“生成更快”，工程师让“正确落地”。边界越清晰，�
 - **“语法精简速览 + Demo 实战”**（适合快速入门）
   还是
 - **“从 0 开始循序渐进”**（更系统，但内容会多一些）？
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/README]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/README</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/README</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# Swift 第二阶段（专题进阶）目录
+
+本套目录覆盖 iOS 开发常见的 **框架 / 并发 / 网络 / 架构 / 性能 / 安全 / 发布 / 多平台** 等主题，
+作为第一阶段（语法速成）的延续。每篇将包含：
+- 背景与场景
+- 最小可跑示例（可复制）
+- 常见坑与Checklist
+- 延伸阅读与实战练习
+
+> 使用方式：将本目录放入你的 Hexo 源仓库（如 `source/_posts/swift-advanced/`），按专题逐步完善。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 第二阶段（专题进阶）说明]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/gpt</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/gpt</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 第二阶段（专题进阶）说明
+
+在完成 **Swift 入门快速掌握（第一阶段）** 之后，我们将进入 **第二阶段（专题进阶）**。  
+这一阶段的目标是：系统深入学习 Swift 与 iOS 开发生态，涵盖实际开发中必须掌握的各类专题。
+
+---
+
+## 使用说明
+
+当你准备好进入第二阶段时，只需要告诉 AI：
+
+```
+
+进入 Swift 第二阶段（专题进阶）模式，写第 X 篇
+
+```
+
+即可触发进阶教程的生成。
+
+---
+
+## 统一提示词（保存备用）
+
+```
+
+进入 Swift 第二阶段（专题进阶）模式：
+
+* 背景：我已完成 Swift 入门快速掌握（第一阶段），现在要系统深入学习 Swift 与 iOS 开发。
+* 目标：逐个专题生成完整的 Hexo 博文系列（带 YAML front-matter、分节结构、示例代码、实战要点），直到完成所有文章。
+* 范围：按照 “swift-advanced-v2.zip” 提供的目录结构，覆盖 iOS 应用开发、SwiftUI、网络编程、并发与多线程、数据持久化、架构模式、测试质量、性能优化、系统能力、安全合规、发布运营、互操作、多平台扩展、视觉交互进阶、专题案例。
+* 风格：每篇博文需包含：
+
+  1. 简要背景/场景
+  2. 核心概念与语法
+  3. 5 分钟可跑的最简示例
+  4. 实战要点与常见坑
+  5. Checklist 总结
+  6. 延伸阅读
+* 输出形式：Hexo 博文 Markdown（带 front-matter）。
+
+```
+
+---
+
+## 第二阶段目录（示例）
+
+- iOS 应用开发（UIKit、SwiftUI）
+- 网络编程（URLSession、Codable）
+- 并发与多线程（GCD、async/await）
+- 数据持久化（CoreData、SQLite、文件系统）
+- 架构模式（MVC、MVVM、VIPER）
+- 测试与质量保障
+- 性能优化与调试
+- 系统能力（传感器、通知、定位等）
+- 安全与隐私合规
+- 发布与运营（App Store、TestFlight）
+- 互操作（Swift 与 C/Objective-C）
+- 多平台扩展（iPad、macOS、watchOS、tvOS）
+- 视觉与交互进阶（动画、手势）
+- 专题案例实战
+
+---
+
+📌 **提示**  
+第一阶段的课程已经保证你在 8 小时内快速掌握 Swift 核心语法，能读懂 AI 写的代码。  
+第二阶段则是 “实战专题”，深入到各个方面，帮你从“能写”到“能做应用”。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（1）：语法速览]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/01-语法速览</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/01-语法速览</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（1）：语法速览
+
+> 本文属于 Swift 入门速成系列，帮助你在 **8 小时内掌握最常用的语法与特性**，快速读懂 AI 写的代码。  
+> 本篇作为第一篇，带你 **一眼看懂 Swift 的常见语法**，相当于一个“速查表”。
+
+---
+
+## 基本语法特点
+
+- **强类型语言**：所有变量、常量都有确定类型。
+- **类型推断**：大多数时候不用显式写类型，编译器能自动推断。
+- **安全性强**：默认变量必须初始化，避免空指针。
+- **现代简洁**：省去了大量冗余符号，代码更接近自然语言。
+
+---
+
+## 变量与常量
+
+```swift
+let pi = 3.14159      // 常量，不能修改
+var age = 18          // 变量，可以修改
+
+age = 20              // ✅ 可以修改
+// pi = 3.14          // ❌ 报错：常量不可修改
+```
+
+````
+
+---
+
+## 常见数据类型
+
+```swift
+let name: String = "Swift"
+let score: Int = 95
+let price: Double = 19.99
+let passed: Bool = true
+```
+
+---
+
+## 字符串插值
+
+```swift
+let name = "Alice"
+let age = 20
+print("Hello, my name is \(name), I am \(age) years old.")
+```
+
+---
+
+## 数组与字典
+
+```swift
+// 数组
+var numbers = [1, 2, 3, 4]
+numbers.append(5)
+print(numbers[0])  // 输出 1
+
+// 字典
+var user = ["name": "Bob", "age": "22"]
+print(user["name"] ?? "Unknown") // Bob
+```
+
+---
+
+## 条件语句
+
+```swift
+let score = 85
+if score >= 90 {
+    print("优秀")
+} else if score >= 60 {
+    print("及格")
+} else {
+    print("不及格")
+}
+```
+
+---
+
+## 循环
+
+```swift
+for i in 1...5 {
+    print("第 \(i) 次")
+}
+
+var n = 3
+while n > 0 {
+    print(n)
+    n -= 1
+}
+```
+
+---
+
+## 函数
+
+```swift
+func greet(name: String) -> String {
+    return "Hello, \(name)"
+}
+
+print(greet(name: "Swift")) // Hello, Swift
+```
+
+---
+
+## 可选类型（Optionals）
+
+```swift
+var nickname: String? = nil
+nickname = "小明"
+
+// 安全解包
+if let nick = nickname {
+    print("昵称：\(nick)")
+}
+```
+
+---
+
+## 小结
+
+这一篇带你快速扫了一遍 **Swift 最常见的语法**：
+
+- 变量与常量（`var` / `let`）
+- 常见数据类型（`String`、`Int`、`Double`、`Bool`）
+- 数组与字典
+- 条件与循环
+- 函数
+- 可选类型（`?` 和 `if let`）
+
+读完这些，你已经能看懂 70% 以上 AI 写的 Swift 代码。
+
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（2）：变量与常量]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/02-变量与常量</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/02-变量与常量</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（2）：变量与常量
+
+> 在 Swift 中，**变量 (var)** 和 **常量 (let)** 是所有代码的基础。理解它们的区别与用法，能帮你写出更安全、可读性更强的程序。
+
+---
+
+## 基本概念
+
+- **`var`**：变量，可以修改。
+- **`let`**：常量，定义后不可修改。
+
+```swift
+var age = 18
+age = 20          // ✅ 可以修改
+
+let pi = 3.14159
+// pi = 3.14      // ❌ 报错：常量不可修改
+```
+
+---
+
+## 类型推断与显式声明
+
+Swift 编译器会自动推断变量的类型，但你也可以显式声明。
+
+```swift
+// 类型推断
+var name = "Alice"     // 自动推断为 String
+var score = 95         // 自动推断为 Int
+
+// 显式声明
+var city: String = "Beijing"
+let year: Int = 2025
+```
+
+---
+
+## 命名规范
+
+- 推荐使用 **小驼峰**：`userName`、`totalScore`。
+- 可以使用 Unicode：`let 😊 = "smile"`（但实际开发不推荐）。
+- 避免拼音或缩写，代码更清晰。
+
+---
+
+## 多变量声明
+
+```swift
+var x = 0, y = 1, z = 2
+let red = 255, green = 128, blue = 64
+```
+
+---
+
+## 懒加载与延迟初始化
+
+有些变量可能要等到第一次用时才计算，可以用 `lazy` 修饰。
+
+```swift
+lazy var data = loadData() // 第一次访问时才会调用 loadData()
+```
+
+> 注意：`lazy` 只能修饰 **var**，不能修饰 **let**。
+
+---
+
+## 可变性原则
+
+Swift 推荐：
+
+- **默认用 `let`**，只有需要修改时才用 `var`。
+- 这样可以避免无意的修改，提高代码安全性。
+
+---
+
+## 小结
+
+- `var` 定义变量，可变。
+- `let` 定义常量，不可变。
+- 默认用 `let`，这是 Swift 的最佳实践。
+- 类型推断让代码更简洁，但在需要时可显式声明。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（4）：流程控制（if、switch、循环）]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/03-流程控制</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/03-流程控制</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（4）：流程控制（if、switch、循环）
+
+> 程序的核心就是控制执行流程。Swift 提供了清晰的条件判断和循环语法，语义直观，易读易写。
+
+---
+
+## if 条件语句
+
+```swift
+let score = 85
+
+if score >= 90 {
+    print("优秀")
+} else if score >= 60 {
+    print("及格")
+} else {
+    print("不及格")
+}
+```
+
+> **注意**：条件表达式必须是布尔值，不能像 C 那样用 `1` 或 `0`。
+
+---
+
+## switch 语句
+
+```swift
+let grade = "B"
+
+switch grade {
+case "A":
+    print("非常好")
+case "B":
+    print("良好")
+case "C":
+    print("及格")
+default:
+    print("不及格")
+}
+```
+
+特点：
+
+- **必须覆盖所有情况**，否则要写 `default`。
+- **无需写 `break`**，匹配后自动退出。
+
+---
+
+### switch 的进阶用法
+
+```swift
+let point = (1, 1)
+
+switch point {
+case (0, 0):
+    print("原点")
+case (let x, 0):
+    print("在 X 轴上，x=\(x)")
+case (0, let y):
+    print("在 Y 轴上，y=\(y)")
+case (-2...2, -2...2):
+    print("在 (-2,2) 范围内")
+default:
+    print("其他位置")
+}
+```
+
+> Swift 的 `switch` 很强大，支持区间、元组、条件匹配。
+
+---
+
+## while 循环
+
+```swift
+var n = 3
+while n > 0 {
+    print(n)
+    n -= 1
+}
+```
+
+---
+
+## repeat-while 循环（至少执行一次）
+
+```swift
+var m = 0
+repeat {
+    print("执行一次：m=\(m)")
+    m += 1
+} while m < 3
+```
+
+---
+
+## for-in 循环
+
+```swift
+for i in 1...5 {  // 闭区间，包含 5
+    print(i)
+}
+
+for i in 1..<5 {  // 半开区间，不包含 5
+    print(i)
+}
+
+let names = ["Alice", "Bob", "Charlie"]
+for name in names {
+    print("Hello, \(name)")
+}
+```
+
+---
+
+## 控制跳转
+
+```swift
+for i in 1...5 {
+    if i == 3 {
+        continue   // 跳过当前循环
+    }
+    if i == 4 {
+        break      // 提前结束循环
+    }
+    print(i)
+}
+```
+
+---
+
+## 小结
+
+- `if-else`：最常见的条件判断。
+- `switch`：比很多语言更强大，支持模式匹配。
+- 循环包括 `while`、`repeat-while`、`for-in`，最后一个最常用。
+- `continue` 和 `break` 用于跳转控制。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（5）：函数与参数]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/04-函数</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/04-函数</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（5）：函数与参数
+
+> 函数是 Swift 程序的基本组成单位，既能封装逻辑，也能复用代码。
+
+---
+
+## 基本函数
+
+```swift
+func sayHello() {
+    print("Hello, Swift!")
+}
+
+sayHello()  // 调用
+```
+
+---
+
+## 带参数的函数
+
+```swift
+func greet(name: String) {
+    print("Hello, \(name)!")
+}
+
+greet(name: "Alice")
+```
+
+---
+
+## 多个参数
+
+```swift
+func add(a: Int, b: Int) -> Int {
+    return a + b
+}
+
+let result = add(a: 3, b: 5)
+print(result)  // 8
+```
+
+> 使用 `->` 指定返回值类型。
+
+---
+
+## 外部参数名
+
+Swift 默认函数参数既有 **外部名**（调用时用的）也有 **内部名**（函数体内用的）。
+
+```swift
+func multiply(x a: Int, y b: Int) -> Int {
+    return a * b
+}
+
+let r = multiply(x: 2, y: 3)
+print(r)  // 6
+```
+
+---
+
+## 省略外部参数名
+
+用 `_` 可以省略外部参数名，让调用更简洁：
+
+```swift
+func divide(_ a: Double, _ b: Double) -> Double {
+    return a / b
+}
+
+print(divide(10, 2))  // 5.0
+```
+
+---
+
+## 默认参数
+
+```swift
+func greet(name: String = "游客") {
+    print("你好，\(name)！")
+}
+
+greet()            // 你好，游客！
+greet(name: "小明") // 你好，小明！
+```
+
+---
+
+## 可变参数
+
+一个参数可以接收多个值：
+
+```swift
+func sum(_ numbers: Int...) -> Int {
+    var total = 0
+    for n in numbers {
+        total += n
+    }
+    return total
+}
+
+print(sum(1, 2, 3, 4))  // 10
+```
+
+---
+
+## 返回多个值（元组）
+
+```swift
+func minMax(_ numbers: [Int]) -> (min: Int, max: Int)? {
+    if numbers.isEmpty { return nil }
+    var minVal = numbers[0]
+    var maxVal = numbers[0]
+    for n in numbers {
+        if n < minVal { minVal = n }
+        if n > maxVal { maxVal = n }
+    }
+    return (minVal, maxVal)
+}
+
+if let result = minMax([3, 7, 2, 9]) {
+    print("最小值: \(result.min), 最大值: \(result.max)")
+}
+```
+
+---
+
+## 小结
+
+- `func` 定义函数。
+- 参数可以有外部名，也可以用 `_` 省略。
+- 支持默认参数和可变参数。
+- 函数可以返回单个值，也可以返回元组。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（5）：集合类型（Array、Set、Dictionary）]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/05-集合</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/05-集合</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（5）：集合类型（Array、Set、Dictionary）
+
+> Swift 提供了三种常用集合类型：**数组（Array）**、**集合（Set）** 和 **字典（Dictionary）**。掌握它们就能处理大部分数据存储与操作。
+
+---
+
+## 数组（Array）
+
+数组是有序的元素集合，可以包含重复值。
+
+```swift
+var numbers: [Int] = [1, 2, 3, 4]
+
+// 添加元素
+numbers.append(5)
+
+// 访问元素
+print(numbers[0])  // 1
+
+// 遍历
+for num in numbers {
+    print(num)
+}
+```
+
+````
+
+简写：
+
+```swift
+let fruits = ["Apple", "Banana", "Cherry"]
+print(fruits.count)      // 3
+print(fruits.contains("Banana"))  // true
+```
+
+---
+
+## 集合（Set）
+
+集合是 **无序且唯一** 的元素集合。
+
+```swift
+var set: Set<String> = ["A", "B", "C"]
+
+set.insert("D")
+set.insert("A")   // 已存在，不会重复
+
+print(set.contains("C"))  // true
+
+// 遍历（顺序不保证）
+for item in set {
+    print(item)
+}
+```
+
+集合常用于 **去重**：
+
+```swift
+let nums = [1, 2, 2, 3, 3, 4]
+let uniqueNums = Set(nums)
+print(uniqueNums)  // {2, 3, 1, 4}
+```
+
+---
+
+## 字典（Dictionary）
+
+字典是 **键值对** 的集合。
+
+```swift
+var dict: [String: Int] = [
+    "Alice": 25,
+    "Bob": 30
+]
+
+// 访问
+print(dict["Alice"])  // Optional(25)
+
+// 修改
+dict["Alice"] = 26
+
+// 新增
+dict["Charlie"] = 22
+
+// 遍历
+for (name, age) in dict {
+    print("\(name): \(age)")
+}
+```
+
+---
+
+## 集合运算（Set 特有）
+
+```swift
+let set1: Set = [1, 2, 3]
+let set2: Set = [3, 4, 5]
+
+// 交集
+print(set1.intersection(set2))  // [3]
+
+// 并集
+print(set1.union(set2))  // [1, 2, 3, 4, 5]
+
+// 差集
+print(set1.subtracting(set2))  // [1, 2]
+```
+
+---
+
+## 小结
+
+- **Array**：有序，可重复 → 适合顺序存储。
+- **Set**：无序，唯一 → 适合去重、集合运算。
+- **Dictionary**：键值对 → 适合映射关系。
+````
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（6）：可选类型与空安全]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/06-可选类型与空安全</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/06-可选类型与空安全</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（6）：可选类型与空安全
+
+> Swift 语言最突出的特性之一就是 **空安全（null safety）**，它通过 **可选类型（Optional）** 来避免常见的空指针错误。
+
+---
+
+## 什么是可选类型？
+
+在 Swift 中，变量默认必须有值。如果可能为空，就要用 `?` 声明为 **可选类型**：
+
+```swift
+var name: String? = "Alice"
+name = nil   // 合法，因为是可选类型
+```
+
+普通变量不能为 `nil`：
+
+```swift
+var age: Int = 18
+// age = nil   ❌ 错误
+```
+
+---
+
+## 解包（Unwrapping）
+
+### 1. 强制解包（!）
+
+如果确定有值，可以用 `!` 取出：
+
+```swift
+let name: String? = "Bob"
+print(name!)   // Bob
+```
+
+⚠️ 如果为 `nil` 会崩溃：
+
+```swift
+let n: String? = nil
+print(n!)  // ❌ 崩溃
+```
+
+---
+
+### 2. 可选绑定（if let）
+
+更安全的写法：
+
+```swift
+var name: String? = "Charlie"
+
+if let n = name {
+    print("Hello, \(n)")   // Hello, Charlie
+} else {
+    print("No name")
+}
+```
+
+---
+
+### 3. 可选绑定（guard let）
+
+常用于函数中提前退出：
+
+```swift
+func greet(_ name: String?) {
+    guard let n = name else {
+        print("No name")
+        return
+    }
+    print("Hello, \(n)")
+}
+
+greet("David")  // Hello, David
+greet(nil)      // No name
+```
+
+---
+
+### 4. 默认值（?? 运算符）
+
+```swift
+let nickname: String? = nil
+print(nickname ?? "Guest")   // Guest
+```
+
+---
+
+## 隐式解包（!）
+
+如果一个变量在生命周期内 **一定会有值**，可以用 `String!`：
+
+```swift
+var username: String! = "Eve"
+print(username)   // 自动解包 → Eve
+```
+
+⚠️ 一般少用，容易出错。
+
+---
+
+## 可选链（Optional Chaining）
+
+访问可能为空的属性/方法时，可以用 `?.`：
+
+```swift
+class Person {
+    var pet: Pet?
+}
+
+class Pet {
+    var name: String = "Dog"
+}
+
+let p = Person()
+print(p.pet?.name)   // nil
+```
+
+---
+
+## 小结
+
+- `?` → 表示可能为空。
+- `!` → 强制解包，危险。
+- `if let` / `guard let` → 安全解包。
+- `??` → 提供默认值。
+- `?.` → 可选链，优雅避免空指针。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（7）：字符串与日期]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/07-字符串与日期</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/07-字符串与日期</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（7）：字符串与日期
+
+> 字符串和日期是开发中最常用的数据类型。Swift 提供了强大且安全的操作方式。
+
+---
+
+## 字符串（String）
+
+### 创建字符串
+
+```swift
+let s1 = "Hello"
+let s2 = String("World")
+```
+
+---
+
+### 拼接
+
+```swift
+let name = "Alice"
+let greeting = "Hello, " + name
+print(greeting)   // Hello, Alice
+```
+
+---
+
+### 字符串插值
+
+```swift
+let age = 20
+print("My age is \(age)")   // My age is 20
+```
+
+---
+
+### 遍历字符
+
+```swift
+for ch in "Swift" {
+    print(ch)
+}
+```
+
+---
+
+### 字符串长度
+
+```swift
+let text = "Hello"
+print(text.count)   // 5
+```
+
+---
+
+### 子串
+
+```swift
+let str = "Hello Swift"
+let start = str.startIndex
+let end = str.index(str.startIndex, offsetBy: 4)
+let sub = str[start...end]
+print(sub)   // Hello
+```
+
+---
+
+### 常用方法
+
+```swift
+let msg = " swift "
+print(msg.uppercased())   // " SWIFT "
+print(msg.lowercased())   // " swift "
+print(msg.trimmingCharacters(in: .whitespaces))   // "swift"
+print(msg.contains("sw")) // true
+```
+
+---
+
+## 日期（Date）
+
+### 当前时间
+
+```swift
+let now = Date()
+print(now)   // 2025-09-14 12:34:56 +0000
+```
+
+---
+
+### 日期格式化
+
+```swift
+let formatter = DateFormatter()
+formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+let now = Date()
+let str = formatter.string(from: now)
+print(str)   // 2025-09-14 20:34:56
+```
+
+---
+
+### 字符串转日期
+
+```swift
+let formatter = DateFormatter()
+formatter.dateFormat = "yyyy/MM/dd"
+
+if let date = formatter.date(from: "2025/09/14") {
+    print(date)
+}
+```
+
+---
+
+### 日期计算
+
+```swift
+let now = Date()
+let tomorrow = now.addingTimeInterval(24 * 60 * 60)
+print(tomorrow)
+```
+
+---
+
+## 小结
+
+- **字符串**：拼接 `+`，插值 `\(var)`，常用方法 `uppercased`、`contains`、`trimmingCharacters`。
+- **日期**：`Date()` 获取当前时间，`DateFormatter` 用于格式化和解析。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（8）：闭包]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/08-闭包</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/08-闭包</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（8）：闭包
+
+> 闭包（Closure）是 Swift 的核心特性之一，类似匿名函数。它能捕获上下文变量，非常常用。
+
+---
+
+## 基本语法
+
+闭包的基本形式：
+
+```swift
+{ (参数列表) -> 返回类型 in
+    代码块
+}
+```
+
+例如：
+
+```swift
+let add = { (a: Int, b: Int) -> Int in
+    return a + b
+}
+print(add(2, 3))   // 5
+```
+
+---
+
+## 作为函数参数
+
+```swift
+func operate(_ a: Int, _ b: Int, op: (Int, Int) -> Int) -> Int {
+    return op(a, b)
+}
+
+let sum = operate(2, 3, op: { (x, y) in x + y })
+print(sum)   // 5
+```
+
+---
+
+## 闭包简写
+
+Swift 提供了简写规则，使闭包更简洁：
+
+1. **省略参数类型和返回值**
+2. **省略 return**
+3. **使用参数占位符 `$0`, `$1`**
+
+```swift
+let nums = [3, 1, 5, 2]
+let sorted = nums.sorted(by: { $0 < $1 })
+print(sorted)   // [1, 2, 3, 5]
+```
+
+---
+
+## 尾随闭包
+
+当闭包是函数最后一个参数时，可以写在括号外：
+
+```swift
+let doubled = nums.map { $0 * 2 }
+print(doubled)   // [6, 2, 10, 4]
+```
+
+---
+
+## 捕获变量
+
+闭包会捕获外部变量：
+
+```swift
+func makeCounter() -> () -> Int {
+    var count = 0
+    return {
+        count += 1
+        return count
+    }
+}
+
+let counter = makeCounter()
+print(counter())   // 1
+print(counter())   // 2
+```
+
+---
+
+## 常见应用场景
+
+1. **数组操作（map/filter/reduce）**
+2. **回调（网络请求完成后执行）**
+3. **延迟执行**
+
+---
+
+## 小结
+
+- 闭包 = 匿名函数，可以捕获外部变量。
+- 语法简洁，支持尾随闭包。
+- 常用于集合操作和回调。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（9）：结构体与类]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/09-结构体与类</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/09-结构体与类</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（9）：结构体与类
+
+> Swift 中既有 **结构体（struct）**，也有 **类（class）**。两者非常相似，但也有重要区别。
+
+---
+
+## 定义结构体
+
+```swift
+struct Point {
+    var x: Int
+    var y: Int
+}
+
+var p1 = Point(x: 3, y: 5)
+p1.x = 10
+print(p1)   // Point(x: 10, y: 5)
+```
+
+结构体自动拥有一个 **成员初始化器**，不需要手动写构造函数。
+
+---
+
+## 定义类
+
+```swift
+class Person {
+    var name: String
+    var age: Int
+
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+
+let p = Person(name: "Tom", age: 20)
+print(p.name)   // Tom
+```
+
+类需要写 `init` 构造函数来初始化属性。
+
+---
+
+## 值类型 vs 引用类型
+
+这是两者最大的区别：
+
+- **结构体** 是 **值类型**，赋值时会复制一份。
+- **类** 是 **引用类型**，赋值时多个变量指向同一个对象。
+
+```swift
+var a = Point(x: 1, y: 2)
+var b = a
+b.x = 100
+print(a.x)   // 1（不受影响）
+
+let p2 = p
+p2.name = "Jerry"
+print(p.name)   // Jerry（引用同一个对象）
+```
+
+---
+
+## 选择结构体还是类？
+
+- **结构体**：推荐默认使用，轻量、安全，常用于数据模型。
+- **类**：当需要继承、引用语义时使用（如视图控制器）。
+
+---
+
+## 小结
+
+- `struct` = 值类型，复制独立。
+- `class` = 引用类型，共享同一对象。
+- Swift 鼓励多用结构体，少用类，除非需要继承。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（10）：属性与方法]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/10-属性与方法</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/10-属性与方法</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（10）：属性与方法
+
+> Swift 中，结构体和类可以有 **属性（properties）** 和 **方法（methods）**，这是面向对象编程的核心。
+
+---
+
+## 存储属性
+
+直接存储值在实例里的属性。
+
+```swift
+struct User {
+    var name: String
+    var age: Int
+}
+
+var u = User(name: "Tom", age: 20)
+u.age = 21
+print(u.age)   // 21
+```
+
+---
+
+## 计算属性
+
+不会直接存储值，而是通过 getter/setter 计算得到。
+
+```swift
+struct Rectangle {
+    var width: Double
+    var height: Double
+
+    var area: Double {
+        return width * height
+    }
+}
+
+let r = Rectangle(width: 5, height: 3)
+print(r.area)   // 15.0
+```
+
+---
+
+## 属性观察器
+
+在属性变化时触发 `willSet` / `didSet`。
+
+```swift
+class Counter {
+    var count: Int = 0 {
+        willSet {
+            print("即将设置为 \(newValue)")
+        }
+        didSet {
+            print("已从 \(oldValue) 改为 \(count)")
+        }
+    }
+}
+
+let c = Counter()
+c.count = 5
+// 即将设置为 5
+// 已从 0 改为 5
+```
+
+---
+
+## 方法
+
+方法就是定义在类/结构体中的函数。
+
+```swift
+struct Circle {
+    var radius: Double
+
+    func area() -> Double {
+        return 3.14 * radius * radius
+    }
+}
+
+let c1 = Circle(radius: 10)
+print(c1.area())   // 314.0
+```
+
+---
+
+## mutating 方法
+
+结构体是 **值类型**，默认方法不能修改属性。需要 `mutating` 关键字。
+
+```swift
+struct Counter {
+    var value = 0
+
+    mutating func increment() {
+        value += 1
+    }
+}
+
+var ct = Counter()
+ct.increment()
+print(ct.value)   // 1
+```
+
+---
+
+## 静态属性和方法
+
+属于类型本身，而不是某个实例。
+
+```swift
+struct Math {
+    static let pi = 3.14159
+    static func square(_ x: Int) -> Int {
+        return x * x
+    }
+}
+
+print(Math.pi)        // 3.14159
+print(Math.square(5)) // 25
+```
+
+---
+
+## 小结
+
+- **存储属性**：保存值。
+- **计算属性**：动态计算。
+- **属性观察器**：监听变化。
+- **实例方法**：作用于实例。
+- **mutating 方法**：修改结构体/枚举。
+- **静态属性/方法**：属于类型。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（11）：枚举]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/11-枚举</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/11-枚举</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（11）：枚举
+
+> 枚举（`enum`）是 Swift 中非常常见的语法结构，用来表示一组有限的、相关的值。  
+> 它比许多其他语言中的枚举更强大，支持关联值、原始值，还能扩展方法。
+
+---
+
+## 1. 基本用法
+
+```swift
+enum Direction {
+    case north
+    case south
+    case east
+    case west
+}
+
+let d = Direction.north
+print(d)   // north
+```
+
+你也可以写在一行：
+
+```swift
+enum Direction { case north, south, east, west }
+```
+
+---
+
+## 2. 搭配 switch 使用
+
+```swift
+func move(_ dir: Direction) {
+    switch dir {
+    case .north:
+        print("向北走")
+    case .south:
+        print("向南走")
+    case .east:
+        print("向东走")
+    case .west:
+        print("向西走")
+    }
+}
+
+move(.east)  // 向东走
+```
+
+> `switch` 必须覆盖所有枚举的情况，否则编译报错。
+
+---
+
+## 3. 枚举的原始值
+
+枚举的每个 case 可以绑定一个 **原始值**（Raw Value），常见于数字或字符串。
+
+```swift
+enum Weekday: Int {
+    case monday = 1, tuesday, wednesday, thursday, friday, saturday, sunday
+}
+
+print(Weekday.friday.rawValue) // 5
+
+if let day = Weekday(rawValue: 7) {
+    print(day) // sunday
+}
+```
+
+---
+
+## 4. 枚举的关联值
+
+有时 case 需要携带不同的数据，这时可以用 **关联值**。
+
+```swift
+enum LoginState {
+    case success(user: String)
+    case failure(error: String)
+}
+
+let result = LoginState.success(user: "Alice")
+
+switch result {
+case .success(let user):
+    print("登录成功：\(user)")
+case .failure(let error):
+    print("失败：\(error)")
+}
+```
+
+---
+
+## 5. 枚举的方法
+
+枚举可以像类和结构体一样添加方法。
+
+```swift
+enum TrafficLight {
+    case red, yellow, green
+
+    func action() -> String {
+        switch self {
+        case .red: return "停"
+        case .yellow: return "等"
+        case .green: return "走"
+        }
+    }
+}
+
+print(TrafficLight.green.action()) // 走
+```
+
+---
+
+## 总结
+
+- `enum` 用来表示有限集合。
+- 搭配 `switch` 使用非常常见。
+- 可以有 **原始值** 和 **关联值**。
+- 可以定义 **方法**，功能接近类和结构体。
+
+Swift 的枚举很灵活，不只是常量集合，更像“轻量的数据类型”。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（12）：协议]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/12-协议</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/12-协议</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（12）：协议
+
+> 协议（`protocol`）就像“契约”，规定了 **必须具备的属性和方法**。  
+> 类、结构体、枚举都可以遵循协议。
+
+---
+
+## 1. 定义协议
+
+```swift
+protocol Drawable {
+    func draw()
+}
+````
+
+---
+
+## 2. 遵循协议
+
+```swift
+struct Circle: Drawable {
+    func draw() {
+        print("画一个圆")
+    }
+}
+
+let c = Circle()
+c.draw()  // 画一个圆
+```
+
+---
+
+## 3. 属性要求
+
+协议可以要求属性，但只规定 **读/写权限**，不实现。
+
+```swift
+protocol Named {
+    var name: String { get set }
+    var description: String { get }
+}
+
+struct Person: Named {
+    var name: String
+    var description: String {
+        "我的名字是 \(name)"
+    }
+}
+
+let p = Person(name: "Alice")
+print(p.description) // 我的名字是 Alice
+```
+
+---
+
+## 4. 多协议
+
+一个类型可以同时遵循多个协议。
+
+```swift
+protocol Flyable { func fly() }
+protocol Swimmable { func swim() }
+
+struct Duck: Flyable, Swimmable {
+    func fly() { print("鸭子会飞") }
+    func swim() { print("鸭子会游泳") }
+}
+```
+
+---
+
+## 5. 协议作为类型
+
+协议不仅是规范，也能作为类型使用。
+
+```swift
+func test(d: Drawable) {
+    d.draw()
+}
+
+test(d: Circle()) // 画一个圆
+```
+
+---
+
+## 6. 协议继承
+
+协议可以继承其它协议。
+
+```swift
+protocol Animal {
+    func eat()
+}
+
+protocol Pet: Animal {
+    func play()
+}
+
+struct Dog: Pet {
+    func eat() { print("狗在吃") }
+    func play() { print("狗在玩") }
+}
+```
+
+---
+
+## 总结
+
+* `protocol` 用来定义 **方法和属性的规范**。
+* 类/结构体/枚举都可以遵循协议。
+* 协议也可以 **继承** 和 **组合**。
+* 协议能作为类型使用，是 Swift 面向协议编程的基础。
+
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（13）：扩展]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/13-扩展</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/13-扩展</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（13）：扩展
+
+> **扩展（`extension`）** 可以给已有的类、结构体、枚举、协议 **添加新功能**，而无需修改原有代码。  
+> 这在实际开发中非常常用。
+
+---
+
+## 1. 给已有类型添加方法
+
+```swift
+extension Int {
+    func squared() -> Int {
+        return self * self
+    }
+}
+
+print(5.squared()) // 25
+```
+
+---
+
+## 2. 添加计算属性
+
+```swift
+extension Double {
+    var km: Double { self * 1000 }
+    var cm: Double { self / 100 }
+}
+
+print(5.0.km) // 5000.0
+print(120.0.cm) // 1.2
+```
+
+---
+
+## 3. 初始化器扩展
+
+扩展也能添加新的初始化方法。
+
+```swift
+struct Point {
+    var x = 0.0, y = 0.0
+}
+
+extension Point {
+    init(value: Double) {
+        self.x = value
+        self.y = value
+    }
+}
+
+let p = Point(value: 3.0)
+print(p) // Point(x: 3.0, y: 3.0)
+```
+
+---
+
+## 4. 协议 + 扩展
+
+扩展能给协议提供 **默认实现**。
+
+```swift
+protocol Greetable {
+    func greet()
+}
+
+extension Greetable {
+    func greet() {
+        print("你好，欢迎学习 Swift!")
+    }
+}
+
+struct Student: Greetable {}
+
+let s = Student()
+s.greet() // 你好，欢迎学习 Swift!
+```
+
+---
+
+## 5. 限制扩展
+
+可以通过 `where` 限制扩展只对特定类型生效。
+
+```swift
+extension Collection where Element: Comparable {
+    func isSorted() -> Bool {
+        return self == self.sorted()
+    }
+}
+
+print([1, 2, 3].isSorted()) // true
+print([3, 1, 2].isSorted()) // false
+```
+
+---
+
+## 总结
+
+- **扩展** 可以给已有类型添加 **方法、属性、初始化器**。
+- **协议扩展** 能写默认实现，非常常用。
+- 可以用 **`where` 限制扩展范围**。
+- 扩展不会覆盖原有实现，但能让代码更简洁。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（14）：错误处理]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/14-错误处理</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/14-错误处理</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（14）：错误处理
+
+> 在 Swift 中，错误处理主要通过 **`throw` / `try` / `catch`** 来实现。  
+> 和异常不同，Swift 错误必须显式声明和处理，更安全。
+
+---
+
+## 1. 定义错误类型
+
+Swift 的错误必须遵循 `Error` 协议。
+
+```swift
+enum FileError: Error {
+    case notFound
+    case noPermission
+}
+```
+
+---
+
+## 2. 抛出错误
+
+```swift
+func readFile(name: String) throws -> String {
+    if name == "secret.txt" {
+        throw FileError.noPermission
+    }
+    return "文件内容"
+}
+```
+
+---
+
+## 3. 捕获错误
+
+```swift
+do {
+    let content = try readFile(name: "secret.txt")
+    print(content)
+} catch FileError.notFound {
+    print("❌ 文件未找到")
+} catch FileError.noPermission {
+    print("⛔ 没有权限")
+} catch {
+    print("⚠️ 其它错误：\(error)")
+}
+```
+
+---
+
+## 4. try? 和 try!
+
+- **`try?`**：错误时返回 `nil`。
+- **`try!`**：确定不会出错时使用，出错会崩溃。
+
+```swift
+let result1 = try? readFile(name: "a.txt")  // Optional("文件内容")
+let result2 = try? readFile(name: "secret.txt")  // nil
+
+let result3 = try! readFile(name: "a.txt") // 强制执行
+```
+
+---
+
+## 5. defer（清理资源）
+
+`defer` 块中的代码在函数结束时执行，常用于释放资源。
+
+```swift
+func processFile() throws {
+    print("开始处理文件")
+    defer {
+        print("关闭文件")
+    }
+    throw FileError.notFound
+}
+
+try? processFile()
+// 输出：
+// 开始处理文件
+// 关闭文件
+```
+
+---
+
+## 总结
+
+- 用 `enum` + `Error` 定义错误类型。
+- 用 `throw` 抛出，用 `try` + `catch` 捕获。
+- `try?` 返回可选，`try!` 强制执行。
+- `defer` 用于清理收尾。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（15）：泛型]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/15-泛型</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/15-泛型</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（15）：泛型
+
+> 泛型（Generics）让你编写 **可复用、灵活、安全** 的代码。  
+> 通过占位符 `T` 表示任意类型，避免重复写同样的函数或类。
+
+---
+
+## 1. 泛型函数
+
+```swift
+func swapTwoValues<T>(_ a: inout T, _ b: inout T) {
+    let temp = a
+    a = b
+    b = temp
+}
+
+var x = 5, y = 10
+swapTwoValues(&x, &y)
+print(x, y) // 10 5
+
+var s1 = "hello", s2 = "world"
+swapTwoValues(&s1, &s2)
+print(s1, s2) // world hello
+```
+
+---
+
+## 2. 泛型类型（结构体 / 类）
+
+```swift
+struct Stack<T> {
+    private var items: [T] = []
+
+    mutating func push(_ item: T) {
+        items.append(item)
+    }
+
+    mutating func pop() -> T? {
+        return items.popLast()
+    }
+}
+
+var intStack = Stack<Int>()
+intStack.push(1)
+intStack.push(2)
+print(intStack.pop()!) // 2
+```
+
+---
+
+## 3. 类型约束
+
+有时需要限定泛型类型必须遵循某个协议。
+
+```swift
+func findIndex<T: Equatable>(of value: T, in array: [T]) -> Int? {
+    for (index, item) in array.enumerated() {
+        if item == value { return index }
+    }
+    return nil
+}
+
+print(findIndex(of: "b", in: ["a", "b", "c"])) // 1
+```
+
+---
+
+## 4. 关联类型（协议里的泛型）
+
+```swift
+protocol Container {
+    associatedtype Item
+    mutating func add(_ item: Item)
+    var count: Int { get }
+}
+
+struct IntContainer: Container {
+    var items: [Int] = []
+    mutating func add(_ item: Int) { items.append(item) }
+    var count: Int { items.count }
+}
+```
+
+---
+
+## 总结
+
+- 泛型函数：`func foo<T>(...) {}`
+- 泛型类型：`struct Stack<T> {...}`
+- 类型约束：`<T: Equatable>`
+- 协议可用 `associatedtype` 声明泛型。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（16）：访问控制]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/16-访问控制</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/16-访问控制</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（16）：访问控制
+
+> Swift 提供访问控制（Access Control）来保护代码的内部实现。  
+> 通过 `open`、`public`、`internal`、`fileprivate`、`private` 关键字控制作用范围。
+
+---
+
+## 1. 五种访问级别
+
+1. **open**
+   - 最宽松，允许模块外使用，并且可以继承 / 重写。
+   - 主要用于 **框架对外 API**。
+2. **public**
+   - 模块外可以使用，但不能继承或重写。
+   - 适合对外只读的接口。
+3. **internal**（默认）
+   - 只能在 **同一模块** 内使用。
+   - 一般项目中大部分代码都是 `internal`。
+4. **fileprivate**
+   - 限制在 **同一个文件** 内访问。
+5. **private**
+   - 最严格，限制在 **同一个作用域**（类 / 结构体）内使用。
+
+---
+
+## 2. 使用示例
+
+```swift
+open class OpenClass {
+    open func openMethod() {}
+    public func publicMethod() {}
+    internal func internalMethod() {}
+    fileprivate func filePrivateMethod() {}
+    private func privateMethod() {}
+}
+
+let obj = OpenClass()
+obj.publicMethod()   // ✅ 可访问
+obj.internalMethod() // ✅ 同模块可访问
+// obj.filePrivateMethod() ❌ 其他文件不可访问
+// obj.privateMethod() ❌ 作用域外不可访问
+```
+
+---
+
+## 3. 常见使用场景
+
+- **open**：SDK / Framework 提供可继承的基类。
+- **public**：模块对外公开的常量或函数。
+- **internal**：默认级别，适合大部分业务代码。
+- **fileprivate**：隐藏某些工具函数。
+- **private**：保护类内部细节。
+
+---
+
+## 4. 注意事项
+
+- 属性、方法、初始化器、扩展都可以设置访问级别。
+- 子类的访问级别不能高于父类。
+- 协议的访问级别会影响其实现。
+
+---
+
+## 总结
+
+- Swift 默认访问级别是 `internal`。
+- 最常用的是 `internal` + `private`，只在需要开放 API 时用 `public` 或 `open`。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（17）：继承与多态]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/17-继承与多态</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/17-继承与多态</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（17）：继承与多态
+
+> Swift 是面向对象语言，支持 **继承** 与 **多态**，但比起某些语言更强调组合。
+
+---
+
+## 1. 基本继承
+
+```swift
+class Animal {
+    var name: String
+    init(name: String) {
+        self.name = name
+    }
+    func makeSound() {
+        print("...")
+    }
+}
+
+class Dog: Animal {
+    func fetch() {
+        print("\(name) is fetching!")
+    }
+
+    // 重写父类方法
+    override func makeSound() {
+        print("Woof!")
+    }
+}
+
+let dog = Dog(name: "Buddy")
+dog.makeSound()   // Woof!
+dog.fetch()       // Buddy is fetching!
+```
+
+---
+
+## 2. 多态
+
+父类引用可以指向子类对象：
+
+```swift
+let a: Animal = Dog(name: "Max")
+a.makeSound()   // 调用的是 Dog 的实现 -> "Woof!"
+```
+
+这就是 **多态**：相同的接口，表现不同的行为。
+
+---
+
+## 3. `final` 关键字
+
+如果不希望类被继承，可以用 `final`：
+
+```swift
+final class Cat: Animal {
+    override func makeSound() {
+        print("Meow!")
+    }
+}
+
+// ❌ 下面代码会报错：不能继承 final 类
+// class Kitten: Cat {}
+```
+
+---
+
+## 4. 构造器的继承与重写
+
+子类如果没有写构造器，会自动继承父类的构造器。
+
+```swift
+class Bird: Animal {
+    override func makeSound() {
+        print("Chirp!")
+    }
+}
+
+let b = Bird(name: "Tweety") // ✅ 直接用父类 init
+```
+
+如果写了自己的 `init`，可能需要 `super.init`：
+
+```swift
+class Parrot: Animal {
+    var color: String
+    init(name: String, color: String) {
+        self.color = color
+        super.init(name: name) // 必须调用父类构造器
+    }
+}
+```
+
+---
+
+## 5. 多态与协议的对比
+
+- **继承**：类与类之间的关系，强调 "is-a"。
+- **协议**：行为的抽象，强调 "can-do"。
+- 在 Swift 开发中，协议比继承更常用。
+
+---
+
+## 总结
+
+- 继承允许子类扩展和重写父类功能。
+- 多态通过父类引用调用子类实现。
+- 使用 `final` 可以禁止继承。
+- Swift 提倡 **少用继承，多用协议与组合**。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（18）：协议进阶]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/18-协议进阶</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/18-协议进阶</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（18）：协议进阶
+
+> 协议（`protocol`）是 Swift 的核心特性之一。它不仅能定义行为接口，还能与扩展、泛型、面向协议编程结合，形成比继承更强大的抽象。
+
+---
+
+## 1. 协议继承
+
+协议可以继承其他协议：
+
+```swift
+protocol Named {
+    var name: String { get }
+}
+
+protocol Aged {
+    var age: Int { get }
+}
+
+protocol Person: Named, Aged {}
+
+struct Student: Person {
+    var name: String
+    var age: Int
+}
+```
+
+---
+
+## 2. 协议中的构造器
+
+协议可以要求实现某些构造器：
+
+```swift
+protocol Initializable {
+    init(value: Int)
+}
+
+class NumberBox: Initializable {
+    var value: Int
+    required init(value: Int) { // required 表示所有子类必须实现
+        self.value = value
+    }
+}
+```
+
+---
+
+## 3. 协议扩展（默认实现）
+
+协议扩展可以提供默认实现，让协议更像“接口 + 实现”：
+
+```swift
+protocol Drawable {
+    func draw()
+}
+
+extension Drawable {
+    func draw() {
+        print("Default drawing...")
+    }
+}
+
+struct Circle: Drawable {} // 没实现 draw()，会用默认实现
+
+Circle().draw() // Default drawing...
+```
+
+也可以在扩展里添加新的方法：
+
+```swift
+extension Drawable {
+    func debug() {
+        print("Debugging drawable object")
+    }
+}
+
+Circle().debug() // Debugging drawable object
+```
+
+---
+
+## 4. 协议与泛型
+
+协议常与泛型结合，用 `where` 约束类型：
+
+```swift
+protocol Summable {
+    static func +(lhs: Self, rhs: Self) -> Self
+}
+
+func add<T: Summable>(_ a: T, _ b: T) -> T {
+    return a + b
+}
+
+extension Int: Summable {}
+extension Double: Summable {}
+
+print(add(3, 5))      // 8
+print(add(2.5, 7.1))  // 9.6
+```
+
+---
+
+## 5. 面向协议编程（POP）
+
+Swift 鼓励 **Protocol-Oriented Programming**（POP），比继承更灵活：
+
+- 协议定义能力（能做什么）。
+- 结构体/类采用协议，组合出需要的行为。
+- 协议扩展提供默认实现，减少重复代码。
+
+示例：
+
+```swift
+protocol Flyable {
+    func fly()
+}
+
+extension Flyable {
+    func fly() { print("Flying...") }
+}
+
+struct Bird: Flyable {}
+struct Airplane: Flyable {}
+
+Bird().fly()      // Flying...
+Airplane().fly()  // Flying...
+```
+
+---
+
+## 总结
+
+- 协议支持继承、构造器要求。
+- 协议扩展提供默认实现，提升代码复用。
+- 协议与泛型结合更强大。
+- 面向协议编程是 Swift 的核心思想。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（19）：内存管理]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/19-内存管理</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/19-内存管理</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（19）：内存管理
+
+> Swift 使用 **ARC（Automatic Reference Counting）** 自动管理内存，大多数情况下不需要手动释放对象。但理解其工作原理非常重要，尤其是避免循环引用。
+
+---
+
+## 1. ARC 的基本原理
+
+- 每个类实例都有一个 **引用计数**。
+- 当引用 +1 时，实例保留。
+- 当引用变为 0 时，实例被销毁。
+
+```swift
+class Person {
+    let name: String
+    init(name: String) { self.name = name }
+    deinit { print("\(name) 被销毁") }
+}
+
+var p1: Person? = Person(name: "Tom")
+p1 = nil // 引用计数归零，触发 deinit
+```
+
+---
+
+## 2. 强引用（Strong Reference）
+
+默认情况下，变量保存对象时会创建一个 **强引用**。
+
+```swift
+class Dog {}
+var d1: Dog? = Dog()
+var d2 = d1 // d1, d2 都是强引用
+```
+
+---
+
+## 3. 循环引用问题
+
+如果两个对象相互持有强引用，会导致 **循环引用**，对象无法释放。
+
+```swift
+class Teacher {
+    var student: Student?
+    deinit { print("Teacher deinit") }
+}
+
+class Student {
+    var teacher: Teacher?
+    deinit { print("Student deinit") }
+}
+
+var t: Teacher? = Teacher()
+var s: Student? = Student()
+
+t?.student = s
+s?.teacher = t
+
+t = nil
+s = nil
+// ❌ Teacher 和 Student 都不会释放
+```
+
+---
+
+## 4. 解决循环引用
+
+### 4.1 弱引用（weak）
+
+- 用 `weak` 修饰，引用不会增加计数。
+- 常用于 **可选类型**，引用对象销毁后会自动设为 `nil`。
+
+```swift
+class Teacher {
+    var student: Student?
+    deinit { print("Teacher deinit") }
+}
+
+class Student {
+    weak var teacher: Teacher? // 🔑 解决循环引用
+    deinit { print("Student deinit") }
+}
+```
+
+---
+
+### 4.2 无主引用（unowned）
+
+- 用 `unowned` 修饰，不会增加计数。
+- **不会自动置 nil**，适合生命周期一致的对象。
+
+```swift
+class CreditCard {
+    unowned let customer: Customer // 永远存在
+    init(customer: Customer) { self.customer = customer }
+    deinit { print("Card deinit") }
+}
+
+class Customer {
+    var card: CreditCard?
+    deinit { print("Customer deinit") }
+}
+
+var c: Customer? = Customer()
+c?.card = CreditCard(customer: c!)
+c = nil // 两个对象都释放
+```
+
+---
+
+## 5. 闭包捕获列表
+
+闭包也可能导致循环引用，需要用 `[weak self]` 或 `[unowned self]`。
+
+```swift
+class ViewController {
+    var name = "VC"
+    var callback: (() -> Void)?
+
+    func setup() {
+        callback = { [weak self] in
+            print(self?.name ?? "nil")
+        }
+    }
+
+    deinit { print("VC deinit") }
+}
+```
+
+---
+
+## 总结
+
+- Swift 使用 ARC 自动管理内存。
+- 循环引用是主要问题，需要 `weak` 或 `unowned` 解决。
+- 闭包中捕获 `self` 时，注意使用捕获列表。
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Swift 入门（20）：并发与异步]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-quickstart/20-并发与异步</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-quickstart/20-并发与异步</guid>
+            <pubDate>Sun, 14 Sep 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# Swift 入门（20）：并发与异步
+
+> Swift 从 5.5 开始引入了现代化的 **并发模型**，主要包括 `async/await`、`Task`、以及 `Actor`。它让异步代码更直观，也避免了回调地狱。
+
+---
+
+## 1. async/await 基础
+
+用 `async` 标记异步函数，用 `await` 调用它。
+
+```swift
+func fetchData() async -> String {
+    return "数据结果"
+}
+
+Task {
+    let result = await fetchData()
+    print(result)
+}
+```
+
+---
+
+## 2. 异步任务 Task
+
+`Task {}` 可以在任何地方开启一个并发任务。
+
+```swift
+Task {
+    print("开始下载")
+    let data = await fetchData()
+    print("下载完成: \(data)")
+}
+```
+
+---
+
+## 3. 并发执行
+
+多个异步任务可以 **并发执行**。
+
+```swift
+func task1() async -> String {
+    try? await Task.sleep(nanoseconds: 1_000_000_000)
+    return "任务1完成"
+}
+
+func task2() async -> String {
+    return "任务2完成"
+}
+
+Task {
+    async let r1 = task1()
+    async let r2 = task2()
+    print(await r1, await r2)
+}
+```
+
+---
+
+## 4. 异步序列
+
+异步版本的 `for-in`，用于流式数据。
+
+```swift
+func numbers() -> AsyncStream<Int> {
+    AsyncStream { continuation in
+        for i in 1...3 {
+            continuation.yield(i)
+        }
+        continuation.finish()
+    }
+}
+
+Task {
+    for await num in numbers() {
+        print(num)
+    }
+}
+```
+
+---
+
+## 5. Actor（解决共享数据并发问题）
+
+`Actor` 用来保证数据的 **线程安全**。
+
+```swift
+actor Counter {
+    var value = 0
+    func increment() { value += 1 }
+}
+
+let counter = Counter()
+
+Task {
+    await counter.increment()
+    print(await counter.value)
+}
+```
+
+---
+
+## 6. 与传统回调互操作
+
+老的 **回调 API** 可以通过 `withCheckedContinuation` 转成 `async`。
+
+```swift
+func loadData(completion: @escaping (String) -> Void) {
+    DispatchQueue.global().async {
+        completion("旧API数据")
+    }
+}
+
+func loadDataAsync() async -> String {
+    await withCheckedContinuation { cont in
+        loadData { result in cont.resume(returning: result) }
+    }
+}
+
+Task {
+    print(await loadDataAsync())
+}
+```
+
+---
+
+## 总结
+
+- `async/await` 让异步代码像同步一样易读。
+- `Task` 开启并发任务，`async let` 并发执行多个任务。
+- `Actor` 提供线程安全的数据访问。
+- 旧回调 API 可以用 `Continuation` 封装成异步。
 ]]></content:encoded>
         </item>
         <item>
@@ -5900,25 +8420,25 @@ fun main() {
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 1 篇**，保持 Hexo 博客风格，主题是 **高阶函数与 Lambda 表达式**。
 
 ---
@@ -6058,7 +8578,7 @@ fun main() {
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 2 篇**，保持 Hexo 博客风格，主题是 **扩展函数**。
 
 ---
@@ -6201,7 +8721,7 @@ println(Utils.now()) // 1694500000000
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 3 篇**，保持 Hexo 博客风格，主题是 **空安全进阶**。
 
 ---
@@ -6356,7 +8876,7 @@ println(name.length)    // 可能直接 NPE
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 4 篇**，主题是 **数据类、枚举类、密封类**，保持 Hexo 博客风格。
 
 ---
@@ -6502,7 +9022,7 @@ fun eval(expr: Expr): Int = when(expr) {
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 5 篇**，主题是 **协程入门（异步代码最常用写法）**，保持 Hexo 博客风格，简明实用。
 
 ---
@@ -6661,7 +9181,7 @@ fun main() = runBlocking {
             <title><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化]]></title>
             <link>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 6 篇**，主题是 **内联函数与性能优化**，继续保持 Hexo 博客风格，实用精简。
 
 ---
@@ -6787,6 +9307,1371 @@ fun main() {
 
 要不要我接着帮你写 **《Kotlin 进阶（7）：泛型与约束》**？
 ```
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-UIKit基础
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-AutoLayout与约束
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-UI事件与手势
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-导航与页面跳转
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-表格与集合视图(UITableView,UICollectionView)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 06-动画(CoreAnimation与UIViewPropertyAnimator)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 07-本地化与国际化
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 08-无障碍(Accessibility)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 09-应用生命周期与场景(UIApplication,UIScene)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 10-资源与资产管理(Assets,SF Symbols)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-视图与状态(State,Binding,ObservedObject)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-NavigationStack与路由
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-布局(Stack,Grid,GeometryReader)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-列表与表单(List,Form)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-动画与过渡
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 06-数据流与架构(MVVM,TCA概览)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 07-与UIKit互操作(UIViewRepresentable)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 08-多平台与Widget
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-URLSession基础
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-请求构建与拦截器
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-Codable与JSON解析
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-并发请求与TaskGroup
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-上传下载与后台传输
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 06-缓存与离线(HTTP缓存,持久化)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 07-WebSocket与实时通信
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 08-网络错误与重试策略
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 09-安全(ATS,HSTS,证书绑定)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-GCD基础
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-OperationQueue与依赖
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-async-await进阶(结构化并发)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-Actor与Sendable
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-MainActor与UI线程
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 06-取消,超时与重试
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 07-Combine与async_await桥接
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-UserDefaults与Keychain
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-文件系统与Sandbox
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-CoreData入门
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-CoreData高级(并发,批量,NSFetchedResultsController)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-Realm入门(可选)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 06-CloudKit与iCloud同步
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-MVC,MVVM,VIPER,Clean对比
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-依赖注入与模块化
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-路由与模块通信
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-领域建模与不可变数据
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-The Composable Architecture(TCA)入门
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-XCTest单元测试
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-UI测试(XCUITest)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-快照测试
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-测试金字塔,Mock与依赖倒置
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-CI_CD(Xcode Cloud,fastlane)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 06-代码规范(swiftlint,swiftformat)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-ARC与循环引用深入
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-闭包,定时器与泄漏案例
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-Instruments(Leaks,Allocations,TimeProfiler)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-App启动优化
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-列表与图片性能优化
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 06-电量与网络流量优化
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-定位与MapKit
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-相机与相册(AVFoundation,Photos)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-推送与通知(APNs,UNUserNotificationCenter)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-后台模式与BackgroundTasks
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-蓝牙(CoreBluetooth)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 06-健康(HealthKit)与运动(CoreMotion)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 07-近场通信(NFC)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-隐私权限与InfoPlist说明
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-本地认证与生物识别(LocalAuthentication)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-数据加密与Keychain最佳实践
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-反调试与完整性保护
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-合规(GDPR,CCPA,国内合规)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-证书签名与Provisioning
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-多环境与构建配置
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-App Store提审流程与元数据
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-内购(StoreKit)与订阅
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-崩溃与日志(Firebase Crashlytics等)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-Swift与Objective-C互操作
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-包管理(Swift Package Manager)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-第三方库与CocoaPods迁移
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-KVC_KVO与现代化替代方案
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-CoreAnimation基础
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-CoreGraphics绘制
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-自定义转场与交互动画
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-Metal简述(可选)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-watchOS入门
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-tvOS入门
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-visionOS与RealityKit入门
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-Mac Catalyst移植
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 01-新闻客户端(网络+缓存+SwiftUI)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 02-IM聊天(实时通信+本地存储)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 03-离线优先记事本(CoreData+iCloud)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 04-音视频小工具(AVFoundation)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)]]></title>
+            <link>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)</link>
+            <guid isPermaLink="false">https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)</guid>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
+            <content:encoded><![CDATA[# 05-地图打卡(MapKit+地理围栏)
+
+> 待补充：
+- 背景与常见场景
+- 5分钟最小可跑示例
+- 实战要点与常见坑
+- Checklist
+- 延伸阅读
 ]]></content:encoded>
         </item>
         <item>
@@ -7771,7 +11656,7 @@ onBeforeUnmount(() => {
             <title><![CDATA[https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[````markdown
 ---
 title: Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）
@@ -9041,7 +12926,7 @@ function stringToBuffer(str) {
             <title><![CDATA[https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[对于 chrome 浏览器，它提供了修改滚动条样式的接口，开发者只需要加上几句 css 脚本，就可轻松实现滚动条样式的修改.
 
 先说一下滚动条的参数：
@@ -9805,7 +13690,7 @@ watchEffect(() => {
             <title><![CDATA[https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[结论先说：
 在 **@tanstack/vue-table v8.20+** 中，`useVueTable` 的 `data` 是按 **shallowRef（浅层响应）** 来处理的——**只侦听 `ref` 的 `.value` 本身是否换了新引用**。因此：
 
@@ -10225,7 +14110,7 @@ declare module "axios" {
             <title><![CDATA[https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[下面是「在路由 meta 中做权限控制」在大公司里常见、相对稳妥的做法（结合 RBAC/ABAC/ReBAC 与前后端协同）。我给出可落地的 meta 结构与守卫模板，并标注哪些是**用户体验层面的前端拦截**，哪些必须**在服务端强制校验**。
 
 ---
@@ -14089,7 +17974,7 @@ userVerification: 'required',
             <title><![CDATA[https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理]]></title>
             <link>https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理</link>
             <guid isPermaLink="false">https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理</guid>
-            <pubDate>Fri, 12 Sep 2025 15:06:15 GMT</pubDate>
+            <pubDate>Sun, 14 Sep 2025 05:54:31 GMT</pubDate>
             <content:encoded><![CDATA[```ts
 高频行情合批（如果需要）
 // 在复杂逻辑上一行加注释：行情高频更新时合批后再换数组引用，降低重算与渲染频次
