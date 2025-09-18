@@ -1,15 +1,7 @@
 ---
-
 title: 在 TradingView（Charting Library）里实现“保存指标模板”（study\_templates）——完整前后端实战
 date: 2025-09-17
 tags:
-
-* TradingView
-* Charting Library
-* study\_templates
-* 前后端
-  description: 用最小可运行的例子把“指标模板”做起来：前端开启 UI、配置存储；后端实现 REST 四件套（列/存/载/删）；附联调与常见坑；含官方文档与地址。
-
 ---
 
 ## 整体实现思路

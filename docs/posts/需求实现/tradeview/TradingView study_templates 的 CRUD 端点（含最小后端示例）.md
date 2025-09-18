@@ -1,15 +1,7 @@
 ---
-
 title: TradingView `study_templates` 的 CRUD 端点（含最小后端示例）
 date: 2025-09-17
 tags:
-
-* TradingView
-* Charting Library
-* REST
-* study\_templates
-  description: 一页看懂在 Charting Library 中实现“保存指标模板”的四个 REST 端点（列/存/载/删），以及最小可用的 Express 路由片段。并说明“U=更新”的正确做法。
-
 ---
 
 ## REST 端点一览（官方定义）
