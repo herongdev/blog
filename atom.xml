@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://herongdev.github.io/blog</id>
     <title>我的博客</title>
-    <updated>2025-09-18T02:41:29.034Z</updated>
+    <updated>2025-09-18T17:26:53.068Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://herongdev.github.io/blog"/>
     <link rel="self" href="https://herongdev.github.io/blog/atom.xml"/>
@@ -1925,7 +1925,7 @@ AI 让“生成更快”，工程师让“正确落地”。边界越清晰，�
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/README]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/README</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/README"/>
-        <updated>2025-09-18T02:41:29.058Z</updated>
+        <updated>2025-09-18T17:26:53.092Z</updated>
         <content type="html"><![CDATA[# Swift 第二阶段（专题进阶）目录
 
 本套目录覆盖 iOS 开发常见的 **框架 / 并发 / 网络 / 架构 / 性能 / 安全 / 发布 / 多平台** 等主题，
@@ -2016,7 +2016,7 @@ AI 让“生成更快”，工程师让“正确落地”。边界越清晰，�
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-quickstart/0-提示词]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-quickstart/0-提示词</id>
         <link href="https://herongdev.github.io/blog/posts/swift-quickstart/0-提示词"/>
-        <updated>2025-09-18T02:41:29.058Z</updated>
+        <updated>2025-09-18T17:26:53.093Z</updated>
         <content type="html"><![CDATA[我来为你总结一些提示词，这样你以后可以快速让我以这种风格来整理和分类 Swift 知识点：
 
 ## 🎯 **提示词模板**
@@ -6499,7 +6499,7 @@ let request = provider.createCredentialRegistrationRequest(
 **方法作用**：
 
 - 创建一个 **注册请求**，用于生成新的 Passkey
-- 将服务器提供的参数转换为系统可识别的格式
+- 将后端服务器提供的参数转换为系统可识别的格式
 
 **参数详解**：
 
@@ -6963,6 +6963,134 @@ class PasskeysManager {
 - **内存管理**：及时清理回调引用，避免内存泄漏
 
 这种模式在 iOS 开发中极其常见，掌握了这个流程，你就能轻松调用其他系统 API！
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[一文多发怎么做？我帮你把坑都踩完了（VitePress 博客 → CSDN/知乎/掘金…）]]></title>
+        <id>https://herongdev.github.io/blog/posts/平台与博客/一文多发怎么做？我帮你把坑都踩完了（VitePress 博客 → CSDN-知乎-掘金…）</id>
+        <link href="https://herongdev.github.io/blog/posts/平台与博客/一文多发怎么做？我帮你把坑都踩完了（VitePress 博客 → CSDN-知乎-掘金…）"/>
+        <updated>2025-09-19T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[
+## TL;DR
+
+- 想省时：用 **OpenWrite** 这类一键分发平台，Markdown 写一次，多平台同步（含 CSDN/知乎/掘金/公众号等）。([openwrite.cn][1])
+- 想更可控、可私有：用 **ArtiPub**（开源）本地/服务器跑，提供 CLI 与 API，自动把文章发到多平台。([artipub.github.io][2])
+- 只想解决「格式兼容」：用 **mdnice** 一键把 Markdown 转成各平台友好排版，再手动/半自动粘贴。([product.mdnice.com][3])
+- 浏览器侧"抓取 → 同步"：用 **Wechatsync**（文章同步助手）把现有页面/Markdown 互转并同步到多平台。([GitHub][4])
+
+> 合规提醒：部分平台对自动化发布有限制（如公众号 API 面向企业认证；CSDN 禁止滥用自动化发布），务必遵守各站规则。([CSDN 博客][5])
+
+---
+
+## 适合你的三种路线
+
+### 1) SaaS 省心路线（最低心智负担）
+
+**OpenWrite**：多平台文章发布工具，支持 Markdown 编辑，一键分发到 CSDN、知乎、掘金、公众号等。
+
+- 特点：一次配置账号与渠道，后续可批量分发；适合你当前的"把 VitePress 的文章同步出去"的诉求。([openwrite.cn][1])
+- 常见搭配：本地用 VSCode/Typora 写作 → OpenWrite 分发；图片用图床（Gitee/GitHub/七牛等）避免各站重复上传。([博客园][6])
+- 注意：不同平台的栏目/话题需在渠道配置里预设好，偶尔会遇到"专栏不匹配需调整"的体验问题。([CSDN 博客][7])
+
+可替/补充方案：市面也有"蚁小二/融媒宝/易媒助手"等分发工具，定位偏自媒体矩阵，功能更重（团队/数据/审核），做技术内容也能用。([CSDN 博客][8])
+
+---
+
+### 2) 自建可控路线（更灵活、可脚本化）
+
+**ArtiPub（开源）**：支持"一文多发"，有 **CLI/SDK**，能发往 CSDN/SegmentFault/简书/知乎/掘金/开源中国等技术平台；适合放到你的构建流程或服务器上自动跑。([CSDN 博客][9])
+
+- 场景：你用 VitePress 管理 Markdown；Git 提交后触发脚本，按平台差异做少量转换，然后调用 ArtiPub CLI 一次性发布。([artipub.github.io][2])
+- 好处：可版本化、可审计、可与你的"发版流水线/定时任务"衔接；不开外部 SaaS 也能跑。
+- 参考生态：还有一些自动发文工具/仓库可借鉴实现（支持 CSDN/知乎/头条/掘金/公众号等）。([GitHub][10])
+
+> 风险与合规：对**没有公开接口**或风控严格的平台（如知乎、公众号个人主体），往往要走"浏览器自动化/扩展注入"思路，需谨慎以免触犯平台规则。([CSDN 博客][5])
+
+---
+
+### 3) 半自动排版路线（最稳妥、兼容最好）
+
+**mdnice（墨滴）**：Markdown → 多平台友好排版，一键复制到 **公众号/知乎/掘金/博客园/CSDN** 等。
+
+- 你仍然写一次 Markdown，但发布时只需：打开 mdnice → 选择平台模板 → 复制粘贴过去。适合对"排版一致性"和"所见即所得"有要求的技术博客。([product.mdnice.com][3])
+- 可与 Wechatsync 组合：mdnice 解决格式，Wechatsync 负责把整理好的文稿推到多个站点。([微信公众号同步助手][11])
+
+---
+
+## 平台差异与发布要点清单
+
+- **CSDN**：良好支持 Markdown，但注意代码高亮与图片尺寸；遵守其自动化使用规范。([CSDN 博客][5])
+- **知乎专栏**：不提供公开发布 API，最稳的是"格式转换后人工或扩展半自动发布"。([GitHub][4])
+- **微信公众号**：官方 API 基本面向**企业认证**账号；个人号走第三方/自动化风险较高。([CSDN 博客][5])
+- **图片与图床**：建议统一托管（如 Gitee/GitHub/云存储），写作时即生成 CDN 链接，减少"每个平台重新传图"的成本。([博客园][6])
+
+---
+
+## 针对你用 VitePress 的落地流程（推荐）
+
+1. **仓库组织**：在 `docs/` 下维护 Markdown 与 Front-matter（保留 `title/description/tags/date`）。
+2. **图片策略**：接入 PicGo → Gitee/GitHub/云存储图床，确保全平台可直接引用。([博客园][6])
+3. **格式适配**：
+
+   - 代码块使用三引号并标注语言（便于 CSDN/掘金高亮）。
+   - 文章尾部添加**"首发于…，本篇为同步"**与**原文链接**，避免 SEO 重复内容问题（各平台也更尊重"首发+同步"表述）。
+
+4. **分发工具**（三选一或组合）：
+
+   - **OpenWrite**：最省事，账号渠道配置好后，一键分发。([openwrite.cn][1])
+   - **ArtiPub**：把 CLI 接到你的 CI（push 到 `main` 分支触发），自动发到技术社区平台。([artipub.github.io][2])
+   - **mdnice +（可选）Wechatsync**：先一键排版，再半自动分发到知乎/公众号等。([product.mdnice.com][3])
+
+5. **灰度发布**：先同步到 1–2 个站点校验排版/代码高亮/图片，再全量发。
+6. **数据回收**：优先使用分发平台自带的数据面板；若无，可在各站设置"统一 UTM 参数"（例如 `?utm_source=csdn`）来区分流量来源（CSDN/知乎等都支持外链参数）。
+
+---
+
+## 你可能会关心的问题（FAQ）
+
+**Q1：知乎、公众号为什么总是最麻烦？**
+A：它们没有稳定面向个人的开放发布 API，且风控严格；因此**格式转换 + 半自动发布**是更稳的实践。([CSDN 博客][5])
+
+**Q2：完全免费的方案？**
+A：**ArtiPub（开源）** + 你自己的 CI/脚本；或 **mdnice（免费版）** + 手动/半自动粘贴。功能全面的一键分发 SaaS 往往会有会员功能，但能显著省时。([artipub.github.io][2])
+
+**Q3：有没有现成的"从公众号/网页 → 多平台"的工具？**
+A：**Wechatsync** 支持"任意网页提取正文并同步"，也支持 Markdown 同步到多平台，用起来比较灵活。([微信公众号同步助手][11])
+
+---
+
+## 快速对比（给你选型）
+
+| 方案               | 上手成本 | 自动化程度           | 适配平台广度                    | 风险与限制                                                    |
+| ------------------ | -------- | -------------------- | ------------------------------- | ------------------------------------------------------------- |
+| OpenWrite（SaaS）  | 低       | 高                   | 广（含 CSDN/知乎/掘金/公众号…） | 需信任第三方；个别平台配置较"死板"需手调。([openwrite.cn][1]) |
+| ArtiPub（开源）    | 中       | 高（接 CI）          | 技术社区平台覆盖好              | 个别平台无 API 需回退到半自动。([artipub.github.io][2])       |
+| mdnice（排版）     | 很低     | 低（复制粘贴）       | 多平台排版模板                  | 需要手动提交；但排版最稳。([product.mdnice.com][3])           |
+| Wechatsync（扩展） | 低       | 中（浏览器内半自动） | 多平台"互同步"                  | 依赖浏览器/登录态；注意合规。([GitHub][4])                    |
+
+---
+
+## 给你的"最省时"推荐
+
+- **首选**：OpenWrite 做主分发；VitePress 里保持 Markdown 规范与统一图床，周更/日更直接一键发。([openwrite.cn][1])
+- **补充**：碰到"格式挑剔"的平台（知乎/公众号）时，用 mdnice 套模板后再发，保证观感统一。([product.mdnice.com][3])
+- **升级**：如果你想把它**完全并入工程化流水线**（比如 commit 后自动发），就接 **ArtiPub CLI** 到 CI。([artipub.github.io][2])
+
+---
+
+如果你愿意，我可以基于你当前的 VitePress 目录结构，给出一份**"最小自动化脚本 + 发布说明模板"**（遵循你"只提供必要改动代码、复杂逻辑行上加注释"的规范），把这套流程直接落到仓库里。
+
+[1]: https://openwrite.cn/?utm_source=chatgpt.com "OpenWrite: 多平台文章发布工具"
+[2]: https://artipub.github.io/artipub/?utm_source=chatgpt.com "artipub | VitePress"
+[3]: https://product.mdnice.com/?utm_source=chatgpt.com "墨滴软件-mdnice"
+[4]: https://github.com/wechatsync/Wechatsync?utm_source=chatgpt.com "wechatsync/Wechatsync: 一键同步文章到多个内容平台 ..."
+[5]: https://blog.csdn.net/Fx_demon/article/details/145961214?utm_source=chatgpt.com "如何将文章一键发布到CSDN、 微信公众号等博客的详细方案"
+[6]: https://www.cnblogs.com/leovany/p/17691019.html?utm_source=chatgpt.com "一键发布多平台方案- Leovany"
+[7]: https://blog.csdn.net/qq_45495857/article/details/106206239?utm_source=chatgpt.com "OpenWrite(博客群发平台)到底好不好用，有什么缺点？ 原创"
+[8]: https://blog.csdn.net/qq_43664361/article/details/142516870?utm_source=chatgpt.com "推荐一个一键多平台发布文章的工具_小明来客"
+[9]: https://blog.csdn.net/juemuren444/article/details/104717386?utm_source=chatgpt.com "一文多发神器--ArtiPub&OpenWrite 原创"
+[10]: https://github.com/ddean2009/blog-auto-publishing-tools?utm_source=chatgpt.com "ddean2009/blog-auto-publishing-tools: 博客自动发布工具"
+[11]: https://www.wechatsync.com/?utm_source=chatgpt.com "微信公众号同步助手- 公众号文章多平台同步Typora Markdown ..."
 ]]></content>
     </entry>
     <entry>
@@ -11076,25 +11204,25 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（1）：Android 开发中的 Kotlin 基础用法"/>
-        <updated>2025-09-18T02:41:29.069Z</updated>
+        <updated>2025-09-18T17:26:53.105Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（2）：Swift 与 Kotlin 写法对比（跨平台开发准备）"/>
-        <updated>2025-09-18T02:41:29.069Z</updated>
+        <updated>2025-09-18T17:26:53.105Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第三部分：实用场景/Kotlin 实战（3）：常用库实践（JSON、HTTP、数据库操作）"/>
-        <updated>2025-09-18T02:41:29.069Z</updated>
+        <updated>2025-09-18T17:26:53.105Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（1）：高阶函数与 Lambda 表达式"/>
-        <updated>2025-09-18T02:41:29.070Z</updated>
+        <updated>2025-09-18T17:26:53.105Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 1 篇**，保持 Hexo 博客风格，主题是 **高阶函数与 Lambda 表达式**。
 
 ---
@@ -11234,7 +11362,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（2）：扩展函数（给类添加新功能）"/>
-        <updated>2025-09-18T02:41:29.070Z</updated>
+        <updated>2025-09-18T17:26:53.105Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 2 篇**，保持 Hexo 博客风格，主题是 **扩展函数**。
 
 ---
@@ -11377,7 +11505,7 @@ println(Utils.now()) // 1694500000000
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（3）：空安全进阶"/>
-        <updated>2025-09-18T02:41:29.070Z</updated>
+        <updated>2025-09-18T17:26:53.106Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 3 篇**，保持 Hexo 博客风格，主题是 **空安全进阶**。
 
 ---
@@ -11532,7 +11660,7 @@ println(name.length)    // 可能直接 NPE
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（4）：数据类、枚举类、密封类"/>
-        <updated>2025-09-18T02:41:29.070Z</updated>
+        <updated>2025-09-18T17:26:53.106Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 4 篇**，主题是 **数据类、枚举类、密封类**，保持 Hexo 博客风格。
 
 ---
@@ -11678,7 +11806,7 @@ fun eval(expr: Expr): Int = when(expr) {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（5）：协程入门（异步代码最常用写法）"/>
-        <updated>2025-09-18T02:41:29.071Z</updated>
+        <updated>2025-09-18T17:26:53.106Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 5 篇**，主题是 **协程入门（异步代码最常用写法）**，保持 Hexo 博客风格，简明实用。
 
 ---
@@ -11837,7 +11965,7 @@ fun main() = runBlocking {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin快速入门/第二部分：进阶必修/Kotlin 进阶（6）：内联函数与性能优化"/>
-        <updated>2025-09-18T02:41:29.071Z</updated>
+        <updated>2025-09-18T17:26:53.106Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 6 篇**，主题是 **内联函数与性能优化**，继续保持 Hexo 博客风格，实用精简。
 
 ---
@@ -11969,7 +12097,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/01-UIKit基础"/>
-        <updated>2025-09-18T02:41:29.071Z</updated>
+        <updated>2025-09-18T17:26:53.106Z</updated>
         <content type="html"><![CDATA[# 01-UIKit基础
 
 > 待补充：
@@ -11984,7 +12112,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/02-AutoLayout与约束"/>
-        <updated>2025-09-18T02:41:29.071Z</updated>
+        <updated>2025-09-18T17:26:53.107Z</updated>
         <content type="html"><![CDATA[# 02-AutoLayout与约束
 
 > 待补充：
@@ -11999,7 +12127,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/03-UI事件与手势"/>
-        <updated>2025-09-18T02:41:29.071Z</updated>
+        <updated>2025-09-18T17:26:53.107Z</updated>
         <content type="html"><![CDATA[# 03-UI事件与手势
 
 > 待补充：
@@ -12014,7 +12142,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/04-导航与页面跳转"/>
-        <updated>2025-09-18T02:41:29.071Z</updated>
+        <updated>2025-09-18T17:26:53.107Z</updated>
         <content type="html"><![CDATA[# 04-导航与页面跳转
 
 > 待补充：
@@ -12029,7 +12157,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/05-表格与集合视图(UITableView,UICollectionView)"/>
-        <updated>2025-09-18T02:41:29.072Z</updated>
+        <updated>2025-09-18T17:26:53.107Z</updated>
         <content type="html"><![CDATA[# 05-表格与集合视图(UITableView,UICollectionView)
 
 > 待补充：
@@ -12044,7 +12172,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/06-动画(CoreAnimation与UIViewPropertyAnimator)"/>
-        <updated>2025-09-18T02:41:29.072Z</updated>
+        <updated>2025-09-18T17:26:53.107Z</updated>
         <content type="html"><![CDATA[# 06-动画(CoreAnimation与UIViewPropertyAnimator)
 
 > 待补充：
@@ -12059,7 +12187,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/07-本地化与国际化"/>
-        <updated>2025-09-18T02:41:29.072Z</updated>
+        <updated>2025-09-18T17:26:53.108Z</updated>
         <content type="html"><![CDATA[# 07-本地化与国际化
 
 > 待补充：
@@ -12074,7 +12202,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/08-无障碍(Accessibility)"/>
-        <updated>2025-09-18T02:41:29.072Z</updated>
+        <updated>2025-09-18T17:26:53.108Z</updated>
         <content type="html"><![CDATA[# 08-无障碍(Accessibility)
 
 > 待补充：
@@ -12089,7 +12217,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/09-应用生命周期与场景(UIApplication,UIScene)"/>
-        <updated>2025-09-18T02:41:29.072Z</updated>
+        <updated>2025-09-18T17:26:53.108Z</updated>
         <content type="html"><![CDATA[# 09-应用生命周期与场景(UIApplication,UIScene)
 
 > 待补充：
@@ -12104,7 +12232,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/01-iOS应用开发/10-资源与资产管理(Assets,SF Symbols)"/>
-        <updated>2025-09-18T02:41:29.072Z</updated>
+        <updated>2025-09-18T17:26:53.108Z</updated>
         <content type="html"><![CDATA[# 10-资源与资产管理(Assets,SF Symbols)
 
 > 待补充：
@@ -12119,7 +12247,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/01-视图与状态(State,Binding,ObservedObject)"/>
-        <updated>2025-09-18T02:41:29.072Z</updated>
+        <updated>2025-09-18T17:26:53.108Z</updated>
         <content type="html"><![CDATA[# 01-视图与状态(State,Binding,ObservedObject)
 
 > 待补充：
@@ -12134,7 +12262,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/02-NavigationStack与路由"/>
-        <updated>2025-09-18T02:41:29.073Z</updated>
+        <updated>2025-09-18T17:26:53.108Z</updated>
         <content type="html"><![CDATA[# 02-NavigationStack与路由
 
 > 待补充：
@@ -12149,7 +12277,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/03-布局(Stack,Grid,GeometryReader)"/>
-        <updated>2025-09-18T02:41:29.073Z</updated>
+        <updated>2025-09-18T17:26:53.109Z</updated>
         <content type="html"><![CDATA[# 03-布局(Stack,Grid,GeometryReader)
 
 > 待补充：
@@ -12164,7 +12292,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/04-列表与表单(List,Form)"/>
-        <updated>2025-09-18T02:41:29.073Z</updated>
+        <updated>2025-09-18T17:26:53.109Z</updated>
         <content type="html"><![CDATA[# 04-列表与表单(List,Form)
 
 > 待补充：
@@ -12179,7 +12307,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/05-动画与过渡"/>
-        <updated>2025-09-18T02:41:29.073Z</updated>
+        <updated>2025-09-18T17:26:53.109Z</updated>
         <content type="html"><![CDATA[# 05-动画与过渡
 
 > 待补充：
@@ -12194,7 +12322,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/06-数据流与架构(MVVM,TCA概览)"/>
-        <updated>2025-09-18T02:41:29.073Z</updated>
+        <updated>2025-09-18T17:26:53.109Z</updated>
         <content type="html"><![CDATA[# 06-数据流与架构(MVVM,TCA概览)
 
 > 待补充：
@@ -12209,7 +12337,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/07-与UIKit互操作(UIViewRepresentable)"/>
-        <updated>2025-09-18T02:41:29.073Z</updated>
+        <updated>2025-09-18T17:26:53.109Z</updated>
         <content type="html"><![CDATA[# 07-与UIKit互操作(UIViewRepresentable)
 
 > 待补充：
@@ -12224,7 +12352,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/02-SwiftUI/08-多平台与Widget"/>
-        <updated>2025-09-18T02:41:29.074Z</updated>
+        <updated>2025-09-18T17:26:53.109Z</updated>
         <content type="html"><![CDATA[# 08-多平台与Widget
 
 > 待补充：
@@ -12239,7 +12367,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/01-URLSession基础"/>
-        <updated>2025-09-18T02:41:29.074Z</updated>
+        <updated>2025-09-18T17:26:53.110Z</updated>
         <content type="html"><![CDATA[# 01-URLSession基础
 
 > 待补充：
@@ -12254,7 +12382,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/02-请求构建与拦截器"/>
-        <updated>2025-09-18T02:41:29.074Z</updated>
+        <updated>2025-09-18T17:26:53.110Z</updated>
         <content type="html"><![CDATA[# 02-请求构建与拦截器
 
 > 待补充：
@@ -12269,7 +12397,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/03-Codable与JSON解析"/>
-        <updated>2025-09-18T02:41:29.074Z</updated>
+        <updated>2025-09-18T17:26:53.110Z</updated>
         <content type="html"><![CDATA[# 03-Codable与JSON解析
 
 > 待补充：
@@ -12284,7 +12412,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/04-并发请求与TaskGroup"/>
-        <updated>2025-09-18T02:41:29.074Z</updated>
+        <updated>2025-09-18T17:26:53.110Z</updated>
         <content type="html"><![CDATA[# 04-并发请求与TaskGroup
 
 > 待补充：
@@ -12299,7 +12427,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/05-上传下载与后台传输"/>
-        <updated>2025-09-18T02:41:29.074Z</updated>
+        <updated>2025-09-18T17:26:53.110Z</updated>
         <content type="html"><![CDATA[# 05-上传下载与后台传输
 
 > 待补充：
@@ -12314,7 +12442,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/06-缓存与离线(HTTP缓存,持久化)"/>
-        <updated>2025-09-18T02:41:29.075Z</updated>
+        <updated>2025-09-18T17:26:53.110Z</updated>
         <content type="html"><![CDATA[# 06-缓存与离线(HTTP缓存,持久化)
 
 > 待补充：
@@ -12329,7 +12457,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/07-WebSocket与实时通信"/>
-        <updated>2025-09-18T02:41:29.075Z</updated>
+        <updated>2025-09-18T17:26:53.110Z</updated>
         <content type="html"><![CDATA[# 07-WebSocket与实时通信
 
 > 待补充：
@@ -12344,7 +12472,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/08-网络错误与重试策略"/>
-        <updated>2025-09-18T02:41:29.075Z</updated>
+        <updated>2025-09-18T17:26:53.111Z</updated>
         <content type="html"><![CDATA[# 08-网络错误与重试策略
 
 > 待补充：
@@ -12359,7 +12487,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/03-网络编程/09-安全(ATS,HSTS,证书绑定)"/>
-        <updated>2025-09-18T02:41:29.075Z</updated>
+        <updated>2025-09-18T17:26:53.111Z</updated>
         <content type="html"><![CDATA[# 09-安全(ATS,HSTS,证书绑定)
 
 > 待补充：
@@ -12374,7 +12502,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/01-GCD基础"/>
-        <updated>2025-09-18T02:41:29.075Z</updated>
+        <updated>2025-09-18T17:26:53.111Z</updated>
         <content type="html"><![CDATA[# 01-GCD基础
 
 > 待补充：
@@ -12389,7 +12517,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/02-OperationQueue与依赖"/>
-        <updated>2025-09-18T02:41:29.075Z</updated>
+        <updated>2025-09-18T17:26:53.111Z</updated>
         <content type="html"><![CDATA[# 02-OperationQueue与依赖
 
 > 待补充：
@@ -12404,7 +12532,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/03-async-await进阶(结构化并发)"/>
-        <updated>2025-09-18T02:41:29.076Z</updated>
+        <updated>2025-09-18T17:26:53.111Z</updated>
         <content type="html"><![CDATA[# 03-async-await进阶(结构化并发)
 
 > 待补充：
@@ -12419,7 +12547,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/04-Actor与Sendable"/>
-        <updated>2025-09-18T02:41:29.076Z</updated>
+        <updated>2025-09-18T17:26:53.112Z</updated>
         <content type="html"><![CDATA[# 04-Actor与Sendable
 
 > 待补充：
@@ -12434,7 +12562,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/05-MainActor与UI线程"/>
-        <updated>2025-09-18T02:41:29.076Z</updated>
+        <updated>2025-09-18T17:26:53.112Z</updated>
         <content type="html"><![CDATA[# 05-MainActor与UI线程
 
 > 待补充：
@@ -12449,7 +12577,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/06-取消,超时与重试"/>
-        <updated>2025-09-18T02:41:29.076Z</updated>
+        <updated>2025-09-18T17:26:53.112Z</updated>
         <content type="html"><![CDATA[# 06-取消,超时与重试
 
 > 待补充：
@@ -12464,7 +12592,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/04-并发与多线程/07-Combine与async_await桥接"/>
-        <updated>2025-09-18T02:41:29.076Z</updated>
+        <updated>2025-09-18T17:26:53.112Z</updated>
         <content type="html"><![CDATA[# 07-Combine与async_await桥接
 
 > 待补充：
@@ -12479,7 +12607,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/01-UserDefaults与Keychain"/>
-        <updated>2025-09-18T02:41:29.077Z</updated>
+        <updated>2025-09-18T17:26:53.112Z</updated>
         <content type="html"><![CDATA[# 01-UserDefaults与Keychain
 
 > 待补充：
@@ -12494,7 +12622,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/02-文件系统与Sandbox"/>
-        <updated>2025-09-18T02:41:29.077Z</updated>
+        <updated>2025-09-18T17:26:53.112Z</updated>
         <content type="html"><![CDATA[# 02-文件系统与Sandbox
 
 > 待补充：
@@ -12509,7 +12637,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/03-CoreData入门"/>
-        <updated>2025-09-18T02:41:29.077Z</updated>
+        <updated>2025-09-18T17:26:53.113Z</updated>
         <content type="html"><![CDATA[# 03-CoreData入门
 
 > 待补充：
@@ -12524,7 +12652,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/04-CoreData高级(并发,批量,NSFetchedResultsController)"/>
-        <updated>2025-09-18T02:41:29.077Z</updated>
+        <updated>2025-09-18T17:26:53.113Z</updated>
         <content type="html"><![CDATA[# 04-CoreData高级(并发,批量,NSFetchedResultsController)
 
 > 待补充：
@@ -12539,7 +12667,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/05-Realm入门(可选)"/>
-        <updated>2025-09-18T02:41:29.077Z</updated>
+        <updated>2025-09-18T17:26:53.113Z</updated>
         <content type="html"><![CDATA[# 05-Realm入门(可选)
 
 > 待补充：
@@ -12554,7 +12682,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/05-数据持久化/06-CloudKit与iCloud同步"/>
-        <updated>2025-09-18T02:41:29.077Z</updated>
+        <updated>2025-09-18T17:26:53.113Z</updated>
         <content type="html"><![CDATA[# 06-CloudKit与iCloud同步
 
 > 待补充：
@@ -12569,7 +12697,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/01-MVC,MVVM,VIPER,Clean对比"/>
-        <updated>2025-09-18T02:41:29.078Z</updated>
+        <updated>2025-09-18T17:26:53.113Z</updated>
         <content type="html"><![CDATA[# 01-MVC,MVVM,VIPER,Clean对比
 
 > 待补充：
@@ -12584,7 +12712,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/02-依赖注入与模块化"/>
-        <updated>2025-09-18T02:41:29.078Z</updated>
+        <updated>2025-09-18T17:26:53.113Z</updated>
         <content type="html"><![CDATA[# 02-依赖注入与模块化
 
 > 待补充：
@@ -12599,7 +12727,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/03-路由与模块通信"/>
-        <updated>2025-09-18T02:41:29.078Z</updated>
+        <updated>2025-09-18T17:26:53.114Z</updated>
         <content type="html"><![CDATA[# 03-路由与模块通信
 
 > 待补充：
@@ -12614,7 +12742,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/04-领域建模与不可变数据"/>
-        <updated>2025-09-18T02:41:29.078Z</updated>
+        <updated>2025-09-18T17:26:53.114Z</updated>
         <content type="html"><![CDATA[# 04-领域建模与不可变数据
 
 > 待补充：
@@ -12629,7 +12757,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/06-架构与模式/05-The Composable Architecture(TCA)入门"/>
-        <updated>2025-09-18T02:41:29.078Z</updated>
+        <updated>2025-09-18T17:26:53.114Z</updated>
         <content type="html"><![CDATA[# 05-The Composable Architecture(TCA)入门
 
 > 待补充：
@@ -12644,7 +12772,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/01-XCTest单元测试"/>
-        <updated>2025-09-18T02:41:29.078Z</updated>
+        <updated>2025-09-18T17:26:53.114Z</updated>
         <content type="html"><![CDATA[# 01-XCTest单元测试
 
 > 待补充：
@@ -12659,7 +12787,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/02-UI测试(XCUITest)"/>
-        <updated>2025-09-18T02:41:29.079Z</updated>
+        <updated>2025-09-18T17:26:53.114Z</updated>
         <content type="html"><![CDATA[# 02-UI测试(XCUITest)
 
 > 待补充：
@@ -12674,7 +12802,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/03-快照测试"/>
-        <updated>2025-09-18T02:41:29.079Z</updated>
+        <updated>2025-09-18T17:26:53.114Z</updated>
         <content type="html"><![CDATA[# 03-快照测试
 
 > 待补充：
@@ -12689,7 +12817,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/04-测试金字塔,Mock与依赖倒置"/>
-        <updated>2025-09-18T02:41:29.079Z</updated>
+        <updated>2025-09-18T17:26:53.115Z</updated>
         <content type="html"><![CDATA[# 04-测试金字塔,Mock与依赖倒置
 
 > 待补充：
@@ -12704,7 +12832,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/05-CI_CD(Xcode Cloud,fastlane)"/>
-        <updated>2025-09-18T02:41:29.079Z</updated>
+        <updated>2025-09-18T17:26:53.115Z</updated>
         <content type="html"><![CDATA[# 05-CI_CD(Xcode Cloud,fastlane)
 
 > 待补充：
@@ -12719,7 +12847,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/07-测试与质量/06-代码规范(swiftlint,swiftformat)"/>
-        <updated>2025-09-18T02:41:29.079Z</updated>
+        <updated>2025-09-18T17:26:53.115Z</updated>
         <content type="html"><![CDATA[# 06-代码规范(swiftlint,swiftformat)
 
 > 待补充：
@@ -12734,7 +12862,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/01-ARC与循环引用深入"/>
-        <updated>2025-09-18T02:41:29.079Z</updated>
+        <updated>2025-09-18T17:26:53.115Z</updated>
         <content type="html"><![CDATA[# 01-ARC与循环引用深入
 
 > 待补充：
@@ -12749,7 +12877,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/02-闭包,定时器与泄漏案例"/>
-        <updated>2025-09-18T02:41:29.079Z</updated>
+        <updated>2025-09-18T17:26:53.115Z</updated>
         <content type="html"><![CDATA[# 02-闭包,定时器与泄漏案例
 
 > 待补充：
@@ -12764,7 +12892,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/03-Instruments(Leaks,Allocations,TimeProfiler)"/>
-        <updated>2025-09-18T02:41:29.080Z</updated>
+        <updated>2025-09-18T17:26:53.115Z</updated>
         <content type="html"><![CDATA[# 03-Instruments(Leaks,Allocations,TimeProfiler)
 
 > 待补充：
@@ -12779,7 +12907,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/04-App启动优化"/>
-        <updated>2025-09-18T02:41:29.080Z</updated>
+        <updated>2025-09-18T17:26:53.116Z</updated>
         <content type="html"><![CDATA[# 04-App启动优化
 
 > 待补充：
@@ -12794,7 +12922,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/05-列表与图片性能优化"/>
-        <updated>2025-09-18T02:41:29.080Z</updated>
+        <updated>2025-09-18T17:26:53.116Z</updated>
         <content type="html"><![CDATA[# 05-列表与图片性能优化
 
 > 待补充：
@@ -12809,7 +12937,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/08-性能与内存/06-电量与网络流量优化"/>
-        <updated>2025-09-18T02:41:29.080Z</updated>
+        <updated>2025-09-18T17:26:53.116Z</updated>
         <content type="html"><![CDATA[# 06-电量与网络流量优化
 
 > 待补充：
@@ -12824,7 +12952,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/01-定位与MapKit"/>
-        <updated>2025-09-18T02:41:29.080Z</updated>
+        <updated>2025-09-18T17:26:53.116Z</updated>
         <content type="html"><![CDATA[# 01-定位与MapKit
 
 > 待补充：
@@ -12839,7 +12967,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/02-相机与相册(AVFoundation,Photos)"/>
-        <updated>2025-09-18T02:41:29.080Z</updated>
+        <updated>2025-09-18T17:26:53.116Z</updated>
         <content type="html"><![CDATA[# 02-相机与相册(AVFoundation,Photos)
 
 > 待补充：
@@ -12854,7 +12982,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/03-推送与通知(APNs,UNUserNotificationCenter)"/>
-        <updated>2025-09-18T02:41:29.081Z</updated>
+        <updated>2025-09-18T17:26:53.117Z</updated>
         <content type="html"><![CDATA[# 03-推送与通知(APNs,UNUserNotificationCenter)
 
 > 待补充：
@@ -12869,7 +12997,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/04-后台模式与BackgroundTasks"/>
-        <updated>2025-09-18T02:41:29.081Z</updated>
+        <updated>2025-09-18T17:26:53.117Z</updated>
         <content type="html"><![CDATA[# 04-后台模式与BackgroundTasks
 
 > 待补充：
@@ -12884,7 +13012,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/05-蓝牙(CoreBluetooth)"/>
-        <updated>2025-09-18T02:41:29.081Z</updated>
+        <updated>2025-09-18T17:26:53.117Z</updated>
         <content type="html"><![CDATA[# 05-蓝牙(CoreBluetooth)
 
 > 待补充：
@@ -12899,7 +13027,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/06-健康(HealthKit)与运动(CoreMotion)"/>
-        <updated>2025-09-18T02:41:29.081Z</updated>
+        <updated>2025-09-18T17:26:53.117Z</updated>
         <content type="html"><![CDATA[# 06-健康(HealthKit)与运动(CoreMotion)
 
 > 待补充：
@@ -12914,7 +13042,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/09-系统能力与硬件/07-近场通信(NFC)"/>
-        <updated>2025-09-18T02:41:29.081Z</updated>
+        <updated>2025-09-18T17:26:53.118Z</updated>
         <content type="html"><![CDATA[# 07-近场通信(NFC)
 
 > 待补充：
@@ -12929,7 +13057,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/01-隐私权限与InfoPlist说明"/>
-        <updated>2025-09-18T02:41:29.081Z</updated>
+        <updated>2025-09-18T17:26:53.118Z</updated>
         <content type="html"><![CDATA[# 01-隐私权限与InfoPlist说明
 
 > 待补充：
@@ -12944,7 +13072,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/02-本地认证与生物识别(LocalAuthentication)"/>
-        <updated>2025-09-18T02:41:29.082Z</updated>
+        <updated>2025-09-18T17:26:53.118Z</updated>
         <content type="html"><![CDATA[# 02-本地认证与生物识别(LocalAuthentication)
 
 > 待补充：
@@ -12959,7 +13087,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/03-数据加密与Keychain最佳实践"/>
-        <updated>2025-09-18T02:41:29.083Z</updated>
+        <updated>2025-09-18T17:26:53.118Z</updated>
         <content type="html"><![CDATA[# 03-数据加密与Keychain最佳实践
 
 > 待补充：
@@ -12974,7 +13102,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/04-反调试与完整性保护"/>
-        <updated>2025-09-18T02:41:29.083Z</updated>
+        <updated>2025-09-18T17:26:53.119Z</updated>
         <content type="html"><![CDATA[# 04-反调试与完整性保护
 
 > 待补充：
@@ -12989,7 +13117,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/10-安全与合规/05-合规(GDPR,CCPA,国内合规)"/>
-        <updated>2025-09-18T02:41:29.083Z</updated>
+        <updated>2025-09-18T17:26:53.119Z</updated>
         <content type="html"><![CDATA[# 05-合规(GDPR,CCPA,国内合规)
 
 > 待补充：
@@ -13004,7 +13132,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/01-证书签名与Provisioning"/>
-        <updated>2025-09-18T02:41:29.083Z</updated>
+        <updated>2025-09-18T17:26:53.119Z</updated>
         <content type="html"><![CDATA[# 01-证书签名与Provisioning
 
 > 待补充：
@@ -13019,7 +13147,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/02-多环境与构建配置"/>
-        <updated>2025-09-18T02:41:29.083Z</updated>
+        <updated>2025-09-18T17:26:53.119Z</updated>
         <content type="html"><![CDATA[# 02-多环境与构建配置
 
 > 待补充：
@@ -13034,7 +13162,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/03-App Store提审流程与元数据"/>
-        <updated>2025-09-18T02:41:29.083Z</updated>
+        <updated>2025-09-18T17:26:53.119Z</updated>
         <content type="html"><![CDATA[# 03-App Store提审流程与元数据
 
 > 待补充：
@@ -13049,7 +13177,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/04-内购(StoreKit)与订阅"/>
-        <updated>2025-09-18T02:41:29.084Z</updated>
+        <updated>2025-09-18T17:26:53.119Z</updated>
         <content type="html"><![CDATA[# 04-内购(StoreKit)与订阅
 
 > 待补充：
@@ -13064,7 +13192,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/11-发布与运营/05-崩溃与日志(Firebase Crashlytics等)"/>
-        <updated>2025-09-18T02:41:29.084Z</updated>
+        <updated>2025-09-18T17:26:53.120Z</updated>
         <content type="html"><![CDATA[# 05-崩溃与日志(Firebase Crashlytics等)
 
 > 待补充：
@@ -13079,7 +13207,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/01-Swift与Objective-C互操作"/>
-        <updated>2025-09-18T02:41:29.084Z</updated>
+        <updated>2025-09-18T17:26:53.120Z</updated>
         <content type="html"><![CDATA[# 01-Swift与Objective-C互操作
 
 > 待补充：
@@ -13094,7 +13222,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/02-包管理(Swift Package Manager)"/>
-        <updated>2025-09-18T02:41:29.084Z</updated>
+        <updated>2025-09-18T17:26:53.120Z</updated>
         <content type="html"><![CDATA[# 02-包管理(Swift Package Manager)
 
 > 待补充：
@@ -13109,7 +13237,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/03-第三方库与CocoaPods迁移"/>
-        <updated>2025-09-18T02:41:29.084Z</updated>
+        <updated>2025-09-18T17:26:53.120Z</updated>
         <content type="html"><![CDATA[# 03-第三方库与CocoaPods迁移
 
 > 待补充：
@@ -13124,7 +13252,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/12-互操作与迁移/04-KVC_KVO与现代化替代方案"/>
-        <updated>2025-09-18T02:41:29.084Z</updated>
+        <updated>2025-09-18T17:26:53.120Z</updated>
         <content type="html"><![CDATA[# 04-KVC_KVO与现代化替代方案
 
 > 待补充：
@@ -13139,7 +13267,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/01-CoreAnimation基础"/>
-        <updated>2025-09-18T02:41:29.085Z</updated>
+        <updated>2025-09-18T17:26:53.120Z</updated>
         <content type="html"><![CDATA[# 01-CoreAnimation基础
 
 > 待补充：
@@ -13154,7 +13282,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/02-CoreGraphics绘制"/>
-        <updated>2025-09-18T02:41:29.085Z</updated>
+        <updated>2025-09-18T17:26:53.121Z</updated>
         <content type="html"><![CDATA[# 02-CoreGraphics绘制
 
 > 待补充：
@@ -13169,7 +13297,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/03-自定义转场与交互动画"/>
-        <updated>2025-09-18T02:41:29.085Z</updated>
+        <updated>2025-09-18T17:26:53.121Z</updated>
         <content type="html"><![CDATA[# 03-自定义转场与交互动画
 
 > 待补充：
@@ -13184,7 +13312,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/13-视觉交互进阶/04-Metal简述(可选)"/>
-        <updated>2025-09-18T02:41:29.085Z</updated>
+        <updated>2025-09-18T17:26:53.121Z</updated>
         <content type="html"><![CDATA[# 04-Metal简述(可选)
 
 > 待补充：
@@ -13199,7 +13327,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/01-watchOS入门"/>
-        <updated>2025-09-18T02:41:29.085Z</updated>
+        <updated>2025-09-18T17:26:53.121Z</updated>
         <content type="html"><![CDATA[# 01-watchOS入门
 
 > 待补充：
@@ -13214,7 +13342,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/02-tvOS入门"/>
-        <updated>2025-09-18T02:41:29.085Z</updated>
+        <updated>2025-09-18T17:26:53.121Z</updated>
         <content type="html"><![CDATA[# 02-tvOS入门
 
 > 待补充：
@@ -13229,7 +13357,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/03-visionOS与RealityKit入门"/>
-        <updated>2025-09-18T02:41:29.086Z</updated>
+        <updated>2025-09-18T17:26:53.121Z</updated>
         <content type="html"><![CDATA[# 03-visionOS与RealityKit入门
 
 > 待补充：
@@ -13244,7 +13372,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/14-多平台扩展/04-Mac Catalyst移植"/>
-        <updated>2025-09-18T02:41:29.086Z</updated>
+        <updated>2025-09-18T17:26:53.121Z</updated>
         <content type="html"><![CDATA[# 04-Mac Catalyst移植
 
 > 待补充：
@@ -13259,7 +13387,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/01-新闻客户端(网络+缓存+SwiftUI)"/>
-        <updated>2025-09-18T02:41:29.086Z</updated>
+        <updated>2025-09-18T17:26:53.122Z</updated>
         <content type="html"><![CDATA[# 01-新闻客户端(网络+缓存+SwiftUI)
 
 > 待补充：
@@ -13274,7 +13402,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/02-IM聊天(实时通信+本地存储)"/>
-        <updated>2025-09-18T02:41:29.086Z</updated>
+        <updated>2025-09-18T17:26:53.122Z</updated>
         <content type="html"><![CDATA[# 02-IM聊天(实时通信+本地存储)
 
 > 待补充：
@@ -13289,7 +13417,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/03-离线优先记事本(CoreData+iCloud)"/>
-        <updated>2025-09-18T02:41:29.086Z</updated>
+        <updated>2025-09-18T17:26:53.122Z</updated>
         <content type="html"><![CDATA[# 03-离线优先记事本(CoreData+iCloud)
 
 > 待补充：
@@ -13304,7 +13432,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/04-音视频小工具(AVFoundation)"/>
-        <updated>2025-09-18T02:41:29.086Z</updated>
+        <updated>2025-09-18T17:26:53.122Z</updated>
         <content type="html"><![CDATA[# 04-音视频小工具(AVFoundation)
 
 > 待补充：
@@ -13319,7 +13447,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/15-专题案例/05-地图打卡(MapKit+地理围栏)"/>
-        <updated>2025-09-18T02:41:29.087Z</updated>
+        <updated>2025-09-18T17:26:53.122Z</updated>
         <content type="html"><![CDATA[# 05-地图打卡(MapKit+地理围栏)
 
 > 待补充：
@@ -13334,7 +13462,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-advanced-v2/指令/@objc]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-advanced-v2/指令/@objc</id>
         <link href="https://herongdev.github.io/blog/posts/swift-advanced-v2/指令/@objc"/>
-        <updated>2025-09-18T02:41:29.087Z</updated>
+        <updated>2025-09-18T17:26:53.122Z</updated>
         <content type="html"><![CDATA[`@objc` 是 Swift 中的一个属性（attribute），用于将 Swift 代码暴露给 Objective-C 运行时。让我详细解释一下：
 
 ## `@objc` 的作用
@@ -14903,7 +15031,7 @@ onBeforeUnmount(() => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）</id>
         <link href="https://herongdev.github.io/blog/posts/前端/Vue/Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）"/>
-        <updated>2025-09-18T02:41:29.090Z</updated>
+        <updated>2025-09-18T17:26:53.125Z</updated>
         <content type="html"><![CDATA[````markdown
 ---
 title: Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）
@@ -15386,7 +15514,7 @@ router.replace((route.query.redirect as string) || "/");
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/Vue/为什么“动态导入模块”用 import()，而“异步组件”用 defineAsyncComponent]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/Vue/为什么“动态导入模块”用 import()，而“异步组件”用 defineAsyncComponent</id>
         <link href="https://herongdev.github.io/blog/posts/前端/Vue/为什么“动态导入模块”用 import()，而“异步组件”用 defineAsyncComponent"/>
-        <updated>2025-09-18T02:41:29.091Z</updated>
+        <updated>2025-09-18T17:26:53.126Z</updated>
         <content type="html"><![CDATA[# 为什么“动态导入模块”用 `import()`，而“异步组件”用 `defineAsyncComponent(() => import(...))`
 
 > `import()` 是 **ES 模块层** 的动态加载原语，返回的是“**模块对象的 Promise**”；
@@ -16364,7 +16492,7 @@ function stringToBuffer(str) {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整</id>
         <link href="https://herongdev.github.io/blog/posts/前端/基础/滚动条样式调整"/>
-        <updated>2025-09-18T02:41:29.093Z</updated>
+        <updated>2025-09-18T17:26:53.128Z</updated>
         <content type="html"><![CDATA[对于 chrome 浏览器，它提供了修改滚动条样式的接口，开发者只需要加上几句 css 脚本，就可轻松实现滚动条样式的修改.
 
 先说一下滚动条的参数：
@@ -17128,7 +17256,7 @@ watchEffect(() => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新</id>
         <link href="https://herongdev.github.io/blog/posts/前端/常用库/tanstack更新"/>
-        <updated>2025-09-18T02:41:29.094Z</updated>
+        <updated>2025-09-18T17:26:53.129Z</updated>
         <content type="html"><![CDATA[结论先说：
 在 **@tanstack/vue-table v8.20+** 中，`useVueTable` 的 `data` 是按 **shallowRef（浅层响应）** 来处理的——**只侦听 `ref` 的 `.value` 本身是否换了新引用**。因此：
 
@@ -17272,7 +17400,7 @@ const table = useVueTable({
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/常用库/浮层]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/常用库/浮层</id>
         <link href="https://herongdev.github.io/blog/posts/前端/常用库/浮层"/>
-        <updated>2025-09-18T02:41:29.094Z</updated>
+        <updated>2025-09-18T17:26:53.129Z</updated>
         <content type="html"><![CDATA[好的，我给你一个**可落地**的实现方案：点击 `Bid/Ask` 单元格时，**在单元格旁边**弹出交易面板；若屏幕较小（如 ≤768px），自动改为 **底部 Drawer** 展示。方案要点：
 
 - **定位与避免遮挡**：用 `@floating-ui/dom`（更稳健的 Popper 替代）做锚点定位，自动 `flip/shift/offset/size`，保证面板不超出视口。
@@ -17979,7 +18107,7 @@ declare module "axios" {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/鉴权-登录/单一入口：包装器 verifiedAction”方案（Vite+Vue3+Pinia）]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/鉴权-登录/单一入口：包装器 verifiedAction”方案（Vite+Vue3+Pinia）</id>
         <link href="https://herongdev.github.io/blog/posts/前端/鉴权-登录/单一入口：包装器 verifiedAction”方案（Vite+Vue3+Pinia）"/>
-        <updated>2025-09-18T02:41:29.096Z</updated>
+        <updated>2025-09-18T17:26:53.130Z</updated>
         <content type="html"><![CDATA[下面我给出**一套“单一入口：包装器 verifiedAction”方案**（Vite+Vue3+Pinia），目标是：**改动最少、好维护、好扩展、使用方便**。
 实现要点：
 
@@ -18673,7 +18801,7 @@ await verifiedAction("bind_auth", async () => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制</id>
         <link href="https://herongdev.github.io/blog/posts/前端/鉴权-登录/在路由 meta 中做权限控制"/>
-        <updated>2025-09-18T02:41:29.096Z</updated>
+        <updated>2025-09-18T17:26:53.131Z</updated>
         <content type="html"><![CDATA[下面是「在路由 meta 中做权限控制」在大公司里常见、相对稳妥的做法（结合 RBAC/ABAC/ReBAC 与前后端协同）。我给出可落地的 meta 结构与守卫模板，并标注哪些是**用户体验层面的前端拦截**，哪些必须**在服务端强制校验**。
 
 ---
@@ -22987,6 +23115,277 @@ if includeEff.contains("idfa") {
 ]]></content>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Passkeys/WebAuthn 配置项全集：可选值与作用（注册 + 登录，含 simplewebauthn v11+）]]></title>
+        <id>https://herongdev.github.io/blog/posts/需求实现/登录鉴权/Passkeys-WebAuthn 配置项全集：可选值与作用（注册 + 登录，含 simplewebauthn v11+）</id>
+        <link href="https://herongdev.github.io/blog/posts/需求实现/登录鉴权/Passkeys-WebAuthn 配置项全集：可选值与作用（注册 + 登录，含 simplewebauthn v11+）"/>
+        <updated>2025-09-19T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[
+> 目标：把 **Passkeys/WebAuthn** 中"你会实际用到的配置项"一次讲清楚：
+>
+> - 覆盖 **注册（create）** 与 **登录（get）** 两个阶段
+> - 对应 **服务端（simplewebauthn / @simplewebauthn/server v11+）** 产出的"options"以及**前端** `navigator.credentials.create()/get()` 的参数
+> - 每个字段给出 **可选值** + **含义** + **常用建议**
+> - 标注**兼容性/陷阱**与**推荐默认值**
+
+---
+
+## 总览思维导图（速查）
+
+- 注册 Registration（`navigator.credentials.create()` / `generateRegistrationOptions()`）
+
+  - 基础：`rp`, `user`, `challenge`, `pubKeyCredParams`(= simplewebauthn 的 `supportedAlgorithmIDs`), `timeout`, `attestation`
+  - 选择器：`authenticatorSelection` → `residentKey`, `userVerification`, `authenticatorAttachment`, `requireResidentKey(旧)`
+  - 其他：`excludeCredentials`, `hints(浏览器端)`, `extensions`（常用：`credProps`, `largeBlob`, `prf`, `appidExclude(兼容U2F)`）
+
+- 登录 Authentication（`navigator.credentials.get()` / `generateAuthenticationOptions()`）
+
+  - 基础：`challenge`, `timeout`, `rpId`, `userVerification`
+  - 定位：`allowCredentials`
+  - 其他：`hints(浏览器端)`, `mediation(浏览器端Conditional UI)`, `extensions`（常用：`uvm`, `largeBlob`, `appid(兼容U2F)`）
+
+---
+
+## 一、注册 Registration 配置项
+
+### 1. 基础字段
+
+| 字段                                 | 可选值/类型                                        | 作用                                                                 | 建议                                                                     |
+| ------------------------------------ | -------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `rp.id`                              | 域名字符串（如 `example.com`）                     | **Relying Party ID**。**必须与站点有效父域匹配**，决定凭据的绑定域。 | 用你的主域名；本地开发用同源域。                                         |
+| `rp.name`                            | 文本                                               | 在系统提示里展示给用户看的"站点名"。                                 | 友好易识别，如"公司后台"。                                               |
+| `user.id`                            | `ArrayBuffer`/`Uint8Array`（**v11+ 推荐二进制**）  | 用户唯一 ID（不会显示给用户）。                                      | 用数据库主键编码为 `Uint8Array`。                                        |
+| `user.name`                          | 文本                                               | 用户名（可能显示给用户）。                                           | 用登录名/邮箱；唯一。                                                    |
+| `user.displayName`                   | 文本                                               | 美观显示名（一定会显示）。                                           | 用昵称/真实姓名。                                                        |
+| `challenge`                          | 随机字节                                           | 防重放挑战，**必须一次性使用**。                                     | 服务端生成并缓存（Redis）；**Base64url** 存储。                          |
+| `timeout`                            | 毫秒                                               | 超时。                                                               | 60000–120000ms，按体验权衡。                                             |
+| `attestation`（= `attestationType`） | `'none' \| 'indirect' \| 'direct' \| 'enterprise'` | 是否要设备证明（隐私/合规取舍）。                                    | **默认 `none`**；合规强要求才用 `direct/enterprise`。                    |
+| `pubKeyCredParams`                   | COSE 列表（如 `[{alg:-7,type:'public-key'}]`）     | 指定可接受算法。                                                     | **最少含 `-7`(ES256)**；为兼容可加 `-257`(RS256)；前瞻可加 `-8`(EdDSA)。 |
+
+> 在 **simplewebauthn v11+** 中，你常会看到把算法用更直观的 `supportedAlgorithmIDs: number[]` 来传（例如 `[-7, -257]`）。两者等价，服务端会转换为 `pubKeyCredParams`。
+
+### 2. 认证器选择器 `authenticatorSelection`
+
+| 子字段                    | 可选值                                       | 作用                                                          | 影响/陷阱                                                             | 推荐                                                 |
+| ------------------------- | -------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------- |
+| `residentKey`             | `'required' \| 'preferred' \| 'discouraged'` | 是否创建**可发现凭据**（也就是"**passkey**"：可免用户名）。   | `required` 会占用设备存储但带来一键直登；`discouraged` 不是 passkey。 | **`required`** 做 passkey 体验；保守用 `preferred`。 |
+| `userVerification`        | `'required' \| 'preferred' \| 'discouraged'` | 是否要求生物识别/PIN。                                        | `required` 更安全但可能多一步；`discouraged` 少见。                   | B2C：**`preferred`**；高敏后台：**`required`**。     |
+| `authenticatorAttachment` | `'platform' \| 'cross-platform'`             | 限定**平台认证器**（如手机/电脑内置）或**跨平台**（安全钥）。 | 限太死会掉成功率。                                                    | 一般**不指定**；或按场景选择。                       |
+| `requireResidentKey`      | `boolean`（**已过时**）                      | 旧字段，等价于 `residentKey` 早期语义。                       | 新实现请用 `residentKey`。                                            | 不再使用。                                           |
+
+### 3. 排他清单 `excludeCredentials`
+
+| 字段                 | 类型                                                              | 作用                                          | 建议                                               |
+| -------------------- | ----------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------- |
+| `excludeCredentials` | `{ type:'public-key', id: ArrayBuffer, transports?: string[] }[]` | 列出**不允许重复注册**的已有凭据（按 `id`）。 | 取用户已有的 credentialId 全部填上，避免重复创建。 |
+
+### 4. 浏览器"提示" `hints`（可选，前端）
+
+| 值                                                 | 作用                                            | 备注                           |
+| -------------------------------------------------- | ----------------------------------------------- | ------------------------------ |
+| `'security-key'`, `'client-device'`, `'hybrid'` 等 | 给浏览器一个**提示**，帮助选择认证器/传输方式。 | 不是所有浏览器都实现；可不填。 |
+
+### 5. 扩展 `extensions`（注册）
+
+> 扩展是"可选增强"。不同平台支持度不同，**启用前要允许降级**。
+
+| 扩展名                | 方向    | 可选值                                       | 作用                                                | 返回/副作用                                           | 建议                                   |
+| --------------------- | ------- | -------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------- | -------------------------------------- |
+| `credProps`           | reg     | `true/false`                                 | 要求返回**凭据属性**（是否为 resident key）。       | `clientExtensionResults.credProps = { rk?: boolean }` | **建议 `true`**，落库凭据类型。        |
+| `largeBlob`           | reg/get | `{ support: 'required' \| 'preferred' }`     | 支持**大对象存储**（绑定在凭据上）。                | 需要平台/设备支持；可用于小量用户数据。               | 如无强需求，默认不启或设 `preferred`。 |
+| `prf`（WebAuthn PRF） | reg/get | `{ eval?: {...}, evalByCredential?: {...} }` | 让认证器基于密钥派生伪随机值，做**对称派生**用途。  | 前沿能力，支持度逐步增长。                            | 高阶场景再用。                         |
+| `appidExclude`        | reg     | 旧 U2F 兼容                                  | 防止已在 U2F AppID 下注册的密钥在当前 rpId 再注册。 | 遗留兼容。                                            | 仅做历史迁移时用。                     |
+
+---
+
+## 二、登录 Authentication 配置项
+
+### 1. 基础字段
+
+| 字段               | 可选值/类型                                  | 作用                   | 建议                                             |
+| ------------------ | -------------------------------------------- | ---------------------- | ------------------------------------------------ |
+| `challenge`        | 随机字节                                     | 防重放挑战。           | 服务器生成并缓存（Redis）。                      |
+| `timeout`          | 毫秒                                         | 超时。                 | 60000–120000ms。                                 |
+| `rpId`             | 域名                                         | 与注册时相同的 RP ID。 | 填你站点主域。                                   |
+| `userVerification` | `'required' \| 'preferred' \| 'discouraged'` | 是否要求生物识别/PIN。 | B2C：**`preferred`**；高敏后台：**`required`**。 |
+
+### 2. 定位凭据 `allowCredentials`
+
+| 字段               | 类型                                                             | 作用                                                                 | 典型用法                                          |
+| ------------------ | ---------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
+| `allowCredentials` | `{ type:'public-key', id:ArrayBuffer, transports?: string[] }[]` | **白名单**方式，限定可用哪些凭据（常在"用户名已知"的传统登录流）。   | 用户名 → 查出该用户所有 credentialId → 全部填入。 |
+| （为空或不传）     | ——                                                               | 允许**可发现凭据**自由匹配（配合 Conditional UI 可"无用户名直登"）。 | **Passkey 体验**常用做法。                        |
+
+### 3. 浏览器端 UI 行为
+
+| 字段                                                                          | 值                                        | 作用                                                                                  | 备注                            |
+| ----------------------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------- |
+| `mediation`（在 `navigator.credentials.get()` 的 `publicKey` 旁边、同级传入） | `'conditional' \| 'required' \| 'silent'` | **Conditional UI** 关键：`'conditional'` 允许地址栏内直接弹出选择框，实现"一键直登"。 | 需 HTTPS + 满足浏览器启用条件。 |
+| `hints`                                                                       | 同注册                                    | 选择器提示                                                                            | 可省略。                        |
+
+### 4. 扩展 `extensions`（登录）
+
+| 扩展名      | 方向    | 作用                                                               | 返回                                  | 建议              |
+| ----------- | ------- | ------------------------------------------------------------------ | ------------------------------------- | ----------------- |
+| `uvm`       | get     | 请求返回 **User Verification Methods**（使用了何种生物识别/PIN）。 | `clientExtensionResults.uvm` 列出方法 | 可用于风控/审计。 |
+| `largeBlob` | reg/get | 同上                                                               | 同上                                  | 同上              |
+| `appid`     | get     | 兼容 U2F 的 AppID 登录                                             | 同上                                  | 仅历史迁移用。    |
+| `prf`       | get     | 同上                                                               | 同上                                  | 高阶用途再用。    |
+
+---
+
+## 三、simplewebauthn（v11+）与服务端路由要点
+
+> 你项目里已有：`/passkeys/register|login/(options|verify)`；挑战 **Base64url** 存 Redis；`passkey_credentials` 表存 `credential_id/public_key/counter`。
+
+### 1. 生成注册选项（server）
+
+常见字段（simplewebauthn 名称可能与原生略有不同）：
+
+- `rpID`, `rpName`
+- `userID: Uint8Array`, `userName`, `userDisplayName`
+- `supportedAlgorithmIDs: number[]` → 映射到 `pubKeyCredParams`
+- `attestationType: 'none' | 'indirect' | 'direct' | 'enterprise'`
+- `authenticatorSelection: { residentKey, userVerification, authenticatorAttachment? }`
+- `excludeCredentialIDs: Uint8Array[]`（封装后会变成 `excludeCredentials`）
+- `timeout`, `extensions`（如 `credProps: true`）
+
+**默认推荐（B2C/通用）：**
+
+```ts
+attestationType: 'none',
+supportedAlgorithmIDs: [-7, -257], // ES256 优先兼容 RS256
+authenticatorSelection: {
+  residentKey: 'required',        // 明确走 passkey
+  userVerification: 'preferred',  // 有则强校验，兼顾成功率
+  // authenticatorAttachment 不限定
+},
+extensions: { credProps: true },
+timeout: 120_000
+```
+
+### 2. 生成登录选项（server）
+
+- `rpID`, `timeout`, `userVerification`
+- `allowCredentialIDs?: Uint8Array[]`（有"已知用户流"用它；**passkey 直登**常为空）
+- 你也可以在响应中带标识，提示前端是否采用 **Conditional UI**。
+
+**默认推荐：**
+
+```ts
+userVerification: 'preferred',
+timeout: 120_000,
+// allowCredentialIDs 为空，鼓励可发现凭据 + Conditional UI
+```
+
+---
+
+## 四、常见组合场景与参数模板
+
+### A. 标准 Passkey（支持 Conditional UI）
+
+**注册（create）**
+
+- `attestation: 'none'`
+- `supportedAlgorithmIDs: [-7, -257]`
+- `authenticatorSelection.residentKey: 'required'`
+- `authenticatorSelection.userVerification: 'preferred'`
+- `extensions.credProps: true`
+
+**登录（get）**
+
+- `userVerification: 'preferred'`
+- `allowCredentials` **不传/空**
+- 浏览器端 `mediation: 'conditional'`（配合地址栏直登）
+
+### B. 高安全后台/企业管理台
+
+**注册**
+
+- `attestation: 'none' | 'direct'`（合规要求再上 `direct`）
+- `supportedAlgorithmIDs: [-7, -257]`
+- `residentKey: 'required'`
+- `userVerification: 'required'`
+- `extensions.credProps: true`
+
+**登录**
+
+- `userVerification: 'required'`
+- 已知用户流：填 `allowCredentials` 精确定位
+- 不强追求 Conditional UI
+
+### C. 兼容旧设备/历史 U2F
+
+- 算法包含 `-257`
+- 迁移阶段可能用到 `appid`/`appidExclude` 扩展（仅过渡）
+
+---
+
+## 五、易踩坑与实战建议
+
+1. **RP ID 与域名**：`rp.id` 必须是**当前站点的有效父域**（或相同域）。子域 ↔ 主域要规划好。
+2. **二进制 userID/credentialID**：simplewebauthn v11+ 推荐 **`Uint8Array`**；**持久化前做 base64url 编解码**。
+3. **挑战 challenge**：务必 **一次性**、**短期缓存**（Redis）并按 **base64url** 存。
+4. **计数器 counter**：验证成功后更新数据库的 `signCount`/`counter`，用于克隆检测。
+5. **算法集合**：至少包含 **ES256(-7)**；为兼容再加 **RS256(-257)**。
+6. **residentKey 与存储**：`required` 会在设备上保存可发现凭据，空间有限；建议允许用户管理/删除。
+7. **Conditional UI 条件**：HTTPS、正确 RP、支持的浏览器版本等；前端要传 `mediation:'conditional'`。
+8. **extensions 兼容**：`credProps` 安全开启；`largeBlob/prf/uvm` 按需，用前先检测支持与回退路径。
+9. **跨端同步**：平台 passkey（iCloud/Google Password Manager）可跨设备同步，但**RP ID 必须一致**。
+10. **合规与隐私**：`attestation!='none'` 需维护证书信任与合规评估，一般 B2C 不建议开启。
+
+---
+
+## 六、最小可用清单（可直接抄）
+
+**注册 options（服务端生成）**
+
+```ts
+{
+  rpID: 'example.com',
+  rpName: '示例站点',
+  userID: Uint8Array.from(...),     // 二进制
+  userName: 'alice',
+  userDisplayName: 'Alice',
+  supportedAlgorithmIDs: [-7, -257],
+  attestationType: 'none',
+  authenticatorSelection: {
+    residentKey: 'required',
+    userVerification: 'preferred'
+  },
+  extensions: { credProps: true },
+  timeout: 120_000
+}
+```
+
+**登录 options（服务端生成）**
+
+```ts
+{
+  rpID: 'example.com',
+  userVerification: 'preferred',
+  // allowCredentialIDs: [] // 留空以支持 passkey 直登
+  timeout: 120_000
+}
+```
+
+**浏览器端（登录）启用 Conditional UI（示例）**
+
+```ts
+const cred = await navigator.credentials.get({
+  publicKey: authenticationOptions,
+  // 关键：在同级位置（不是 publicKey 里）
+  mediation: "conditional",
+});
+```
+
+---
+
+## 结语
+
+以上就是 **Passkeys/WebAuthn 配置项的"全景图 + 默认建议"**。如果你把这些默认值落到当前项目，我可以按你仓库结构给出**最小改动的代码片段**（复杂逻辑行上加注释），直接对接你现有的 `/passkeys/*` 路由与 Redis/DB。
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[WebAuthn Passkeys：options 全字段长啥样？取值有哪些？（simplewebauthn v11+ 实战）]]></title>
         <id>https://herongdev.github.io/blog/posts/需求实现/登录鉴权/Passkeys：options</id>
         <link href="https://herongdev.github.io/blog/posts/需求实现/登录鉴权/Passkeys：options"/>
@@ -23288,10 +23687,144 @@ await generateAuthenticationOptions({
 ]]></content>
     </entry>
     <entry>
+        <title type="html"><![CDATA[WebAuthn 选项详解：attestationType / supportedAlgorithmIDs / authenticatorSelection / extensions.credProps]]></title>
+        <id>https://herongdev.github.io/blog/posts/需求实现/登录鉴权/WebAuthn 选项详解：attestationType-supportedAlgorithmIDs-authenticatorSelection-extensions.credProps</id>
+        <link href="https://herongdev.github.io/blog/posts/需求实现/登录鉴权/WebAuthn 选项详解：attestationType-supportedAlgorithmIDs-authenticatorSelection-extensions.credProps"/>
+        <updated>2025-09-19T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[
+## 场景
+
+你在注册时传了这段配置：
+
+```ts
+attestationType: 'none',
+supportedAlgorithmIDs: [-7], // 仅 ES256；如需 RS256 可再加 -257
+authenticatorSelection: {
+  residentKey: 'required',
+  userVerification: 'preferred',
+},
+extensions: { credProps: true },
+```
+
+下面把**作用**、**可选值**与**含义**逐项讲清楚，并给出常见取值建议。
+
+---
+
+## 1) `attestationType`
+
+**作用**：告诉浏览器/认证器，你希望拿到怎样的"证明这把公钥来自哪个厂商/设备"的**证明材料（Attestation）**。
+**可选值**（WebAuthn 标准/`simplewebauthn` 一致）：
+
+| 取值         | 含义                                                     | 典型用途                                    |
+| ------------ | -------------------------------------------------------- | ------------------------------------------- |
+| `none`       | 不要设备证明，只要公钥即可；最隐私、最通用。             | **推荐**给 B2C/通用站点（不校验设备来源）。 |
+| `indirect`   | 由平台挑选匿名化或中介的证明格式，可能给到有限厂商信息。 | 基本很少用。                                |
+| `direct`     | 要求直接的设备证明，便于校验厂商证书链。                 | 合规/高安全场景，需维护证书信任。           |
+| `enterprise` | 企业专用，可拿到可唯一识别设备的证明。                   | 需要设备可追溯的企业场景；通常需额外资质。  |
+
+> 你的取值：`'none'` → 省心、隐私友好、成功率高。
+
+---
+
+## 2) `supportedAlgorithmIDs`
+
+**作用**：指定**可接受的公钥算法**（COSE 算法 ID 列表）。浏览器会在这些里选一个创建公钥。
+**常见取值**（COSE ID → 算法）：
+
+| COSE ID | 算法                                      | 说明                                           |
+| ------- | ----------------------------------------- | ---------------------------------------------- |
+| `-7`    | **ES256**（ECDSA w/ SHA-256）             | **WebAuthn 强烈推荐/最普及**，跨平台兼容最好。 |
+| `-257`  | **RS256**（RSASSA-PKCS1-v1_5 w/ SHA-256） | 一些旧平台/安全钥匙需要；密钥体积更大。        |
+| `-8`    | **EdDSA**（常见 Ed25519）                 | 新趋势，部分平台/浏览器逐步支持。              |
+
+> 你的取值：`[-7]` → 仅 ES256。
+> **建议**：如需兼容老设备/Windows Hello 某些环境，可改为 `[-7, -257]`；若想前瞻支持，可加 `-8`（视目标平台而定）。
+
+---
+
+## 3) `authenticatorSelection`
+
+**作用**：约束要创建哪种类型的凭据/交互体验。
+
+### 3.1 `residentKey`
+
+是否创建**可发现凭据（Discoverable Credential / "本地居民密钥"）**，也就是通常说的**Passkey**（用户名可省略，靠设备里保存的账户标识来找回）。
+
+| 取值          | 含义                               | 体验影响                                                        |
+| ------------- | ---------------------------------- | --------------------------------------------------------------- |
+| `required`    | **必须**创建可发现凭据。           | 支持"无用户名登录"、**Conditional UI 一键直登**；占用设备存储。 |
+| `preferred`   | **尽量**创建；不行就退回不可发现。 | 成功率高，可能部分用户仍生成不可发现。                          |
+| `discouraged` | 不鼓励（通常就创建不可发现凭据）。 | 需要用户名 + 凭据句柄才能登录；非 passkey 体验。                |
+
+> 你的取值：`'required'` → 明确走 **Passkey** 路线（推荐做法）。
+
+### 3.2 `userVerification`
+
+是否要求**用户验证**（UV：指纹/人脸/PIN 等）。
+
+| 取值          | 含义                       | 体验影响                                 |
+| ------------- | -------------------------- | ---------------------------------------- |
+| `required`    | 必须进行 UV。              | **最安全**，一定会弹 biometrics/PIN。    |
+| `preferred`   | 能 UV 就做；没有也可继续。 | **折中**：有生物识别就用，没有也不阻塞。 |
+| `discouraged` | 不希望 UV。                | 免打扰，但安全性最低，少见于账号体系。   |
+
+> 你的取值：`'preferred'` → 让支持生物识别的设备走强校验，同时兼顾广泛兼容性。
+> **建议**：如果是**高敏/企业后台**，可改为 `'required'`。
+
+---
+
+## 4) `extensions: { credProps: true }`
+
+**作用**：启用 **Credential Properties 扩展**，让返回结果里带上**这把凭据是否为可发现凭据**等属性。
+**返回**：通常会得到 `clientExtensionResults.credProps = { rk?: boolean }`，其中：
+
+- `rk: true` → 表示**创建了可发现凭据**（resident key）。
+- `rk: false/缺失` → 不是可发现凭据，或平台未返回。
+
+> 你的取值：`credProps: true` → 便于**落库记录**这把凭据是否为 passkey、做后续风控或回显。
+
+---
+
+## 常见组合与建议
+
+- **通用 B2C / 技术社区登录**（首选）
+
+  ```ts
+  attestationType: 'none',
+  supportedAlgorithmIDs: [-7, -257], // ES256 优先，兼容 RS256
+  authenticatorSelection: { residentKey: 'required', userVerification: 'preferred' },
+  extensions: { credProps: true }
+  ```
+
+  - 目标：高成功率 + Passkey 体验 + 宽兼容。
+
+- **高安全后台/企业管理台**
+
+  ```ts
+  attestationType: 'none' | 'direct', // 视合规要求
+  supportedAlgorithmIDs: [-7, -257],
+  authenticatorSelection: { residentKey: 'required', userVerification: 'required' },
+  extensions: { credProps: true }
+  ```
+
+  - 目标：强制生物识别；如需设备可追溯再考虑 `direct/enterprise`（谨慎）。
+
+---
+
+## 小结（对应你的现配）
+
+- `attestationType: 'none'`：最省心、最隐私，推荐。
+- `supportedAlgorithmIDs: [-7]`：仅 ES256；为兼容面可加 `-257`（RS256），前瞻再加 `-8`（EdDSA）。
+- `residentKey: 'required'`：明确走 **Passkey/可发现凭据**，利于**无用户名登录**与**Conditional UI**。
+- `userVerification: 'preferred'`：有生物识别就启用，兼顾成功率与体验。
+- `credProps: true`：拿到 `rk` 标志，便于你在服务端做记录与策略。
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/需求实现/登录鉴权/WebAuthn「认证（navigator.credentials.get）」options]]></title>
         <id>https://herongdev.github.io/blog/posts/需求实现/登录鉴权/WebAuthn「认证（navigator.credentials.get）」options</id>
         <link href="https://herongdev.github.io/blog/posts/需求实现/登录鉴权/WebAuthn「认证（navigator.credentials.get）」options"/>
-        <updated>2025-09-18T02:41:29.103Z</updated>
+        <updated>2025-09-18T17:26:53.138Z</updated>
         <content type="html"><![CDATA[## 一、后端返回的 `PublicKeyCredentialRequestOptions`（认证阶段 options）
 
 这是浏览器发起 **get/assertion** 的必要参数对象。常见字段如下（都由**后端**生成与返回）：
@@ -23874,7 +24407,7 @@ await navigator.credentials.get({
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/需求实现/登录鉴权/区分类型来源]]></title>
         <id>https://herongdev.github.io/blog/posts/需求实现/登录鉴权/区分类型来源</id>
         <link href="https://herongdev.github.io/blog/posts/需求实现/登录鉴权/区分类型来源"/>
-        <updated>2025-09-18T02:41:29.105Z</updated>
+        <updated>2025-09-18T17:26:53.139Z</updated>
         <content type="html"><![CDATA[区分通行密钥的来源
 再次强调，开发者无需做出任何更改，即可使其通行密钥实现与 iCloud 钥匙串保持一致。Chrome 个人资料和 iCloud 钥匙串之间的 API 行为已经完全相同。
 
@@ -23931,7 +24464,7 @@ This does not replace FIDO's Metadata Service (MDS), which should continue to be
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/需求实现/登录鉴权/所有配置项 + 有效值 + 作用]]></title>
         <id>https://herongdev.github.io/blog/posts/需求实现/登录鉴权/所有配置项 + 有效值 + 作用</id>
         <link href="https://herongdev.github.io/blog/posts/需求实现/登录鉴权/所有配置项 + 有效值 + 作用"/>
-        <updated>2025-09-18T02:41:29.105Z</updated>
+        <updated>2025-09-18T17:26:53.139Z</updated>
         <content type="html"><![CDATA[太对路了——把“所有配置项 + 有效值 + 作用”讲清楚，前后端各怎么用，以及**如何判断注册来源是谷歌 / 苹果 / 微软**。下面一次性讲透，并给你几段**只需粘贴的最小改动**代码（遵循你“不整段贴全”的要求）。
 
 ---
@@ -25970,7 +26503,7 @@ if (
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/需求实现/登录鉴权/WebAuthn transports 的所有取值与含义（含新版 smart-card/mediation 放在 credentials.get 顶层到底干嘛]]></title>
         <id>https://herongdev.github.io/blog/posts/需求实现/登录鉴权/WebAuthn transports 的所有取值与含义（含新版 smart-card/mediation 放在 credentials.get 顶层到底干嘛</id>
         <link href="https://herongdev.github.io/blog/posts/需求实现/登录鉴权/WebAuthn transports 的所有取值与含义（含新版 smart-card/mediation 放在 credentials.get 顶层到底干嘛"/>
-        <updated>2025-09-18T02:41:29.107Z</updated>
+        <updated>2025-09-18T17:26:53.141Z</updated>
         <content type="html"><![CDATA[## 1）`mediation` 放在 `credentials.get` 顶层到底干嘛？
 
 `navigator.credentials.get({ publicKey, mediation })` 的 `mediation` 是**取凭据的“介入方式”**，跟 WebAuthn 的 `publicKey` 选项是两块：
@@ -26509,7 +27042,7 @@ return {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理]]></title>
         <id>https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理</id>
         <link href="https://herongdev.github.io/blog/posts/前端/算法技巧/高频行性合批/批量处理/合并处理"/>
-        <updated>2025-09-18T02:41:29.108Z</updated>
+        <updated>2025-09-18T17:26:53.142Z</updated>
         <content type="html"><![CDATA[```ts
 高频行情合批（如果需要）
 // 在复杂逻辑上一行加注释：行情高频更新时合批后再换数组引用，降低重算与渲染频次
