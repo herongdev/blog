@@ -1,17 +1,7 @@
 ---
-
 title: “只绑定了苹果，但在 Windows 的 Chrome 登录怎么办？”——跨设备 Passkey 的正确处理方式（含最小改动代码）
 date: 2025-09-17
 tags:
-
-* WebAuthn
-* Passkeys
-* 混合传输
-* Conditional UI
-  categories:
-* 安全与登录
-  description: 回答“把所有已绑定通行密钥都给浏览器让它自动弹出可用的是否可行？在 Windows Chrome 上只有苹果的 passkey 时如何处理？”并给出最小改动代码与业界做法。
-
 ---
 
 ## 快速回答
