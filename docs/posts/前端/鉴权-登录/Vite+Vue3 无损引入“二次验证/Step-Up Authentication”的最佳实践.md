@@ -1,19 +1,7 @@
 ---
-
 title: Vite+Vue3 无损引入“二次验证/Step-Up Authentication”的最佳实践
 date: 2025-09-13
 tags:
-
-* 安全
-* Step-up Authentication
-* Vite
-* Vue3
-* WebAuthn/Passkeys
-* 设计模式
-  categories:
-* 架构与工程实践
-  summary: 在现有业务基础上“无损”插入二次验证（短信/邮箱/TOTP/通行密钥等）的方法论与最小改造代码：拦截器、动作包装器、指令、路由 meta、可插拔验证器、与后端约定、TTL 与重认证、审计与灰度发布。
-
 ---
 
 ## 为什么是“Step-Up”，而不是到处塞 MFA 弹窗？
