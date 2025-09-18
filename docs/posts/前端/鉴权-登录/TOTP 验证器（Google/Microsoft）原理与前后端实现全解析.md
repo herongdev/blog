@@ -1,19 +1,7 @@
 ---
-
 title: TOTP 验证器（Google/Microsoft）原理与前后端实现全解析
 date: 2025-09-12
-tags:
-
-* 2FA
-* MFA
-* TOTP
-* HOTP
-* 安全
-* 前端
-* 后端
-  categories:
-* 安全工程
-
+tags: [2fa, mfa, totp, hotp]
 ---
 
 ## TL;DR
