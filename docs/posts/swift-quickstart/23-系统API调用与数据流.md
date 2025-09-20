@@ -76,7 +76,7 @@ let request = provider.createCredentialRegistrationRequest(
 **方法作用**：
 
 - 创建一个 **注册请求**，用于生成新的 Passkey
-- 将服务器提供的参数转换为系统可识别的格式
+- 将后端服务器提供的参数转换为系统可识别的格式
 
 **参数详解**：
 
