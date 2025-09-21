@@ -1,15 +1,7 @@
 ---
-
-title: Intl.Segmenter（granularity: 'grapheme'）是什么？能做什么？怎么用？
+title: Intl.Segmenter是什么？能做什么？怎么用？
 date: 2025-09-19
-tags:
-
-* JavaScript
-* 国际化
-* i18n
-* Unicode
-* 前端基础
-
+tags: [JavaScript, 国际化, i18n, Unicode, 前端基础]
 ---
 
 # 概览

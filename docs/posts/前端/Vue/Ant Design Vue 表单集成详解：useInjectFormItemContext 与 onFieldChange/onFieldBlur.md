@@ -1,14 +1,7 @@
 ---
-
 title: Ant Design Vue 表单集成详解：useInjectFormItemContext 与 onFieldChange/onFieldBlur
 date: 2025-09-19
-tags:
-
-* Vue3
-* ant-design-vue
-* Form
-* 自定义组件
-
+tags: [Vue3, ant-design-vue, Form, 自定义组件]
 ---
 
 ## 这俩是干嘛用的？

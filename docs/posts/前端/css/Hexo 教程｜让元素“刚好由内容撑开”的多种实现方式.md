@@ -1,14 +1,7 @@
 ---
-
 title: Hexo 教程｜让元素“刚好由内容撑开”的多种实现方式
 date: 2025-09-20
-tags:
-
-* Hexo
-* CSS
-* TailwindCSS
-* 布局
-
+tags: [Hexo, CSS, TailwindCSS, 布局]
 ---
 
 ## 总体思路
