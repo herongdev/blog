@@ -1,0 +1,18 @@
+server {
+  listen 80;
+  server_name 8.138.2.12;   
+
+  root /var/www/herongsite;  # ← GitHub Actions rsync 到这里
+  index index.html;
+
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+
+  # 静态资源缓存与日志优化
+  location ~* \.(?:css|js|mjs|png|jpg|jpeg|gif|webp|svg|ico|woff2?)$ {
+    expires 7d;
+    access_log off;
+    add_header Cache-Control "public, max-age=604800, immutable";
+  }
+}

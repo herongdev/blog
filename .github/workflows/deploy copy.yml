@@ -49,18 +49,6 @@ jobs:
             npm run build
           fi
 
-      - name: Deploy to VPS (rsync over SSH)
-        # 同步构建产物到云服务器目录（与 Nginx root 对应）
-        uses: easingthemes/ssh-deploy@v5
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }} # CI 专用私钥（部署专用）
-          REMOTE_HOST: ${{ secrets.SSH_HOST }} # 服务器 IP/域名
-          REMOTE_PORT: ${{ secrets.SSH_PORT }} # 端口（默认 22）
-          REMOTE_USER: ${{ secrets.SSH_USER }} # 例如 deploy
-          ARGS: "-avzr --delete" # 删除远端多余文件，保持镜像
-          SOURCE: "docs/.vitepress/dist/" # 构建输出目录（与你项目一致）
-          TARGET: "/var/www/herongsite/" # 服务器目标目录（与 Nginx root 一致）
-
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
