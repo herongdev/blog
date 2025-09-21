@@ -1,15 +1,7 @@
 ---
-
 title: 在 Vite+Vue3 中实现 `v-smart-name` 指令：多语言昵称稳定展示的最佳实践
 date: 2025-09-19
-tags:
-
-* Vue3
-* Vite
-* i18n
-* 指令
-* UI/UX
-
+tags: [Vue3, Vite, i18n, 指令, UI/UX]
 ---
 
 # 方案总览
