@@ -53,6 +53,19 @@ jobs:
             npm run build
           fi
 
+      # ---------- 部署到 VPS ----------
+      - name: Deploy to VPS (rsync over SSH)
+        uses: easingthemes/ssh-deploy@v5.1.0
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }} # CI 专用私钥（与服务器 deploy 用户的公钥配对）
+          REMOTE_HOST: ${{ secrets.SSH_HOST }} # 服务器 IP/域名
+          REMOTE_PORT: ${{ secrets.SSH_PORT }} # 端口（默认 22）
+          REMOTE_USER: ${{ secrets.SSH_USER }} # 例如 deploy
+          SSH_CMD_ARGS: "-o StrictHostKeyChecking=no" # 首次连接跳过指纹确认
+          ARGS: "-avzr --delete"
+          SOURCE: "docs/.vitepress/dist-vps/" # 使用 VPS 版本产物
+          TARGET: "/var/www/herongsite/" # 与 Nginx root 一致
+
       # ---------- Build #2: GitHub Pages 版本（子路径 /blog/） ----------
       - name: Build for GitHub Pages (base=/blog/)
         env:
@@ -71,19 +84,6 @@ jobs:
           else
             npm run build
           fi
-
-      # ---------- 部署到 VPS ----------
-      - name: Deploy to VPS (rsync over SSH)
-        uses: easingthemes/ssh-deploy@v5.1.0
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }} # CI 专用私钥（与服务器 deploy 用户的公钥配对）
-          REMOTE_HOST: ${{ secrets.SSH_HOST }} # 服务器 IP/域名
-          REMOTE_PORT: ${{ secrets.SSH_PORT }} # 端口（默认 22）
-          REMOTE_USER: ${{ secrets.SSH_USER }} # 例如 deploy
-          SSH_CMD_ARGS: "-o StrictHostKeyChecking=no" # 首次连接跳过指纹确认
-          ARGS: "-avzr --delete"
-          SOURCE: "docs/.vitepress/dist-vps/" # 使用 VPS 版本产物
-          TARGET: "/var/www/herongsite/" # 与 Nginx root 一致
 
       # ---------- 部署到 GitHub Pages ----------
       - name: Deploy to gh-pages
