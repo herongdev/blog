@@ -109,6 +109,19 @@ if (GA_ID) {
   ]);
 }
 
+// 复杂逻辑：CI 构建时打印 base/outDir，直接在 Actions 日志里可见
+if (process.env.CI) {
+  console.log(
+    "[VitePress]",
+    "BASE=",
+    BASE,
+    "OUT_DIR=",
+    OUT_DIR,
+    "cwd=",
+    process.cwd()
+  );
+}
+
 export default {
   lang: "zh-CN",
   title: "我的博客",
