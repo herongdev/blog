@@ -51,7 +51,7 @@ jobs:
 
       - name: Deploy to VPS (rsync over SSH)
         # 同步构建产物到云服务器目录（与 Nginx root 对应）
-        uses: easingthemes/ssh-deploy@v5
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }} # CI 专用私钥（部署专用）
           REMOTE_HOST: ${{ secrets.SSH_HOST }} # 服务器 IP/域名
