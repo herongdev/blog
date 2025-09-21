@@ -1,4 +1,3 @@
-// 避免直接导入 ESM-only 的 `vitepress`，以兼容配置打包加载
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
@@ -9,6 +8,7 @@ const UMAMI_SRC = process.env.UMAMI_SRC || "";
 const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || "";
 const PLAUSIBLE_DOMAIN = process.env.PLAUSIBLE_DOMAIN || "";
 const GA_ID = process.env.GA_ID || "";
+const OUT_DIR = process.env.OUT_DIR || "./.vitepress/dist";
 
 const HEAD_LINKS: any[] = [
   [
@@ -115,6 +115,7 @@ export default {
   description: "记录、积累人气、可被搜索引擎良好收录的个人博客",
   lastUpdated: true,
   cleanUrls: true,
+  outDir: OUT_DIR,
   base: BASE.endsWith("/") ? BASE : `${BASE}/`,
   sitemap: { hostname: SITE_HOSTNAME },
   ignoreDeadLinks: true,
