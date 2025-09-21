@@ -38,7 +38,7 @@ jobs:
       - name: Build for VPS (base=/)
         env:
           BASE: /
-          OUT_DIR: docs/.vitepress/dist-vps
+          OUT_DIR: .vitepress/dist-vps
           SITE_URL: http://herong.site
           UMAMI_SRC: ${{ secrets.UMAMI_SRC }}
           UMAMI_WEBSITE_ID: ${{ secrets.UMAMI_WEBSITE_ID }}
@@ -70,7 +70,7 @@ jobs:
       - name: Build for GitHub Pages (base=/blog/)
         env:
           BASE: /blog/
-          OUT_DIR: docs/.vitepress/dist-gh
+          OUT_DIR: .vitepress/dist-gh
           SITE_URL: https://herongdev.github.io/blog
           UMAMI_SRC: ${{ secrets.UMAMI_SRC }}
           UMAMI_WEBSITE_ID: ${{ secrets.UMAMI_WEBSITE_ID }}
