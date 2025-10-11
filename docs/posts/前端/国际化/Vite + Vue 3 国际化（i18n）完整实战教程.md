@@ -15,32 +15,6 @@ tags:
 
 在 Vite + Vue 3 项目中实现国际化（i18n）可以使用 `vue-i18n` 库。本文将从零开始，详细讲解如何配置 Vue I18n、组织语言资源、实现语言切换，以及在组件中正确使用翻译功能。
 
-1. 创建并配置 Vue I18n 实例
-   - 在 main.ts 中使用 createI18n 创建实例，传入必要的配置选项（如 locale, messages, datetimeFormats, numberFormats）。
-   - 创建实例后，同时要修改：
-     § 修改 i18n.global.locale 或 i18n.global.locale.value 的值
-     § axios 请求头语言，
-     § html5 的 lang 语言
-   - 推荐使用组合式 API 配置（legacy: false），并根据需要启用 globalInjection: true 以在模板中使用 $t 等全局方法。
-2. 组织本地化资源
-   - 将各语言的 JSON 文件放在 src/locales 目录下。
-   - 使用 import.meta.glob 动态导入语言文件，并生成支持的语言列表（SUPPORT_LOCALES）。
-   - 所以，语言切换器下拉中的选项多少是由 src/locales 下有多少个文件决定的；
-   - 同时，我们可以在相应的语言文件中导出语言的标签，也就是语言选择下拉时显示的文字内容；
-3. 注册 Vue I18n 实例到 Vue 应用
-   - 在 main.ts 中通过 app.use(i18n) 将 i18n 实例挂载到 Vue 应用。
-4. 在 Vue 组件中使用翻译
-   - 模板中：
-     § 如果启用了 globalInjection: true，可以直接使用 $t('key') 进行翻译。
-   - 组合式 API 中：
-     § 使用 useI18n 获取 t, d, n 等函数，在 setup 函数中使用这些函数进行翻译。
-5. 实现语言切换与动态加载
-   - 使用 import.meta.glob 动态扫描 src/locales 目录下的语言文件。
-   - 在语言切换组件（如 LanguageSwitcher.vue）中，实现动态加载语言文件并设置当前语言。
-6. 自定义语言标签
-   - 创建一个映射表（如 LOCALE_LABELS），将语言代码映射到用户友好的标签（如 'en-US' 映射为 'English (US)'）。
-   - 在语言切换组件中使用这个映射表来展示下拉列表。
-
 ---
 
 ## 一、安装依赖
