@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://example.com</id>
-    <title>我的博客</title>
+    <title>我的技术分享</title>
     <updated>2025-09-08T15:27:12.466Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://example.com"/>
     <link rel="self" href="https://example.com/atom.xml"/>
-    <subtitle>个人博客 RSS</subtitle>
+    <subtitle>个人技术分享 RSS</subtitle>
     <icon>https://example.com/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[什么是 `AbortController`？]]></title>
@@ -626,8 +626,8 @@ More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
     </entry>
     <entry>
         <title type="html"><![CDATA[Hexo 千篇文章的“分目录存储 + 目录树导航”实战（含 URL、分类、脚手架）]]></title>
-        <id>https://example.com/posts/hexo博客分类分目录组织</id>
-        <link href="https://example.com/posts/hexo博客分类分目录组织"/>
+        <id>https://example.com/posts/hexo技术分享分类分目录组织</id>
+        <link href="https://example.com/posts/hexo技术分享分类分目录组织"/>
         <updated>2025-09-04T00:00:00.000Z</updated>
         <content type="html"><![CDATA[
 > 目标：当文章**成千上万**时，既能在磁盘上**分目录管理**，又能在站点里以**目录树（分类层级）**浏览，并让 **URL 跟随分类层级**，同时保持 GitHub Project Pages 的子路径（`/blog/`）不乱。
@@ -8129,9 +8129,9 @@ npx source-map-explorer "dist/assets/*.js" --html dist/sme.html
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[使用 hexo 在 github 部署个人博客]]></title>
-        <id>https://example.com/posts/使用-hexo-在-github-部署个人博客</id>
-        <link href="https://example.com/posts/使用-hexo-在-github-部署个人博客"/>
+        <title type="html"><![CDATA[使用 hexo 在 github 部署个人技术分享]]></title>
+        <id>https://example.com/posts/使用-hexo-在-github-部署个人技术分享</id>
+        <link href="https://example.com/posts/使用-hexo-在-github-部署个人技术分享"/>
         <updated>2025-09-04T18:04:44.000Z</updated>
         <content type="html"><![CDATA[
 # 整体实现思路

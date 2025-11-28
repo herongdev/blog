@@ -124,8 +124,8 @@ if (process.env.CI) {
 
 export default {
   lang: "zh-CN",
-  title: "我的博客",
-  description: "记录、积累人气、可被搜索引擎良好收录的个人博客",
+  title: "我的技术分享",
+  description: "记录、积累人气、可被搜索引擎良好收录的个人技术分享",
   lastUpdated: true,
   cleanUrls: true,
   outDir: OUT_DIR,
