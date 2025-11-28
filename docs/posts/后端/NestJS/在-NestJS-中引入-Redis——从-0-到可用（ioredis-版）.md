@@ -1,23 +1,15 @@
 ---
 title: 在 NestJS 中引入 Redis——从 0 到可用（ioredis 版）
-date: 2025-09-07 20:40:23
-tags:
----
-
----
-
-title: 在 NestJS 中引入 Redis——从 0 到可用（ioredis 版）
 date: 2025-09-07
 tags:
+  - NestJS
+  - Redis
+  - ioredis
+  - 教程
 
-- NestJS
-- Redis
-- ioredis
-- 教程
-  categories:
-- 后端
-  description: 手把手带你在 NestJS 中集成 Redis（基于 ioredis），涵盖安装、配置、Provider、全局模块封装、业务实践（限流/一次性令牌）、Docker、本地调试与常见报错排查。
-
+categories:
+  - 后端
+description: 手把手带你在 NestJS 中集成 Redis（基于 ioredis），涵盖安装、配置、Provider、全局模块封装、业务实践（限流/一次性令牌）、Docker、本地调试与常见报错排查。
 ---
 
 # 目标与适用读者

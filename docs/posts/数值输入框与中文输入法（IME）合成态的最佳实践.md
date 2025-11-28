@@ -7,10 +7,10 @@ tags: [Vue3, IME, 数值输入框, CompositionEvent, 可用性, 精度]
 
 ## 结论（TL;DR）
 
-* **合成中（isComposing=true）必须忽略“数值语义”的处理**：不做解析、格式化、校验、步进；只把用户看到的**原始字符串**放进 `formattedValue`。
-* **在 `compositionend`（以及紧随其后的一次 `input`/`beforeinput`）再统一“落地”**：一次性解析→跑校验流水线→格式化→同步到 UI。
-* **交互键位与滚轮**：合成中应全部失效（或自动先 finalize 再执行），避免抢占输入法候选框的键盘事件。
-* **实现要点**：同时依赖事件的 `InputEvent.isComposing` **与** 本地 `composing` 标记，处理不同浏览器/输入法的差异序列。
+- **合成中（isComposing=true）必须忽略“数值语义”的处理**：不做解析、格式化、校验、步进；只把用户看到的**原始字符串**放进 `formattedValue`。
+- **在 `compositionend`（以及紧随其后的一次 `input`/`beforeinput`）再统一“落地”**：一次性解析→跑校验流水线→格式化→同步到 UI。
+- **交互键位与滚轮**：合成中应全部失效（或自动先 finalize 再执行），避免抢占输入法候选框的键盘事件。
+- **实现要点**：同时依赖事件的 `InputEvent.isComposing` **与** 本地 `composing` 标记，处理不同浏览器/输入法的差异序列。
 
 ---
 

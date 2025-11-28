@@ -14,7 +14,7 @@ outline: [2,3]
   - NestJS
 - Web-API 与推送
   - Web Push、设备标识（OAID、ID Kit）
-- 平台与博客
+- 平台与技术分享
   - Hexo 与部署
 - 需求实现
   - 登录鉴权、socket 等

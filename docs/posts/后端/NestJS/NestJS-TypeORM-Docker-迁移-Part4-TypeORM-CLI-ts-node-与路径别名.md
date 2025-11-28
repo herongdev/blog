@@ -8,9 +8,10 @@ tags:
 - TypeORM
 - ts-node
 - Docker
-  categories:
+
+categories:
 - 后端
-  description: 正确使用 TypeORM CLI（兼容当前版本），注入 ts-node 与 tsconfig-paths，避免严格编译阻断迁移。
+description: 正确使用 TypeORM CLI（兼容当前版本），注入 ts-node 与 tsconfig-paths，避免严格编译阻断迁移。
 
 ---
 

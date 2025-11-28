@@ -1,7 +1,7 @@
 ---
-title: 使用 hexo 在 github 部署个人博客
+title: 使用 hexo 在 github 部署个人技术分享
 date: 2025-09-04 18:04:44
-tags: [Hexo, GitHub Pages, 博客]
+tags: [Hexo, GitHub Pages, 技术分享]
 ---
 
 # 整体实现思路

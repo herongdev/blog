@@ -3,7 +3,7 @@ layout: home
 title: 首页
 titleTemplate: false
 hero:
-  name: 我的博客
+  name: 我的技术分享
   text: 记录 · 分享 · 积累人气
   tagline: 基于 VitePress，内置本地搜索、可扩展 RSS 与统计
   actions:
@@ -28,4 +28,4 @@ features:
     details: 课程/训练营、广告与赞助、Newsletter 与社群
 ---
 
-欢迎来到我的博客！
+欢迎来到我的技术分享！

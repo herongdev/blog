@@ -1,16 +1,9 @@
 ---
-
 title: ArkTS/鸿蒙下用 @ohos.net.http 流式实现 SSE（requestInStream + dataReceive）最小改动
 date: 2025-10-15
-tags:
-
-* ArkTS
-* HarmonyOS
-* SSE
-* Network Kit
-* HTTP
-  categories: 开发笔记
-
+tags: [ArkTS, 鸿蒙, SSE, Network Kit, HTTP]
+categories:
+  - 开发笔记
 ---
 
 你说得对：**在 ArkTS/鸿蒙里直接用浏览器的 `fetch`/`EventSource` 并不合适**。官方推荐用 **`@ohos.net.http`**（Network Kit / RCP 能力），并且**做流式处理要用 `requestInStream()` + 事件回调**（`dataReceive`、`dataEnd` 等）。下面是我基于**官方文档**给出的结论与最小改动示例（只给关键代码片段，复杂逻辑上一行注释）。

@@ -8,9 +8,10 @@ tags:
 - NestJS
 - TypeORM
 - MySQL
-  categories:
+
+categories:
 - 后端
-  description: 在容器启动阶段可靠等待 DB，并用兼容参数禁用 TLS 验证，避免本地/自签证书报错。
+description: 在容器启动阶段可靠等待 DB，并用兼容参数禁用 TLS 验证，避免本地/自签证书报错。
 
 ---
 

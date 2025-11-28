@@ -9,9 +9,10 @@ tags:
 - TypeORM
 - MySQL
 - ts-node
-  categories:
+
+categories:
 - 后端
-  description: 迁移长期不生效的根因与一次性修复要点，提供后续文章导航。
+description: 迁移长期不生效的根因与一次性修复要点，提供后续文章导航。
 
 ---
 

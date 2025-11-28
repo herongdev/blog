@@ -1,7 +1,7 @@
 ---
-title: 用 VitePress 从零搭建个人博客（含 GitHub Pages 发布）
+title: 用 VitePress 从零搭建个人技术分享（含 GitHub Pages 发布）
 description: 一步步完成初始化、写作、构建、RSS、以及 GitHub Pages 自动发布
-tags: [VitePress, 博客, GitHub Pages]
+tags: [VitePress, 技术分享, GitHub Pages]
 date: 2025-09-08
 ---
 
@@ -26,7 +26,7 @@ npm i -D vitepress
 npx vitepress init # 如未安装可用：npm create vitepress@latest
 ```
 
-选择 “Blog” 模板或空模板均可。本仓库采用 `docs` 作为内容根目录。
+选择 “技术分享” 模板或空模板均可。本仓库采用 `docs` 作为内容根目录。
 
 开发预览：
 
@@ -39,7 +39,7 @@ npm run docs:dev
 ```txt
 docs/
   index.md                 # 首页（可用 hero 布局）
-  posts/                   # 博文目录
+  posts/                   # 技术分享目录
     hello-world.md         # 你的第一篇文章（本页）
   .vitepress/
     config.ts              # 站点配置
@@ -57,8 +57,8 @@ const SITE_HOSTNAME = process.env.SITE_URL || "https://example.com";
 
 export default {
   lang: "zh-CN",
-  title: "我的博客",
-  description: "记录、积累人气、可被搜索引擎良好收录的个人博客",
+  title: "我的技术分享",
+  description: "记录、积累人气、可被搜索引擎良好收录的个人技术分享",
   base: BASE.endsWith("/") ? BASE : `${BASE}/`,
   sitemap: { hostname: SITE_HOSTNAME },
   themeConfig: {

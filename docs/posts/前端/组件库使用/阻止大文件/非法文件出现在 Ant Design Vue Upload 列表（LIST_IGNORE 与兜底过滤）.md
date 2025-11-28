@@ -1,8 +1,8 @@
 ---
-
 title: 阻止大文件/非法文件出现在 Ant Design Vue Upload 列表（LIST_IGNORE 与兜底过滤）
 date: 2025-10-24
-categories:
+categories: []
+---
 
 # 背景问题
 

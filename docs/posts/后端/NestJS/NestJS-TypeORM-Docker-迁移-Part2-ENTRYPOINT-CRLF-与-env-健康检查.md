@@ -1,17 +1,15 @@
 ---
-
 title: NestJS + TypeORM + Docker 迁移（Part 2）— ENTRYPOINT、CRLF 与 env/健康检查
 date: 2025-11-17
 tags:
+  - Docker
+  - NestJS
+  - TypeORM
+  - MySQL
 
-- Docker
-- NestJS
-- TypeORM
-- MySQL
-  categories:
-- 后端
-  description: 统一入口脚本到镜像、修复 CRLF、正确注入 env 与健康检查，保证容器自启动迁移。
-
+categories:
+  - 后端
+description: 统一入口脚本到镜像、修复 CRLF、正确注入 env 与健康检查，保证容器自启动迁移。
 ---
 
 ## 症状与根因

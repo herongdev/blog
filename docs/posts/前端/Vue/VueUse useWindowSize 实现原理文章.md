@@ -1,7 +1,7 @@
-我来为你解析 `@vueuse/core` 中 `useWindowSize` 的实现原理，以 hexo 博客的方式呈现：
+我来为你解析 `@vueuse/core` 中 `useWindowSize` 的实现原理，以 hexo 技术分享的方式呈现：
 Ran tool
 Ran tool
-基于我的了解和搜索结果，让我为你创建一篇关于 VueUse useWindowSize 实现原理的 Hexo 风格博客文章：
+基于我的了解和搜索结果，让我为你创建一篇关于 VueUse useWindowSize 实现原理的 Hexo 风格技术分享文章：
 
 ---
 

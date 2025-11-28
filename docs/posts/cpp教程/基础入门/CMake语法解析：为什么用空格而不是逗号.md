@@ -5,7 +5,7 @@ tags:
   - CMake
   - 语法
   - 初学者
-description: "深入理解 CMake 的语法规则：为什么用空格分隔参数而不是逗号？CMake 的特殊"方言"详解。"
+description: "深入理解 CMake 的语法规则：为什么用空格分隔参数而不是逗号？CMake 的特殊"
 ---
 
 # CMake 语法解析：为什么用空格而不是逗号？

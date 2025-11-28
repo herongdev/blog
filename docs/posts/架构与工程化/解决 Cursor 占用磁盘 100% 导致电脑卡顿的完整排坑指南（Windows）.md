@@ -1,19 +1,7 @@
 ---
-
 title: 解决 Cursor 占用磁盘 100% 导致电脑卡顿的完整排坑指南（Windows）
 date: 2025-10-22
 categories:
-
-* 开发环境
-  tags:
-* Cursor
-* VSCode
-* Windows
-* SSD
-* 性能优化
-  toc: true
-  description: 当使用 Cursor 时，任务管理器显示 C 盘“活动时间 100%”、读写速率仅几 MB/s、平均响应 300ms+。本文给出可立即落地的分步方案：找元凶、排除杀毒与搜索索引、限制编辑器索引与文件监控、完善 .cursorignore、清理与维护 SSD，并附完整可复制的脚本与配置。
-
 ---
 
 ## 一、现象与结论

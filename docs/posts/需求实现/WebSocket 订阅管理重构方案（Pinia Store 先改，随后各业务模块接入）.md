@@ -4,10 +4,10 @@ title: WebSocket 订阅管理重构方案（Pinia Store 先改，随后各业务
 date: 2025-09-30
 tags:
 
-* Vue3
-* Pinia
-* WebSocket
-* 实时行情
+- Vue3
+- Pinia
+- WebSocket
+- 实时行情
 
 ---
 

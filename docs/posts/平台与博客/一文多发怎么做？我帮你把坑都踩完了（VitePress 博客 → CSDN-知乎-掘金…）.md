@@ -1,7 +1,7 @@
 ---
-title: 一文多发怎么做？我帮你把坑都踩完了（VitePress 博客 → CSDN/知乎/掘金…）
+title: 一文多发怎么做？我帮你把坑都踩完了（VitePress 技术分享 → CSDN/知乎/掘金…）
 date: 2025-09-19
-tags: [内容分发, 自动化, 博客运营, VitePress]
+tags: [内容分发, 自动化, 技术分享运营, VitePress]
 ---
 
 ## TL;DR
@@ -45,7 +45,7 @@ tags: [内容分发, 自动化, 博客运营, VitePress]
 
 **mdnice（墨滴）**：Markdown → 多平台友好排版，一键复制到 **公众号/知乎/掘金/博客园/CSDN** 等。
 
-- 你仍然写一次 Markdown，但发布时只需：打开 mdnice → 选择平台模板 → 复制粘贴过去。适合对"排版一致性"和"所见即所得"有要求的技术博客。([product.mdnice.com][3])
+- 你仍然写一次 Markdown，但发布时只需：打开 mdnice → 选择平台模板 → 复制粘贴过去。适合对"排版一致性"和"所见即所得"有要求的技术分享。([product.mdnice.com][3])
 - 可与 Wechatsync 组合：mdnice 解决格式，Wechatsync 负责把整理好的文稿推到多个站点。([微信公众号同步助手][11])
 
 ---
@@ -117,10 +117,10 @@ A：**Wechatsync** 支持"任意网页提取正文并同步"，也支持 Markdow
 [2]: https://artipub.github.io/artipub/?utm_source=chatgpt.com "artipub | VitePress"
 [3]: https://product.mdnice.com/?utm_source=chatgpt.com "墨滴软件-mdnice"
 [4]: https://github.com/wechatsync/Wechatsync?utm_source=chatgpt.com "wechatsync/Wechatsync: 一键同步文章到多个内容平台 ..."
-[5]: https://blog.csdn.net/Fx_demon/article/details/145961214?utm_source=chatgpt.com "如何将文章一键发布到CSDN、 微信公众号等博客的详细方案"
+[5]: https://blog.csdn.net/Fx_demon/article/details/145961214?utm_source=chatgpt.com "如何将文章一键发布到CSDN、 微信公众号等技术分享的详细方案"
 [6]: https://www.cnblogs.com/leovany/p/17691019.html?utm_source=chatgpt.com "一键发布多平台方案- Leovany"
-[7]: https://blog.csdn.net/qq_45495857/article/details/106206239?utm_source=chatgpt.com "OpenWrite(博客群发平台)到底好不好用，有什么缺点？ 原创"
+[7]: https://blog.csdn.net/qq_45495857/article/details/106206239?utm_source=chatgpt.com "OpenWrite(技术分享群发平台)到底好不好用，有什么缺点？ 原创"
 [8]: https://blog.csdn.net/qq_43664361/article/details/142516870?utm_source=chatgpt.com "推荐一个一键多平台发布文章的工具_小明来客"
 [9]: https://blog.csdn.net/juemuren444/article/details/104717386?utm_source=chatgpt.com "一文多发神器--ArtiPub&OpenWrite 原创"
-[10]: https://github.com/ddean2009/blog-auto-publishing-tools?utm_source=chatgpt.com "ddean2009/blog-auto-publishing-tools: 博客自动发布工具"
+[10]: https://github.com/ddean2009/blog-auto-publishing-tools?utm_source=chatgpt.com "ddean2009/blog-auto-publishing-tools: 技术分享自动发布工具"
 [11]: https://www.wechatsync.com/?utm_source=chatgpt.com "微信公众号同步助手- 公众号文章多平台同步Typora Markdown ..."

@@ -4,12 +4,12 @@ title: UTS 插件获取「唯一且稳定」设备标识的最新可行方案（
 date: 2025-09-11
 tags:
 
-* UTS插件
-* 设备标识
-* OAID
-* IDFV
-* App Set ID
-* Keychain
+- UTS插件
+- 设备标识
+- OAID
+- IDFV
+- App Set ID
+- Keychain
 
 ---
 
