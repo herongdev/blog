@@ -4,10 +4,10 @@ title: 自动上传校验在“100% 但仍 uploading”时不应报错：两种�
 date: 2025-09-28
 tags:
 
-* Ant Design
-* Upload
-* 表单校验
-* UX
+- Ant Design
+- Upload
+- 表单校验
+- UX
 
 ---
 

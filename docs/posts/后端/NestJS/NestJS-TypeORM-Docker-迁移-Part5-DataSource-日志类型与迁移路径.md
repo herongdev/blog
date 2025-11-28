@@ -8,9 +8,10 @@ tags:
 - TypeORM
 - MySQL
 - ts-node
-  categories:
+
+categories:
 - 后端
-  description: 在 data-source.ts 中正确设置 LoggerOptions 类型，并根据运行时智能切换迁移路径（ts/js）。
+description: 在 data-source.ts 中正确设置 LoggerOptions 类型，并根据运行时智能切换迁移路径（ts/js）。
 
 ---
 

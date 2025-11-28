@@ -1,16 +1,7 @@
 ---
-
 title: HarmonyOS ArkTS（.ets）与 TypeScript 的差异速修：定位并修掉你截图里的 15 个问题
 date: 2025-10-15
 tags:
-
-* ArkTS
-* HarmonyOS
-* TypeScript
-* SSE
-* 编译错误
-  categories: 开发笔记
-
 ---
 
 ## 背景

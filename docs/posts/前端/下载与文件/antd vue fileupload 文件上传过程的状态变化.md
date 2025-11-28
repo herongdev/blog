@@ -1,14 +1,11 @@
 ---
-
 title: Ant Design Upload：beforeUpload 与 onChange 的先后顺序、影响时机与三次触发全梳理
 date: 2025-09-28
 tags:
-
-* Ant Design
-* Upload
-* 文件上传
-* 前端实践
-
+  - Ant Design
+  - Upload
+  - 文件上传
+  - 前端实践
 ---
 
 ## 总览结论（TL;DR）

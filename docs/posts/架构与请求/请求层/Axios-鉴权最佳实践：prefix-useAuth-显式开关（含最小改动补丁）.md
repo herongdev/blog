@@ -4,24 +4,15 @@ date: 2025-09-06 16:20:26
 tags:
 ---
 
-````yaml
-title: Axios 鉴权最佳实践：prefix + useAuth 显式开关（含最小改动补丁）
-date: 2025-09-06
-tags:
-  - Axios
-  - Vue3
-  - TypeScript
-  - Interceptor
-  - Auth
----
-
 ## 目标
+
 - 保留按前缀（如 `/api/pub`）**自动放行**的白名单机制；
 - 支持**逐请求显式关闭鉴权**（即便该接口不在白名单里）；
 - 避免与 Axios 自带的 `config.auth`（Basic Auth）混淆；
 - 兼容历史 `(req as any).auth` 写法，**渐进迁移**到 `useAuth`。
 
 ## 方案总览
+
 1. **类型扩展**：给 `AxiosRequestConfig` 增加 `useAuth?: boolean`。
 2. **对象式入口透传**：`http.call({... useAuth })` 直达拦截器。
 3. **拦截器优先级**：优先读 `useAuth` → 回退老的 `auth` → 再按前缀与实例默认值判定。
@@ -33,17 +24,18 @@ tags:
 ## 关键改动（最小补丁）
 
 ### 1) 扩展 Axios 配置
+
 > 避免与 Basic Auth 的 `config.auth` 冲突，用单独的 `useAuth`。
 
 ```ts
 // src/types/http/axios.d.ts
-declare module 'axios' {
+declare module "axios" {
   export interface AxiosRequestConfig {
     /** 覆盖实例默认鉴权：true=强制带token；false=强制不带token */
-    useAuth?: boolean
+    useAuth?: boolean;
   }
 }
-````
+```
 
 ### 2) 对象式入口支持 `useAuth`
 

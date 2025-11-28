@@ -15,8 +15,8 @@ function toArticleUrl(file) {
 
 async function main() {
   const feed = new Feed({
-    title: '我的博客',
-    description: '个人博客 RSS',
+    title: '我的技术分享',
+    description: '个人技术分享 RSS',
     id: SITE_URL,
     link: SITE_URL,
     language: 'zh-CN',
