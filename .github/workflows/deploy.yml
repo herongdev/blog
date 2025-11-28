@@ -39,7 +39,7 @@ jobs:
         env:
           BASE: /
           OUT_DIR: .vitepress/dist-vps
-          SITE_URL: http://herong.site
+          SITE_URL: http://herong.info
           UMAMI_SRC: ${{ secrets.UMAMI_SRC }}
           UMAMI_WEBSITE_ID: ${{ secrets.UMAMI_WEBSITE_ID }}
           PLAUSIBLE_DOMAIN: ${{ secrets.PLAUSIBLE_DOMAIN }}

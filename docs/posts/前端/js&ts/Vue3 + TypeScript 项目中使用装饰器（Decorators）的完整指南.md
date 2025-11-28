@@ -1,14 +1,7 @@
 ---
-
 title: Vue3 + TypeScript 项目中使用装饰器（Decorators）的完整指南
 date: 2025-11-19
 tags:
-
-* Vue3
-* TypeScript
-* Decorators
-* 前端工程化
-
 ---
 
 ## 整体实现思路
@@ -30,10 +23,10 @@ tags:
 
 3. **在 Vue3 + 组合式 API 中的推荐做法**
 
-   * 建一个「**服务类 / Handler 类**」，把原来的逻辑函数挪进去，当成类方法；
-   * 在类方法上加 `@Decorator`，在装饰器里做「执行前 / 执行后」逻辑；
-   * 在 `<script setup>` 里 `new` 这个类，把方法实例化后暴露出去，模板里照样用 `@delete="handler.handleDelete"`。
-   * 对于不想用 `@` 语法、但只想给函数「套壳」的场景，可以用一个「高阶函数版装饰器」：`const wrapped = withKyc(handleDelete)` —— 这个我们后面给你做成第二套方案。
+   - 建一个「**服务类 / Handler 类**」，把原来的逻辑函数挪进去，当成类方法；
+   - 在类方法上加 `@Decorator`，在装饰器里做「执行前 / 执行后」逻辑；
+   - 在 `<script setup>` 里 `new` 这个类，把方法实例化后暴露出去，模板里照样用 `@delete="handler.handleDelete"`。
+   - 对于不想用 `@` 语法、但只想给函数「套壳」的场景，可以用一个「高阶函数版装饰器」：`const wrapped = withKyc(handleDelete)` —— 这个我们后面给你做成第二套方案。
 
 > 你现在的需求「在执行 `handleDelete` 前跑一次 `useKycModal().openKycModal()`」，完全可以通过「方法装饰器 + 服务类」实现，而且完全符合「不改原始逻辑，只加壳」的思路。
 
@@ -63,9 +56,9 @@ TypeScript 把装饰器视为一个「实验特性」，需要在 `tsconfig.json
 
 关键点：
 
-* `experimentalDecorators: true`
+- `experimentalDecorators: true`
   开启装饰器语法 `@xxx`。([TypeScript][1])
-* `useDefineForClassFields: false`
+- `useDefineForClassFields: false`
   对不少基于装饰器的库（包括一些 class 写法）更兼容，经常被推荐和装饰器一起使用。([Stack Overflow][2])
 
 > 如果你的项目有多层 tsconfig（比如 Vite + Vue3 常见的 `tsconfig.app.json`），确保上面这两个选项配置在**真正参与编译的那个 tsconfig** 中。
@@ -78,12 +71,12 @@ TypeScript 把装饰器视为一个「实验特性」，需要在 `tsconfig.json
 // 前置/后置钩子函数的类型，保持泛型 + 无 any
 type BeforeHook<T extends (...args: unknown[]) => unknown> = (
   ...args: Parameters<T>
-) => void | Promise<void>
+) => void | Promise<void>;
 
 type AfterHook<T extends (...args: unknown[]) => unknown> = (
   result: Awaited<ReturnType<T>>,
   ...args: Parameters<T>
-) => void | Promise<void>
+) => void | Promise<void>;
 
 // 方法装饰器工厂：接收 before/after 两个钩子
 function BeforeAfter<T extends (...args: unknown[]) => unknown>(
@@ -95,28 +88,30 @@ function BeforeAfter<T extends (...args: unknown[]) => unknown>(
     _key: string,
     descriptor: TypedPropertyDescriptor<T>
   ): void {
-    const original = descriptor.value as T
+    const original = descriptor.value as T;
 
     // 用装饰后的函数替换原始方法，实现“前后插入逻辑”
-    descriptor.value = (async function (
+    descriptor.value = async function (
       this: unknown,
       ...args: Parameters<T>
     ): Promise<Awaited<ReturnType<T>>> {
-      await before(...args)
-      const result = (await original.apply(this, args)) as Awaited<ReturnType<T>>
+      await before(...args);
+      const result = (await original.apply(this, args)) as Awaited<
+        ReturnType<T>
+      >;
       if (after) {
-        await after(result, ...args)
+        await after(result, ...args);
       }
-      return result
-    }) as T
-  }
+      return result;
+    } as T;
+  };
 }
 ```
 
 说明：
 
-* `BeforeAfter` 是一个**装饰器工厂**，调用后返回真正的装饰器；
-* 内部通过 `descriptor.value` 拿到原始方法，然后用一个包裹了 `before/after` 的异步函数替换——这就是经典的「装饰器模式」。([TypeScript][1])
+- `BeforeAfter` 是一个**装饰器工厂**，调用后返回真正的装饰器；
+- 内部通过 `descriptor.value` 拿到原始方法，然后用一个包裹了 `before/after` 的异步函数替换——这就是经典的「装饰器模式」。([TypeScript][1])
 
 ### 第 3 步：在普通 TypeScript 类中使用装饰器
 
@@ -127,29 +122,29 @@ class DemoService {
   @BeforeAfter(
     // 复杂逻辑：这里模拟“方法执行前”的异步操作
     async (...args: [id: number]) => {
-      console.log('before delete', args[0])
+      console.log("before delete", args[0]);
       // 比如这里可以弹 KYC、二次确认等
     },
     // 复杂逻辑：这里模拟“方法执行后”的操作
     async (result, id: number) => {
-      console.log('after delete, result =', result, 'id =', id)
+      console.log("after delete, result =", result, "id =", id);
     }
   )
   async deleteItem(id: number): Promise<boolean> {
-    console.log('do delete', id)
-    return true
+    console.log("do delete", id);
+    return true;
   }
 }
 
-const service = new DemoService()
-service.deleteItem(123)
+const service = new DemoService();
+service.deleteItem(123);
 ```
 
 如果这段在你项目里能正常编译运行，说明：
 
-* tsconfig 装饰器配置正确；
-* bundler（Vite / Webpack）配置也没问题；
-* 可以放心用在 Vue 组件中。
+- tsconfig 装饰器配置正确；
+- bundler（Vite / Webpack）配置也没问题；
+- 可以放心用在 Vue 组件中。
 
 ### 第 4 步：在 Vue3 `<script setup lang="ts/tsx">` 中使用
 
@@ -162,7 +157,7 @@ service.deleteItem(123)
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 
 // 这里可以复用前面写的 BeforeAfter，也可以单独为这个类写一个
 function LogCall<T extends (...args: unknown[]) => unknown>() {
@@ -171,38 +166,40 @@ function LogCall<T extends (...args: unknown[]) => unknown>() {
     key: string,
     descriptor: TypedPropertyDescriptor<T>
   ): void {
-    const original = descriptor.value as T
+    const original = descriptor.value as T;
 
     // 复杂逻辑：方法前后简单打日志
-    descriptor.value = (async function (
+    descriptor.value = async function (
       this: unknown,
       ...args: Parameters<T>
     ): Promise<Awaited<ReturnType<T>>> {
-      console.log(`[${key}] before`, ...args)
-      const result = (await original.apply(this, args)) as Awaited<ReturnType<T>>
-      console.log(`[${key}] after`, result)
-      return result
-    }) as T
-  }
+      console.log(`[${key}] before`, ...args);
+      const result = (await original.apply(this, args)) as Awaited<
+        ReturnType<T>
+      >;
+      console.log(`[${key}] after`, result);
+      return result;
+    } as T;
+  };
 }
 
 class CounterService {
-  private count = ref(0)
+  private count = ref(0);
 
   get value() {
-    return this.count.value
+    return this.count.value;
   }
 
   @LogCall<number>()
   async inc(delta: number): Promise<void> {
-    this.count.value += delta
+    this.count.value += delta;
   }
 }
 
-const service = new CounterService()
+const service = new CounterService();
 
-const count = computed(() => service.value)
-const handleInc = (delta: number) => service.inc(delta)
+const count = computed(() => service.value);
+const handleInc = (delta: number) => service.inc(delta);
 </script>
 
 <template>
@@ -215,8 +212,8 @@ const handleInc = (delta: number) => service.inc(delta)
 
 要点：
 
-* 装饰器 / 类都只是**普通 TS 代码**，Vue 只负责 `setup` 中的逻辑与模板；
-* 你可以把所有「需要统一前置/后置逻辑的函数」都收拢进这个类，用装饰器统一编排。
+- 装饰器 / 类都只是**普通 TS 代码**，Vue 只负责 `setup` 中的逻辑与模板；
+- 你可以把所有「需要统一前置/后置逻辑的函数」都收拢进这个类，用装饰器统一编排。
 
 ### 第 5 步：组合式 API 下的「函数装饰器」（不写 `@` 的方案）
 
@@ -227,17 +224,20 @@ const handleInc = (delta: number) => service.inc(delta)
 function withBeforeAfter<T extends (...args: unknown[]) => Promise<unknown>>(
   fn: T,
   before: (...args: Parameters<T>) => Promise<void> | void,
-  after?: (result: Awaited<ReturnType<T>>, ...args: Parameters<T>) => Promise<void> | void
+  after?: (
+    result: Awaited<ReturnType<T>>,
+    ...args: Parameters<T>
+  ) => Promise<void> | void
 ): T {
   // 复杂逻辑：返回一个新的函数，对原函数做统一包装
   return (async (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
-    await before(...args)
-    const result = (await fn(...args)) as Awaited<ReturnType<T>>
+    await before(...args);
+    const result = (await fn(...args)) as Awaited<ReturnType<T>>;
     if (after) {
-      await after(result, ...args)
+      await after(result, ...args);
     }
-    return result
-  }) as T
+    return result;
+  }) as T;
 }
 ```
 
@@ -245,19 +245,19 @@ function withBeforeAfter<T extends (...args: unknown[]) => Promise<unknown>>(
 
 ```ts
 const handleDelete = async (id: number) => {
-  console.log('real delete', id)
-}
+  console.log("real delete", id);
+};
 
 // 包一个带前置/后置逻辑的“装饰后函数”
 const decoratedHandleDelete = withBeforeAfter(
   handleDelete,
   async (id) => {
-    console.log('before delete', id)
+    console.log("before delete", id);
   },
   async (result, id) => {
-    console.log('after delete', result, id)
+    console.log("after delete", result, id);
   }
-)
+);
 
 // 模板里绑定 decoratedHandleDelete 即可
 ```
@@ -278,51 +278,53 @@ const decoratedHandleDelete = withBeforeAfter(
 export function useKycModal() {
   const openKycModal = async () => {
     // 复杂逻辑：这里可以打开真正的 modal，我们先用 console 模拟
-    console.log('打开 KYC 弹窗，等待用户确认...')
-  }
+    console.log("打开 KYC 弹窗，等待用户确认...");
+  };
 
   return {
     openKycModal,
-  }
+  };
 }
 
 // decorators.ts —— 通用方法装饰器
-import type { Ref } from 'vue'
-import { useKycModal } from './kycModal'
+import type { Ref } from "vue";
+import { useKycModal } from "./kycModal";
 
 // 为“需要 KYC 校验”的方法提供一个装饰器
 export function RequireKyc<T extends (...args: unknown[]) => unknown>() {
-  const { openKycModal } = useKycModal()
+  const { openKycModal } = useKycModal();
 
   return function (
     _target: unknown,
     key: string,
     descriptor: TypedPropertyDescriptor<T>
   ): void {
-    const original = descriptor.value as T
+    const original = descriptor.value as T;
 
     // 复杂逻辑：在原方法前执行 KYC，后执行日志
-    descriptor.value = (async function (
+    descriptor.value = async function (
       this: unknown,
       ...args: Parameters<T>
     ): Promise<Awaited<ReturnType<T>>> {
-      console.log(`[${key}] KYC 检查开始`)
-      await openKycModal()
-      const result = (await original.apply(this, args)) as Awaited<ReturnType<T>>
-      console.log(`[${key}] KYC 检查通过，操作完成`)
-      return result
-    }) as T
-  }
+      console.log(`[${key}] KYC 检查开始`);
+      await openKycModal();
+      const result = (await original.apply(this, args)) as Awaited<
+        ReturnType<T>
+      >;
+      console.log(`[${key}] KYC 检查通过，操作完成`);
+      return result;
+    } as T;
+  };
 }
 
 // service.ts —— 把业务方法写成类方法，挂上装饰器
-import { RequireKyc } from './decorators'
+import { RequireKyc } from "./decorators";
 
 export class WithdrawService {
   @RequireKyc<(...args: [id: number]) => Promise<void>>()
   async deleteAddress(id: number): Promise<void> {
     // 这里写真正的删除逻辑，比如发请求
-    console.log('真正执行删除操作，id =', id)
+    console.log("真正执行删除操作，id =", id);
   }
 }
 
@@ -344,9 +346,9 @@ const handleDelete = (id: number) => service.deleteAddress(id)
 
 上面这套代码验证了：
 
-* tsconfig 装饰器配置无误；
-* `@RequireKyc` 可以在方法执行前后插入逻辑；
-* 可以很自然地跟 Vue3 `<script setup>` 配合使用。
+- tsconfig 装饰器配置无误；
+- `@RequireKyc` 可以在方法执行前后插入逻辑；
+- 可以很自然地跟 Vue3 `<script setup>` 配合使用。
 
 ---
 
