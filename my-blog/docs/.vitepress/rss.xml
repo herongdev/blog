@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>我的博客</title>
+        <title>我的技术分享</title>
         <link>https://example.com</link>
-        <description>个人博客 RSS</description>
+        <description>个人技术分享 RSS</description>
         <lastBuildDate>Mon, 08 Sep 2025 15:29:09 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
@@ -627,8 +627,8 @@ More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
         </item>
         <item>
             <title><![CDATA[Hexo 千篇文章的“分目录存储 + 目录树导航”实战（含 URL、分类、脚手架）]]></title>
-            <link>https://example.com/posts/hexo博客分类分目录组织</link>
-            <guid isPermaLink="false">https://example.com/posts/hexo博客分类分目录组织</guid>
+            <link>https://example.com/posts/hexo技术分享分类分目录组织</link>
+            <guid isPermaLink="false">https://example.com/posts/hexo技术分享分类分目录组织</guid>
             <pubDate>Thu, 04 Sep 2025 00:00:00 GMT</pubDate>
             <content:encoded><![CDATA[
 > 目标：当文章**成千上万**时，既能在磁盘上**分目录管理**，又能在站点里以**目录树（分类层级）**浏览，并让 **URL 跟随分类层级**，同时保持 GitHub Project Pages 的子路径（`/blog/`）不乱。
@@ -8130,9 +8130,9 @@ npx source-map-explorer "dist/assets/*.js" --html dist/sme.html
 ]]></content:encoded>
         </item>
         <item>
-            <title><![CDATA[使用 hexo 在 github 部署个人博客]]></title>
-            <link>https://example.com/posts/使用-hexo-在-github-部署个人博客</link>
-            <guid isPermaLink="false">https://example.com/posts/使用-hexo-在-github-部署个人博客</guid>
+            <title><![CDATA[使用 hexo 在 github 部署个人技术分享]]></title>
+            <link>https://example.com/posts/使用-hexo-在-github-部署个人技术分享</link>
+            <guid isPermaLink="false">https://example.com/posts/使用-hexo-在-github-部署个人技术分享</guid>
             <pubDate>Thu, 04 Sep 2025 18:04:44 GMT</pubDate>
             <content:encoded><![CDATA[
 # 整体实现思路
