@@ -47,6 +47,12 @@ tags: [Vue3, 状态恢复]
 
 ### 方案一：放到路由 query
 
+把 tab/page/page_size 写进当前 URL query（router.replace）
+去详情页后，浏览器回退会回到那条带 query 的列表地址
+列表页初始化时从 route.query 读取并恢复 activeTab 和 pagination
+然后按恢复后的值请求数据
+所以本质是：用地址作为状态容器，而不是只靠组件内存。这样刷新、回退、前进都更稳定
+
 例如：
 
 ```text
