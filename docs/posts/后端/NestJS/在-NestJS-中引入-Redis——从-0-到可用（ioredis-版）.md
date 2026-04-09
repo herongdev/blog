@@ -21,7 +21,7 @@ description: 手把手带你在 NestJS 中集成 Redis（基于 ioredis），涵
 
 # 技术栈选型
 
-- Redis 客户端：**ioredis**（成熟、支持集群/哨兵、TypeScript 友好）。
+- Redis 客户端：**ioredis**（成熟、支持集群/哨兵、TypeScript 友好）
 - Nest 集成方式：自定义 **Provider + 全局模块**，暴露 `REDIS_CLIENT` 与 `RedisService`。
 - 配置：`.env` 中支持 `REDIS_URL` 或 `REDIS_HOST/PORT/PASSWORD/DB`。
 
@@ -88,7 +88,7 @@ export class RedisService {
   async setWithTimeToLive(
     key: string,
     value: string,
-    timeToLiveSeconds = 300
+    timeToLiveSeconds = 300,
   ): Promise<void> {
     await this.redisClient.set(key, value, "EX", timeToLiveSeconds);
   }
@@ -115,7 +115,7 @@ export class RedisService {
   async setIfAbsentWithTimeToLive(
     key: string,
     value: string,
-    timeToLiveSeconds: number
+    timeToLiveSeconds: number,
   ): Promise<boolean> {
     // 复杂：NX 确保不存在才写入；避免并发下的重复写入
     const result = await this.redisClient.set(
@@ -123,7 +123,7 @@ export class RedisService {
       value,
       "NX",
       "EX",
-      timeToLiveSeconds
+      timeToLiveSeconds,
     );
     return result === "OK";
   }
@@ -235,7 +235,7 @@ export class LoginService {
 const ok = await this.redisService.setIfAbsentWithTimeToLive(
   `once:${token}`,
   "1",
-  300
+  300,
 );
 if (!ok) {
   throw new Error("令牌已使用或失效");
@@ -248,7 +248,7 @@ if (!ok) {
 await this.redisService.setWithTimeToLive(
   `webauthn:register:${userId}`,
   challengeBase64Url,
-  300
+  300,
 );
 const cached = await this.redisService.getValue(`webauthn:register:${userId}`);
 // ... 验证后删除
