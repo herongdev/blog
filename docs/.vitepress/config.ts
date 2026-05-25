@@ -145,6 +145,12 @@ export default {
     socialLinks: [],
     search: { provider: "local" },
     outline: { level: [2, 3] },
+    footer: {
+      copyright: {
+        text: "湘ICP备2024071383号-6",
+        link: "https://beian.miit.gov.cn/",
+      },
+    },
     // 基于 docs/posts 目录结构自动生成多级侧边栏
     sidebar: {
       "/posts/": generateSidebarFromDir(
