@@ -1,0 +1,20 @@
+.vp-page-views {
+  margin: 1rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--vp-c-divider);
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+}
+
+.vp-page-views-hint {
+  margin-left: 0.35em;
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+}
+
+.vp-site-views-wrap {
+  max-width: calc(var(--vp-layout-max-width) - 64px);
+  margin: 0 auto 1.5rem;
+  padding: 0 24px;
+  text-align: center;
+}
