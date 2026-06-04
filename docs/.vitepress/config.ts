@@ -9,6 +9,39 @@ const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || "";
 const PLAUSIBLE_DOMAIN = process.env.PLAUSIBLE_DOMAIN || "";
 const GA_ID = process.env.GA_ID || "";
 const OUT_DIR = process.env.OUT_DIR || "./.vitepress/dist";
+const ENABLE_PAGE_VIEWS = process.env.ENABLE_PAGE_VIEWS !== "0";
+
+function siteOrigin(): string {
+  return SITE_HOSTNAME.replace(/\/$/, "");
+}
+
+function canonicalUrl(pagePath: string): string {
+  const base = BASE === "/" ? "" : BASE.replace(/\/$/, "");
+  const path = pagePath.startsWith("/") ? pagePath : `/${pagePath}`;
+  return `${siteOrigin()}${base}${path}`.replace(/([^:]\/)\/+/g, "$1");
+}
+
+function pageDescription(pageData: {
+  title: string;
+  description?: string;
+  frontmatter: Record<string, unknown>;
+}): string {
+  const fromFm = pageData.frontmatter.description;
+  if (typeof fromFm === "string" && fromFm.trim()) return fromFm.trim();
+  if (pageData.description?.trim()) return pageData.description.trim();
+  return `${pageData.title} | 我的技术分享`;
+}
+
+function pageKeywords(pageData: { frontmatter: Record<string, unknown> }): string {
+  const tags = pageData.frontmatter.tags;
+  if (Array.isArray(tags)) {
+    return tags.map((t) => String(t)).join(", ");
+  }
+  const keywords = pageData.frontmatter.keywords;
+  if (typeof keywords === "string") return keywords;
+  if (Array.isArray(keywords)) return keywords.map((k) => String(k)).join(", ");
+  return "";
+}
 
 const HEAD_LINKS: any[] = [
   [
@@ -135,6 +168,64 @@ export default {
   markdown: {
     // 避免原始 HTML 导致 Vue SFC 解析错误
     html: false,
+  },
+  vite: {
+    define: {
+      "import.meta.env.VITE_ENABLE_PAGE_VIEWS": JSON.stringify(
+        ENABLE_PAGE_VIEWS ? "true" : "false"
+      ),
+    },
+  },
+  transformPageData(pageData) {
+    const fromFm = pageData.frontmatter.description;
+    if (typeof fromFm === "string" && fromFm.trim() && !pageData.description) {
+      pageData.description = fromFm.trim();
+    }
+    return pageData;
+  },
+  transformHead({ pageData, siteData }) {
+    const siteTitle = siteData.title || "我的技术分享";
+    const title = String(pageData.frontmatter.title || pageData.title || siteTitle);
+    const desc = pageDescription({
+      title,
+      description: pageData.description,
+      frontmatter: pageData.frontmatter,
+    });
+    const url = canonicalUrl(pageData.path);
+    const keywords = pageKeywords(pageData);
+    const isArticle = pageData.path.startsWith("/posts/");
+
+    const head: Array<[string, Record<string, string>]> = [
+      ["meta", { name: "description", content: desc }],
+      ["meta", { property: "og:locale", content: "zh_CN" }],
+      ["meta", { property: "og:site_name", content: siteTitle }],
+      ["meta", { property: "og:title", content: `${title} | ${siteTitle}` }],
+      ["meta", { property: "og:description", content: desc }],
+      ["meta", { property: "og:url", content: url }],
+      ["meta", { name: "twitter:card", content: "summary" }],
+      ["meta", { name: "twitter:title", content: `${title} | ${siteTitle}` }],
+      ["meta", { name: "twitter:description", content: desc }],
+      ["link", { rel: "canonical", href: url }],
+    ];
+
+    if (keywords) {
+      head.push(["meta", { name: "keywords", content: keywords }]);
+    }
+
+    head.push([
+      "meta",
+      { property: "og:type", content: isArticle ? "article" : "website" },
+    ]);
+
+    const date = pageData.frontmatter.date;
+    if (isArticle && date) {
+      head.push([
+        "meta",
+        { property: "article:published_time", content: String(date) },
+      ]);
+    }
+
+    return head;
   },
   themeConfig: {
     logo: undefined,

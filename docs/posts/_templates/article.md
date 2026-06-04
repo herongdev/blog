@@ -1,8 +1,10 @@
 ---
 title: <替换为标题>
-description: <一句话摘要，便于 SEO>
+description: <一句话摘要，80～160 字，会用于搜索引擎摘要与分享卡片>
 date: 2025-01-01
 tags: [<标签1>, <标签2>]
+# 可选：补充 SEO 关键词（不写则用 tags 生成 keywords）
+# keywords: [关键词1, 关键词2]
 # 可选：用于排序，数字越小越靠前
 # weight: 10
 ---
