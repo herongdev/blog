@@ -63,7 +63,7 @@ export const tools: ToolDefinition[] = [
     name: "PDF 合并",
     shortDescription: "把多个 PDF 合并成一个文件",
     longDescription:
-      "支持拖拽多个 PDF 文件，按顺序合并，后续优先在浏览器本地完成，减少文件上传。",
+      "选择多个 PDF 文件，按顺序在浏览器本地合并成一个文件。",
     category: "pdf",
     processMode: "browser",
     acceptedMimeTypes: ["application/pdf"],
@@ -74,7 +74,7 @@ export const tools: ToolDefinition[] = [
     seo: {
       title: "PDF 合并 - 免费在线合并多个 PDF 文件",
       description:
-        "免费在线合并 PDF 文件，支持拖拽排序，后续优先浏览器本地处理，不上传文件。",
+        "免费在线合并 PDF 文件，支持拖拽排序和浏览器本地处理，不上传文件。",
       keywords: ["PDF 合并", "合并 PDF", "多个 PDF 合成一个"]
     }
   },
