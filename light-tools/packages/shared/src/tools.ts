@@ -116,7 +116,7 @@ export const tools: ToolDefinition[] = [
     seo: {
       title: "图片转 PDF - 免费在线 JPG/PNG 转 PDF",
       description:
-        "免费在线把 JPG、PNG、WebP 图片合成为 PDF，支持多图排序和本地处理规划。",
+        "免费在线把 JPG、PNG、WebP 图片合成为 PDF，支持多图排序和浏览器本地生成。",
       keywords: ["图片转 PDF", "JPG 转 PDF", "PNG 转 PDF"]
     }
   },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { StructuredData } from "@/components/site/StructuredData";
+import { ImageToPdfTool } from "@/components/tools/image-to-pdf/ImageToPdfTool";
 import { Mp4ToGifTool } from "@/components/tools/mp4-to-gif/Mp4ToGifTool";
 import { ToolShell } from "@/components/tools/ToolShell";
 import { buildToolJsonLd, buildToolMetadata } from "@/lib/seo";
@@ -34,8 +35,12 @@ export default async function ToolPage({ params }: { params: ToolPageParams }) {
     notFound();
   }
 
-  const content =
-    tool.slug === "mp4-to-gif" ? <Mp4ToGifTool tool={tool} /> : <ToolShell tool={tool} />;
+  const toolContent = {
+    "image-to-pdf": <ImageToPdfTool tool={tool} />,
+    "mp4-to-gif": <Mp4ToGifTool tool={tool} />
+  }[tool.slug];
+
+  const content = toolContent ?? <ToolShell tool={tool} />;
 
   return (
     <>
