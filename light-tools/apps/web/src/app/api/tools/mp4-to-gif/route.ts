@@ -4,6 +4,7 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { runFfmpeg } from "@/lib/server/ffmpeg";
+import { consumeFreeQuota } from "@/lib/server/free-quota";
 import { assertMp4Upload, UploadValidationError } from "@/lib/server/upload-security";
 
 export const runtime = "nodejs";
@@ -19,8 +20,8 @@ interface ConversionAttempt {
   colors: number;
 }
 
-function jsonError(message: string, status = 400, detail?: string) {
-  return NextResponse.json({ ok: false, message, detail }, { status });
+function jsonError(message: string, status = 400, detail?: string, headers?: Record<string, string>) {
+  return NextResponse.json({ ok: false, message, detail }, { status, headers });
 }
 
 function parseNumber(
@@ -92,6 +93,16 @@ export async function POST(request: Request) {
     }
 
     const inputBuffer = await assertMp4Upload(file, MAX_UPLOAD_BYTES);
+    const quota = consumeFreeQuota(request, "mp4-to-gif");
+
+    if (!quota.allowed) {
+      return jsonError(
+        "免费转换次数已用完。稍后可继续免费使用，后续会接入登录和付费额度。",
+        429,
+        undefined,
+        quota.headers
+      );
+    }
 
     const width = parseNumber(formData, "width", 480, 120, 1280);
     const height = parseNumber(formData, "height", 270, 120, 1280);
@@ -137,7 +148,8 @@ export async function POST(request: Request) {
         "X-Output-Width": String(selectedAttempt.width),
         "X-Output-Height": String(selectedAttempt.height),
         "X-Output-Fps": String(selectedAttempt.fps),
-        "X-Compression-Warning": encodeURIComponent(warning)
+        "X-Compression-Warning": encodeURIComponent(warning),
+        ...quota.headers
       }
     });
   } catch (error) {
