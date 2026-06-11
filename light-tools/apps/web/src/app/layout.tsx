@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
+import { AnalyticsTracker } from "@/components/site/AnalyticsTracker";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { getSiteUrl } from "@/lib/seo";
@@ -59,6 +61,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+        <Suspense fallback={null}>
+          <AnalyticsTracker />
+        </Suspense>
       </body>
     </html>
   );

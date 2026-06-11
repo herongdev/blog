@@ -1,7 +1,6 @@
-import { createHash, randomUUID } from "node:crypto";
+import { getOrCreateVisitor } from "@/lib/server/visitor";
 
-const visitorCookieName = "lt_anon_id";
-const defaultFreeLimit = 3;
+const defaultFreeLimit = 5;
 const defaultWindowMs = 30 * 24 * 60 * 60 * 1000;
 
 interface QuotaRecord {
@@ -24,27 +23,14 @@ declare global {
 const quotaStore = globalThis.lightToolsQuotaStore ?? new Map<string, QuotaRecord>();
 globalThis.lightToolsQuotaStore = quotaStore;
 
-function parseCookies(cookieHeader: string): Record<string, string> {
-  return Object.fromEntries(
-    cookieHeader
-      .split(";")
-      .map((item) => item.trim())
-      .filter(Boolean)
-      .map((item) => {
-        const [key, ...valueParts] = item.split("=");
-        return [key, decodeURIComponent(valueParts.join("="))];
-      })
-  );
-}
+function getRecord(key: string, now: number, windowMs: number): QuotaRecord {
+  const existing = quotaStore.get(key);
+  if (existing && existing.resetAt > now) return existing;
 
-function hashFallbackIdentity(request: Request): string {
-  const forwardedFor = request.headers.get("x-forwarded-for") ?? "";
-  const userAgent = request.headers.get("user-agent") ?? "";
-
-  return createHash("sha256")
-    .update(`${forwardedFor}|${userAgent}`)
-    .digest("hex")
-    .slice(0, 32);
+  return {
+    count: 0,
+    resetAt: now + windowMs
+  };
 }
 
 function getLimit(): number {
@@ -59,56 +45,34 @@ function getWindowMs(): number {
   return Math.floor(days * 24 * 60 * 60 * 1000);
 }
 
-function buildCookie(visitorId: string, maxAgeSeconds: number): string {
-  const parts = [
-    `${visitorCookieName}=${encodeURIComponent(visitorId)}`,
-    "Path=/",
-    `Max-Age=${maxAgeSeconds}`,
-    "HttpOnly",
-    "SameSite=Lax"
-  ];
-
-  if (process.env.NODE_ENV === "production") {
-    parts.push("Secure");
-  }
-
-  return parts.join("; ");
-}
-
 export function consumeFreeQuota(request: Request, toolId: string): FreeQuotaResult {
   const limit = getLimit();
   const windowMs = getWindowMs();
-  const cookieHeader = request.headers.get("cookie") ?? "";
-  const cookies = parseCookies(cookieHeader);
-  const visitorId = cookies[visitorCookieName] || randomUUID();
-  const fallbackId = hashFallbackIdentity(request);
-  const quotaKey = `${toolId}:${visitorId || fallbackId}`;
+  const visitor = getOrCreateVisitor(request);
   const now = Date.now();
-  const existing = quotaStore.get(quotaKey);
-  const record =
-    existing && existing.resetAt > now
-      ? existing
-      : {
-          count: 0,
-          resetAt: now + windowMs
-        };
+  const visitorKey = `${toolId}:visitor:${visitor.visitorHash}`;
+  const networkKey = `${toolId}:network:${visitor.networkHash}`;
+  const visitorRecord = getRecord(visitorKey, now, windowMs);
+  const networkRecord = getRecord(networkKey, now, windowMs);
 
-  const allowed = record.count < limit;
+  const allowed = visitorRecord.count < limit && networkRecord.count < limit;
   if (allowed) {
-    record.count += 1;
-    quotaStore.set(quotaKey, record);
+    visitorRecord.count += 1;
+    networkRecord.count += 1;
+    quotaStore.set(visitorKey, visitorRecord);
+    quotaStore.set(networkKey, networkRecord);
   }
 
-  const remaining = Math.max(0, limit - record.count);
-  const resetAt = new Date(record.resetAt).toISOString();
+  const remaining = Math.max(0, Math.min(limit - visitorRecord.count, limit - networkRecord.count));
+  const resetAt = new Date(Math.max(visitorRecord.resetAt, networkRecord.resetAt)).toISOString();
   const headers: Record<string, string> = {
     "X-Free-Limit": String(limit),
     "X-Free-Remaining": String(remaining),
     "X-Free-Reset-At": resetAt
   };
 
-  if (!cookies[visitorCookieName]) {
-    headers["Set-Cookie"] = buildCookie(visitorId, Math.ceil(windowMs / 1000));
+  if (visitor.setCookie) {
+    headers["Set-Cookie"] = visitor.setCookie;
   }
 
   return {

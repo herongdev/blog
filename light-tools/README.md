@@ -110,11 +110,23 @@ pnpm lint
 当前 MP4 转 GIF 先用 MVP 方案限制匿名免费次数：
 
 - 服务端给浏览器设置 `lt_anon_id` HttpOnly 匿名 cookie。
-- 同一个 cookie 在当前服务进程内按工具计数，默认 30 天内免费 3 次。
+- 同一个匿名 cookie 和同一个 IP 哈希都会按工具计数，默认 30 天内免费 5 次。
 - 可通过 `LIGHT_TOOLS_FREE_CONVERSIONS` 和 `LIGHT_TOOLS_FREE_WINDOW_DAYS` 调整。
-- 用户清 cookie、换浏览器或服务重启会影响计数，所以这不是最终收费级方案。
+- 用户清 cookie 或换浏览器时，IP 哈希会做一层兜底；但换网络、VPN、共享出口 IP 或服务重启仍会影响计数，所以这不是最终收费级方案。
 
 正式付费前建议升级为：登录用户 ID + 数据库持久化额度记录 + 匿名 cookie/IP/UA 作为未登录兜底 + 支付订单和额度流水。
+
+## 统计与后台
+
+当前先实现自有统计 MVP：
+
+- 前端记录页面访问和工具页打开，提交到 `/api/analytics`。
+- 服务端记录工具使用尝试、成功、失败和额度拦截。
+- 统计事件写入 `LIGHT_TOOLS_DATA_DIR/analytics-events.jsonl`。
+- 后台入口为 `/admin`，登录后访问 `/admin/stats` 查看最近 30 天统计。
+- 生产环境必须配置 `LIGHT_TOOLS_ADMIN_PASSWORD` 和 `LIGHT_TOOLS_ADMIN_SESSION_SECRET`。
+
+这套统计不依赖第三方 SDK；目前保存的是匿名访客哈希、IP 哈希、路径、事件类型和时间，不保存原始 IP。后续如果要做长期趋势、漏斗和付费分析，建议迁移到 PostgreSQL 或 ClickHouse。
 
 ## 下一步
 
