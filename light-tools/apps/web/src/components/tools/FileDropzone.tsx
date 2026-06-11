@@ -2,15 +2,12 @@ import type { ToolDefinition } from "@light-tools/shared";
 
 export function FileDropzone({ tool }: { tool: ToolDefinition }) {
   return (
-    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6">
+    <div className="rounded-md border border-dashed border-slate-300 bg-slate-50 p-5">
       <div className="mx-auto flex max-w-xl flex-col items-center gap-3 text-center">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-lg font-semibold text-teal-800 shadow-sm">
-          +
-        </div>
         <div>
           <p className="font-semibold text-slate-950">选择文件</p>
           <p className="mt-1 text-sm leading-6 text-slate-600">
-            当前是占位上传区。下一阶段会接入 {tool.name} 的真实处理流程。
+            {tool.name} 的真实处理流程会在下一阶段接入。
           </p>
         </div>
         <input

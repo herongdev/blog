@@ -158,41 +158,25 @@ export function Mp4ToGifTool({ tool }: { tool: ToolDefinition }) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
-      <header className="space-y-4">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+      <header className="space-y-3">
         <Link className="text-sm font-semibold text-teal-800 hover:text-teal-950" href="/tools">
-          返回工具列表
+          返回工具
         </Link>
-        <div className="flex flex-col gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div className="space-y-3">
-              <h1 className="text-3xl font-semibold text-slate-950">{tool.name}</h1>
-              <p className="max-w-3xl text-base leading-7 text-slate-700">
-                上传 MP4，设置目标体积、输出尺寸、帧率和片段时长，生成适合聊天、文章配图或运营素材的 GIF。
-              </p>
-            </div>
-            <ProcessModeBadge mode={tool.processMode} />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold text-slate-950">{tool.name}</h1>
+            <p className="mt-2 max-w-3xl text-base leading-7 text-slate-600">
+              上传 MP4，设置尺寸和体积，生成 GIF。
+            </p>
           </div>
-          <div className="grid gap-3 text-sm text-slate-700 sm:grid-cols-3">
-            <div className="rounded-md bg-slate-50 p-3">
-              <div className="font-semibold text-slate-950">文件限制</div>
-              <div className="mt-1">单个 MP4 最多 {tool.maxFileSizeMbFree} MB</div>
-            </div>
-            <div className="rounded-md bg-slate-50 p-3">
-              <div className="font-semibold text-slate-950">目标体积</div>
-              <div className="mt-1">0.5 MB - 20 MB</div>
-            </div>
-            <div className="rounded-md bg-slate-50 p-3">
-              <div className="font-semibold text-slate-950">输出方式</div>
-              <div className="mt-1">服务器 FFmpeg 转换</div>
-            </div>
-          </div>
+          <ProcessModeBadge mode={tool.processMode} />
         </div>
       </header>
 
       <section className="grid gap-5 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-5 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5">
+        <div className="space-y-5 rounded-md border border-slate-200 bg-white p-5">
+          <div className="rounded-md border border-dashed border-slate-300 bg-slate-50 p-5">
             <label className="block text-sm font-semibold text-slate-950" htmlFor="mp4-file">
               选择 MP4 文件
             </label>
@@ -212,10 +196,7 @@ export function Mp4ToGifTool({ tool }: { tool: ToolDefinition }) {
 
           <div className="space-y-3">
             <div>
-              <h2 className="text-lg font-semibold text-slate-950">常用尺寸</h2>
-              <p className="mt-1 text-sm text-slate-600">
-                输出会在该宽高范围内等比缩放，避免画面变形。
-              </p>
+              <h2 className="text-base font-semibold text-slate-950">尺寸</h2>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {sizePresets.map((preset) => (
@@ -236,7 +217,9 @@ export function Mp4ToGifTool({ tool }: { tool: ToolDefinition }) {
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-3">
+            <h2 className="text-base font-semibold text-slate-950">输出设置</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
             <label className="text-sm font-semibold text-slate-950">
               最大宽度
               <input
@@ -310,6 +293,7 @@ export function Mp4ToGifTool({ tool }: { tool: ToolDefinition }) {
                 value={durationSeconds}
               />
             </label>
+            </div>
           </div>
 
           <div className="flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
@@ -334,7 +318,7 @@ export function Mp4ToGifTool({ tool }: { tool: ToolDefinition }) {
         </div>
 
         <aside className="space-y-5">
-          <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-md border border-slate-200 bg-white p-5">
             <h2 className="text-lg font-semibold text-slate-950">结果</h2>
             {result ? (
               <div className="mt-4 space-y-4">
@@ -371,9 +355,18 @@ export function Mp4ToGifTool({ tool }: { tool: ToolDefinition }) {
             )}
           </div>
 
-          <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-950">相关工具</h2>
-            <div className="mt-4 flex flex-col gap-2 text-sm">
+          <div className="rounded-md border border-slate-200 bg-white p-4">
+            <h2 className="text-sm font-semibold text-slate-950">规则</h2>
+            <div className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
+              <p>单个 MP4 最多 {tool.maxFileSizeMbFree} MB。</p>
+              <p>目标体积 0.5 MB - 20 MB，最长转换 30 秒。</p>
+              <p>文件只用于本次转换，完成后清理临时文件。</p>
+            </div>
+          </div>
+
+          <div className="rounded-md border border-slate-200 bg-white p-4">
+            <h2 className="text-sm font-semibold text-slate-950">相关工具</h2>
+            <div className="mt-3 flex flex-col gap-2 text-sm">
               {relatedTools.length > 0 ? (
                 relatedTools.map((relatedTool) => (
                   <Link
