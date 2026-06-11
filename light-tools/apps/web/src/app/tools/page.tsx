@@ -60,7 +60,7 @@ export default async function ToolsPage({
             type="submit"
           >
             <Search aria-hidden="true" className="h-4 w-4" />
-            搜索
+            搜索工具
           </button>
         </form>
       </header>

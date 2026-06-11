@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: "轻量文件工具箱",
     template: "%s | 轻量文件工具箱"
   },
-  description: "免费在线 PDF、图片、视频小工具，多数轻量任务规划为浏览器本地处理。"
+  description: "免费在线 PDF、图片、视频小工具，快速处理常见文件任务。"
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

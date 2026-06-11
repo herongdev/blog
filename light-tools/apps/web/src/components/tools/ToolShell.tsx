@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ToolDefinition } from "@light-tools/shared";
 import { FileDropzone } from "@/components/tools/FileDropzone";
-import { ProcessModeBadge } from "@/components/tools/ProcessModeBadge";
 import { getRelatedTools } from "@/lib/tool-registry";
 
 export function ToolShell({ tool }: { tool: ToolDefinition }) {
@@ -13,14 +12,11 @@ export function ToolShell({ tool }: { tool: ToolDefinition }) {
         <Link className="text-sm font-semibold text-teal-800 hover:text-teal-950" href="/tools">
           返回工具
         </Link>
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold text-slate-950">{tool.name}</h1>
-            <p className="mt-2 max-w-3xl text-base leading-7 text-slate-600">
-              {tool.shortDescription}
-            </p>
-          </div>
-          <ProcessModeBadge mode={tool.processMode} />
+        <div>
+          <h1 className="text-3xl font-semibold text-slate-950">{tool.name}</h1>
+          <p className="mt-2 max-w-3xl text-base leading-7 text-slate-600">
+            {tool.shortDescription}
+          </p>
         </div>
       </header>
 
@@ -46,9 +42,9 @@ export function ToolShell({ tool }: { tool: ToolDefinition }) {
           </p>
         </div>
         <div className="rounded-md border border-slate-200 bg-white p-4">
-          <h2 className="text-sm font-semibold text-slate-950">处理方式</h2>
+          <h2 className="text-sm font-semibold text-slate-950">隐私与清理</h2>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            本地工具优先在浏览器内处理；服务器工具会说明上传与清理规则。
+            文件只用于当前任务。涉及上传的工具会在任务完成后清理临时文件。
           </p>
         </div>
         <div className="rounded-md border border-slate-200 bg-white p-4">
