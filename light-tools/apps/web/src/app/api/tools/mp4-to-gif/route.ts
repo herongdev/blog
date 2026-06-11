@@ -4,6 +4,7 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { runFfmpeg } from "@/lib/server/ffmpeg";
+import { recordAnalyticsEvent } from "@/lib/server/analytics";
 import { consumeFreeQuota } from "@/lib/server/free-quota";
 import { assertMp4Upload, UploadValidationError } from "@/lib/server/upload-security";
 
@@ -96,6 +97,13 @@ export async function POST(request: Request) {
     const quota = consumeFreeQuota(request, "mp4-to-gif");
 
     if (!quota.allowed) {
+      await recordAnalyticsEvent(request, {
+        eventType: "quota_blocked",
+        toolId: "mp4-to-gif",
+        toolSlug: "mp4-to-gif",
+        status: "blocked"
+      });
+
       return jsonError(
         "免费转换次数已用完。稍后可继续免费使用，后续会接入登录和付费额度。",
         429,
@@ -111,6 +119,13 @@ export async function POST(request: Request) {
     const durationSeconds = parseNumber(formData, "durationSeconds", 6, 1, 30);
     const targetSizeMb = parseNumber(formData, "targetSizeMb", 5, 0.5, 20);
     const targetBytes = Math.round(targetSizeMb * BYTES_IN_MB);
+
+    await recordAnalyticsEvent(request, {
+      eventType: "tool_use_attempt",
+      toolId: "mp4-to-gif",
+      toolSlug: "mp4-to-gif",
+      status: "ok"
+    });
 
     tempDir = path.join(os.tmpdir(), `light-tools-${randomUUID()}`);
     await mkdir(tempDir, { recursive: true });
@@ -137,6 +152,13 @@ export async function POST(request: Request) {
         ? "已自动压缩多轮，但 GIF 仍超过目标体积。建议缩短时长或降低尺寸。"
         : "";
 
+    await recordAnalyticsEvent(request, {
+      eventType: "tool_use_success",
+      toolId: "mp4-to-gif",
+      toolSlug: "mp4-to-gif",
+      status: "ok"
+    });
+
     return new Response(gif, {
       status: 200,
       headers: {
@@ -154,8 +176,16 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "未知错误";
+    const analytics = await recordAnalyticsEvent(request, {
+      eventType: "tool_use_failure",
+      toolId: "mp4-to-gif",
+      toolSlug: "mp4-to-gif",
+      status: "error",
+      detail: message
+    });
+
     if (error instanceof UploadValidationError) {
-      return jsonError(message);
+      return jsonError(message, 400, undefined, analytics.setCookie ? { "Set-Cookie": analytics.setCookie } : undefined);
     }
 
     const isFfmpegError =
@@ -168,7 +198,8 @@ export async function POST(request: Request) {
         ? "FFmpeg 不可用或转换失败，请检查服务器 FFmpeg 配置。"
         : "转换失败，请换一个短视频再试。",
       500,
-      message
+      message,
+      analytics.setCookie ? { "Set-Cookie": analytics.setCookie } : undefined
     );
   } finally {
     if (tempDir) {
