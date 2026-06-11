@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import {
   buildAdminSessionCookie,
   isAdminConfigured,
@@ -13,16 +12,27 @@ export async function POST(request: Request) {
   const password = String(formData.get("password") ?? "");
 
   if (!isAdminConfigured()) {
-    return NextResponse.redirect(new URL(withBasePath("/admin?error=config"), request.url), 303);
+    return new Response(null, {
+      status: 303,
+      headers: {
+        Location: withBasePath("/admin?error=config")
+      }
+    });
   }
 
   if (!verifyAdminPassword(password)) {
-    return NextResponse.redirect(new URL(withBasePath("/admin?error=invalid"), request.url), 303);
+    return new Response(null, {
+      status: 303,
+      headers: {
+        Location: withBasePath("/admin?error=invalid")
+      }
+    });
   }
 
-  return NextResponse.redirect(new URL(withBasePath("/admin/stats"), request.url), {
+  return new Response(null, {
     status: 303,
     headers: {
+      Location: withBasePath("/admin/stats"),
       "Set-Cookie": buildAdminSessionCookie()
     }
   });
