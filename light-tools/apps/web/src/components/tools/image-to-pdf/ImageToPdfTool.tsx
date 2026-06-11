@@ -456,7 +456,7 @@ export function ImageToPdfTool({ tool }: { tool: ToolDefinition }) {
               <div className="grid gap-3">
                 {images.map((image, index) => (
                   <div
-                    className="panel flex items-center gap-3 p-3"
+                    className="panel flex flex-col gap-3 p-3 sm:flex-row sm:items-center"
                     draggable
                     key={image.id}
                     onDragEnd={() => setDraggingId(null)}
@@ -464,21 +464,23 @@ export function ImageToPdfTool({ tool }: { tool: ToolDefinition }) {
                     onDragStart={() => setDraggingId(image.id)}
                     onDrop={() => handleDrop(image.id)}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt=""
-                      className="h-16 w-16 shrink-0 rounded-md border border-[var(--color-border)] object-cover"
-                      src={image.url}
-                    />
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-semibold text-[var(--color-text)]">
-                        {index + 1}. {image.file.name}
-                      </div>
-                      <div className="mt-1 text-xs text-muted">
-                        {image.width} x {image.height}，{formatBytes(image.file.size)}
+                    <div className="flex min-w-0 items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        alt=""
+                        className="h-16 w-16 shrink-0 rounded-md border border-[var(--color-border)] object-cover"
+                        src={image.url}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate text-sm font-semibold text-[var(--color-text)]">
+                          {index + 1}. {image.file.name}
+                        </div>
+                        <div className="mt-1 text-xs text-muted">
+                          {image.width} x {image.height}，{formatBytes(image.file.size)}
+                        </div>
                       </div>
                     </div>
-                    <div className="flex shrink-0 items-center gap-1">
+                    <div className="flex w-full shrink-0 items-center justify-end gap-1 sm:w-auto">
                       <button
                         aria-label="上移"
                         className="icon-button"
