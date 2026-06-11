@@ -11,6 +11,10 @@ const GA_ID = process.env.GA_ID || "";
 const OUT_DIR = process.env.OUT_DIR || "./.vitepress/dist";
 const ENABLE_PAGE_VIEWS = process.env.ENABLE_PAGE_VIEWS !== "0";
 const LIGHT_TOOLS_URL = process.env.LIGHT_TOOLS_URL || "http://127.0.0.1:3000";
+const LIGHT_TOOLS_NAV =
+  /^https?:\/\//i.test(LIGHT_TOOLS_URL)
+    ? { text: "工具箱", link: LIGHT_TOOLS_URL, target: "_self", rel: "" }
+    : { text: "工具箱", link: LIGHT_TOOLS_URL };
 
 function siteOrigin(): string {
   return SITE_HOSTNAME.replace(/\/$/, "");
@@ -234,7 +238,7 @@ export default {
     nav: [
       { text: "首页", link: "/" },
       { text: "文章", link: "/posts/" },
-      { text: "工具箱", link: LIGHT_TOOLS_URL },
+      LIGHT_TOOLS_NAV,
     ],
     socialLinks: [],
     search: { provider: "local" },
