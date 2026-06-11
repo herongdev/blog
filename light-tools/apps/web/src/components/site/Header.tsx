@@ -15,9 +15,6 @@ export function Header() {
           <Link className="site-nav-link px-3 py-2" href="/tools">
             工具
           </Link>
-          <Link className="site-nav-link px-3 py-2" href="/admin">
-            后台
-          </Link>
           <ThemeToggle />
         </nav>
       </div>
