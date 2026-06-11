@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { StructuredData } from "@/components/site/StructuredData";
 import { Mp4ToGifTool } from "@/components/tools/mp4-to-gif/Mp4ToGifTool";
 import { ToolShell } from "@/components/tools/ToolShell";
-import { buildToolMetadata } from "@/lib/seo";
+import { buildToolJsonLd, buildToolMetadata } from "@/lib/seo";
 import { getToolBySlug, tools } from "@/lib/tool-registry";
 
 type ToolPageParams = Promise<{ slug: string }>;
@@ -33,9 +34,13 @@ export default async function ToolPage({ params }: { params: ToolPageParams }) {
     notFound();
   }
 
-  if (tool.slug === "mp4-to-gif") {
-    return <Mp4ToGifTool tool={tool} />;
-  }
+  const content =
+    tool.slug === "mp4-to-gif" ? <Mp4ToGifTool tool={tool} /> : <ToolShell tool={tool} />;
 
-  return <ToolShell tool={tool} />;
+  return (
+    <>
+      <StructuredData data={buildToolJsonLd(tool)} />
+      {content}
+    </>
+  );
 }

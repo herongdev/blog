@@ -3,11 +3,22 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { ToolCard } from "@/components/site/ToolCard";
 import { CategoryIcon } from "@/components/site/ToolIcon";
+import { StructuredData } from "@/components/site/StructuredData";
+import { buildHomeJsonLd, getCanonicalUrl } from "@/lib/seo";
+import { withBasePath } from "@/lib/base-path";
 import { toolCategories, tools } from "@/lib/tool-registry";
 
 export const metadata: Metadata = {
   title: "轻量文件工具箱",
-  description: "不用安装大型软件，打开网页就能处理 PDF、图片和视频。"
+  description: "不用安装大型软件，打开网页就能处理 PDF、图片和视频。",
+  alternates: {
+    canonical: getCanonicalUrl()
+  },
+  openGraph: {
+    title: "轻量文件工具箱",
+    description: "不用安装大型软件，打开网页就能处理 PDF、图片和视频。",
+    url: getCanonicalUrl()
+  }
 };
 
 const featuredTools = tools.slice(0, 5);
@@ -17,22 +28,23 @@ const primaryCategories = toolCategories.filter((category) =>
 
 export default function HomePage() {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-7 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="app-container gap-7">
+      <StructuredData data={buildHomeJsonLd()} />
       <section className="space-y-4 py-2">
         <h1 className="sr-only">轻量文件工具箱</h1>
-        <form action="/tools" className="flex max-w-2xl flex-col gap-3 sm:flex-row">
+        <form action={withBasePath("/tools")} className="flex max-w-2xl flex-col gap-3 sm:flex-row">
           <label className="sr-only" htmlFor="tool-search">
             搜索工具
           </label>
           <input
-            className="min-h-11 flex-1 rounded-md border border-slate-300 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-teal-700 focus:ring-2 focus:ring-teal-100"
+            className="input-control flex-1 px-4 text-sm"
             id="tool-search"
             name="q"
             placeholder="搜索：PDF 合并、图片转 PDF、MP4 转 GIF"
             type="search"
           />
           <button
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-slate-950 px-5 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="button-primary"
             type="submit"
           >
             <Search aria-hidden="true" className="h-4 w-4" />
@@ -42,14 +54,14 @@ export default function HomePage() {
 
         <nav className="flex flex-wrap gap-2" aria-label="常用分类">
           <Link
-            className="inline-flex items-center gap-2 rounded-md border border-teal-700 bg-teal-700 px-3 py-2 text-sm font-semibold text-white"
+            className="chip chip-active"
             href="/tools"
           >
             全部工具
           </Link>
           {primaryCategories.map((category) => (
             <Link
-              className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-teal-600 hover:text-teal-800"
+              className="chip chip-idle"
               href={`/tools?category=${category.id}`}
               key={category.id}
             >
@@ -62,8 +74,8 @@ export default function HomePage() {
 
       <section className="space-y-4" id="featured-tools">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-xl font-semibold text-slate-950">常用工具</h2>
-          <Link className="text-sm font-semibold text-teal-800 hover:text-teal-950" href="/tools">
+          <h2 className="section-title">常用工具</h2>
+          <Link className="link-accent text-sm" href="/tools">
             查看全部
           </Link>
         </div>
