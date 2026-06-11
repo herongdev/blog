@@ -7,12 +7,13 @@
 - Next.js App Router 网站
 - 首页 `/`
 - 工具列表页 `/tools`
-- 2 个工具占位页
+- 1 个工具占位页
 - 共享工具注册表
 - `/api/health`
 - MP4 转 GIF `/tools/mp4-to-gif`
 - 图片转 PDF `/tools/image-to-pdf`
 - PDF 合并 `/tools/pdf-merge`
+- 图片压缩 `/tools/image-compress`
 - Worker 占位应用
 
 ## 和博客的关系

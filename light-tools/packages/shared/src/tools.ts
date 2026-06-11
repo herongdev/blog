@@ -124,21 +124,21 @@ export const tools: ToolDefinition[] = [
     id: "image-compress",
     slug: "image-compress",
     name: "图片压缩",
-    shortDescription: "压缩图片体积并保留清晰度",
+    shortDescription: "压缩、改尺寸和转换格式",
     longDescription:
-      "后续支持 JPG、PNG、WebP 图片压缩和格式转换，适合文章配图、电商素材和表单上传。",
+      "在浏览器本地压缩 JPG、PNG、WebP 图片，可设置目标体积、输出尺寸和格式。",
     category: "image",
-    processMode: "hybrid",
+    processMode: "browser",
     acceptedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
     maxFilesFree: 20,
     maxFileSizeMbFree: 20,
     maxFilesPro: 500,
     maxFileSizeMbPro: 100,
     seo: {
-      title: "图片压缩 - 免费在线压缩 JPG/PNG/WebP",
+      title: "图片压缩转换 - 免费在线压缩、改尺寸、转格式",
       description:
-        "免费在线压缩图片，后续支持批量处理、格式转换和更大的图片文件。",
-      keywords: ["图片压缩", "JPG 压缩", "PNG 压缩", "WebP 转换"]
+        "免费在线压缩图片、调整尺寸并转换 JPG、PNG、WebP 格式，支持目标体积和常用预设，浏览器本地处理。",
+      keywords: ["图片压缩", "图片格式转换", "图片尺寸调整", "JPG 压缩", "WebP 转换"]
     }
   },
   {
