@@ -17,17 +17,9 @@ const primaryCategories = toolCategories.filter((category) =>
 
 export default function HomePage() {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
-      <section className="space-y-5 py-4">
-        <div className="max-w-3xl space-y-3">
-          <h1 className="text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
-            文件工具
-          </h1>
-          <p className="text-base leading-7 text-slate-600">
-            选择一个工具开始处理 PDF、图片或视频。
-          </p>
-        </div>
-
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-7 px-4 py-6 sm:px-6 lg:px-8">
+      <section className="space-y-4 py-2">
+        <h1 className="sr-only">轻量文件工具箱</h1>
         <form action="/tools" className="flex max-w-2xl flex-col gap-3 sm:flex-row">
           <label className="sr-only" htmlFor="tool-search">
             搜索工具
@@ -44,7 +36,7 @@ export default function HomePage() {
             type="submit"
           >
             <Search aria-hidden="true" className="h-4 w-4" />
-            搜索
+            搜索工具
           </button>
         </form>
 
@@ -81,10 +73,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
-      <p className="text-sm leading-6 text-slate-500">
-        入口页只展示工具。文件限制、隐私和处理方式会在具体工具页说明。
-      </p>
     </div>
   );
 }
