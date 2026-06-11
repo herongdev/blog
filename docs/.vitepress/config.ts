@@ -10,12 +10,13 @@ const PLAUSIBLE_DOMAIN = process.env.PLAUSIBLE_DOMAIN || "";
 const GA_ID = process.env.GA_ID || "";
 const OUT_DIR = process.env.OUT_DIR || "./.vitepress/dist";
 const ENABLE_PAGE_VIEWS = process.env.ENABLE_PAGE_VIEWS !== "0";
+const LIGHT_TOOLS_URL = process.env.LIGHT_TOOLS_URL || "http://127.0.0.1:3000";
 
 function siteOrigin(): string {
   return SITE_HOSTNAME.replace(/\/$/, "");
 }
 
-function canonicalUrl(pagePath: string): string {
+function canonicalUrl(pagePath = "/"): string {
   const base = BASE === "/" ? "" : BASE.replace(/\/$/, "");
   const path = pagePath.startsWith("/") ? pagePath : `/${pagePath}`;
   return `${siteOrigin()}${base}${path}`.replace(/([^:]\/)\/+/g, "$1");
@@ -191,9 +192,10 @@ export default {
       description: pageData.description,
       frontmatter: pageData.frontmatter,
     });
-    const url = canonicalUrl(pageData.path);
+    const pagePath = pageData.path || "/";
+    const url = canonicalUrl(pagePath);
     const keywords = pageKeywords(pageData);
-    const isArticle = pageData.path.startsWith("/posts/");
+    const isArticle = pagePath.startsWith("/posts/");
 
     const head: Array<[string, Record<string, string>]> = [
       ["meta", { name: "description", content: desc }],
@@ -232,6 +234,7 @@ export default {
     nav: [
       { text: "首页", link: "/" },
       { text: "文章", link: "/posts/" },
+      { text: "工具箱", link: LIGHT_TOOLS_URL },
     ],
     socialLinks: [],
     search: { provider: "local" },
