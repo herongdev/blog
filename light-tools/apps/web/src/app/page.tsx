@@ -62,6 +62,7 @@ export default function HomePage() {
           {primaryCategories.map((category) => (
             <Link
               className="chip chip-idle"
+              data-category={category.id}
               href={`/tools?category=${category.id}`}
               key={category.id}
             >

@@ -64,6 +64,7 @@ export default function ToolsPage() {
         {groupedTools.map((item) => (
           <Link
             className="chip chip-idle"
+            data-category={item.id}
             href={`#group-${item.id}`}
             key={item.id}
           >
@@ -82,7 +83,7 @@ export default function ToolsPage() {
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="tool-group-icon">
+                <span className="tool-group-icon" data-category={group.id}>
                   <CategoryIcon category={group.id} className="h-4 w-4" />
                 </span>
                 <h2 className="section-title text-lg">{group.name}</h2>
