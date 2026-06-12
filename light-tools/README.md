@@ -7,12 +7,12 @@
 - Next.js App Router 网站
 - 首页 `/`
 - 工具列表页 `/tools`
-- 1 个工具占位页
 - 共享工具注册表
 - `/api/health`
 - MP4 转 GIF `/tools/mp4-to-gif`
 - 图片转 PDF `/tools/image-to-pdf`
 - PDF 合并 `/tools/pdf-merge`
+- PDF 拆分 `/tools/pdf-split`
 - PDF 页面整理 `/tools/pdf-organize`
 - 图片压缩 `/tools/image-compress`
 - Worker 占位应用
@@ -134,4 +134,4 @@ pnpm lint
 
 ## 下一步
 
-优先继续完善浏览器本地 PDF 工具：PDF 拆分和 PDF 压缩。服务器任务、会员、支付、数据库和队列放到后续阶段。
+优先继续完善浏览器本地 PDF 工具：PDF 转图片、PDF 轻量压缩和图片裁剪/证件照尺寸。服务器任务、会员、支付、数据库和队列放到后续阶段。

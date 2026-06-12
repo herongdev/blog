@@ -6,6 +6,7 @@ import { ImageToPdfTool } from "@/components/tools/image-to-pdf/ImageToPdfTool";
 import { Mp4ToGifTool } from "@/components/tools/mp4-to-gif/Mp4ToGifTool";
 import { PdfMergeTool } from "@/components/tools/pdf-merge/PdfMergeTool";
 import { PdfOrganizeTool } from "@/components/tools/pdf-organize/PdfOrganizeTool";
+import { PdfSplitTool } from "@/components/tools/pdf-split/PdfSplitTool";
 import { ToolShell } from "@/components/tools/ToolShell";
 import { buildToolJsonLd, buildToolMetadata } from "@/lib/seo";
 import { getToolBySlug, tools } from "@/lib/tool-registry";
@@ -43,7 +44,8 @@ export default async function ToolPage({ params }: { params: ToolPageParams }) {
     "image-to-pdf": <ImageToPdfTool tool={tool} />,
     "mp4-to-gif": <Mp4ToGifTool tool={tool} />,
     "pdf-merge": <PdfMergeTool tool={tool} />,
-    "pdf-organize": <PdfOrganizeTool tool={tool} />
+    "pdf-organize": <PdfOrganizeTool tool={tool} />,
+    "pdf-split": <PdfSplitTool tool={tool} />
   }[tool.slug];
 
   const content = toolContent ?? <ToolShell tool={tool} />;
