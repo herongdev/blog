@@ -83,9 +83,7 @@ export default function ToolsPage() {
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="tool-group-icon" data-category={group.id}>
-                  <CategoryIcon category={group.id} className="h-4 w-4" />
-                </span>
+                <span className="tool-group-marker" data-category={group.id} />
                 <h2 className="section-title text-lg">{group.name}</h2>
               </div>
               <span className="text-sm text-muted">{group.tools.length} 个</span>

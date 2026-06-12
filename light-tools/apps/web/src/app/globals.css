@@ -423,42 +423,33 @@ textarea {
   outline-offset: 0.5rem;
 }
 
-.tool-group-icon {
+.tool-group-marker {
   --tool-accent: var(--color-accent);
-  --tool-soft: var(--color-accent-soft);
-  display: inline-flex;
-  width: 2rem;
-  height: 2rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-control);
-  background: var(--tool-soft);
-  color: var(--tool-accent);
+  display: inline-block;
+  width: 0.25rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: var(--tool-accent);
 }
 
-.tool-group-icon[data-category="pdf"] {
+.tool-group-marker[data-category="pdf"] {
   --tool-accent: var(--color-category-pdf);
-  --tool-soft: var(--color-category-pdf-soft);
 }
 
-.tool-group-icon[data-category="image"] {
+.tool-group-marker[data-category="image"] {
   --tool-accent: var(--color-category-image);
-  --tool-soft: var(--color-category-image-soft);
 }
 
-.tool-group-icon[data-category="video"] {
+.tool-group-marker[data-category="video"] {
   --tool-accent: var(--color-category-video);
-  --tool-soft: var(--color-category-video-soft);
 }
 
-.tool-group-icon[data-category="text"] {
+.tool-group-marker[data-category="text"] {
   --tool-accent: var(--color-category-text);
-  --tool-soft: var(--color-category-text-soft);
 }
 
-.tool-group-icon[data-category="office"] {
+.tool-group-marker[data-category="office"] {
   --tool-accent: var(--color-category-office);
-  --tool-soft: var(--color-category-office-soft);
 }
 
 .tool-icon {
