@@ -100,6 +100,27 @@ export const tools: ToolDefinition[] = [
     }
   },
   {
+    id: "pdf-organize",
+    slug: "pdf-organize",
+    name: "PDF 页面整理",
+    shortDescription: "删除、旋转和调整页面顺序",
+    longDescription:
+      "上传一个 PDF，预览页面缩略图后删除页面、调整顺序、旋转页面并导出新的 PDF。",
+    category: "pdf",
+    processMode: "browser",
+    acceptedMimeTypes: ["application/pdf"],
+    maxFilesFree: 1,
+    maxFileSizeMbFree: 50,
+    maxFilesPro: 10,
+    maxFileSizeMbPro: 500,
+    seo: {
+      title: "PDF 页面整理 - 免费在线删除、旋转和排序 PDF 页面",
+      description:
+        "免费在线整理 PDF 页面，支持删除页面、旋转页面、调整顺序并导出新 PDF，浏览器本地处理，不上传文件。",
+      keywords: ["PDF 页面整理", "PDF 删除页面", "PDF 旋转页面", "PDF 页面排序", "PDF 提取页面"]
+    }
+  },
+  {
     id: "image-to-pdf",
     slug: "image-to-pdf",
     name: "图片转 PDF",
