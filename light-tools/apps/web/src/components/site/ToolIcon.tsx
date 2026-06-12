@@ -1,6 +1,7 @@
 import type { ToolCategory, ToolDefinition } from "@light-tools/shared";
 import {
   File,
+  FileStack,
   FileText,
   Film,
   Image as ImageIcon,
@@ -13,6 +14,7 @@ import {
 const toolIcons: Record<string, LucideIcon> = {
   "pdf-merge": FileText,
   "pdf-split": Scissors,
+  "pdf-organize": FileStack,
   "image-to-pdf": Images,
   "image-compress": Minimize2,
   "mp4-to-gif": Film

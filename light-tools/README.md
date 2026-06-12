@@ -13,6 +13,7 @@
 - MP4 转 GIF `/tools/mp4-to-gif`
 - 图片转 PDF `/tools/image-to-pdf`
 - PDF 合并 `/tools/pdf-merge`
+- PDF 页面整理 `/tools/pdf-organize`
 - 图片压缩 `/tools/image-compress`
 - Worker 占位应用
 
@@ -133,4 +134,4 @@ pnpm lint
 
 ## 下一步
 
-优先实现浏览器本地处理工具：PDF 拆分。服务器任务、会员、支付、数据库和队列放到后续阶段。
+优先继续完善浏览器本地 PDF 工具：PDF 拆分和 PDF 压缩。服务器任务、会员、支付、数据库和队列放到后续阶段。
