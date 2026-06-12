@@ -7,16 +7,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: getCanonicalUrl(),
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 1
-    },
-    {
       url: getCanonicalUrl("/tools"),
       lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.9
+      priority: 1
     },
     ...tools.map((tool) => ({
       url: getCanonicalUrl(`/tools/${tool.slug}`),
