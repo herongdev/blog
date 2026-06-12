@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { StructuredData } from "@/components/site/StructuredData";
 import { ImageCompressTool } from "@/components/tools/image-compress/ImageCompressTool";
+import { ImageCropTool } from "@/components/tools/image-crop/ImageCropTool";
 import { ImageToPdfTool } from "@/components/tools/image-to-pdf/ImageToPdfTool";
 import { Mp4ToGifTool } from "@/components/tools/mp4-to-gif/Mp4ToGifTool";
 import { PdfMergeTool } from "@/components/tools/pdf-merge/PdfMergeTool";
@@ -42,6 +43,7 @@ export default async function ToolPage({ params }: { params: ToolPageParams }) {
 
   const toolContent = {
     "image-compress": <ImageCompressTool tool={tool} />,
+    "image-crop": <ImageCropTool tool={tool} />,
     "image-to-pdf": <ImageToPdfTool tool={tool} />,
     "mp4-to-gif": <Mp4ToGifTool tool={tool} />,
     "pdf-merge": <PdfMergeTool tool={tool} />,
