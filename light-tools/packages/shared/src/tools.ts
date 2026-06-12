@@ -184,6 +184,27 @@ export const tools: ToolDefinition[] = [
     }
   },
   {
+    id: "image-crop",
+    slug: "image-crop",
+    name: "图片裁剪",
+    shortDescription: "裁剪头像、证件照和封面图",
+    longDescription:
+      "在浏览器本地裁剪 JPG、PNG、WebP 图片，支持头像、证件照、表单图和封面尺寸预设。",
+    category: "image",
+    processMode: "browser",
+    acceptedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
+    maxFilesFree: 1,
+    maxFileSizeMbFree: 20,
+    maxFilesPro: 100,
+    maxFileSizeMbPro: 100,
+    seo: {
+      title: "图片裁剪 - 免费在线裁剪头像、证件照和封面图",
+      description:
+        "免费在线裁剪图片，支持头像方图、一寸证件照、二寸证件照、横版封面、自定义尺寸和 JPG/PNG/WebP 导出，浏览器本地处理。",
+      keywords: ["图片裁剪", "证件照尺寸", "头像裁剪", "图片改尺寸", "在线裁剪图片"]
+    }
+  },
+  {
     id: "mp4-to-gif",
     slug: "mp4-to-gif",
     name: "MP4 转 GIF",

@@ -1,5 +1,6 @@
 import type { ToolCategory, ToolDefinition } from "@light-tools/shared";
 import {
+  Crop,
   File,
   FileImage,
   FileStack,
@@ -19,6 +20,7 @@ const toolIcons: Record<string, LucideIcon> = {
   "pdf-to-image": FileImage,
   "image-to-pdf": Images,
   "image-compress": Minimize2,
+  "image-crop": Crop,
   "mp4-to-gif": Film
 };
 
