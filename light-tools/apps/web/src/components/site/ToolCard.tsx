@@ -6,6 +6,7 @@ export function ToolCard({ tool }: { tool: ToolDefinition }) {
   return (
     <Link
       className="tool-card group flex items-center scroll-mt-24"
+      data-category={tool.category}
       href={`/tools/${tool.slug}`}
       id={`tool-${tool.slug}`}
     >

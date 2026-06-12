@@ -2,23 +2,33 @@
 
 :root {
   color-scheme: light;
-  --color-page: #f6f8fb;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f1f5f9;
-  --color-surface-subtle: #f8fafc;
-  --color-text: #111827;
-  --color-text-muted: #475569;
-  --color-text-soft: #64748b;
-  --color-border: #d9e2ec;
-  --color-border-strong: #c2cedb;
-  --color-primary: #0f172a;
-  --color-primary-hover: #1e293b;
+  --color-page: #f6f7f2;
+  --color-surface: #fffefb;
+  --color-surface-muted: #eef4f1;
+  --color-surface-subtle: #f2f5ef;
+  --color-text: #102022;
+  --color-text-muted: #405a5d;
+  --color-text-soft: #6b7f82;
+  --color-border: #d7e0dc;
+  --color-border-strong: #b9c9c3;
+  --color-primary: #0b6f67;
+  --color-primary-hover: #075c56;
   --color-primary-foreground: #ffffff;
-  --color-accent: #0f766e;
-  --color-accent-hover: #115e59;
-  --color-accent-soft: #e7f8f5;
-  --color-accent-border: #5eead4;
+  --color-accent: #0d9488;
+  --color-accent-hover: #0f766e;
+  --color-accent-soft: #e2f6f1;
+  --color-accent-border: #76d6c7;
   --color-accent-foreground: #ffffff;
+  --color-category-pdf: #3b5ccc;
+  --color-category-pdf-soft: #e8edff;
+  --color-category-image: #0b806f;
+  --color-category-image-soft: #def7ef;
+  --color-category-video: #a4570a;
+  --color-category-video-soft: #fff0d8;
+  --color-category-text: #7c3aed;
+  --color-category-text-soft: #f0e9ff;
+  --color-category-office: #4b5563;
+  --color-category-office-soft: #eef1f4;
   --color-danger: #b42318;
   --color-danger-surface: #fff1f0;
   --color-danger-border: #ffccc7;
@@ -26,6 +36,7 @@
   --color-warning-surface: #fffbeb;
   --color-warning-border: #fde68a;
   --shadow-focus: 0 0 0 3px rgb(15 118 110 / 14%);
+  --shadow-panel: 0 1px 2px rgb(16 32 34 / 5%);
 
   --radius-control: 6px;
   --radius-panel: 6px;
@@ -39,30 +50,41 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-page: #0d1117;
-  --color-surface: #141b24;
-  --color-surface-muted: #192230;
-  --color-surface-subtle: #101722;
-  --color-text: #e7edf5;
-  --color-text-muted: #b8c4d4;
-  --color-text-soft: #8fa0b5;
-  --color-border: #263445;
-  --color-border-strong: #3a4a5f;
-  --color-primary: #f8fafc;
-  --color-primary-hover: #dbeafe;
-  --color-primary-foreground: #08111f;
-  --color-accent: #2dd4bf;
-  --color-accent-hover: #5eead4;
-  --color-accent-soft: #0f302f;
-  --color-accent-border: #178276;
-  --color-accent-foreground: #051f1d;
+  --color-page: #0e1415;
+  --color-surface: #151d1e;
+  --color-surface-muted: #1d2929;
+  --color-surface-subtle: #111919;
+  --color-text: #edf5f1;
+  --color-text-muted: #b6c8c4;
+  --color-text-soft: #819793;
+  --color-border: #2a3a38;
+  --color-border-strong: #3a514d;
+  --color-primary: #37cfc0;
+  --color-primary-hover: #5eead4;
+  --color-primary-foreground: #062522;
+  --color-accent: #37cfc0;
+  --color-accent-hover: #78eadf;
+  --color-accent-soft: #123330;
+  --color-accent-border: #287c72;
+  --color-accent-foreground: #05221f;
+  --color-category-pdf: #8ea4ff;
+  --color-category-pdf-soft: #1b2441;
+  --color-category-image: #52d8bd;
+  --color-category-image-soft: #12342f;
+  --color-category-video: #f4bd6b;
+  --color-category-video-soft: #342611;
+  --color-category-text: #c4a5fd;
+  --color-category-text-soft: #2b2141;
+  --color-category-office: #c7d2d0;
+  --color-category-office-soft: #232d2d;
   --color-danger: #ff9c8f;
   --color-danger-surface: #351617;
   --color-danger-border: #73302d;
   --color-warning: #f8d176;
   --color-warning-surface: #30250d;
   --color-warning-border: #67510f;
-  --shadow-focus: 0 0 0 3px rgb(45 212 191 / 18%);
+  --shadow-focus: 0 0 0 3px rgb(55 207 192 / 18%);
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 24%);
 }
 
 * {
@@ -124,13 +146,14 @@ textarea {
 
 .site-header {
   border-bottom: 1px solid var(--color-border);
-  background: color-mix(in srgb, var(--color-surface) 95%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  backdrop-filter: blur(12px);
 }
 
 .site-footer {
   margin-top: 3rem;
   border-top: 1px solid var(--color-border);
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 82%, var(--color-page));
 }
 
 .site-nav-link,
@@ -191,6 +214,7 @@ textarea {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-panel);
   background: var(--color-surface);
+  box-shadow: var(--shadow-panel);
 }
 
 .panel-padded {
@@ -198,7 +222,7 @@ textarea {
 }
 
 .muted-panel {
-  border: 1px dashed var(--color-border-strong);
+  border: 1px dashed color-mix(in srgb, var(--color-border-strong) 82%, var(--color-accent));
   border-radius: var(--radius-panel);
   background: var(--color-surface-subtle);
 }
@@ -259,6 +283,7 @@ textarea {
 .button-primary {
   background: var(--color-primary);
   color: var(--color-primary-foreground) !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
 }
 
 .button-primary:hover {
@@ -268,6 +293,7 @@ textarea {
 .button-accent {
   background: var(--color-accent);
   color: var(--color-accent-foreground) !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
 }
 
 .button-accent:hover {
@@ -293,9 +319,9 @@ textarea {
 }
 
 .chip-active {
-  border-color: var(--color-accent);
-  background: var(--color-accent);
-  color: var(--color-accent-foreground) !important;
+  border-color: color-mix(in srgb, var(--color-primary) 72%, var(--color-border));
+  background: var(--color-primary);
+  color: var(--color-primary-foreground) !important;
 }
 
 .chip-idle {
@@ -305,30 +331,86 @@ textarea {
 }
 
 .chip-idle:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--chip-accent, var(--color-accent));
+  background: var(--chip-soft, var(--color-accent-soft));
+  color: var(--chip-accent, var(--color-accent));
+}
+
+.chip[data-category="pdf"] {
+  --chip-accent: var(--color-category-pdf);
+  --chip-soft: var(--color-category-pdf-soft);
+}
+
+.chip[data-category="image"] {
+  --chip-accent: var(--color-category-image);
+  --chip-soft: var(--color-category-image-soft);
+}
+
+.chip[data-category="video"] {
+  --chip-accent: var(--color-category-video);
+  --chip-soft: var(--color-category-video-soft);
+}
+
+.chip[data-category="text"] {
+  --chip-accent: var(--color-category-text);
+  --chip-soft: var(--color-category-text-soft);
+}
+
+.chip[data-category="office"] {
+  --chip-accent: var(--color-category-office);
+  --chip-soft: var(--color-category-office-soft);
 }
 
 .tool-card {
+  --tool-accent: var(--color-accent);
+  --tool-soft: var(--color-accent-soft);
   min-height: 86px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-panel);
   background: var(--color-surface);
   padding: 0.75rem 0.875rem;
+  box-shadow: var(--shadow-panel);
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
-    color 160ms ease;
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.tool-card[data-category="pdf"] {
+  --tool-accent: var(--color-category-pdf);
+  --tool-soft: var(--color-category-pdf-soft);
+}
+
+.tool-card[data-category="image"] {
+  --tool-accent: var(--color-category-image);
+  --tool-soft: var(--color-category-image-soft);
+}
+
+.tool-card[data-category="video"] {
+  --tool-accent: var(--color-category-video);
+  --tool-soft: var(--color-category-video-soft);
+}
+
+.tool-card[data-category="text"] {
+  --tool-accent: var(--color-category-text);
+  --tool-soft: var(--color-category-text-soft);
+}
+
+.tool-card[data-category="office"] {
+  --tool-accent: var(--color-category-office);
+  --tool-soft: var(--color-category-office-soft);
 }
 
 .tool-card:hover {
-  border-color: var(--color-accent);
-  background: var(--color-accent-soft);
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--tool-accent) 58%, var(--color-border));
+  background: color-mix(in srgb, var(--tool-soft) 54%, var(--color-surface));
 }
 
 .tool-card:target {
-  border-color: var(--color-accent);
-  background: var(--color-accent-soft);
+  border-color: var(--tool-accent);
+  background: color-mix(in srgb, var(--tool-soft) 62%, var(--color-surface));
   box-shadow: var(--shadow-focus);
 }
 
@@ -342,27 +424,54 @@ textarea {
 }
 
 .tool-group-icon {
+  --tool-accent: var(--color-accent);
+  --tool-soft: var(--color-accent-soft);
   display: inline-flex;
   width: 2rem;
   height: 2rem;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-control);
-  background: var(--color-surface-muted);
-  color: var(--color-text-muted);
+  background: var(--tool-soft);
+  color: var(--tool-accent);
+}
+
+.tool-group-icon[data-category="pdf"] {
+  --tool-accent: var(--color-category-pdf);
+  --tool-soft: var(--color-category-pdf-soft);
+}
+
+.tool-group-icon[data-category="image"] {
+  --tool-accent: var(--color-category-image);
+  --tool-soft: var(--color-category-image-soft);
+}
+
+.tool-group-icon[data-category="video"] {
+  --tool-accent: var(--color-category-video);
+  --tool-soft: var(--color-category-video-soft);
+}
+
+.tool-group-icon[data-category="text"] {
+  --tool-accent: var(--color-category-text);
+  --tool-soft: var(--color-category-text-soft);
+}
+
+.tool-group-icon[data-category="office"] {
+  --tool-accent: var(--color-category-office);
+  --tool-soft: var(--color-category-office-soft);
 }
 
 .tool-icon {
-  background: var(--color-surface-muted);
-  color: var(--color-text-muted);
+  background: var(--tool-soft);
+  color: var(--tool-accent);
   transition:
     background-color 160ms ease,
     color 160ms ease;
 }
 
 .tool-card:hover .tool-icon {
-  background: color-mix(in srgb, var(--color-accent-soft) 55%, var(--color-surface));
-  color: var(--color-accent);
+  background: color-mix(in srgb, var(--tool-soft) 74%, var(--color-surface));
+  color: var(--tool-accent);
 }
 
 .choice-card {
