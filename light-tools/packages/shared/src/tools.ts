@@ -121,6 +121,27 @@ export const tools: ToolDefinition[] = [
     }
   },
   {
+    id: "pdf-to-image",
+    slug: "pdf-to-image",
+    name: "PDF 转图片",
+    shortDescription: "把 PDF 页面导出为图片",
+    longDescription:
+      "上传一个 PDF，选择页码范围后在浏览器本地导出 JPG、PNG 或 WebP 图片。",
+    category: "pdf",
+    processMode: "browser",
+    acceptedMimeTypes: ["application/pdf"],
+    maxFilesFree: 1,
+    maxFileSizeMbFree: 50,
+    maxFilesPro: 10,
+    maxFileSizeMbPro: 500,
+    seo: {
+      title: "PDF 转图片 - 免费在线 PDF 转 JPG/PNG/WebP",
+      description:
+        "免费在线把 PDF 页面转换成 JPG、PNG 或 WebP 图片，支持指定页码范围和清晰度选择，浏览器本地处理，不上传文件。",
+      keywords: ["PDF 转图片", "PDF 转 JPG", "PDF 转 PNG", "PDF 导出图片"]
+    }
+  },
+  {
     id: "image-to-pdf",
     slug: "image-to-pdf",
     name: "图片转 PDF",
