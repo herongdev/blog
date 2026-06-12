@@ -84,7 +84,7 @@ export const tools: ToolDefinition[] = [
     name: "PDF 拆分",
     shortDescription: "按页码范围拆分 PDF 文件",
     longDescription:
-      "上传一个 PDF，选择页码范围后导出指定页面，后续优先使用浏览器本地处理。",
+      "上传一个 PDF，按指定页码、单页或固定页数在浏览器本地拆分导出。",
     category: "pdf",
     processMode: "browser",
     acceptedMimeTypes: ["application/pdf"],
@@ -95,8 +95,8 @@ export const tools: ToolDefinition[] = [
     seo: {
       title: "PDF 拆分 - 免费在线按页拆分 PDF",
       description:
-        "免费在线拆分 PDF 文件，可按页码范围导出指定页面，后续优先本地处理。",
-      keywords: ["PDF 拆分", "拆分 PDF", "PDF 按页导出"]
+        "免费在线拆分 PDF 文件，支持按页码范围、每页一个 PDF 或每 N 页拆分，浏览器本地处理，不上传文件。",
+      keywords: ["PDF 拆分", "拆分 PDF", "PDF 按页导出", "PDF 提取页面"]
     }
   },
   {
