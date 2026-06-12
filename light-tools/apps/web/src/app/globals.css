@@ -310,11 +310,11 @@ textarea {
 }
 
 .tool-card {
-  min-height: 112px;
+  min-height: 86px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-panel);
   background: var(--color-surface);
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 0.875rem;
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
@@ -324,6 +324,32 @@ textarea {
 .tool-card:hover {
   border-color: var(--color-accent);
   background: var(--color-accent-soft);
+}
+
+.tool-card:target {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  box-shadow: var(--shadow-focus);
+}
+
+.tool-group {
+  border-radius: var(--radius-panel);
+}
+
+.tool-group:target {
+  outline: 2px solid var(--color-accent-border);
+  outline-offset: 0.5rem;
+}
+
+.tool-group-icon {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-control);
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
 }
 
 .tool-icon {
