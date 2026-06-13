@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { withBasePath } from "@/lib/base-path";
 import { getAnalyticsSummary } from "@/lib/server/analytics";
@@ -13,13 +14,26 @@ export const metadata: Metadata = {
   }
 };
 
-function StatCard({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="panel p-4">
+function StatCard({ label, value, href }: { label: string; value: number; href?: string }) {
+  const content = (
+    <>
       <div className="text-sm text-muted">{label}</div>
       <div className="mt-2 text-3xl font-semibold text-[var(--color-text)]">{value}</div>
-    </div>
+    </>
   );
+
+  if (href) {
+    return (
+      <Link
+        className="panel block p-4 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
+        href={href}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return <div className="panel p-4">{content}</div>;
 }
 
 export default async function AdminStatsPage() {
@@ -46,7 +60,7 @@ export default async function AdminStatsPage() {
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="访问事件" value={summary.pageViews} />
-        <StatCard label="独立访客" value={summary.uniqueVisitors} />
+        <StatCard href="/admin/stats/visitors" label="独立访客" value={summary.uniqueVisitors} />
         <StatCard label="工具打开" value={summary.toolViews} />
         <StatCard label="成功使用" value={summary.toolUseSuccesses} />
       </section>
