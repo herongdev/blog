@@ -130,7 +130,7 @@ pnpm lint
 - 后台入口为 `/admin`，登录后访问 `/admin/stats` 查看最近 30 天统计。
 - 生产环境必须配置 `LIGHT_TOOLS_ADMIN_PASSWORD` 和 `LIGHT_TOOLS_ADMIN_SESSION_SECRET`。
 
-这套统计不依赖第三方 SDK；目前保存的是匿名访客哈希、IP 哈希、路径、事件类型和时间，不保存原始 IP。后续如果要做长期趋势、漏斗和付费分析，建议迁移到 PostgreSQL 或 ClickHouse。
+这套统计不依赖第三方 SDK；目前保存的是匿名访客哈希、客户端 IP、IP 哈希、路径、事件类型和时间。客户端 IP 仅用于后台排查和近似地域判断，不对外展示。后续如果要做长期趋势、漏斗和付费分析，建议迁移到 PostgreSQL 或 ClickHouse。
 
 ## 下一步
 
