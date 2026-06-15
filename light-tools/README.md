@@ -1,12 +1,16 @@
 # LightTools
 
-面向中文用户的轻量文件处理工具箱。当前已完成项目初始化、基础网站骨架和 MP4 转 GIF 首个服务端工具，不包含登录、支付、数据库或队列。
+面向中文用户的轻量文件处理工具箱。当前已完成项目初始化、基础网站骨架、课程会员权限 MVP、微信支付 Native 接入框架和 MP4 转 GIF 首个服务端工具。数据库和队列仍放在后续阶段。
 
 ## 当前范围
 
 - Next.js App Router 网站
 - 首页 `/`
 - 工具列表页 `/tools`
+- 课程列表页 `/courses`
+- 课程登录 / 注册 `/courses/login`
+- 我的课程 `/courses/me`
+- 课程权限后台 `/admin/courses`
 - 共享工具注册表
 - `/api/health`
 - MP4 转 GIF `/tools/mp4-to-gif`
@@ -35,7 +39,7 @@ http://127.0.0.1:3000
 当前仓库已按“博客同域子路径”准备好生产配置：
 
 ```text
-http://herong.info/file-tools/
+https://herong.info/file-tools/
 ```
 
 工具箱服务监听服务器本机端口：
@@ -44,14 +48,14 @@ http://herong.info/file-tools/
 127.0.0.1:3001
 ```
 
-Nginx 把 `/file-tools/` 反代到这个本机端口。博客 GitHub Actions 的 VPS 构建会把“工具箱”菜单指向 `/file-tools/`，GitHub Pages 构建会指向 `http://herong.info/file-tools/`。
+Nginx 把 `/file-tools/` 反代到这个本机端口。博客 GitHub Actions 的 VPS 构建会把“工具箱”菜单指向 `/file-tools/`，GitHub Pages 构建会指向 `https://herong.info/file-tools/`。
 
 服务器上启动工具箱：
 
 ```bash
 cd light-tools
 NEXT_PUBLIC_BASE_PATH=/file-tools \
-NEXT_PUBLIC_SITE_URL=http://herong.info/file-tools \
+NEXT_PUBLIC_SITE_URL=https://herong.info/file-tools \
 docker compose -f docker-compose.prod.yml up -d --build
 ```
 
@@ -119,6 +123,50 @@ pnpm lint
 - 用户清 cookie 或换浏览器时，IP 哈希会做一层兜底；但换网络、VPN、共享出口 IP 或服务重启仍会影响计数，所以这不是最终收费级方案。
 
 正式付费前建议升级为：登录用户 ID + 数据库持久化额度记录 + 匿名 cookie/IP/UA 作为未登录兜底 + 支付订单和额度流水。
+
+## 课程会员与收费 MVP
+
+课程功能先采用“后端权限 + 手动收款开通”的 MVP：
+
+- 课程入口：`/courses`
+- 课程账号：`/courses/login`
+- 我的课程：`/courses/me`
+- 管理员手动开通：`/admin/courses`
+- 课程账号保存在 `LIGHT_TOOLS_DATA_DIR/course-access.json`
+- 密码使用 Node.js `scrypt` 加盐哈希保存。
+- 登录使用 HttpOnly cookie，不把付费正文放进静态博客 HTML。
+- 购买按钮会创建 `pending` 订单。
+- 未配置微信商户参数时，由管理员在后台输入邮箱和订单号手动开通。
+- 配置微信商户参数后，订单页会生成 Native 支付二维码，支付回调成功后自动开通课程权限。
+
+生产环境建议额外配置：
+
+```bash
+LIGHT_TOOLS_MEMBER_SESSION_SECRET=replace-with-a-long-random-secret
+```
+
+微信支付建议先接 Native 扫码支付，详细接入步骤见：
+
+```text
+docs/wechat-pay-integration-plan.md
+```
+
+本地已经准备了 `.env` 生产配置模板，文件被 `.gitignore` 忽略，不会进入 Git。服务器部署时可以复制这份配置，或用服务器上的安全环境变量替代。
+
+启用微信支付前，需要准备：
+
+```bash
+WECHAT_PAY_ENABLED=true
+WECHAT_PAY_APPID=已认证服务号/小程序/移动应用 appid
+WECHAT_PAY_MCH_ID=微信支付商户号
+WECHAT_PAY_API_V3_KEY=32位 API v3 密钥
+WECHAT_PAY_CERT_SERIAL_NO=商户 API 证书序列号
+WECHAT_PAY_PRIVATE_KEY_PATH=/run/secrets/light-tools/apiclient_key.pem
+WECHAT_PAY_PLATFORM_CERT_PATH=/run/secrets/light-tools/wechatpay_platform_cert.pem
+WECHAT_PAY_NOTIFY_URL=https://herong.info/file-tools/api/payments/wechat/notify
+```
+
+生产 compose 会把仓库外的 `secrets/` 目录只读挂载到容器内 `/run/secrets/light-tools`。`secrets/` 已加入 `.gitignore` 和 `.dockerignore`，不要把私钥提交进 Git。
 
 ## 统计与后台
 

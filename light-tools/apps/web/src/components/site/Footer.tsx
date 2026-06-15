@@ -8,7 +8,10 @@ export function Footer() {
           <div className="font-medium text-[var(--color-text)]">LightTools</div>
           <p>PDF、图片和视频处理工具。</p>
         </div>
-        <div className="text-xs text-soft">
+        <div className="flex gap-3 text-xs text-soft">
+          <Link className="hover:text-muted" href="/courses">
+            课程
+          </Link>
           <Link className="hover:text-muted" href="/admin" rel="nofollow">
             后台
           </Link>

@@ -6,21 +6,33 @@ services:
       args:
         NODE_IMAGE: ${NODE_IMAGE:-docker.m.daocloud.io/library/node:20-bookworm-slim}
         NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-/file-tools}
-        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://herong.info/file-tools}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://herong.info/file-tools}
     container_name: light-tools-web
     environment:
       NODE_ENV: production
       NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-/file-tools}
-      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://herong.info/file-tools}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://herong.info/file-tools}
       LIGHT_TOOLS_FFMPEG_PATH: /usr/bin/ffmpeg
       LIGHT_TOOLS_FREE_CONVERSIONS: ${LIGHT_TOOLS_FREE_CONVERSIONS:-5}
       LIGHT_TOOLS_FREE_WINDOW_DAYS: ${LIGHT_TOOLS_FREE_WINDOW_DAYS:-30}
       LIGHT_TOOLS_DATA_DIR: /data
       LIGHT_TOOLS_ADMIN_PASSWORD: ${LIGHT_TOOLS_ADMIN_PASSWORD:-}
       LIGHT_TOOLS_ADMIN_SESSION_SECRET: ${LIGHT_TOOLS_ADMIN_SESSION_SECRET:-}
+      LIGHT_TOOLS_MEMBER_SESSION_SECRET: ${LIGHT_TOOLS_MEMBER_SESSION_SECRET:-}
       ENABLE_ANTIVIRUS_SCAN: ${ENABLE_ANTIVIRUS_SCAN:-false}
       CLAMAV_HOST: ${CLAMAV_HOST:-}
       CLAMAV_PORT: ${CLAMAV_PORT:-3310}
+      WECHAT_PAY_ENABLED: ${WECHAT_PAY_ENABLED:-false}
+      WECHAT_PAY_APPID: ${WECHAT_PAY_APPID:-}
+      WECHAT_PAY_MCH_ID: ${WECHAT_PAY_MCH_ID:-}
+      WECHAT_PAY_API_V3_KEY: ${WECHAT_PAY_API_V3_KEY:-}
+      WECHAT_PAY_PRIVATE_KEY_PATH: ${WECHAT_PAY_PRIVATE_KEY_PATH:-}
+      WECHAT_PAY_PRIVATE_KEY: ${WECHAT_PAY_PRIVATE_KEY:-}
+      WECHAT_PAY_CERT_SERIAL_NO: ${WECHAT_PAY_CERT_SERIAL_NO:-}
+      WECHAT_PAY_PLATFORM_CERT_PATH: ${WECHAT_PAY_PLATFORM_CERT_PATH:-}
+      WECHAT_PAY_PLATFORM_CERT: ${WECHAT_PAY_PLATFORM_CERT:-}
+      WECHAT_PAY_PLATFORM_CERT_SERIAL_NO: ${WECHAT_PAY_PLATFORM_CERT_SERIAL_NO:-}
+      WECHAT_PAY_NOTIFY_URL: ${WECHAT_PAY_NOTIFY_URL:-}
     init: true
     ports:
       - "127.0.0.1:3001:3000"
@@ -32,6 +44,7 @@ services:
       - /tmp:size=512m,mode=1777
     volumes:
       - light-tools-data:/data
+      - ./secrets:/run/secrets/light-tools:ro
 
 volumes:
   light-tools-data:
