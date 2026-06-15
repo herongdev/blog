@@ -52,9 +52,14 @@ export default async function AdminStatsPage() {
           <p className="mt-2 text-sm text-muted">最近 30 天的访问和工具使用情况。</p>
         </div>
         <form action={withBasePath("/api/admin/logout")} method="post">
-          <button className="button-muted" type="submit">
-            退出登录
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <Link className="button-muted" href="/admin/courses">
+              课程权限
+            </Link>
+            <button className="button-muted" type="submit">
+              退出登录
+            </button>
+          </div>
         </form>
       </header>
 
