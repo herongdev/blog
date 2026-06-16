@@ -51,6 +51,12 @@ interface ProgressState {
   detail: string;
 }
 
+interface EstimatedSize {
+  sizeBytes: number | null;
+  isEstimating: boolean;
+  error: string;
+}
+
 interface IcoEntry {
   size: number;
   blob: Blob;
@@ -527,6 +533,11 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
   const [progress, setProgress] = useState<ProgressState | null>(null);
   const [error, setError] = useState("");
   const [result, setResult] = useState<GeneratedResult | null>(null);
+  const [estimatedSize, setEstimatedSize] = useState<EstimatedSize>({
+    sizeBytes: null,
+    isEstimating: false,
+    error: ""
+  });
   const sourceRef = useRef<SourceImage | null>(null);
   const resultRef = useRef<GeneratedResult | null>(null);
 
@@ -573,6 +584,74 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
   useEffect(() => {
     resultRef.current = result;
   }, [result]);
+
+  useEffect(() => {
+    if (!source || format === "png" || format === "ico") {
+      setEstimatedSize({
+        sizeBytes: null,
+        isEstimating: false,
+        error: ""
+      });
+      return;
+    }
+
+    let isCancelled = false;
+    const timeout = window.setTimeout(() => {
+      setEstimatedSize((current) => ({
+        ...current,
+        isEstimating: true,
+        error: ""
+      }));
+
+      void (async () => {
+        try {
+          const image = await loadHtmlImage(source.url);
+          const canvas = renderCanvas(
+            image,
+            outputSize.width,
+            outputSize.height,
+            fitMode,
+            format === "jpeg",
+            zoom,
+            positionX,
+            positionY
+          );
+          const blob = await canvasToBlob(canvas, formatMimeTypes[format], quality);
+
+          if (!isCancelled) {
+            setEstimatedSize({
+              sizeBytes: blob.size,
+              isEstimating: false,
+              error: ""
+            });
+          }
+        } catch {
+          if (!isCancelled) {
+            setEstimatedSize({
+              sizeBytes: null,
+              isEstimating: false,
+              error: "暂时无法预估体积"
+            });
+          }
+        }
+      })();
+    }, 280);
+
+    return () => {
+      isCancelled = true;
+      window.clearTimeout(timeout);
+    };
+  }, [
+    fitMode,
+    format,
+    outputSize.height,
+    outputSize.width,
+    positionX,
+    positionY,
+    quality,
+    source,
+    zoom
+  ]);
 
   useEffect(() => {
     return () => {
@@ -1081,6 +1160,13 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
                     type="range"
                     value={quality}
                   />
+                  <span className="mt-2 block text-xs font-normal leading-5 text-muted">
+                    {estimatedSize.isEstimating
+                      ? "正在预估体积..."
+                      : estimatedSize.sizeBytes
+                        ? `预计约 ${formatBytes(estimatedSize.sizeBytes)}，${getSizeChangeText(estimatedSize.sizeBytes)}`
+                        : estimatedSize.error || "选择图片后会显示预计体积"}
+                  </span>
                 </label>
               ) : null}
 
@@ -1194,6 +1280,24 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
           ) : null}
 
           {error ? <div className="status-error">{error}</div> : null}
+
+          {result ? (
+            <div className="panel panel-padded space-y-4" aria-live="polite">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 space-y-1">
+                  <h2 className="panel-title">已生成</h2>
+                  <p className="text-sm text-muted">
+                    {formatLabels[result.format]}，{result.detail}，{formatBytes(result.sizeBytes)}
+                    {source ? `，${getSizeChangeText(result.sizeBytes)}` : ""}
+                  </p>
+                </div>
+                <a className="button-primary shrink-0" download={result.filename} href={result.downloadUrl}>
+                  <Download aria-hidden="true" className="h-4 w-4" />
+                  下载文件
+                </a>
+              </div>
+            </div>
+          ) : null}
         </div>
 
         <aside className="min-w-0 space-y-5">
