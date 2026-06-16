@@ -20,6 +20,7 @@ const toolIcons: Record<string, LucideIcon> = {
   "pdf-to-image": FileImage,
   "image-to-pdf": Images,
   "image-compress": Minimize2,
+  "image-convert": FileImage,
   "image-crop": Crop,
   "mp4-to-gif": Film
 };

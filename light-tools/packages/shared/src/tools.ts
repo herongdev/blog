@@ -205,6 +205,42 @@ export const tools: ToolDefinition[] = [
     }
   },
   {
+    id: "image-convert",
+    slug: "image-convert",
+    name: "图片格式转换",
+    shortDescription: "HEIC、PNG、JPG、WebP、ICO 互转",
+    longDescription:
+      "在浏览器本地把 HEIC、HEIF、JPG、PNG、WebP、GIF、BMP 图片转换为 PNG、JPG、WebP 或 ICO 图标。",
+    category: "image",
+    processMode: "browser",
+    acceptedMimeTypes: [
+      "image/heic",
+      "image/heif",
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "image/bmp"
+    ],
+    maxFilesFree: 1,
+    maxFileSizeMbFree: 30,
+    maxFilesPro: 100,
+    maxFileSizeMbPro: 100,
+    seo: {
+      title: "图片格式转换 - 免费在线 HEIC/PNG/JPG/WebP/ICO 互转",
+      description:
+        "免费在线转换图片格式，支持 HEIC、HEIF、JPG、PNG、WebP、GIF、BMP 输入，导出 PNG、JPG、WebP 或 favicon.ico，支持裁剪、留边、常用图标尺寸和自定义尺寸。",
+      keywords: [
+        "图片格式转换",
+        "HEIC 转 PNG",
+        "HEIC 转 ICO",
+        "PNG 转 ICO",
+        "JPG 转 WebP",
+        "favicon 生成"
+      ]
+    }
+  },
+  {
     id: "mp4-to-gif",
     slug: "mp4-to-gif",
     name: "MP4 转 GIF",
