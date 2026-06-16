@@ -59,8 +59,8 @@ interface IcoEntry {
 const scenePresets: ScenePreset[] = [
   {
     id: "original",
-    label: "保持原尺寸",
-    description: "只转换格式",
+    label: "保持原图",
+    description: "仅转换格式",
     width: 0,
     height: 0,
     format: "png",
@@ -68,8 +68,8 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "favicon",
-    label: "网站 favicon",
-    description: "ICO 多尺寸",
+    label: "网站图标",
+    description: "生成 favicon.ico",
     width: 256,
     height: 256,
     format: "ico",
@@ -78,8 +78,8 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "avatar",
-    label: "头像方图",
-    description: "512 x 512",
+    label: "头像",
+    description: "方形头像 512",
     width: 512,
     height: 512,
     format: "png",
@@ -87,7 +87,7 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "app-icon",
-    label: "App 图标",
+    label: "应用图标",
     description: "1024 x 1024",
     width: 1024,
     height: 1024,
@@ -96,8 +96,8 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "logo",
-    label: "网站 Logo",
-    description: "512 x 512 留边",
+    label: "Logo 留边",
+    description: "完整保留图形",
     width: 512,
     height: 512,
     format: "png",
@@ -105,7 +105,7 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "social",
-    label: "社交分享图",
+    label: "分享封面",
     description: "1200 x 630",
     width: 1200,
     height: 630,
@@ -114,7 +114,7 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "cover",
-    label: "文章封面",
+    label: "横版封面",
     description: "1280 x 720",
     width: 1280,
     height: 720,
@@ -123,7 +123,7 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "product",
-    label: "商品主图",
+    label: "商品方图",
     description: "800 x 800 留边",
     width: 800,
     height: 800,
@@ -132,8 +132,8 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "form",
-    label: "表单上传",
-    description: "800 x 800",
+    label: "表单图片",
+    description: "常见上传尺寸",
     width: 800,
     height: 800,
     format: "jpeg",
@@ -141,8 +141,8 @@ const scenePresets: ScenePreset[] = [
   },
   {
     id: "custom",
-    label: "自定义尺寸",
-    description: "手动输入宽高",
+    label: "自定义",
+    description: "自己输入宽高",
     width: 512,
     height: 512,
     format: "png",
@@ -161,6 +161,13 @@ const formatMimeTypes: Record<Exclude<OutputFormat, "ico">, string> = {
   png: "image/png",
   jpeg: "image/jpeg",
   webp: "image/webp"
+};
+
+const formatHints: Record<OutputFormat, string> = {
+  png: "PNG 适合透明背景和图形细节，不提供质量滑块；照片转 PNG 可能会变大。",
+  jpeg: "JPG 适合照片和更小体积，不保留透明背景。",
+  webp: "WebP 通常更小，适合网页使用；少数旧软件可能不支持。",
+  ico: "ICO 适合网站 favicon，可同时包含多个图标尺寸。"
 };
 
 const supportedExtensions = [
@@ -509,6 +516,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
   const [fitMode, setFitMode] = useState<FitMode>("cover");
   const [customWidth, setCustomWidth] = useState("512");
   const [customHeight, setCustomHeight] = useState("512");
+  const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [quality, setQuality] = useState(0.9);
   const [zoom, setZoom] = useState(1);
   const [positionX, setPositionX] = useState(0);
@@ -600,7 +608,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
   function applyPreset(preset: ScenePreset) {
     clearOutputState();
     setPresetId(preset.id);
-    setFormat(preset.format);
+    setFormat((preset.id === "original" || preset.id === "custom") && format !== "ico" ? format : preset.format);
     setFitMode(preset.fitMode);
     setCustomWidth(String(preset.width || 512));
     setCustomHeight(String(preset.height || 512));
@@ -608,6 +616,92 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
     setPositionX(0);
     setPositionY(0);
     if (preset.icoSizes) setIcoSizes(preset.icoSizes);
+  }
+
+  function selectFormat(nextFormat: OutputFormat) {
+    clearOutputState();
+    setFormat(nextFormat);
+
+    if (nextFormat === "ico") {
+      const faviconPreset = scenePresets.find((preset) => preset.id === "favicon");
+      if (faviconPreset && presetId === "original") {
+        setPresetId(faviconPreset.id);
+        setFitMode(faviconPreset.fitMode);
+        setCustomWidth(String(faviconPreset.width));
+        setCustomHeight(String(faviconPreset.height));
+        setIcoSizes(faviconPreset.icoSizes ?? [16, 32, 48, 64, 128, 256]);
+      }
+      return;
+    }
+
+    if (presetId === "favicon") {
+      setPresetId("original");
+      setFitMode("contain");
+    }
+  }
+
+  function getLockedRatio() {
+    if (source && source.width > 0 && source.height > 0) {
+      return source.width / source.height;
+    }
+
+    const width = Number(customWidth);
+    const height = Number(customHeight);
+    if (Number.isFinite(width) && Number.isFinite(height) && width > 0 && height > 0) {
+      return width / height;
+    }
+
+    return 1;
+  }
+
+  function setCustomPreset() {
+    if (presetId !== "custom") {
+      setPresetId("custom");
+    }
+  }
+
+  function updateCustomWidth(value: string) {
+    clearOutputState();
+    setCustomPreset();
+    setCustomWidth(value);
+
+    const width = Number(value);
+    const ratio = getLockedRatio();
+    if (lockAspectRatio && Number.isFinite(width) && width > 0 && ratio > 0) {
+      setCustomHeight(String(clamp(Math.round(width / ratio), 16, 4096)));
+    }
+  }
+
+  function updateCustomHeight(value: string) {
+    clearOutputState();
+    setCustomPreset();
+    setCustomHeight(value);
+
+    const height = Number(value);
+    const ratio = getLockedRatio();
+    if (lockAspectRatio && Number.isFinite(height) && height > 0 && ratio > 0) {
+      setCustomWidth(String(clamp(Math.round(height * ratio), 16, 4096)));
+    }
+  }
+
+  function updateAspectLock(checked: boolean) {
+    clearOutputState();
+    setLockAspectRatio(checked);
+
+    const width = Number(customWidth);
+    const ratio = getLockedRatio();
+    if (checked && selectedPreset.id === "custom" && Number.isFinite(width) && width > 0 && ratio > 0) {
+      setCustomHeight(String(clamp(Math.round(width / ratio), 16, 4096)));
+    }
+  }
+
+  function getSizeChangeText(sizeBytes: number) {
+    if (!source || source.file.size <= 0) return "";
+    const ratio = sizeBytes / source.file.size;
+
+    if (ratio >= 1.05) return `比原图大 ${(ratio * 100 - 100).toFixed(0)}%`;
+    if (ratio <= 0.95) return `比原图小 ${(100 - ratio * 100).toFixed(0)}%`;
+    return "与原图接近";
   }
 
   async function addFile(fileList: FileList | File[]) {
@@ -620,7 +714,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
 
     const maxBytes = tool.maxFileSizeMbFree * 1024 * 1024;
     if (!isSupportedInput(file)) {
-      setError("支持 HEIC、HEIF、JPG、PNG、WebP、GIF、BMP 图片。");
+      setError("请选择 HEIC、HEIF、JPG、PNG、WebP、GIF 或 BMP 图片。");
       return;
     }
 
@@ -670,12 +764,12 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
 
   async function exportImage() {
     if (!source) {
-      setError("请先选择图片。");
+      setError("先选择一张图片。");
       return;
     }
 
     if (format === "ico" && icoSizes.length === 0) {
-      setError("请至少选择一个 ICO 尺寸。");
+      setError("至少保留一个图标尺寸。");
       return;
     }
 
@@ -684,8 +778,8 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
     clearResult();
     setProgress({
       percent: 10,
-      stage: "准备导出",
-      detail: `${formatLabels[format]}，${fitMode === "cover" ? "裁剪填满" : "完整留边"}`
+      stage: "准备生成",
+      detail: `${formatLabels[format]}，${fitMode === "cover" ? "填满画面" : "完整保留"}`
     });
     sendAnalytics(
       "tool_use_attempt",
@@ -704,7 +798,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
         for (const [index, size] of sizes.entries()) {
           setProgress({
             percent: Math.round(20 + (index / sizes.length) * 55),
-            stage: "生成图标尺寸",
+            stage: "生成图标",
             detail: `${size} x ${size}`
           });
           const canvas = renderCanvas(image, size, size, fitMode, false, zoom, positionX, positionY);
@@ -735,8 +829,8 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
         setResult(nextResult);
         setProgress({
           percent: 100,
-          stage: "转换完成",
-          detail: "ICO 文件已生成，可以下载。"
+          stage: "生成完成",
+          detail: "ICO 文件已生成。"
         });
         sendAnalytics("tool_use_success", `format=ico;size=${icoBlob.size}`);
         return;
@@ -775,8 +869,8 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
       setResult(nextResult);
       setProgress({
         percent: 100,
-        stage: "转换完成",
-        detail: "图片已生成，可以下载。"
+        stage: "生成完成",
+        detail: "图片已生成。"
       });
       sendAnalytics("tool_use_success", `format=${format};size=${blob.size}`);
     } catch (caught) {
@@ -798,7 +892,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
         <div>
           <h1 className="page-title">{tool.name}</h1>
           <p className="mt-2 max-w-3xl text-base leading-7 text-muted">
-            转换 HEIC、HEIF、JPG、PNG、WebP、GIF、BMP，可按常见图标和图片场景调整尺寸。
+            把手机照片、网页图片或图标转成需要的格式，也可以顺手改成头像、封面、Logo 等常用尺寸。
           </p>
         </div>
       </header>
@@ -814,7 +908,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
             }}
           >
             <label className="block text-sm font-semibold text-[var(--color-text)]" htmlFor="image-convert-file">
-              选择图片
+              上传或拖入图片
             </label>
             <input
               accept="image/heic,image/heif,image/jpeg,image/png,image/webp,image/gif,image/bmp,.heic,.heif,.jpg,.jpeg,.png,.webp,.gif,.bmp"
@@ -828,7 +922,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
               type="file"
             />
             <p className="mt-3 text-sm leading-6 text-muted">
-              图片只在浏览器本地处理。HEIC/HEIF 会先解码，再按你的配置导出。
+              支持 HEIC/HEIF、JPG、PNG、WebP、GIF、BMP。选好后再设置格式和尺寸。
             </p>
           </div>
 
@@ -867,11 +961,13 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
               </div>
             </div>
           ) : (
-            <div className="muted-panel p-5 text-sm text-muted">还没有选择图片。</div>
+            <div className="muted-panel p-5 text-sm text-muted">
+              先选择一张图片，预览和裁剪框会显示在这里。
+            </div>
           )}
 
           <div className="space-y-3">
-            <h2 className="panel-title text-base">场景预设</h2>
+            <h2 className="panel-title text-base">常用尺寸</h2>
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {scenePresets.map((preset) => (
                 <button
@@ -889,7 +985,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
           </div>
 
           <div className="space-y-3">
-            <h2 className="panel-title text-base">转换配置</h2>
+            <h2 className="panel-title text-base">输出设置</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2 sm:col-span-2">
                 <div className="text-sm font-semibold text-[var(--color-text)]">输出格式</div>
@@ -899,25 +995,22 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
                       className={`choice-card ${format === item ? "choice-card-active" : ""}`}
                       disabled={isLoading || isExporting}
                       key={item}
-                      onClick={() => {
-                        clearOutputState();
-                        setPresetId("custom");
-                        setFormat(item);
-                      }}
+                      onClick={() => selectFormat(item)}
                       type="button"
                     >
                       <span className="text-sm font-semibold">{formatLabels[item]}</span>
                     </button>
                   ))}
                 </div>
+                <p className="text-xs leading-5 text-muted">{formatHints[format]}</p>
               </div>
 
               <div className="space-y-2 sm:col-span-2">
-                <div className="text-sm font-semibold text-[var(--color-text)]">尺寸方式</div>
+                <div className="text-sm font-semibold text-[var(--color-text)]">画面方式</div>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {([
-                    ["cover", "裁剪填满"],
-                    ["contain", "完整留边"]
+                    ["cover", "填满画面"],
+                    ["contain", "完整保留"]
                   ] as const).map(([value, label]) => (
                     <button
                       className={`choice-card ${fitMode === value ? "choice-card-active" : ""}`}
@@ -943,11 +1036,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
                   disabled={selectedPreset.id === "original" || isLoading || isExporting}
                   max={4096}
                   min={16}
-                  onChange={(event) => {
-                    clearOutputState();
-                    setPresetId("custom");
-                    setCustomWidth(event.target.value);
-                  }}
+                  onChange={(event) => updateCustomWidth(event.target.value)}
                   type="number"
                   value={selectedPreset.id === "original" && source ? String(source.width) : customWidth}
                 />
@@ -959,14 +1048,21 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
                   disabled={selectedPreset.id === "original" || isLoading || isExporting}
                   max={4096}
                   min={16}
-                  onChange={(event) => {
-                    clearOutputState();
-                    setPresetId("custom");
-                    setCustomHeight(event.target.value);
-                  }}
+                  onChange={(event) => updateCustomHeight(event.target.value)}
                   type="number"
                   value={selectedPreset.id === "original" && source ? String(source.height) : customHeight}
                 />
+              </label>
+
+              <label className="flex items-center gap-2 text-sm font-medium text-[var(--color-text)] sm:col-span-2">
+                <input
+                  checked={lockAspectRatio}
+                  className="h-4 w-4 accent-[var(--color-accent)]"
+                  disabled={selectedPreset.id === "original" || isLoading || isExporting}
+                  onChange={(event) => updateAspectLock(event.target.checked)}
+                  type="checkbox"
+                />
+                锁定原图比例
               </label>
 
               {format !== "png" && format !== "ico" ? (
@@ -1011,10 +1107,10 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
 
           {fitMode === "cover" ? (
             <div className="space-y-3">
-              <h2 className="panel-title">裁剪位置</h2>
+              <h2 className="panel-title">裁剪微调</h2>
               <div className="grid gap-3 lg:grid-cols-3">
                 <label className="panel p-3 text-sm">
-                  <span className="font-semibold text-[var(--color-text)]">放大</span>
+                  <span className="font-semibold text-[var(--color-text)]">缩放</span>
                   <input
                     className="mt-3 w-full accent-[var(--color-accent)]"
                     disabled={!source || isLoading || isExporting}
@@ -1080,7 +1176,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
               type="button"
             >
               <RefreshCw aria-hidden="true" className="h-4 w-4" />
-              {isExporting ? "转换中..." : "开始转换"}
+              {isExporting ? "生成中..." : format === "ico" ? "生成 ICO" : "生成图片"}
             </button>
           </div>
 
@@ -1113,8 +1209,9 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
                 />
                 <div className="space-y-2 text-sm text-muted">
                   <div>格式：{formatLabels[result.format]}</div>
-                  <div>参数：{result.detail}</div>
+                  <div>输出：{result.detail}</div>
                   <div>文件体积：{formatBytes(result.sizeBytes)}</div>
+                  {source ? <div>{getSizeChangeText(result.sizeBytes)}</div> : null}
                 </div>
                 <a className="button-primary w-full" download={result.filename} href={result.downloadUrl}>
                   <Download aria-hidden="true" className="h-4 w-4" />
@@ -1122,17 +1219,19 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
                 </a>
               </div>
             ) : (
-              <p className="mt-4 text-sm leading-6 text-muted">转换完成后会在这里预览和下载。</p>
+              <p className="mt-4 text-sm leading-6 text-muted">生成后会在这里预览和下载。</p>
             )}
           </div>
 
           <div className="panel p-4">
-            <h2 className="panel-title">规则</h2>
+            <h2 className="panel-title">支持范围</h2>
             <div className="mt-3 space-y-2 text-sm leading-6 text-muted">
               <p>单张图片最大 {tool.maxFileSizeMbFree} MB。</p>
               <p>支持 HEIC、HEIF、JPG、PNG、WebP、GIF、BMP 输入。</p>
-              <p>可导出 PNG、JPG、WebP 和 favicon.ico。</p>
-              <p>全程在浏览器本地处理，不上传服务器。</p>
+              <p>可导出 PNG、JPG、WebP 和 ICO 图标。</p>
+              <p>PNG 是无损格式，照片转 PNG 可能比原图更大。</p>
+              <p>GIF 会导出为静态图片。</p>
+              <p>图片不上传服务器。</p>
             </div>
           </div>
 
