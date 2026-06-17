@@ -57,6 +57,21 @@ const HEAD_LINKS: any[] = [
   [
     "link",
     {
+      rel: "icon",
+      type: "image/png",
+      href: `${BASE}logo.png`,
+    },
+  ],
+  [
+    "link",
+    {
+      rel: "apple-touch-icon",
+      href: `${BASE}logo.png`,
+    },
+  ],
+  [
+    "link",
+    {
       rel: "alternate",
       type: "application/rss+xml",
       title: "RSS",
@@ -239,7 +254,11 @@ export default {
     return head;
   },
   themeConfig: {
-    logo: undefined,
+    logo: {
+      src: "/logo.png",
+      alt: "Harbor & Route",
+    },
+    siteTitle: "我的技术分享",
     nav: [
       { text: "首页", link: "/" },
       { text: "文章", link: "/posts/" },

@@ -6,6 +6,9 @@ hero:
   name: 我的技术分享
   text: 记录 · 分享 · 积累人气
   tagline: 基于 VitePress，内置本地搜索、可扩展 RSS 与统计
+  image:
+    src: /logo.png
+    alt: Harbor & Route
   actions:
     - theme: brand
       text: 开始阅读

@@ -1,3 +1,48 @@
+:root {
+  --vp-nav-logo-height: 38px;
+}
+
+/* 顶栏 logo：保持比例，避免过宽挤占导航 */
+.VPNavBarTitle .logo {
+  height: var(--vp-nav-logo-height);
+  width: auto;
+  max-width: 148px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.VPNavBarTitle .title {
+  font-weight: 600;
+}
+
+/* 首页 Hero logo */
+.VPHome .VPHero .image img,
+.VPHome .VPHero .VPImage img {
+  width: min(168px, 42vw);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 24px rgba(0, 43, 91, 0.12));
+}
+
+.VPHome .VPHero .image {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --vp-nav-logo-height: 32px;
+  }
+
+  .VPNavBarTitle .logo {
+    max-width: 120px;
+  }
+
+  .VPHome .VPHero .image img,
+  .VPHome .VPHero .VPImage img {
+    width: min(140px, 48vw);
+  }
+}
+
 .vp-page-views {
   margin: 1rem 0 0;
   padding-top: 0.75rem;
