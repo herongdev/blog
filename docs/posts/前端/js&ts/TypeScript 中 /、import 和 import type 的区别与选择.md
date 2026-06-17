@@ -171,7 +171,139 @@ export {}
 
 ---
 
-## 五、`import` 的使用场景
+## 五、既有 `///` 又有 `export {}` 和 `declare global` 是什么用法
+
+实际项目里经常会看到三种写法出现在同一个 `.d.ts` 里：
+
+```ts
+/// <reference types="vite/client" />
+
+export {};
+
+declare global {
+  interface Window {
+    miniCodexDesktop?: {
+      selectDirectory: () => Promise<string>;
+    };
+  }
+}
+```
+
+它们各管一件事，并不矛盾：
+
+| 片段 | 作用 |
+|------|------|
+| `/// <reference types="vite/client" />` | 加载 Vite 全局类型（`import.meta.env` 等） |
+| `export {}` | 把本文件标记为**模块** |
+| `declare global { ... }` | 在模块文件里，往**全局**上追加类型 |
+
+### `global` 是关键词吗
+
+在 `declare global { ... }` 里，**`global` 是 TypeScript 的语法关键字**（ambient 声明的一部分），不是你在代码里访问的 `globalThis` / `window` 变量。
+
+完整写法是：
+
+```ts
+declare global {
+  // 这里写要合并进全局作用域的声明
+}
+```
+
+表示：**当前文件虽然是模块，但我要显式往全局类型里追加内容**。常见用途包括扩展 `Window`、`ImportMetaEnv`，或挂自定义全局变量类型。
+
+不要把它理解成「声明一个叫 global 的变量」。
+
+### 为什么有了 `export {}` 还要 `declare global`
+
+`.d.ts` 分两种：
+
+**没有 `import` / `export` → 脚本（全局文件）**
+
+顶层 `interface Window` 会直接合并进全局，例如：
+
+```ts
+/// <reference types="vite/client" />
+
+interface Window {
+  miniCodexDesktop?: {
+    selectDirectory: () => Promise<string>;
+  };
+}
+```
+
+**有 `export {}` 或任意 `export` → 模块**
+
+模块顶层的 `interface Window` **不会**自动变成浏览器里的 `Window`。必须包在 `declare global` 里：
+
+```ts
+declare global {
+  interface Window {
+    miniCodexDesktop?: { ... };
+  }
+}
+
+export {};
+```
+
+你看到的 `export {}` 是**空导出**，作用只是让 TypeScript 把文件当成模块；并不向外暴露任何运行时值。
+
+### 为什么同一文件里还要保留 `///`
+
+三斜线 **不负责** `Window`，只负责拉进 Vite 的类型环境：
+
+```text
+/// <reference types="vite/client" />  →  Vite（import.meta 等）
+declare global { interface Window ... }  →  浏览器 window 上的自定义 API
+export {}                               →  声明「这是模块文件」
+```
+
+所以「扩展 `Window`」和「认识 Vite 环境」是两件事，可以同时写在一个 `vite-env.d.ts` / `global.d.ts` 里。
+
+### 这段代码里没有 `import`，为什么还要 `export {}`
+
+当前片段没有 `import type`，理论上可以去掉 `export {}`，改用第三节的全局脚本写法。
+
+保留 `export {}` + `declare global` 的常见原因：
+
+```txt
+1. 与项目里其它 .d.ts 风格统一
+2. 以后可能加 import type，先按模块写法写
+3. 团队习惯：凡全局增强都走 declare global，边界更清晰
+```
+
+若永远不加 `import`，下面两种写法等价：
+
+```ts
+// 写法 A：全局脚本（无 export）
+/// <reference types="vite/client" />
+
+interface Window {
+  miniCodexDesktop?: {
+    selectDirectory: () => Promise<string>;
+  };
+}
+```
+
+```ts
+// 写法 B：模块 + declare global（你问的这种）
+/// <reference types="vite/client" />
+
+export {};
+
+declare global {
+  interface Window {
+    miniCodexDesktop?: {
+      selectDirectory: () => Promise<string>;
+    };
+  }
+}
+```
+
+写法 B 更利于后续在同文件里加 `import type`，那时不必再改结构。
+
+---
+
+## 六、`import` 的使用场景
 
 `import` 用来导入运行时代码。
 
@@ -197,7 +329,7 @@ axios.get('/api/user')
 
 ---
 
-## 六、`import type` 的使用场景
+## 七、`import type` 的使用场景
 
 `import type` 只导入类型。
 
@@ -232,7 +364,7 @@ import { UserInfo } from '@/types/user'
 
 ---
 
-## 七、`/// <reference types="..." />` 和 `/// <reference path="..." />`
+## 八、`/// <reference types="..." />` 和 `/// <reference path="..." />`
 
 三斜线指令常见有两类。
 
@@ -264,7 +396,7 @@ import { UserInfo } from '@/types/user'
 
 ---
 
-## 八、最简代码示例
+## 九、最简代码示例
 
 ### Vite 环境变量声明推荐写法
 
@@ -294,7 +426,7 @@ const enableDebug = import.meta.env.VITE_ENABLE_DEBUG === 'true'
 
 ---
 
-## 九、如果必须在 `.d.ts` 中导入自定义类型
+## 十、如果必须在 `.d.ts` 中导入自定义类型
 
 假设你有一个类型：
 
@@ -327,7 +459,7 @@ export {}
 
 ---
 
-## 十、如何选择
+## 十一、如何选择
 
 可以按下面这个规则判断：
 
@@ -342,7 +474,10 @@ export {}
 → 使用 import type
 
 .d.ts 文件里用了 import/export，但还想扩展全局类型
-→ 使用 declare global
+→ 使用 declare global（global 是 declare global 语法里的关键字）
+
+同一文件既要 Vite 环境又要扩展 Window 等全局类型
+→ /// <reference types="vite/client" /> + export {} + declare global
 ```
 
 ---
@@ -355,6 +490,8 @@ export {}
 
 `import type` 用于导入明确导出的类型。
 
+`declare global` 里的 `global` 是 TypeScript 语法关键字，用于在**模块**里把类型合并进全局；常与 `export {}` 一起出现。
+
 所以在 Vite 项目的 `vite-env.d.ts` 中，推荐保持：
 
 ```ts
@@ -363,4 +500,6 @@ export {}
 
 而不是改成 `import type`。
 
-因为这里的目标不是「导入一个类型来使用」，而是「让 TypeScript 认识 Vite 提供的全局类型环境」。
+若还要扩展 `Window` 等全局类型，可在同文件使用 `export {}` + `declare global { interface Window { ... } }`（见第五节）。
+
+因为这里的目标不是「导入一个类型来使用」，而是「让 TypeScript 认识 Vite 提供的全局类型环境」，并在需要时显式增强全局类型。
