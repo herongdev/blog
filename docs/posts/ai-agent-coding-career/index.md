@@ -77,7 +77,7 @@ tags: [AI Agent, Coding Agent, AI 应用工程师, 程序员转型, Agent 编码
 免费课暂定：
 
 ```text
-7 天手写 Mini Coding Agent
+Mini Codex v2 基础课
 ```
 
 你会从 0 做出一个本地 CLI 版 Mini Codex：
@@ -95,6 +95,9 @@ Day 7：Trace / Eval，把一次成功变成持续改进
 
 课程平台入口：
 
+- [Mini Codex v2 基础课发布说明](/posts/ai-agent-coding-career/mini-codex-v2-open-source)
+- [Mini Codex v2 open course](/posts/ai-agent-coding-career/mini-codex-v2-open-source-en)
+- [GitHub 开源仓库](https://github.com/herongdev/min-codex-hands-on-v2)
 - [进入课程列表](/file-tools/courses)
 - 本地开发时访问 `http://127.0.0.1:3000/courses`
 

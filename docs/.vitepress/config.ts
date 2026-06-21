@@ -220,10 +220,15 @@ export default {
     const url = canonicalUrl(pagePath);
     const keywords = pageKeywords(pageData);
     const isArticle = pagePath.startsWith("/posts/");
+    const pageLang =
+      typeof pageData.frontmatter.lang === "string"
+        ? pageData.frontmatter.lang
+        : "zh-CN";
+    const ogLocale = pageLang.startsWith("en") ? "en_US" : "zh_CN";
 
     const head: Array<[string, Record<string, string>]> = [
       ["meta", { name: "description", content: desc }],
-      ["meta", { property: "og:locale", content: "zh_CN" }],
+      ["meta", { property: "og:locale", content: ogLocale }],
       ["meta", { property: "og:site_name", content: siteTitle }],
       ["meta", { property: "og:title", content: `${title} | ${siteTitle}` }],
       ["meta", { property: "og:description", content: desc }],
@@ -233,6 +238,37 @@ export default {
       ["meta", { name: "twitter:description", content: desc }],
       ["link", { rel: "canonical", href: url }],
     ];
+
+    const alternateZh = pageData.frontmatter.alternateZh;
+    const alternateEn = pageData.frontmatter.alternateEn;
+    if (typeof alternateZh === "string" && alternateZh.trim()) {
+      head.push([
+        "link",
+        {
+          rel: "alternate",
+          hreflang: "zh-CN",
+          href: canonicalUrl(alternateZh.trim()),
+        },
+      ]);
+      head.push([
+        "link",
+        {
+          rel: "alternate",
+          hreflang: "x-default",
+          href: canonicalUrl(alternateZh.trim()),
+        },
+      ]);
+    }
+    if (typeof alternateEn === "string" && alternateEn.trim()) {
+      head.push([
+        "link",
+        {
+          rel: "alternate",
+          hreflang: "en",
+          href: canonicalUrl(alternateEn.trim()),
+        },
+      ]);
+    }
 
     if (keywords) {
       head.push(["meta", { name: "keywords", content: keywords }]);
