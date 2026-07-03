@@ -310,6 +310,10 @@ export default {
     },
     // 基于 docs/posts 目录结构自动生成多级侧边栏
     sidebar: {
+      "/posts/java快速入门/": generateSidebarFromDir(
+        path.resolve(__dirname, "../posts/java快速入门"),
+        "/posts/java快速入门/"
+      ),
       "/posts/": generateSidebarFromDir(
         path.resolve(__dirname, "../posts"),
         "/posts/"
@@ -345,9 +349,25 @@ function filenameToTitle(filename: string): string {
 }
 
 function sortByWeightThenText(a: SidebarItem, b: SidebarItem): number {
-  // 权重来自 frontmatter: weight，数值越小越靠前；没有则按文本排序
   const getWeight = (it: SidebarItem): number => {
-    if ("link" in it) return 9999;
+    if ("link" in it) {
+      const abs = path.join(
+        __dirname,
+        "..",
+        decodeURIComponent(it.link.replace(/^\/posts\//, "posts/"))
+      );
+      const mdPath = abs.endsWith(".md") ? abs : `${abs}.md`;
+      try {
+        const raw = fs.readFileSync(mdPath, "utf8");
+        const fm = matter(raw);
+        const w = fm.data?.sidebarWeight;
+        if (typeof w === "number") return w;
+        if (typeof w === "string" && w.trim()) return Number(w) || 9999;
+      } catch {
+        /* ignore */
+      }
+      return 9999;
+    }
     return 9999;
   };
   const wa = getWeight(a);
@@ -356,6 +376,38 @@ function sortByWeightThenText(a: SidebarItem, b: SidebarItem): number {
   const ta = "link" in a ? a.text : a.text;
   const tb = "link" in b ? b.text : b.text;
   return ta.localeCompare(tb, "zh");
+}
+
+const CN_PART_ORDER: Record<string, number> = {
+  第一部分: 1,
+  第二部分: 2,
+  第三部分: 3,
+  第四部分: 4,
+  第五部分: 5,
+  第六部分: 6,
+  第七部分: 7,
+  第八部分: 8,
+  第九部分: 9,
+  第十部分: 10,
+  附录: 99,
+};
+
+function directorySortKey(name: string): string {
+  for (const [key, order] of Object.entries(CN_PART_ORDER)) {
+    if (name.startsWith(key)) {
+      return `${String(order).padStart(2, "0")}-${name}`;
+    }
+  }
+  if (name.startsWith("A-") || name.startsWith("B-") || name.startsWith("C-") || name.startsWith("D-")) {
+    return name;
+  }
+  return `50-${name}`;
+}
+
+function sortDirectories(a: SidebarItem, b: SidebarItem): number {
+  const na = "items" in a ? a.text : "";
+  const nb = "items" in b ? b.text : "";
+  return directorySortKey(na).localeCompare(directorySortKey(nb), "zh");
 }
 
 function generateSidebarFromDir(
@@ -391,6 +443,6 @@ function generateSidebarFromDir(
   }
 
   files.sort(sortByWeightThenText);
-  groups.sort(sortByWeightThenText);
+  groups.sort((a, b) => sortDirectories(a, b) || sortByWeightThenText(a, b));
   return [...files, ...groups];
 }
