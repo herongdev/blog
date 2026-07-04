@@ -1,0 +1,180 @@
+---
+title: "24. Strings as Character Arrays"
+date: "2026-07-04"
+categories:
+  - "C 教程"
+tags:
+  - "C"
+  - "Little Book of C"
+  - "Working with Memory"
+description: "The Little Book of C — 24. Strings as Character Arrays"
+source: "https://little-book-of.github.io/c/books/en-US/book.html"
+license: "CC BY-NC-SA 4.0"
+originalAuthor: "Duc-Tam Nguyen"
+section: 24
+sidebarWeight: 24
+lang: "en-US"
+alternateEn: "/posts/c教程/en-US/03-Working with Memory/024-Strings as Character Arrays"
+alternateZh: "/posts/c教程/zh-CN/03-内存/024-Strings as Character Arrays"
+---
+[中文版本](/posts/c教程/zh-CN/03-内存/024-Strings as Character Arrays)
+
+In C, a string is simply an array of characters ending with a special null character`'\0'`. Unlike higher-level languages, C doesn’t have a built-in string type, just arrays and pointers. This simplicity gives you full control over text data but also demands care: every string operation must respect memory limits and null terminators.
+
+#### How Strings Work
+
+A string like`"Hello"` in C is represented internally as:
+
+| Character | H | e | l | l | o | `\0` |
+| --- | --- | --- | --- | --- | --- | --- |
+| Index | 0 | 1 | 2 | 3 | 4 | 5 |
+
+The`'\0'`(ASCII 0) marks the end of the string, it’s how functions like`printf` or`strlen` know where to stop.
+
+#### Declaring Strings
+
+There are two common ways to declare strings:
+
+```
+char greeting1[] = "Hello";        // automatic null terminator
+char greeting2[6] = {'H','e','l','l','o','\0'}; // explicit
+char *greeting3 = "Hello";         // pointer to string literal
+```
+
+`greeting1` is a mutable array you can modify.`greeting3` points to a read-only string literal stored in memory, modifying it causes undefined behavior.
+
+#### Tiny Code
+
+Here’s a complete example that explores string declarations, iteration, and basic operations:
+
+```
+#include <stdio.h>
+#include <string.h>
+int main(void) {
+    char msg[] = "C language";
+    char *ptr = msg; // pointer to the first character
+    printf("String: %s\n", msg);
+    printf("Length: %zu\n", strlen(msg));
+    printf("\nCharacters one by one:\n");
+    for (int i = 0; msg[i] != '\0'; i++) {
+        printf("msg[%d] = %c (address: %p)\n", i, msg[i], (void *)&msg[i]);
+    }
+    printf("\nAccess via pointer arithmetic:\n");
+    for (int i = 0; *(ptr + i) != '\0'; i++) {
+        printf("*(ptr + %d) = %c\n", i, *(ptr + i));
+    }
+    // Modify string safely
+    msg[0] = 'C';
+    msg[1] = '+';
+    printf("\nModified string: %s\n", msg);
+    return 0;
+}
+```
+
+Compile and run:
+
+```
+gcc strings_demo.c -o strings_demo
+./strings_demo
+```
+
+Output:
+
+```
+String: C language
+Length: 10
+
+Characters one by one:
+msg[0] = C (address: 0x7ffd29c4a0a0)
+msg[1] =   (address: 0x7ffd29c4a0a1)
+msg[2] = l (address: 0x7ffd29c4a0a2)
+...
+
+Access via pointer arithmetic:
+*(ptr + 0) = C
+*(ptr + 1) =  
+*(ptr + 2) = l
+...
+
+Modified string: C+anguage
+```
+
+#### Common String Operations
+
+C provides several standard functions in`<string.h>`:
+
+| Function | Description | Example |
+| --- | --- | --- |
+| `strlen(s)` | Get string length (excluding`\0`) | `strlen("Hi") == 2` |
+| `strcpy(dest, src)` | Copy string | `strcpy(name, "Bob");` |
+| `strcat(dest, src)` | Concatenate strings | `strcat(full, last);` |
+| `strcmp(a, b)` | Compare strings (`0` if equal) | `strcmp("a","b")` |
+| `strchr(s, c)` | Find first occurrence of character | `strchr(word, 'a')` |
+| `strstr(s, sub)` | Find substring | `strstr(text, "find")` |
+
+Example:
+
+```
+char a[20] = "Hello, ";
+char b[] = "World!";
+strcat(a, b);
+printf("%s\n", a); // "Hello, World!"
+```
+
+#### Pointers and Strings
+
+Because a string’s name decays into a pointer, you can pass strings directly to functions:
+
+```
+void greet(const char *name) {
+    printf("Hello, %s!\n", name);
+}
+int main(void) {
+    greet("C Learner");
+    return 0;
+}
+```
+
+`const char *` prevents accidental modification of the string literal.
+
+#### Common Pitfalls
+
+Forgetting`'\0'`:
+
+```
+char word[4] = {'T','e','s','t'}; // missing terminator, unsafe
+```
+
+Buffer overflows: Copying more characters than fit in the destination buffer leads to undefined behavior.
+
+```
+char dest[5];
+strcpy(dest, "Too long!"); // dangerous
+```
+
+Modifying string literals:
+
+```
+char *s = "Hello";
+s[0] = 'Y'; // crash or undefined behavior
+```
+
+#### Why It Matters
+
+Strings are the foundation of text processing, file handling, and user interfaces in C. Because they’re just arrays of characters, understanding strings forces you to think about:
+
+- Memory layout
+- Null termination
+- Buffer size and safety
+
+Once you internalize how C handles text at the byte level, you’ll be ready to build real parsers, file readers, and command-line tools.
+
+#### Try It Yourself
+
+1. Write a function`void reverse(char *s)` that reverses a string in place.
+2. Implement your own version of`strlen`.
+3. Create a program that counts vowels in a string.
+4. Concatenate two user-input strings using`strcat`.
+5. Experiment by printing a string without`'\0'`, observe what happens.
+
+Strings in C are both elegant and dangerous, a true test of precision. Once you master them, you’ll understand how text truly exists in memory, one byte at a time.
