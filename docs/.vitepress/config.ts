@@ -314,6 +314,18 @@ export default {
         path.resolve(__dirname, "../posts/java快速入门"),
         "/posts/java快速入门/"
       ),
+      "/posts/c教程/": generateSidebarFromDir(
+        path.resolve(__dirname, "../posts/c教程"),
+        "/posts/c教程/"
+      ),
+      "/posts/c教程/en-US/": generateSidebarFromDir(
+        path.resolve(__dirname, "../posts/c教程/en-US"),
+        "/posts/c教程/en-US/"
+      ),
+      "/posts/c教程/zh-CN/": generateSidebarFromDir(
+        path.resolve(__dirname, "../posts/c教程/zh-CN"),
+        "/posts/c教程/zh-CN/"
+      ),
       "/posts/": generateSidebarFromDir(
         path.resolve(__dirname, "../posts"),
         "/posts/"
@@ -398,7 +410,16 @@ function directorySortKey(name: string): string {
       return `${String(order).padStart(2, "0")}-${name}`;
     }
   }
-  if (name.startsWith("A-") || name.startsWith("B-") || name.startsWith("C-") || name.startsWith("D-")) {
+  const numPrefix = name.match(/^(\d+)-/);
+  if (numPrefix) {
+    return `${numPrefix[1].padStart(2, "0")}-${name}`;
+  }
+  if (
+    name.startsWith("A-") ||
+    name.startsWith("B-") ||
+    name.startsWith("C-") ||
+    name.startsWith("D-")
+  ) {
     return name;
   }
   return `50-${name}`;
