@@ -3,7 +3,10 @@ title: Java概述
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **什么是 Java 语言**
 
 Java 语言是美国 Sun 公司（Stanford University Network）在 1995 年推出的高级编程语言。所谓编程语言，是计算机的语言，人们可以使用编程语言对计算机下达命令，让计算机完成人们需要的功能。
@@ -35,3 +38,5 @@ Java 语言主要应用在互联网程序的开发领域。常见的互联网程
 ## 程序结构（由大到小）
 
 Java 程序是由类和对象组成的，而对象和类又是由方法和变量组成的；方法是由语句和表达式组成的，表达式又由运算符组成。
+
+:::

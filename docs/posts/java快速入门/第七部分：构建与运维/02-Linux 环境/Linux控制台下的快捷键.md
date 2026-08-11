@@ -3,7 +3,10 @@ title: Linux控制台下的快捷键
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 Linux控制台（文本模式）下提高工作效率的快捷键
 在Linux环境里，有一些按键有特殊的含意。
@@ -52,3 +55,5 @@ Ctrl-Alt-Del:挂起或者重新启动系统，这三个按键在Linux下可以�
 
  \<https://www.cnblogs.com/wiessharling/p/3996393.html\>
 ```
+
+:::

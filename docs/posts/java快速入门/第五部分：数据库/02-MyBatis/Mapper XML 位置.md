@@ -3,7 +3,10 @@ title: Mapper XML 位置
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 对于 MyBatis 的 Mapper XML 文件，我们通常会放在 resources/mapper 目录下，并且命名规则通常会与其对应的 Mapper Java 接口相同，只是文件后缀是 .xml。是不是有地方可以配置这个眼泪
 
 ChatGPT
@@ -31,3 +34,5 @@ Copy code
 mybatis:
 mapper-locations: classpath:mapper/*.xml
 请注意，你需要根据实际的 Mapper XML 文件路径来修改上述配置。
+
+:::

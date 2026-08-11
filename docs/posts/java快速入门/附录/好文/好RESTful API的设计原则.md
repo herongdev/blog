@@ -3,7 +3,10 @@ title: 好RESTful API的设计原则
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 附录, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 说在前面，这篇文章是无意中发现的，因为感觉写的很好，所以翻译了一下。由于英文水平有限，难免有出错的地方，请看官理解一下。翻译和校正文章花了我大约2周的业余时间，如有人愿意转载请注明出处，谢谢^_^
  
 **Principles of good RESTful API Design**
@@ -371,8 +374,10 @@ When designing your API, you should be able to work with tools which allow you t
 - |   |   |
 - |---|---|
 - |
-<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>```|```<br>HTTP/1.1 200 OK<br>Date: Wed, 18 Dec 2013 06:08:22 GMT<br>Content-Type: application/json<br>Access-Control-Max-Age: 1728000<br>Cache-Control: no-cache<br> <br>{<br>  "id": 12,<br>  "created": 1386363036,<br>  "modified": 1386363036,<br>  "name": "Gir",<br>  "animal_type": 12<br>}<br>```|
+<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>```|```<br>HTTP/1.1 200 OK<br>Date: Wed, 18 Dec 2013 06:08:22 GMT<br>Content-Type: application/json<br>Access-Control-Max-Age: 1728000<br>Cache-Control: no-cache<br> <br>\{<br>  "id": 12,<br>  "created": 1386363036,<br>  "modified": 1386363036,<br>  "name": "Gir",<br>  "animal_type": 12<br>\}<br>```|
 
  
 将想法付诸于实践，借此来影响他人是一个人存在的真正价值
  \> 来自 \<[https://www.cnblogs.com/moonz-wu/p/4211626.html](https://www.cnblogs.com/moonz-wu/p/4211626.html)\>
+
+:::

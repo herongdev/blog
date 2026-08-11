@@ -3,7 +3,10 @@ title: java有哪些版本
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `java`
 
 分三个版本：`JavaSE(`标准版`)`、`JavaEE(`企业版`)`、`JavaME(`微型版`)`
@@ -25,3 +28,5 @@ tags: [Java, Java基础, OneNote]
 
 是做手机软件的。
 想更细致了解`java`，可以百度搜索圈`T`社区，相应`java`板块有详细视频教程。纯干货！
+
+:::

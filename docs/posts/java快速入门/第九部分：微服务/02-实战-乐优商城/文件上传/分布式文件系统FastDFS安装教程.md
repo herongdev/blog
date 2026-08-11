@@ -3,7 +3,10 @@ title: 分布式文件系统FastDFS安装教程
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 ==FastDFS(Fast Distributed File System)====是一款开源轻量级分布式文件系统。==
 
@@ -42,3 +45,5 @@ nginx可在官网下载：
 
 ==mkdir /home/dfs== ==#====创建数据存储目录====￼====cd== ==/usr/local/src== ==#====切换到安装目录准备下载安装包==
 ```
+
+:::

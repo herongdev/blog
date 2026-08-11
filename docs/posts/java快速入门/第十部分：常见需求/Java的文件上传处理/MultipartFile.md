@@ -3,7 +3,10 @@ title: MultipartFile
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `MultipartFile` 是 Spring Framework 中处理文件上传的一个接口，它是用来处理由 HTTP 请求上传的文件。这个接口提供了一些方法来帮助开发者在后端轻松地获取和处理这些文件。下面是 `MultipartFile` 的一些主要方法和属性的介绍：
 
 1. **获取文件名**:
@@ -29,3 +32,5 @@ tags: [Java, 常见需求, OneNote]
 这些方法使得 `MultipartFile` 成为处理上传文件时一个非常实用的工具。例如，你可以通过 `getOriginalFilename()` 获取上传文件的原始名称，通过 `getBytes()` 或 `getInputStream()` 读取文件的内容，使用 `getSize()` 来获取文件的大小，利用 `getContentType()` 检查文件类型，以及使用 `transferTo()` 方法将文件保存在服务器上的指定位置。
 
 使用这些方法，开发者可以方便地集成文件上传功能到他们的应用中，而无需担心文件的接收和存储的底层细节。
+
+:::

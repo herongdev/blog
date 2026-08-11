@@ -3,7 +3,10 @@ title: stream
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在Java中，`stream` 方法是Java 8引入的一个非常重要的特性，它属于 `java.util.stream` 包。这个方法用于创建一个流（Stream），流是一种数据的抽象表示，允许你以一种声明式的方式处理数据集合（例如数组、集合等）。使用流，你可以执行复杂的、链式的查询和计算操作，而不需要处理繁琐的循环和条件判断。以下是流的一些关键作用和特点：
 
 1. **声明式编程**：使用流，你可以更加关注"做什么"而不是"怎么做"。这种风格使得代码更简洁、更易读，并减少了错误。
@@ -24,3 +27,5 @@ List\<String\> placeNames = places.stream()
 .map(PlacePageDO::getName)
 .collect(Collectors.toList());
 这段代码首先通过 `stream()` 创建流，然后使用 `map()` 将每个 `PlacePageDO` 对象映射成其名称，最后通过 `collect()` 将结果收集到一个新的列表中。这比传统的循环方法更简洁，更易于理解和维护。
+
+:::

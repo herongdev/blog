@@ -3,7 +3,10 @@ title: Response对象
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 功能：设置响应消息
 `1.` 设置响应行
 `1.` 格式：
@@ -32,3 +35,5 @@ tags: [Java, Web基础, OneNote]
 - 2.
 
 使用输出流，将数据输出到客户端浏览器
+
+:::

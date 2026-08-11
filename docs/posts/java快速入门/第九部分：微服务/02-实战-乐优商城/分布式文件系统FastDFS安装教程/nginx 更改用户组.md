@@ -3,7 +3,10 @@ title: nginx 更改用户组
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 为什么要更改 Nginx 服务的默认用户：就像更改 ssh 的默认 22 端口一样，增加安全性，Nginx 服务的默认用户是 nobody ，我们更改为 nginx
 方法一：
@@ -48,3 +51,5 @@ nginx可以通过命令行来启动，操作命令
 查看nginx进程信息
 ps -ef | grep nginx
 ```
+
+:::

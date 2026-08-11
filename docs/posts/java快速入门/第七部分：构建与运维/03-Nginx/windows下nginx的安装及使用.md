@@ -3,7 +3,10 @@ title: windows下nginx的安装及使用
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `1.`下载
 
 nginx
@@ -15,7 +18,7 @@ http://nginx.org/en/download.html
 为例，直接下载 `nginx-1.12.2.zip`
 下载后解压，解压后如下
 
-![F nglnx1.12.2 H conf contrib temp nginx.exe 2017 1...](Exported%20image%2020260702225850-0.png)
+
 
 `2.`启动`nginx`
 有很多种方法启动
@@ -31,14 +34,14 @@ http://nginx.org/en/download.html
 http://localhost:80
 ，回车，出现以下页面说明启动成功
 
-![C Welcome to nginx! Welcome to nginx! If you see t...](Exported%20image%2020260702225852-1.png)
+
 
 也可以在`cmd`命令窗口输入命令 `tasklist /fi "imagename eq nginx.exe"` ，出现如下结果说明启动成功
 
-![.12 .2taskIist Fi imagename eq nginx.exe g Inx. ex...](Exported%20image%2020260702225854-2.png)
+
 
  `nginx`的配置文件是`conf`目录下的`nginx.conf`，默认配置的`nginx`监听的端口为`80`，如果`80`端口被占用可以修改为未被占用的端口即可；
- ![n clude defaul t type log format access log t cp n...](Exported%20image%2020260702225856-3.png)
+ 
 
 检查`80`端口是否被占用的命令是： `netstat -ano | findstr 0.0.0.0:80` 或 `netstat -ano | findstr "80"`
 当我们修改了`nginx`的配置文件`nginx.conf` 时，不需要关闭`nginx`后重新启动`nginx`，只需要执行命令 `nginx -s reload` 即可让改动生效
@@ -62,7 +65,7 @@ http://localhost:80
 我们可以修改`nginx`的配置文件`nginx.conf` 达到访问`nginx`代理服务器时跳转到指定服务器的目的，即通过`proxy_pass` 配置请求转发地址，即当我们依然输入`http://localhost:80` 时，请求会跳转到我们配置的服务器
  同理，我们可以配置多个目标服务器，当一台服务器出现故障时，`nginx`能将请求自动转向另一台服务器，例如配置如下：
 
-![upstream tomcat server server 8080 weight2 server ...](Exported%20image%2020260702225859-4.png)
+
 
 当服务器 `localhost:8080` 挂掉时，`nginx`能将请求自动转向服务器 `192.168.101.9:8080` 。上面还加了一个`weight`属性，此属性表示各服务器被访问到的权重，`weight`
 越高被访问到的几率越高。
@@ -72,4 +75,6 @@ http://localhost:80
  http://localhost:80/1.png
 即可访问到 `f:/nginx-1.12.2/static`目录下的 `1.png`图片
 
-![server I is ten server name local host charset koi...](Exported%20image%2020260702225904-5.png)
+
+
+:::

@@ -205,7 +205,7 @@ Out of scope for this course: large GUIs, kernel modules, production web servers
 
 - [51. From Source to Executable: The Compilation Pipeline](./06-Compilation and Build/051-From Source to Executable The Compilation Pipeline.md)
 - [52. The Preprocessor and Macros](./06-Compilation and Build/052-The Preprocessor and Macros.md)
-- [53. Conditional Compilation (#if, #ifdef, #ifndef)](./06-Compilation and Build/053-Conditional Compilation (%23if, %23ifdef, %23ifndef).md)
+- [53. Conditional Compilation (#if, #ifdef, #ifndef)](./06-Compilation and Build/053-Conditional Compilation (if, ifdef, ifndef).md)
 - [54. Inline Functions and Header Hygiene](./06-Compilation and Build/054-Inline Functions and Header Hygiene.md)
 - [55. Makefiles and Build Automation](./06-Compilation and Build/055-Makefiles and Build Automation.md)
 - [56. Linking Multiple Files](./06-Compilation and Build/056-Linking Multiple Files.md)

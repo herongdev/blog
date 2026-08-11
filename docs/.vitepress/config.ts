@@ -21,6 +21,29 @@ const COURSES_NAV =
     ? { text: "课程", link: COURSES_URL, target: "_self", rel: "" }
     : { text: "课程", link: COURSES_URL };
 
+const CN_PART_ORDER: Record<string, number> = {
+  第一部分: 1,
+  第二部分: 2,
+  第三部分: 3,
+  第四部分: 4,
+  第五部分: 5,
+  第六部分: 6,
+  第七部分: 7,
+  第八部分: 8,
+  第九部分: 9,
+  第十部分: 10,
+  附录: 99,
+};
+
+const ROOT_SIDEBAR_EXCLUDED = new Set([
+  "JavaScript系统教程",
+  "Vue系统教程",
+  "React系统教程",
+  "前端面试与实战",
+  "java快速入门",
+  "c教程",
+]);
+
 function siteOrigin(): string {
   return SITE_HOSTNAME.replace(/\/$/, "");
 }
@@ -310,6 +333,22 @@ export default {
     },
     // 基于 docs/posts 目录结构自动生成多级侧边栏
     sidebar: {
+      "/posts/JavaScript系统教程/": generateTutorialIndexSidebar(
+        path.resolve(__dirname, "../posts/JavaScript系统教程"),
+        "/posts/JavaScript系统教程/"
+      ),
+      "/posts/Vue系统教程/": generateTutorialIndexSidebar(
+        path.resolve(__dirname, "../posts/Vue系统教程"),
+        "/posts/Vue系统教程/"
+      ),
+      "/posts/React系统教程/": generateTutorialIndexSidebar(
+        path.resolve(__dirname, "../posts/React系统教程"),
+        "/posts/React系统教程/"
+      ),
+      "/posts/前端面试与实战/": generateTutorialIndexSidebar(
+        path.resolve(__dirname, "../posts/前端面试与实战"),
+        "/posts/前端面试与实战/"
+      ),
       "/posts/java快速入门/": generateSidebarFromDir(
         path.resolve(__dirname, "../posts/java快速入门"),
         "/posts/java快速入门/"
@@ -390,20 +429,6 @@ function sortByWeightThenText(a: SidebarItem, b: SidebarItem): number {
   return ta.localeCompare(tb, "zh");
 }
 
-const CN_PART_ORDER: Record<string, number> = {
-  第一部分: 1,
-  第二部分: 2,
-  第三部分: 3,
-  第四部分: 4,
-  第五部分: 5,
-  第六部分: 6,
-  第七部分: 7,
-  第八部分: 8,
-  第九部分: 9,
-  第十部分: 10,
-  附录: 99,
-};
-
 function directorySortKey(name: string): string {
   for (const [key, order] of Object.entries(CN_PART_ORDER)) {
     if (name.startsWith(key)) {
@@ -443,6 +468,9 @@ function generateSidebarFromDir(
 
   for (const e of entries) {
     if (e.name.startsWith("_")) continue;
+    if (baseLink === "/posts/" && ROOT_SIDEBAR_EXCLUDED.has(e.name)) {
+      continue;
+    }
     const full = path.join(absDir, e.name);
     if (e.isDirectory()) {
       const items = generateSidebarFromDir(
@@ -466,4 +494,37 @@ function generateSidebarFromDir(
   files.sort(sortByWeightThenText);
   groups.sort((a, b) => sortDirectories(a, b) || sortByWeightThenText(a, b));
   return [...files, ...groups];
+}
+
+function generateTutorialIndexSidebar(
+  absDir: string,
+  baseLink: string
+): SidebarItem[] {
+  if (!fs.existsSync(absDir)) return [];
+  const items: SidebarItem[] = [];
+  const rootReadme = path.join(absDir, "README.md");
+  if (fs.existsSync(rootReadme)) {
+    items.push({
+      text: readTitleFromMd(rootReadme) || "教程总览",
+      link: `${baseLink}README`,
+    });
+  }
+
+  const directories = fs
+    .readdirSync(absDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("_"))
+    .sort((a, b) =>
+      directorySortKey(a.name).localeCompare(directorySortKey(b.name), "zh")
+    );
+
+  for (const directory of directories) {
+    const readme = path.join(absDir, directory.name, "README.md");
+    if (!fs.existsSync(readme)) continue;
+    items.push({
+      text: readTitleFromMd(readme) || filenameToTitle(directory.name),
+      link: `${baseLink}${encodeURIComponent(directory.name)}/README`,
+    });
+  }
+
+  return items;
 }

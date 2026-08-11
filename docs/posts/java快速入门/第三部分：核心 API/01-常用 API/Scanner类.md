@@ -3,7 +3,10 @@ title: Scanner类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 一个可以解析基本类型和字符串的简单文本扫描器。
 例如，以下代码使用户能够从
 
@@ -57,8 +60,8 @@ public int nextInt()
 导包
 
 import java.util.Scanner;
-public class Demo01_Scanner {
-public static void main(String[] args) {
+public class Demo01_Scanner \{
+public static void main(String[] args) \{
 //2.
 创建键盘录入数据的对象
 
@@ -75,15 +78,15 @@ int i = sc.nextInt();
 输出数据
 
 System.out.println("i:"+i);
-}
-}
+\}
+\}
 **练习**
 **求和**
 键盘录入两个数据并求和，代码如下：
 
 import java.util.Scanner;
-public class Test01Scanner {
-public static void main(String[] args) {
+public class Test01Scanner \{
+public static void main(String[] args) \{
 //
 创建对象
 
@@ -106,8 +109,8 @@ int b = sc.nextInt();
 
 int sum = a + b;
 System.out.println("sum:" + sum);
-}
-}
+\}
+\}
 **匿名对象【了解】**
 **概念**
 创建对象时，只有创建对象的语句，却没有把对象地址值赋值给某个变量。
@@ -140,8 +143,8 @@ new Scanner(System.in).nextInt();
 匿名对象可以作为方法的参数和返回值
 作为参数：
 
-class Test {
-public static void main(String[] args) {
+class Test \{
+public static void main(String[] args) \{
 //
 普通方式
 
@@ -151,22 +154,22 @@ input(sc);
 匿名对象作为方法接收的参数
 
 input(new Scanner(System.in));
-}
+\}
 
-public static void input(Scanner sc){
+public static void input(Scanner sc)\{
 System.out.println(sc);
-}
-}
+\}
+\}
  作为返回值
 
-class Test2 {
-public static void main(String[] args) {
+class Test2 \{
+public static void main(String[] args) \{
 //
 普通方式
 
 Scanner sc = getScanner();
-}
-public static Scanner getScanner(){
+\}
+public static Scanner getScanner()\{
 //
 普通方式
 
@@ -176,6 +179,8 @@ public static Scanner getScanner(){
 匿名对象作为方法返回值
 
 return new Scanner(System.in);
-}
-}
+\}
+\}
 ```
+
+:::

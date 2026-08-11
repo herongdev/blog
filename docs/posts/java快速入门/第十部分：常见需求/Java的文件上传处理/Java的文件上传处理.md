@@ -3,7 +3,10 @@ title: Java的文件上传处理
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 结论：
 
 - 不管是Web端、移动应用（App）还是桌面端，数据都是通过HTTP协议进行传输的，这一点确保了不同平台之间的一致性和互操作性。
@@ -33,3 +36,5 @@ tags: [Java, 常见需求, OneNote]
 - **广泛支持**: 大多数后端技术都支持处理`multipart/form-data`类型的请求，这简化了不同前端技术与后端的集成。
 
 因此，不论是iOS、Android还是Web客户端，只要正确地构造`multipart/form-data`请求，服务器端就能够使用如Java的`MultipartFile`接口来接收和处理这些文件。这也是为什么`MultipartFile`能够广泛应用于多种客户端上传场景的原因。
+
+:::

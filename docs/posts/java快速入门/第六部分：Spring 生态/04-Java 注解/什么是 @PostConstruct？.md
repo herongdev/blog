@@ -3,7 +3,10 @@ title: 什么是 @PostConstruct？
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 @PostConstruct 是一个标记（marker）注解，用于一个非静态的 void() 方法。当 Spring 或 Java EE 容器创建了带有这个注解的 bean 之后，该方法会被自动调用。这为开发人员提供了一种机制，用于在依赖注入完成后执行一些初始化逻辑。
 
 该注解通常用于：
@@ -20,24 +23,24 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyService {   private String message;
+public class MyService \{   private String message;
 
 // 依赖注入
-public MyService() {
+public MyService() \{
 this.message = "Hello, World!";
-}
+\}
 
 // 这个方法会在依赖注入完成后被自动调用
 @PostConstruct
-public void init() {
+public void init() \{
 System.out.println("PostConstruct called");
 message = message.toUpperCase(); // 将 message 转换为大写
-}
+\}
 
-public String getMessage() {
+public String getMessage() \{
 return message;
-}
-}
+\}
+\}
 在这个示例中，init 方法带有 @PostConstruct 注解，这意味着当 MyService bean 创建并初始化完成后，init 方法将被自动调用。在这个方法中，我们简单地将 message 字符串转换为大写。
 
 打比方
@@ -48,3 +51,5 @@ return message;
 只有在所有零件都装配好（依赖注入完成）以后，这个“最后检查步骤”（@PostConstruct 方法）才会执行。
 
 这样，您就确保了汽车（或者在这种情况下，是 Java bean）在走出工厂（被 Spring 容器管理）之前，是完全准备好的。
+
+:::

@@ -3,7 +3,10 @@ title: Session：主菜
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 概念：服务器端会话技术，在一次会话的多次请求间共享数据，将数据保存在服务器端的对象中。`HttpSession`
 
 **快速入门：**
@@ -20,7 +23,7 @@ tags: [Java, Web基础, OneNote]
  **原理**
    `* Session`的实现是依赖于`Cookie`的。
 
-![Sessi JSESSIONID Sessi onDem01 HttpSession sessinn...](Exported%20image%2020260702223702-0.png)
+
 
     
 **细节：**
@@ -75,4 +78,6 @@ tags: [Java, Web基础, OneNote]
             `*` 如果全部输入正确，则跳转到主页`success.jsp`，显示：用户名`,`欢迎您
     `2.` 分析：
 
-![login. jsp request LoginServlet LIserDao i 00 00 S...](Exported%20image%2020260702223704-1.png)
+
+
+:::

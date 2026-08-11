@@ -3,7 +3,10 @@ title: maven 配置参数详解
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 \<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0￼          http://maven.apache.org/maven-v4_0_0.xsd "\>
 \<!--
@@ -1129,3 +1132,5 @@ artifact ID --\>￼            \<artifactId\>maven-artifact\</artifactId\>
 
  \<https://www.cnblogs.com/aric2016/p/11508201.html\>
 ```
+
+:::

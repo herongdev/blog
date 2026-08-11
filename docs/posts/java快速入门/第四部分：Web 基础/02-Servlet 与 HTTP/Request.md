@@ -3,7 +3,10 @@ title: Request
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 request对象和response对象的原理
 1. request和response对象是由服务器创建的。我们来使用它们
@@ -15,7 +18,7 @@ ServletRequest	-- 接口
 HttpServletRequest	-- 接口
 |	实现
 org.apache.catalina.connector.RequestFacade 类(tomcat)
- ![0 day 14demo 1. t rv t 1 2 t r u t r p n r u t 3 t...](Exported%20image%2020260702225940-0.png)
+ 
 
 **request****功能：**
 一、获取请求消息数据
@@ -85,3 +88,5 @@ org.apache.catalina.connector.RequestFacade 类(tomcat)
 4. 获取ServletContext：
 * ServletContext getServletContext()
 ```
+
+:::

@@ -3,33 +3,36 @@ title: 第一个Spring程序
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `1.` **创建项目**
 在 `MyEclipse` 中创建 `Web` 项目 `springDemo01`，将 `Spring` 框架所需的 `JAR` 包复制到项目的 `lib` 目录中，并将添加到类路径下，添加后的项目如图 `1` 所示。
- ![SpringJAR](Exported%20image%2020260702230037-0.png)
+ 
 
 图 `1`  `Spring`所需的`JAR`包
 `2.` **创建** `PersonDao` **接口**
 在项目的 `src` 目录下创建一个名为 `com.mengma.ioc` 的包，然后在该包中创建一个名为 `PersonDao` 的接口，并在接口中添加一个 `add()` 方法，如下所示。
 
 package com.mengma.ioc;
-public interface PersonDao {
+public interface PersonDao \{
 public void add();
-}
+\}
 3.
 **创建接口实现类** `PersonDaoImpl`
 在 `com.mengma.ioc` 包下创建 `PersonDao` 的实现类 `PersonDaoImpl`，编辑后如下所示。
 
 package com.mengma.ioc;
-public class PersonDaoImpl implements PersonDao {
+public class PersonDaoImpl implements PersonDao \{
 @Override
-public void add() {
+public void add() \{
 System.out.println("save()
 执行了
 
 ...");
-}
-}
+\}
+\}
  上述代码中，`PersonDaoImpl` 类实现了 `PersonDao` 接口中的 `add()` 方法，并且在方法调用时会执行输出语句。
 `4.` **创建** `Spring` **配置文件**
 在 `src` 目录下创建 `Spring` 的核心配置文件 `applicationContext.xml`，编辑后如下所示。
@@ -55,9 +58,9 @@ package com.mengma.ioc;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-public class FirstTest {
+public class FirstTest \{
 @Test
-public void testl() {
+public void testl() \{
 //
 定义`Spring`配置文件的路径
 
@@ -76,17 +79,19 @@ PersonDao personDao = (PersonDao) applicationContext
 调用 `personDao` 的 `add ()`方法
 
 personDao.add();
-}
-}
+\}
+\}
  上述代码中，首先定义了 `Spring` 配置文件的路径，然后创建 `Spring` 容器，接下来通过 `Spring` 容器获取了 `personDao` 实例，最后调用实例的 `save()` 方法。
 `6.` **运行项目并查看结果**
 使用 `JUnit` 测试运行 `test1()` 方法，运行成功后，控制台的输出结果如图 `2` 所示。
 
 从图 `2` 的输出结果中可以看出，程序已经成功输出了“`save()`执行了`...`”语句。在程序执行时，对象的创建并不是通过 `new` 一个类完成的，而是由 `Spring` 容器管理实现的。这就是 `Spring IoC` 容器思想的工作机制。
- ![Exported image](Exported%20image%2020260702230039-1.png)
+ 
 
 图 `2`  输出结果
  \> 来自
 
  \<http://c.biancheng.net/view/4251.html\>
 ```
+
+:::

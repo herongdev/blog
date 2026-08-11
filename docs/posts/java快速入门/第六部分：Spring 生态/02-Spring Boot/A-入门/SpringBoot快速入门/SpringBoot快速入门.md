@@ -3,7 +3,10 @@ title: SpringBoot快速入门
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **代码实现**
 **创建****Maven****工程**
@@ -29,11 +32,11 @@ package com.itheima;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
-public class MySpringBootApplication {
-public static void main(String[] args) {
+public class MySpringBootApplication \{
+public static void main(String[] args) \{
 SpringApplication.run(MySpringBootApplication.class);
-}
-}
+\}
+\}
 
 **4.****编写****Controller**
 package com.itheima.controller;
@@ -41,13 +44,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
-public class QuickStartController {
+public class QuickStartController \{
 @RequestMapping("/quick")
 @ResponseBody
-public String quick(){
+public String quick()\{
 return "springboot 访问成功!";
-}
-}
+\}
+\}
 在引导类MySpringBootApplication同级包或者子级包中创建QuickStartController
 
 **使用****J****ava****配置**
@@ -72,14 +75,14 @@ return "springboot 访问成功!";
 ==\<groupId\>====com.alibaba====\</groupId\>==
 ==\<artifactId\>====druid====\</artifactId\>==
 ==\<version\>====1.1.6====\</version\>==
-![Configuration PropertySource classpath jdbc . prop...](Exported%20image%2020260702230214-0.png)
+
 
 `**改写****controller**`
 
-![import javax. sql . DataSource RestContr011er publ...](Exported%20image%2020260702230219-1.png)
+
 
 **打好断点看变量是否定义成功，以****debugger****方式启动项目并访问****/hello**
-![lariables O killWhenSocketReadTimeout instanceKey ...](Exported%20image%2020260702230222-2.png)
+
 
 **可见****java****配置文件生效**
 
@@ -103,8 +106,10 @@ SpringApplication.run(MySpringBootApplication.class) 代表运行SpringBoot的�
 \</dependency\>
 注意：IDEA进行SpringBoot热部署失败原因
 出现这种情况，并不是热部署配置问题，其根本原因是因为Intellij IEDA默认情况下不会自动编译，需要对IDEA进行自动编译的设置，如下：
-![Tes Sdit Qpen. View de aproiectsv Navigate Code An...](Exported%20image%2020260702230224-3.png)
+
 
 `然后 Shift+Ctrl+Alt+/，选择Registry`
 
-![Maintenance I. Registry. 2. Switch Boot JDK 3. UI ...](Exported%20image%2020260702230226-4.png)
+
+
+:::

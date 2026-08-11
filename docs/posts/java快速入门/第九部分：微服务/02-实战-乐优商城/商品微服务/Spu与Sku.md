@@ -3,7 +3,10 @@ title: Spu与Sku
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 Spu与Sku
 
@@ -49,7 +52,7 @@ CREATE TABLE `tb_spu_detail` (
 分开的来描述spu的原因是因为描述类的字段存储的数据内容较大，如果放在一超，会影响性能。表的水平拆分是将表的数据分开，减小表的大小，表的垂直拆分是将表的字段拆开，提高性能。
 
 其中的
-![Exported image](Exported%20image%2020260702234850-0.png)
+
 
 SKU表
 
@@ -80,3 +83,5 @@ CREATE TABLE `tb_stock` (
   PRIMARY KEY (`sku_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='库存表，代表库存，秒杀库存等信息'
 ```
+
+:::

@@ -3,7 +3,10 @@ title: Set接口
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 java.util.Set 与 Collection 接口中的方法基本一致，没有进行功能上的扩充，只是比 Collection 接口更加严格了。 Set 接口中元素无序，并且都会以某种规则保证存入的元素不出现重复。
 
@@ -42,12 +45,12 @@ tips:根据结果我们发现字符串"cba"只存储了一个，也就是说重�
 但是当位于一个桶中的元素较多，即hash值相等的元素较多时，通过key值依次查找的效率较低。而JDK1.8中，哈希表存储采用数组+链表+红黑树实现，当链表长度超过阈值（8）时，将链表转换为红黑树，这样大大减少了查找时间。
 简单的来说，哈希表是由数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的，如下图所示。
 
-![iihashcodeitfl gHtable Nodefi](Exported%20image%2020260703002154-0.png)
+
 
 - 看到这张图就有人要问了，这个是怎么存储的呢？
 - 为了方便大家的理解我们结合一个存储流程图来说明一下：
 
-![b length i hashCode equalsfi](Exported%20image%2020260703002257-1.png)
+
 
 总而言之，**JDK1.8**引入红黑树大程度优化了HashMap的性能，那么对于我们来讲保证HashSet集合元素的唯一， 其实就是根据对象的hashCode和equals方法来决定的。如果我们往集合中存放自定义的对象，那么保证其唯一， 就必须复写hashCode和equals方法建立属于当前对象的比较方式。
 
@@ -136,3 +139,5 @@ aaa
 abc
 bbc
 ```
+
+:::

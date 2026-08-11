@@ -3,11 +3,14 @@ title: Spring体系结构详解
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `Spring`
 
  框架采用分层架构，根据不同的功能被划分成了多个模块，这些模块如图所示：
- ![Spring](Exported%20image%2020260702230016-0.gif)
+ 
 
 图中包含了 `Spring` 框架的所有模块，这些模块可以满足一切企业级应用开发的需求，在开发过程中可以根据需求有选择性地使用所需要的模块。下面分别对这些模块的作用进行简单介绍。
 `1. Data Access/Integration`**（数据访问／集成）**
@@ -58,3 +61,5 @@ tags: [Java, Spring, OneNote]
 
  \<http://c.biancheng.net/view/4242.html\>
 ```
+
+:::

@@ -3,7 +3,10 @@ title: JDBC控制事务
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `1.` 事务：一个包含多个步骤的业务操作。如果这个业务操作被事务管理，则这多个步骤要么同时成功，要么同时失败。
 `2.` 操作：
 `1.` 开启事务
@@ -28,12 +31,12 @@ tags: [Java, 数据库, OneNote]
 `4.` 代码：
 `public class JDBCDemo10 {`
 
-    public static void main(String[] args) {
+    public static void main(String[] args) \{
         Connection conn = null;
         PreparedStatement pstmt1 = null;
         PreparedStatement pstmt2 = null;
 
-        try {
+        try \{
             //1.
 获取连接
 
@@ -82,23 +85,25 @@ sql
 提交事务
 
             conn.commit();
-        } catch (Exception e) {
+        \} catch (Exception e) \{
             //
 事务回滚
 
-            try {
-                if(conn != null) {
+            try \{
+                if(conn != null) \{
                     conn.rollback();
-                }
-            } catch (SQLException e1) {
+                \}
+            \} catch (SQLException e1) \{
                 e1.printStackTrace();
-            }
+            \}
             e.printStackTrace();
-        }finally {
+        \}finally \{
             JDBCUtils.close(pstmt1,conn);
             JDBCUtils.close(pstmt2,null);
-        }
+        \}
 
-    }
-}
+    \}
+\}
 ```
+
+:::

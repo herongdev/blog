@@ -3,14 +3,17 @@ title: 基于Tomcat构建Java web环境
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **应用场景**
 `Tomcat`是一个被广泛使用的`Java Web`应用服务器。本文介绍了在华为云弹性云服务器上部署`Java Web`环境的操作步骤。首先需要下载部署`Java Web`环境所需的安装包，并将安装包上传至云服务器，然后设置弹性云服务器安全组规则，再安装并配置相关软件，完成开发环境的配置。
 本文使用的云服务器以华为云`CentOS 7.3 64bit`操作系统云服务器为例。
 **方案架构**
 图`1` 基于`Tomcat`构建`Java web`环境示意图
 
-![P 1 tmIC.MP 0 000 2 0 CP 8080 0 000 ava Web IP IP](Exported%20image%2020260702230652-0.png)
+
 
 **资源和成本规划**
 
@@ -30,7 +33,7 @@ tags: [Java, Spring, OneNote]
 [表](https://support.huaweicloud.com/bestpractice-ecs/zh-cn_topic_0114925482.html#ZH-CN_TOPIC_0114925482__table1538816307558)`1`中为`jdk`和`tomcat`官方获取地址，您还可以参考其他开源镜像地址获取安装包。
  安装流程
 
-![i va web JDK Tomcat](Exported%20image%2020260702230654-1.png)
+
 
 **实施步骤**
 **安装前准备**
@@ -99,11 +102,11 @@ tags: [Java, Spring, OneNote]
 
 1. 为云服务器添加`ICMP`安全组规则。`￼`如果云服务器默认设置是禁止`ICMP`规则，当`ping`弹性服务器`IP`时会显示超时。因此首先为云服务器添加`ICMP`规则。`￼`图`3` 添加`ICMP`规则
 
-![O default 1 O 0](Exported%20image%2020260702230658-2.png)
+
 
 1. 为云服务器添加`web`项目分配端口的访问规则，以`8080` 端口为例。`￼`图`4` 添加`8080`端口
 
-![O default 808D 1 O 0](Exported%20image%2020260702230703-3.png)
+
 
 **安装**`jdk`
 
@@ -165,7 +168,7 @@ tags: [Java, Spring, OneNote]
 
     若返回如下图所示，表示`tomcat`启动成功。`￼`图`5` 查看`tomcat`进程
 
-![rootecs5deZ bin ps ef grep tormdt 1 4 1652 ttyl .3...](Exported%20image%2020260702230705-4.png)
+
 
 **验证**`JavaWeb`**环境搭建完成**
 在浏览器输入以下内容。
@@ -176,8 +179,10 @@ IP:8080
  如果界面跳转至默认的`Tomcat`界面，证明`JavaWeb`环境搭建完成。我们就可以在公网访问云服务器的`8080`端口了。
 图`6` 访问云服务器的`8080`端口
 
-![Apache Tomcat,8.5.78 Home Documentation Configurat...](Exported%20image%2020260702230707-5.png)
+
 \> 来自
 
  \<https://support.huaweicloud.com/bestpractice-ecs/zh-cn_topic_0114925482.html\>
 ```
+
+:::

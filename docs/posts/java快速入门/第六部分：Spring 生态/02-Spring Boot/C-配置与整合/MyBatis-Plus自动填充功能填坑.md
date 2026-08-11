@@ -3,7 +3,10 @@ title: MyBatis-Plus自动填充功能填坑
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 隐 风
 
 于 2021-10-04 00:05:46 发布
@@ -24,21 +27,23 @@ springboot企业级实战
 * @description mybatis-pluis代码填充
 * @since 2021/10/3 22:32
 */
-public class MyMetaObjectHandlerAdvice implements MetaObjectHandler {
+public class MyMetaObjectHandlerAdvice implements MetaObjectHandler \{
 
 @Override
-public void insertFill(MetaObject metaObject) {
+public void insertFill(MetaObject metaObject) \{
 //this.strictInsertFill(metaObject, "createTime", () -\> LocalDateTime.now()
 // ,LocalDateTime.class); 类型不一致，填充失败
 this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
 this.strictInsertFill(metaObject, "updateTime", Date.class, new Date());
-}
+\}
 
 @Override
-public void updateFill(MetaObject metaObject) {
+public void updateFill(MetaObject metaObject) \{
 this.strictUpdateFill(metaObject, "updateTime", Date.class, new Date());
-}
-}
+\}
+\}
 ————————————————
 版权声明：本文为CSDN博主「隐 风」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/a1774381324/article/details/120600058
+
+:::

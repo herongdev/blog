@@ -3,7 +3,10 @@ title: Mybatis 框架快速入门
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `Mybatis` **框架开发的准备**
 
 **官网下载** `Mybatis` **框架**
@@ -27,8 +30,8 @@ tags: [Java, 数据库, OneNote]
 
 **搭建** `Mybatis` **开发环境**
 
-![mybatis maven da Mybatis Sq IMapConi fg. xml Itser...](Exported%20image%2020260702225320-0.png)
-![J21CserDao. xml IUserDao. java Mybatis Mapper ICse...](Exported%20image%2020260702225323-1.png)
+
+
 
 **当我们遵从了第三、四、五点之后，我们在开发中就无须再写****dao****的实现类**
 
@@ -86,7 +89,7 @@ tags: [Java, 数据库, OneNote]
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public class User implements Serializable {
+public class User implements Serializable \{
 private Integer id;
 private String username;
 private Date birthday;
@@ -94,43 +97,43 @@ private String sex;
 private String address;
 ￼
 
-public Integer getId() {
+public Integer getId() \{
 return id;
-}
-public void setId(Integer id) {
+\}
+public void setId(Integer id) \{
 this.id = id;
-}
-public String getUsername() {
+\}
+public String getUsername() \{
 return username;
-}
-public void setUsername(String username) {
+\}
+public void setUsername(String username) \{
 this.username = username;
-}
-public Date getBirthday() {
+\}
+public Date getBirthday() \{
 return birthday;
-}
-public void setBirthday(Date birthday) {
+\}
+public void setBirthday(Date birthday) \{
 this.birthday = birthday;
-}
-public String getSex() {
+\}
+public String getSex() \{
 return sex;
-}
-public void setSex(String sex) {
+\}
+public void setSex(String sex) \{
 this.sex = sex;
-}
-public String getAddress() {
+\}
+public String getAddress() \{
 return address;
-}
-public void setAddress(String address) {
+\}
+public void setAddress(String address) \{
 this.address = address;
-}
+\}
 @Override
-public String toString() {
+public String toString() \{
 return "User [id=" + id + ", username=" + username + ", birthday=" + birthday
 + ", sex=" + sex + ", address="
 + address + "]";
-}
-}
+\}
+\}
 **编写持久层接口**
 
 - IUserDao
@@ -149,7 +152,7 @@ return "User [id=" + id + ", username=" + username + ", birthday=" + birthday
 
 \</p\>
 */
-public interface IUserDao {
+public interface IUserDao \{
 /**
 *
 查询所有用户
@@ -157,13 +160,13 @@ public interface IUserDao {
 * @return
 */
 List\<User\> findAll();
-}
+\}
 **编写持久层接口的映射文件** `IUserDao.xml`
 **要求：**
 **创建位置：**必须和持久层接口在相同的包中。
 **名称：**必须以持久层接口名称命名文件名，扩展名是`.xml`
 
-![xml](Exported%20image%2020260702225330-2.png)
+
 
 \<?xml version="1.0" encoding="UTF-8"?\>
 \<!DOCTYPE mapper
@@ -232,8 +235,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 \</p\>
 */
-public class MybatisTest {
-public static void main(String[] args)throws Exception {
+public class MybatisTest \{
+public static void main(String[] args)throws Exception \{
 //1.
 读取配置文件
 
@@ -263,16 +266,16 @@ IUserDao userDao = session.getMapper(IUserDao.class);
 使用代理对象执行查询所有方法
 
 List\<User\> users = userDao.findAll();
-for(User user : users) {
+for(User user : users) \{
 System.out.println(user);
-}
+\}
 //7.
 释放资源
 
 session.close();
 in.close();
-}
-}
+\}
+\}
 **小结**
 通过快速入门示例，我们发现使用 `mybatis` 是非常容易的一件事情，因为只需要编写 `Dao` 接口并且按照`mybatis` 要求编写两个配置文件，就可以实现功能。远比我们之前的 `jdbc` 方便多了。（我们使用注解之后，将变得更为简单，只需要编写一个 `mybatis` 配置文件就够了。）
 
@@ -296,7 +299,7 @@ in.close();
 
 \</p\>
 */
-public interface IUserDao {
+public interface IUserDao \{
 /**
 *
 查询所有用户
@@ -305,7 +308,7 @@ public interface IUserDao {
 */
 @Select("select * from user")
 List\<User\> findAll();
-}
+\}
 **修改**
 
 - SqlMapConfig.xml
@@ -327,5 +330,7 @@ List\<User\> findAll();
 
 使用实现类操作数据
 
-![gauthor Company hCCz www.iChiema.com public class ...](Exported%20image%2020260702225331-3.png)
-![gauthor Company www.iChiema.com public class MybaC...](Exported%20image%2020260702225337-4.png)
+
+
+
+:::

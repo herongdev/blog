@@ -3,7 +3,10 @@ title: java.nio包
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 网络编程, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 java.nio包中的类扩展了Java语言的网络功能，对读写数据，使用文件、套接字和内存以及处理文本很有帮助。
 
@@ -68,3 +71,5 @@ put(IntBuffer)：将指定整数缓冲区存储到当前整数缓冲区中——
 
 下面的代码创建一个int数据，其中包含的是华氏温度。然后将华氏温度转换为摄氏温度，并将结果存储到一个缓冲区中：
 ```
+
+:::

@@ -3,7 +3,10 @@ title: Function.identity()
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在Java中，`Function.identity()` 是一个非常实用的静态方法，属于 `java.util.function.Function` 接口。这个方法提供了一个简单的、返回其输入参数的函数。其实质是一个恒等函数，即对于任何输入值，它都简单地返回该值。
 
 ### 用途
@@ -25,7 +28,9 @@ Map\<String, String\> nameMap = names.stream()
 实际上，`Function.identity()` 的实现非常简单，它只是返回一个总是返回其输入参数的函数：
 
 ```java
-static \<T\> Function\<T, T\> identity() {
+static \<T\> Function\<T, T\> identity() \{
 return t -\> t;
-}
+\}
 这种函数可以被视为一个通用工具，适用于任何类型的数据，从而使其在Java的函数式编程中非常灵活和广泛使用。
+
+:::

@@ -3,7 +3,10 @@ title: MySQL 数据类型与字段长度属性
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 |   |   |   |   |
 |---|---|---|---|
 |MySQL 数据类型|数据库储存范围|是否有小数位数|前端输入属性|
@@ -57,25 +60,25 @@ String dataType = dataTypeWithLength;
 int startPos = dataTypeWithLength.indexOf('(');
 int endPos = dataTypeWithLength.indexOf(')');
 
-if (startPos \> -1 && endPos \> -1) {
+if (startPos \> -1 && endPos \> -1) \{
 dataType = dataTypeWithLength.substring(0, startPos);
 String attributePart = dataTypeWithLength.substring(startPos + 1, endPos);
 
-if (dataType.equalsIgnoreCase("DECIMAL") || dataType.equalsIgnoreCase("NUMERIC")) {
+if (dataType.equalsIgnoreCase("DECIMAL") || dataType.equalsIgnoreCase("NUMERIC")) \{
 String[] attributes = attributePart.split(",");
 fieldAttributes.put("totalDigits", Integer.parseInt(attributes[0].trim()));
 fieldAttributes.put("decimalPlaces", Integer.parseInt(attributes[1].trim()));
-} else if (dataType.equalsIgnoreCase("ENUM") || dataType.equalsIgnoreCase("SET")) {
+\} else if (dataType.equalsIgnoreCase("ENUM") || dataType.equalsIgnoreCase("SET")) \{
 fieldAttributes.put("values", attributePart);
-} else {
-try {
+\} else \{
+try \{
 fieldAttributes.put("length", Integer.parseInt(attributePart));
-} catch (NumberFormatException e) {
+\} catch (NumberFormatException e) \{
 fieldAttributes.put("length", attributePart);
-}
-}
-} else {
-switch (dataType.toUpperCase()) {
+\}
+\}
+\} else \{
+switch (dataType.toUpperCase()) \{
 case "INT":
 fieldAttributes.put("min", -2147483648);
 fieldAttributes.put("max", 2147483647);
@@ -96,11 +99,13 @@ fieldAttributes.put("min", -8388608);
 fieldAttributes.put("max", 8388607);
 break;
 // 以此类推...
-}
-}
+\}
+\}
 
 fieldInfo.put("dataType", dataType);
-if (!fieldAttributes.isEmpty()) {
+if (!fieldAttributes.isEmpty()) \{
 fieldInfo.put("fieldAttributes", fieldAttributes);
-}
+\}
 这个代码示例尝试处理数值类型的 min 和 max，同时为其他数据类型添加适当的属性。注意，BIGINT 的范围很大，可能需要特殊处理。这只是一个示例，您可能需要根据具体需求进行调整。
+
+:::

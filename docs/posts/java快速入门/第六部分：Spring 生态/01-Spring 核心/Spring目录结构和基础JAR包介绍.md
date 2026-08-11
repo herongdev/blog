@@ -3,7 +3,10 @@ title: Spring目录结构和基础JAR包介绍
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 目前 
 
 `Spring`
@@ -13,10 +16,10 @@ tags: [Java, Spring, OneNote]
 
 http://repo.spring.io/simple/libs-release-local/org/springframework/spring/
  下载名称为 `springframework-3.2.13.RELEASE-dist.zip` 的压缩包。在浏览器的地址栏中输入此下载地址后，浏览器的访问结果如图 `1` 所示。
- ![Exported image](Exported%20image%2020260702230022-0.png)
+ 
 
 从图中找到所需要的 `Spring` 框架压缩包。单击此链接下载，下载完成后，解压文件的目录结构如图 `2` 所示。
- ![Exported image](Exported%20image%2020260702230024-1.png)
+ 
 
 图 `2`  解压后目录
 下面对图 `2` 所示的目录进行简单介绍，具体如表 `1` 所示。
@@ -52,3 +55,5 @@ http://commons.apache.org/proper/commons-logging/download_logging.cgi
 
  \<http://c.biancheng.net/view/4244.html\>
 ```
+
+:::

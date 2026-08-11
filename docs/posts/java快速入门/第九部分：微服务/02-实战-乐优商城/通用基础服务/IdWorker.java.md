@@ -3,7 +3,10 @@ title: IdWorker.java
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 packagecom.leyou.common.utils;
 
@@ -168,3 +171,5 @@ returnid;
 
 }
 ```
+
+:::

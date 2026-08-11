@@ -3,7 +3,10 @@ title: 五、搭建Gateway网关
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 网关，往往是我们真正暴露给用户进行访问的，用户调用网关，网关再去调用内部的各个服务。这样有什么好处呢？
 
 **第一，减轻业务服务器的压力。****将公共业务逻辑让网关来做，其它业务服务器就不用做了；**有人要说了，你特么只是通过网关转发了一下，最后不还是请求到了业务服务器么？怎么就减轻压力了？同学你想想，假如你的系统里对每一个API接口都有权限验证，如果没有网关的话，权限验证这件事也需要在业务服务器上进行处理，是不是所有请求都直接落在了你的业务服务器？但是如果你加一个网关，你就可以在网关层过滤一些请求，保证只有合法、有效的请求才落实到业务服务器，这样一来，权限验证这个事就从业务服务器转移到了网关服务器，难道不是减轻压力吗？
@@ -18,7 +21,7 @@ tags: [Java, 微服务, OneNote]
 首先项目名称叫cloud-gateway，不贴图了。
 然后是依赖：
 
-![Exported image](Exported%20image%2020260703001038-0.png)
+
 
 在网关项目的配置文件添加如下内容：
 server:
@@ -42,9 +45,11 @@ client:
 service-url:
 defaultZone: [http://localhost:8080/eureka/](http://localhost:8080/eureka/)
 
-![Exported image](Exported%20image%2020260703001040-1.png)
+
 
 然后在启动类加上@EnableEurekaClient注解，启动项目，可以看到已经注册到服务中心了：
 
-![Exported image](Exported%20image%2020260703001044-2.png)
-![Exported image](Exported%20image%2020260703001045-3.png)
+
+
+
+:::

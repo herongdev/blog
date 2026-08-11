@@ -3,7 +3,10 @@ title: SpringBoot原理分析
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **起步依赖原理分析**
 **分析****spring-boot-starter-parent**
@@ -66,12 +69,12 @@ tags: [Java, Spring, OneNote]
 \<plugin\>
 \<groupId\>org.jetbrains.kotlin\</groupId\>
 \<artifactId\>kotlin-maven-plugin\</artifactId\>
-\<version\>${kotlin.version}\</version\>
+\<version\>$\{kotlin.version\}\</version\>
 \</plugin\>
 \<plugin\>
 \<groupId\>org.jooq\</groupId\>
 \<artifactId\>jooq-codegen-maven\</artifactId\>
-\<version\>${jooq.version}\</version\>
+\<version\>$\{jooq.version\}\</version\>
 \</plugin\>
 \<plugin\>
 \<groupId\>org.springframework.boot\</groupId\>
@@ -144,38 +147,38 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\>
 注解@SpringBootApplication的源码其中，@SpringBootConfifiguration：等同与@Confifiguration，既标注该类是Spring的一个配置类
 @EnableAutoConfifiguration：SpringBoot自动配置功能开启
 @SpringBootApplication
-public class MySpringBootApplication {
-public static void main(String[] args) {
+public class MySpringBootApplication \{
+public static void main(String[] args) \{
 SpringApplication.run(MySpringBootApplication.class);
-}
-}
+\}
+\}
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 @SpringBootConfiguration
 @EnableAutoConfiguration
-@ComponentScan(excludeFilters = {
+@ComponentScan(excludeFilters = \{
 @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
 @Filter(type = FilterType.CUSTOM, classes =
-AutoConfigurationExcludeFilter.class) })
-public @interface SpringBootApplication {
+AutoConfigurationExcludeFilter.class) \})
+public @interface SpringBootApplication \{
 /**
 * Exclude specific auto-configuration classes such that they will never be
 applied.
 * @return the classes to exclude
 */
 @AliasFor(annotation = EnableAutoConfiguration.class)
-Class\<?\>[] exclude() default {};
+Class\<?\>[] exclude() default \{\};
 ... ... ...
-}
+\}
 
 按住Ctrl点击查看注解@EnableAutoConfifiguration
 其中，@Import(AutoConfifigurationImportSelector.class) 导入了AutoConfifigurationImportSelector类
 按住Ctrl点击查看AutoConfifigurationImportSelector源码
 其中，SpringFactoriesLoader.loadFactoryNames 方法的作用就是从META-INF/spring.factories文件中读取指定
 类对应的类名称列表
-![Maven Maven Maven Maven org.springframeworkbootspr...](Exported%20image%2020260702230309-0.png)
+
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -183,10 +186,10 @@ Class\<?\>[] exclude() default {};
 @Inherited
 @AutoConfigurationPackage
 @Import(AutoConfigurationImportSelector.class)
-public @interface EnableAutoConfiguration {
+public @interface EnableAutoConfiguration \{
 ... ... ...
-}
-public String[] selectImports(AnnotationMetadata annotationMetadata) {
+\}
+public String[] selectImports(AnnotationMetadata annotationMetadata) \{
 ... ... ...
 List\<String\> configurations = getCandidateConfigurations(annotationMetadata,
 attributes);
@@ -197,13 +200,13 @@ configurations.removeAll(exclusions);
 configurations = filter(configurations, autoConfigurationMetadata);
 fireAutoConfigurationImportEvents(configurations, exclusions);
 return StringUtils.toStringArray(configurations);
-}
+\}
 protected List\<String\> getCandidateConfigurations(AnnotationMetadata metadata,
-AnnotationAttributes attributes) {
+AnnotationAttributes attributes) \{
 List\<String\> configurations = SpringFactoriesLoader.loadFactoryNames(
 getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
 return configurations;
-}
+\}
 
 spring.factories 文件中有关自动配置的配置信息如下：
 上面配置文件存在大量的以Confifiguration为结尾的类名称，这些类就是存有自动配置信息的类，而SpringApplication在获取这些类名后再加载。
@@ -226,13 +229,15 @@ org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration,\
 @ConditionalOnClass(ServletRequest.class)
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(ServerProperties.class)
-@Import({ ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
+@Import(\{ ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
 ServletWebServerFactoryConfiguration.EmbeddedTomcat.class,
 ServletWebServerFactoryConfiguration.EmbeddedJetty.class,
-ServletWebServerFactoryConfiguration.EmbeddedUndertow.class })
-public class ServletWebServerFactoryAutoConfiguration {
+ServletWebServerFactoryConfiguration.EmbeddedUndertow.class \})
+public class ServletWebServerFactoryAutoConfiguration \{
 ... ... ...
-}
+\}
 ￼进入ServerProperties.class源码如下：
 其中，prefifix = "server" 表示SpringBoot配置文件中的前缀，SpringBoot会将配置文件中以server开始的属性映射到该类的字段中。映射关系如下：
-![spring boot_quick resources a pplication.propertie...](Exported%20image%2020260702230311-1.png)
+
+
+:::

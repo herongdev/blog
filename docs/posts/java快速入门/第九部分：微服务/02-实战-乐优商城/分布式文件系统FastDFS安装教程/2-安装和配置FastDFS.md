@@ -3,27 +3,30 @@ title: 2-安装和配置FastDFS
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 - ==进入目录：====cd fastdfs-5.11==
 - ==执行编译：====./make.sh==
 - ==安装：====./make.sh install==
 
-![roothzabj mind204 us r local s rcfastdfs 5 .11 mkd...](Exported%20image%2020260702234524-0.jpeg)
+
 
 `==查看可执行命令：====ls -la /usr/bin/fdfs*==`
 
-![Is la usrbinfdfs rwxrxr rwxrxr rwxrxr rwxrxr rwxrx...](Exported%20image%2020260702234533-1.jpeg)
+
 
 - 校验安装结果
 1）安装完成，我们应该能在`/etc/init.d/`目录，通过命令`ll /etc/init.d/ | grep fdfs`看到FastDFS提供的启动脚本：
-![rootloca Ihost Il . d grep fdfs rwxrxrx. 1 root ro...](Exported%20image%2020260702234540-2.png)
+
 
 - 其中：
 - - `fdfs_trackerd` 是tracker启动脚本
 - - `fdfs_storaged` 是storage启动脚本
 - 2）我们可以在 `/etc/fdfs`目录，通过命令查看到以下配置文件模板：
 
-![rootlocalhost init.dtt cd vetczfdfs rootloca Ihost...](Exported%20image%2020260702234542-3.png)
+
 
 其中：
 - `tarcker.conf.sample` 是tracker的配置文件模板
@@ -45,7 +48,7 @@ cp /usr/local/src/fastdfs/conf/http.conf /etc/fdfs/ #供nginx访问使用￼cp /
 
 或使用 `sh /etc/init.d/fdfs_trackerd` 启动；；不过安装过程中，fdfs已经被设置为系统服务，我们可以采用熟悉的服务启动方式：
 sudo service fdfs_trackerd start # 启动fdfs_trackerd服务，停止用stop
- ![rootloca Ihost fdfstt service fdfs_trackerd start ...](Exported%20image%2020260702234548-4.png)
+ 
 
 - 另外，我们可以通过以下命令，设置tracker开机启动：
 - sudo chkconfig fdfs_trackerd on
@@ -62,7 +65,7 @@ sudo service fdfs_trackerd start # 启动fdfs_trackerd服务，停止用sto
 
 `其它命令：查看端口情况：netstat -apn|grep fdfs`
 
-![roothzabjmind204etcfdfs netstat 0 0.0.0.022122 o t...](Exported%20image%2020260702234550-5.jpeg)
+
 
 ==可能遇到的报错：==
 ==/usr/bin/fdfs_trackerd:== ==error== ==while loading shared libraries: libfastcommon.so: cannot open shared object file: No such file or directory====￼==
@@ -90,14 +93,16 @@ sudo service fdfs_storaged start  # 启动fdfs_storaged服务，停止用s
 sudo chkconfig fdfs_storaged on
 
 ==查看====storage====启动日志：进入刚刚指定的====base_path(/home/mm/fastdfs/storage)====中有个====logs====目录，查看====storage.log====文件==
-![mkdir mkdir mkdir mkdir mkdir storage_func.c, data...](Exported%20image%2020260702234557-6.jpeg)
+
 
 ==此时再查看====tracker====日志：发现已经开始选举，并且作为唯一的一个====tracker====，被选举为====leader==
-![20180808 INFO FastDFS v5.11, base_pathhomemmfastdf...](Exported%20image%2020260702234604-7.jpeg)
+
 
 `==查看端口情况：====netstat -apn|grep fdfs==`
 
-![roothzabjmind204etcfdfs netstat apnlgrep fdfs tcp ...](Exported%20image%2020260702234611-8.jpeg)
+
 
 ==通过====monitor====来查看====storage====是否成功绑定：====￼====/usr/bin/fdfs_monitor /etc/fdfs/storage.conf====￼==
-![roothzabjmind204etcfdfs usrbinfdfs_monitor storage...](Exported%20image%2020260702234615-9.jpeg)
+
+
+:::

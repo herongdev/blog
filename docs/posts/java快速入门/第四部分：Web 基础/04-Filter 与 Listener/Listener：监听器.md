@@ -3,7 +3,10 @@ title: Listener：监听器
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **概念：**`web`**的三大组件之一**
 
 **事件监听机制**
@@ -38,3 +41,5 @@ tags: [Java, Web基础, OneNote]
 
 注解：
 `* @WebListener`
+
+:::

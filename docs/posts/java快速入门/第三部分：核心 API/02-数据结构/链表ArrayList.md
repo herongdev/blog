@@ -3,7 +3,10 @@ title: 链表ArrayList
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 类ArrayList是最流行的Java数据结构之一，它实现了可缩放的对象数组，比数组更灵活、更有用。由于类ArrayList负责根据需要改变长度，所以它必须根据元素的增加和删除决定缩放多少。
 
@@ -80,3 +83,5 @@ String name = (String) i.next();
 System.out.println(name);
 }
 ```
+
+:::

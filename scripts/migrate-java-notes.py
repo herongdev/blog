@@ -104,7 +104,7 @@ def has_front_matter(text: str) -> bool:
 def add_front_matter(title: str, tag: str, body: str) -> str:
     safe_title = title.replace('"', '\\"')
     return (
-        f"---\ntitle: {safe_title}\n"
+        f"---\ntitle: \"{safe_title}\"\n"
         f"date: {date.today().isoformat()}\n"
         f"categories: [Java 快速入门]\n"
         f"tags: [Java, {tag}, OneNote]\n"

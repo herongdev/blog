@@ -3,7 +3,10 @@ title: VMware虚拟机中Linux分辨率的调整
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 默认情况下，VMware虚拟机中Linux的分辨率为800x600,看起来非常不舒服可以用以下方法调整虚拟机的分辨率。
 
@@ -23,3 +26,5 @@ tags: [Java, 构建运维, OneNote]
 
 （8）然后reboot即可
 ```
+
+:::

@@ -3,7 +3,10 @@ title: SpringBoot - 多模块项目的搭建教程
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 注意：
 
 - 根为pom，其它为jar
@@ -18,34 +21,34 @@ tags: [Java, Spring, OneNote]
 **1，创建父工程**
 （1）首先，先创建一个 **Spring Initializr** 工程 **hangge** 作为 父工程（不添加任何依赖）：
 
-[![SpringBoot](Exported%20image%2020260702233046-0.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 （2）删除刚创建工程里不需要的文件， 只保留：**.idea** 文件夹 、项目 **pom** 文件、以及一个 ***.iml** 文件。
 **注意**： 因为父模块只做依赖管理，不需要编写代码，所以 **src** 文件夹可以直接删除。
 
-[![SpringBoot](Exported%20image%2020260702233049-1.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 （3）删除后结果如下：
 
-[![SpringBoot](Exported%20image%2020260702233052-2.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 **2，创建子模块**
 （1）右键点击父工程，选择 **New** -\> **Module...** 创建子模块。这里依次创建 **hangge-base**、**hangge-dao**、**hangge-service** 和 **hangge-web** 共 **4** 个模块。
 **注意**：除了 **hangge-web** 子模块创建时选择添加 **Spring Web** 依赖（当然也可以创建时不添加，等后面再手动编辑 **pom.xml** 文件添加），其他模块暂时不添加依赖。
 
-[![SpringBoot](Exported%20image%2020260702233054-3.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 （2）将 **4** 个子模块的 **mvnw**、**mvnw.cmd** 文件及 **.mvn** 文件夹全部删除。
 
-[![SpringBoot](Exported%20image%2020260702233057-4.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 （3）对于 **src** 里的内容，只保留 **hangge-web** 的启动类和配置文件，其他子模块的的启动类和配置文件都删除：
 
-[![SpringBoot](Exported%20image%2020260702233100-5.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 （4）删除后结果如下：
 
-[![SpringBoot](Exported%20image%2020260702233107-6.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 **3，编辑父工程 pom.xml 文件**
     将父工程 **pom.xml** 文件修改成如下内容，里面声明该父工程包含的子模块，同时抽取统一的配置信息和依赖版本控制，这样可以方便子 **pom** 直接引用，简化子 **pom** 的配置。
@@ -92,36 +95,36 @@ tags: [Java, Spring, OneNote]
 
 （2）移动的方式就是右键点击 **HanggeWebApplication** 选择 **Refactor** -\> **Move...**
 
-[![SpringBoot](Exported%20image%2020260702233212-7.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 （3）在弹出框中将 **To package** 设置成 **com.example** 后点击 **Refactor** 按钮移动：
 
-[![SpringBoot](Exported%20image%2020260702233215-8.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 **6，开始编码**
 （1）首先在 **hangge-dao** 模块中添加一个 **Book** 实体类：
 
 |   |   |
 |---|---|
-|```<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>```|```<br>@Entity(name = "book")<br>@Setter<br>@Getter<br>@NoArgsConstructor<br>public class Book {<br>    @Id<br>    @GeneratedValue(strategy = GenerationType.IDENTITY)<br>    private Integer id;<br>    private String name;<br>    private String author;<br>    private Float price;<br>}<br>```|
+|```<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>```|```<br>@Entity(name = "book")<br>@Setter<br>@Getter<br>@NoArgsConstructor<br>public class Book \{<br>    @Id<br>    @GeneratedValue(strategy = GenerationType.IDENTITY)<br>    private Integer id;<br>    private String name;<br>    private String author;<br>    private Float price;<br>\}<br>```|
 
 （2）接着在 **hangge-dao** 模块中添加 **BookDao** 接口，继承 **JpaRepository**：
 
 |   |   |
 |---|---|
-|```<br>1<br>2<br>```|```<br>public interface BookDao extends JpaRepository\<Book, Integer\> {<br>}<br>```|
+|```<br>1<br>2<br>```|```<br>public interface BookDao extends JpaRepository\<Book, Integer\> \{<br>\}<br>```|
 
 （3）接着在 **hangge-service** 模块中添加一个业务实现类 **BookService**，注入 **BookDao** 并调用：
 
 |   |   |
 |---|---|
-|```<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>```|```<br>@Service<br>public class BookService {<br>    @Autowired<br>    BookDao bookDao;<br> <br>    public List\<Book\> allBooks() {<br>        return bookDao.findAll();<br>    }<br>}<br>```|
+|```<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>```|```<br>@Service<br>public class BookService \{<br>    @Autowired<br>    BookDao bookDao;<br> <br>    public List\<Book\> allBooks() \{<br>        return bookDao.findAll();<br>    \}<br>\}<br>```|
 
 （4）然后在 **hangge-web** 模块中创建一个 **Controller**，注入 **BookService** 并调用：
 
 |   |   |
 |---|---|
-|```<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>```|```<br>@RestController<br>public class HelloController {<br> <br>    @Autowired<br>    BookService bookService;<br> <br>    @GetMapping("test")<br>    public List\<Book\> test() {<br>        return bookService.allBooks();<br>    }<br>}<br>```|
+|```<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>```|```<br>@RestController<br>public class HelloController \{<br> <br>    @Autowired<br>    BookService bookService;<br> <br>    @GetMapping("test")<br>    public List\<Book\> test() \{<br>        return bookService.allBooks();<br>    \}<br>\}<br>```|
 
 （5）最后在 **hangge-web** 模块的 **application.properties** 中配置数据库基本信息以及 **JPA** 相关配置：
 ==spring.datasource.type=========com====.====alibaba====.====druid====.====pool====.====DruidDataSource==
@@ -139,13 +142,15 @@ tags: [Java, Spring, OneNote]
 **7，运行测试**
 （1）运行 **hangge-web** 模块下的 **Application** 的启动类：
 
-[![SpringBoot](Exported%20image%2020260702233217-9.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 （2）使用浏览器访问 **http://localhost:8080/test** 便可查询到相关的数据信息：
 
-[![SpringBoot](Exported%20image%2020260702233219-10.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+[](https://www.hangge.com/blog/cache/detail_2833.html#)
 
 原文出自：[www.hangge.com](https://www.hangge.com/)  转载请保留原文链接： [https://www.hangge.com/blog/cache/detail_2833.html](https://www.hangge.com/blog/cache/detail_2833.html)
 
- [![SpringBoot](Exported%20image%2020260702233221-11.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233224-12.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233231-13.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233232-14.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233235-15.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233237-16.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233241-17.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233244-18.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233248-19.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
- [![SpringBoot](Exported%20image%2020260702233254-20.png)](https://www.hangge.com/blog/cache/detail_2833.html#)[![SpringBoot](Exported%20image%2020260702233256-21.png)](https://www.hangge.com/blog/cache/detail_2833.html#)
+ [](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)
+ [](https://www.hangge.com/blog/cache/detail_2833.html#)[](https://www.hangge.com/blog/cache/detail_2833.html#)
+
+:::

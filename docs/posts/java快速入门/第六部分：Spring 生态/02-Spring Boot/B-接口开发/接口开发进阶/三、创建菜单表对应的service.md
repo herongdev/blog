@@ -3,7 +3,10 @@ title: 三、创建菜单表对应的service
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 package com.mincheng.construction.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -72,3 +75,5 @@ public interface OrganizationService extends IService\<Organization\> {
     boolean delete(Organization vo);
 }
 ```
+
+:::

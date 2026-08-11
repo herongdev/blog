@@ -3,7 +3,10 @@ title: List集合
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 学习Collection中的常用几个子类（ java.util.List 集合、 java.util.Set 集合）。
 
@@ -34,7 +37,7 @@ java.util.ArrayList 集合数据存储的结构是数组结构。元素增删慢
 **LinkedList****集合**
 java.util.LinkedList 集合数据存储的结构是链表结构。方便元素添加、删除的集合。
 LinkedList是一个双向链表，那么双向链表是什么样子的呢，我们用个图了解下
-![head tail](Exported%20image%2020260703001140-0.png)
+
 
 实际开发中对一个集合元素的添加与删除经常涉及到首尾操作，而LinkedList提供了大量首尾操作的方法。这些方法我们作为了解即可：
 public void addFirst(E e) :将指定元素插入此列表的开头。
@@ -68,3 +71,5 @@ System.out.println(link);
 }
 }
 ```
+
+:::

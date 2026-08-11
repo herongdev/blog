@@ -3,13 +3,16 @@ title: Tomcat：web服务器软件
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `1.` 下载：`http://tomcat.apache.org/`
 
 `2.` 安装：解压压缩包即可。
 `*` 注意：安装目录建议不要有中文和空格
 
-![Exported image](Exported%20image%2020260702233431-0.png)
+
 
 `3.` 卸载：删除目录就行了
 
@@ -88,3 +91,5 @@ http://
 `-- classes`目录：放置字节码文件的目录
 `-- lib`目录：放置依赖的`jar`包
 `*` 将`Tomcat`集成到`IDEA`中，并且创建`JavaEE`的项目，部署项目。
+
+:::

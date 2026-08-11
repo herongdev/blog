@@ -3,7 +3,10 @@ title: 彻底删除CentOS上的Nginx
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **删除使用****yum****安装的****nginx****方法**
 1.停止Nginx软件
@@ -17,3 +20,5 @@ tags: [Java, 微服务, OneNote]
 
  \<https://blog.csdn.net/xinyflove/article/details/83108379\>
 ```
+
+:::

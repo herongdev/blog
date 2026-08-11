@@ -3,7 +3,10 @@ title: archetypeCatalog笔记
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 当我们使用`maven`原型生成项目骨架时，经常会在`[INFO] Generating project in Interactive mode`这个地方特别慢，这里并不是什么出错卡住的原因，你打开`mvn`的`debug`模式就可看到下面的信息：
 
 [DEBUG] Searching for remote catalog: http://repo.maven.apache.org/maven2/archetype-catalog.xml
@@ -22,3 +25,5 @@ _把_`archetype-catalog.xml`_放在_`.m2`_目录下后我们在使用_`mvn arche
 
  \<https://www.cnblogs.com/syd-fish-cat/p/9260991.html\>
 ```
+
+:::

@@ -3,7 +3,10 @@ title: 如何在 Windows 和 Linux 上查找哪个线程 CPU 利用率最高
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **Windows**
 在 Windows 系统上，可以使用任务管理器查看 CPU 利用率最高的线程。具体步骤如下：
 
@@ -24,3 +27,5 @@ tags: [Java, 核心API, OneNote]
 
 **总结**
 通过以上步骤，您可以在 Windows 和 Linux 系统上查找 CPU 利用率最高的线程，并进行详细分析。任务管理器和资源监视器在 Windows 上非常方便，而在 Linux 上，top 命令和 jstack 工具可以帮助您深入分析进程和线程的性能表现。
+
+:::

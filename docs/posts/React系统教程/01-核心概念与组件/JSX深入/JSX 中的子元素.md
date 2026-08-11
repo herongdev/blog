@@ -1,0 +1,65 @@
+---
+title: "JSX 中的子元素"
+date: 2026-08-11
+categories:
+  - "React 系统教程"
+tags:
+  - "React"
+  - "Redux"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "核心概念与组件"
+description: "包含在开始和结束标签之间的 JSX 表达式内容将作为特定属性 props.children 传递给外层组件。有几种不同的方法来传递子元素： 特别注意数组子元素和表达式子元素； 一、字符串字面量 你可以将字符串放在开始和结束标签之间，此时 props.children 就只是该字符。"
+sidebarWeight: 19
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/概念/JSX深入/JSX 中的子元素.md"
+---
+::: v-pre
+
+# JSX 中的子元素
+
+> 本节目标：理解“JSX 中的子元素”的核心思路，并能把它用于实际开发或面试表达。
+包含在开始和结束标签之间的 JSX 表达式内容将作为特定属性 props.children 传递给外层组件。有几种不同的方法来传递子元素：
+特别注意数组子元素和表达式子元素；
+
+**一、字符串字面量**
+你可以将字符串放在开始和结束标签之间，此时 props.children 就只是该字符串。这对于很多内置的 HTML 元素很有用。例如：
+\<MyComponent\>Hello world!\</MyComponent\>
+这是一个合法的 JSX，MyComponent 中的 props.children 是一个简单的未转义字符串 "Hello world!"。因此你可以采用编写 HTML 的方式来编写 JSX。如下所示：
+\<div\>This is valid HTML &amp; JSX at the same time.\</div\>
+
+```
+JSX 会:
+```
+
+```
+移除行首尾的空格以及空行。
+```
+
+```
+与标签相邻的空行均会被删除，
+```
+
+```
+文本字符串之间的新行会被压缩为一个空格。
+```
+
+```
+因此以下的几种方式都是等价的：
+<div>Hello World</div>
+<div>  Hello World</div>
+<div>  Hello  World</div>
+<div>
+Hello World</div>
+```
+
+**JSX** **子元素**
+子元素允许由多个 JSX 元素组成。这对于嵌套组件非常有用：
+\<MyContainer\>  \<MyFirstComponent /\>  \<MySecondComponent /\>\</MyContainer\>
+你可以将不同类型的子元素混合在一起，因此你可以将字符串字面量与 JSX 子元素一起使用。这也是 JSX 类似 HTML 的一种表现，所以如下代码是合法的 JSX 并且也是合法的 HTML：
+\<div\>  Here is a list:  \<ul\>    \<li\>Item 1\</li\>    \<li\>Item 2\</li\>  \</ul\>\</div\>
+
+:::

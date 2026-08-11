@@ -3,7 +3,10 @@ title: Maven 常用命令
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 我们可以在
 
 `cmd`
@@ -73,7 +76,7 @@ tags: [Java, 构建运维, OneNote]
 
 中插件`(plugin)`目标`(goal)`的逻辑。
 
-![Maven porn.xrnl O M Dependency Build lifecycle pha...](Exported%20image%2020260702225112-0.png)
+
 
 项目对象模型 `(Project Object Model)`
 一个
@@ -142,7 +145,7 @@ tags: [Java, 构建运维, OneNote]
 完成项目的构建，项目构建包括：清理、编译、测试、部署等过程，`maven` 将这些
 过程规范为一个生命周期，如下所示是生命周期的各各阶段：
 
-![Exported image](Exported%20image%2020260702225116-1.png)
+
 
 `maven` 通过执行一些简单命令即可实现上边生命周期的各各过程，比如执行 `mvn compile` 执行编译、
 执行
@@ -167,7 +170,7 @@ tags: [Java, 构建运维, OneNote]
 `idea` **的** `maven` **配置**
 **打开****-****\>**`File`**-\>**`Settings`**-\>****配置** `maven`
 
-![maven maver Intelij Edit Navigate Analyze Run VCS ...](Exported%20image%2020260702225118-2.png)
+
 
 依据图片指示，选择本地
 
@@ -187,7 +190,7 @@ tags: [Java, 构建运维, OneNote]
 
 提供好的 `maven` 的`web` 工程模板
 
-![New Project Clouds Spring Java FX Android IntelliJ...](Exported%20image%2020260702225120-3.png)
+
 
 点击
 
@@ -195,7 +198,7 @@ tags: [Java, 构建运维, OneNote]
 
 填写项目信息
 
-![0 New Project Groupld f t com.itheima hello maven ...](Exported%20image%2020260702225122-4.png)
+
 
 点击
 
@@ -203,7 +206,7 @@ tags: [Java, 构建运维, OneNote]
 
 ，此处不做改动。
 
-![New Project Maven home directory user settings fil...](Exported%20image%2020260702225128-5.png)
+
 
 点击
 
@@ -211,7 +214,7 @@ tags: [Java, 构建运维, OneNote]
 
 选择项目所在目录
 
-![0 New 0 t Project name he 0 maven project location...](Exported%20image%2020260702225131-6.png)
+
 
 点击
 
@@ -219,7 +222,7 @@ tags: [Java, 构建运维, OneNote]
 
 后开始创建工程，耐心等待，直到出现如下界面。
 
-![hello maven Project hello maven idea main v WEBINF...](Exported%20image%2020260702225133-7.png)
+
 
 手动添加 `src/main/java` 目录，如下图右键 `main` 文件夹-\>
 
@@ -229,7 +232,7 @@ tags: [Java, 构建运维, OneNote]
 **创建一个** `Servlet`
 
 1. `src/java/main` 创建了一个 `Servlet`，但报错
-![Project hello maven . idea v main v com.itheima.se...](Exported%20image%2020260702225135-8.png)3. 要解决问题，就是要将 `servlet-api-xxx.jar` 包放进来，作为 `maven` 工程应当添加 `servlet` 的坐标，从而导入它的 `jar`
+3. 要解决问题，就是要将 `servlet-api-xxx.jar` 包放进来，作为 `maven` 工程应当添加 `servlet` 的坐标，从而导入它的 `jar`
 4. 在 `pom.xml` 文件添加坐标
 
 直接打开 `hello_maven` 工程的 `pom.xml` 文件，再添加坐标添加 `jar` 包的坐标时，还可以指定这个 `jar` 包将来的作用范围。 每个 `maven` 工程都需要定义本工程的坐标，坐标是 `maven` 对 `jar` 包的身份定义，比如：入门程序的坐标定义如下：
@@ -274,7 +277,7 @@ http://search.maven.org/
 http://mvnrepository.com/
  网站搜索示例：
 
-![Found results SMng Spring Context org.spnnqframewo...](Exported%20image%2020260702225137-9.png)
+
 
 **依赖范围**
 `A` 依赖 `B`，需要在 `A` 的 `pom.xml` 文件中添加 `B` 的坐标，添加坐标时需要指定依赖范围，依赖范围包括：
@@ -284,7 +287,7 @@ http://mvnrepository.com/
 - `runtime`：`runtime` 依赖在运行和测试系统的时候需要，但在编译的时候不需要。比如：`jdbc`的驱动包。由于运行时需要所以 `runtime` 范围的依赖会被打包。
 - `test`：`test` 范围依赖 在编译和运行时都不需要，它们只有在测试编译和测试运行阶段可用，比如：`junit`。由于运行时不需要所以 `test`范围依赖不会被打包。
 - `system`：`system` 范围依赖与 `provided` 类似，但是你必须显式的提供一个对于本地系统中 `JAR`文件的路径，需要指定 `systemPath` 磁盘路径，`system`依赖不推荐使用。
-![classpath classpath classpath compile Y Y spnngcor...](Exported%20image%2020260702225139-10.png)
+
 
 在
 
@@ -302,7 +305,7 @@ http://mvnrepository.com/
 
 **项目中添加的坐标**
 
-![dependencies dependency group version4. scopetests...](Exported%20image%2020260702225140-11.png)
+
 
 **设置** `jdk` **编译版本**
 本教程使用
@@ -332,15 +335,15 @@ http://mvnrepository.com/
 **编写** `servlet`
 在 `src/main/java` 中创建 `ServletTest`，￼
 
-![srcmainjava cn.itca st. maven. servlet t ServletTe...](Exported%20image%2020260702225146-12.png)
+
 
 编写 jsp
 
-![Project hello maven .idea src main v java com.ithe...](Exported%20image%2020260702225148-13.png)
+
 
 **在** `web.xml` **中配置** `servlet` **访问路径**
 
-![itheima. servlet. servlet servletmapping url patte...](Exported%20image%2020260702225151-14.png)
+
 
 **添加** `tomcat7` **插件**
 在
@@ -349,7 +352,7 @@ http://mvnrepository.com/
 
 文件中添加如下内容
 
-![lug in apache. tomcat. artifact version2. conf igu...](Exported%20image%2020260702225155-15.png)
+
 
 此时点击
 
@@ -367,16 +370,18 @@ http://mvnrepository.com/
 
 插件下 `tomcat7:run` 命令直接运行项目
 
-![Maven Projects Profiles hello maven Lifecycle Plug...](Exported%20image%2020260702225157-16.png)
+
 
 也可以直接点击如图按钮，手动输入 `tomc7:run` 命令运行项目
 
-![Maven Projects Profiles Execute Maven Goal m v hel...](Exported%20image%2020260702225207-17.png)
+
 
 点击后弹出如下图窗口
 
-![OK Indent 4 spaces Show Settings Match Case 2 Word...](Exported%20image%2020260702225210-18.png)
+
 
 `3.2.10`**运行结果**
 
-![i localhost8080maven 0](Exported%20image%2020260702225216-19.png)
+
+
+:::

@@ -3,7 +3,10 @@ title: HTTP
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 概念：Hyper Text Transfer Protocol 超文本传输协议
 * 传输协议：定义了，客户端和服务器端通信时，发送数据的格式。
@@ -40,7 +43,7 @@ GET /login.html   HTTP/1.1
 - 2. 请求头：客户端浏览器告诉服务器一些信息。格式为：==请求头名称====:== ==请求头值==
 - * 常见的请求头：
 
-![host localhost 88 keepaliv4 connection upgrade ins...](Exported%20image%2020260702225932-0.png)
+
 
 1. User-Agent：浏览器告诉服务器，我访问你使用的浏览器版本信息
 * 可以在服务器端获取该头的信息，解决浏览器的兼容性问题
@@ -69,3 +72,5 @@ username=zhangsan
 
 * 响应消息数据格式
 ```
+
+:::

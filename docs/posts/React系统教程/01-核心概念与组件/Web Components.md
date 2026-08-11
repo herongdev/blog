@@ -1,0 +1,86 @@
+---
+title: "Web Components"
+date: 2026-08-11
+categories:
+  - "React 系统教程"
+tags:
+  - "React"
+  - "Redux"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "核心概念与组件"
+description: "Web Components 为可复用组件提供了强大的封装，而 React 则提供了声明式的解决方案，使 DOM 与数据保持同步。两者旨在互补。 作为开发人员，可以自由选择在 Web Components 中使用 React，或者在 React 中使用 Web Component。"
+sidebarWeight: 46
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/概念/Web Components.md"
+---
+::: v-pre
+
+# Web Components
+
+> 本节目标：理解“Web Components”的核心思路，并能把它用于实际开发或面试表达。
+```
+React 和 [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) 为了解决不同的问题而生。
+```
+
+Web Components 为可复用组件提供了强大的封装，而 React 则提供了声明式的解决方案，使 DOM 与数据保持同步。两者旨在互补。
+
+作为开发人员，可以自由选择在 Web Components 中使用 React，或者在 React 中使用 Web Components，或者两者共存。
+
+```
+大多数开发者在使用 React 时，不使用 Web Components，但可能你会需要使用，尤其是在使用 Web Components 编写的第三方 UI 组件时。
+**在** **React** **中使用** **Web Components**
+class HelloMessage extends React.Component {
+  render() {
+    return <div>Hello
+      <x-search>{this.props.name}</x-search>!
+      </div>;
+  }
+}
+注意：
+Web Components 通常暴露的是命令式 API。例如，Web Components 的组件 video 可能会公开 play() 和 pause() 方法。要访问 Web Components 的命令式 API，你需要使用 ref 直接与 DOM 节点进行交互。
+```
+
+如果你使用的是第三方 Web Components，那么最好的解决方案是编写 React 组件包装该 Web Components。
+Web Components 触发的事件可能无法通过 React 渲染树正确的传递。 你需要在 React 组件中手动添加事件处理器来处理这些事件。
+
+```
+常见的误区是在 Web Components 中使用的是 class 而非 className。
+function BrickFlipbox() {
+  return (
+    <brick-flipbox class="demo">
+      <div>front</div>
+      <div>back</div>
+    </brick-flipbox>
+  );
+}
+```
+
+```
+**在** **Web Components** **中使用** **React**
+class XSearch extends HTMLElement {
+  connectedCallback() {
+    const mountPoint = document.createElement('span');
+    this.attachShadow({ mode: 'open' }).appendChild(mountPoint);
+    const name = this.getAttribute('name');
+    const url = '[https://www.google.com/search?q=](https://www.google.com/search?q=)' + encodeURIComponent(name);
+    ReactDOM.render(
+      <a href={url}>{name}</a>,
+      mountPoint
+    );
+  }
+}
+customElements.define('x-search', XSearch);
+注意：
+如果使用 Babel 来转换 class，此代码将**不会**起作用。请查阅该 [issue](https://github.com/w3c/webcomponents/issues/587) 了解相关讨论。 在加载 Web Components 前请引入 [custom-elements-es5-adapter](https://github.com/webcomponents/polyfills/tree/master/packages/webcomponentsjs#custom-elements-es5-adapterjs) 来解决该 issue。
+```
+ \> 来自
+
+```
+ <https://react.docschina.org/docs/web-components.html>
+```
+
+:::

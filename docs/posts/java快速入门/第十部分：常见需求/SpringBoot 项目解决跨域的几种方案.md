@@ -3,7 +3,10 @@ title: SpringBoot 项目解决跨域的几种方案
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 JK凯
 
 于 2023-05-19 14:39:04 发布
@@ -25,11 +28,11 @@ SpringBoot
 var xhr = new XMLHttpRequest()
 xhr.open('GET', '[http://localhost:8080/user](http://localhost:8080/user)') // 替换请求的方法和地址
 xhr.send()
-xhr.onreadystatechange = function() {
-if (xhr.readyState == 4 && xhr.status == 200) {
+xhr.onreadystatechange = function() \{
+if (xhr.readyState == 4 && xhr.status == 200) \{
 console.log(xhr.responseText)
-}
-}
+\}
+\}
 1
 2
 3
@@ -53,17 +56,17 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer \{
 @Override
-public void addCorsMappings(CorsRegistry registry) {
+public void addCorsMappings(CorsRegistry registry) \{
 registry.addMapping("/**") // 所有接口
 .allowCredentials(true) // 是否发送 Cookie
 .allowedOriginPatterns("*") // 支持域
 .allowedMethods("GET", "POST", "PUT", "DELETE") // 支持方法
 .allowedHeaders("*")
 .exposedHeaders("*");
-}
-}
+\}
+\}
 1
 2
 3
@@ -90,9 +93,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-public class MyCorsFilter {
+public class MyCorsFilter \{
 @Bean
-public CorsFilter corsFilter() {
+public CorsFilter corsFilter() \{
 // 1.创建 CORS 配置对象
 CorsConfiguration config = new CorsConfiguration();
 // 支持域
@@ -110,8 +113,8 @@ UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfig
 corsConfigurationSource.registerCorsConfiguration("/**", config);
 // 3.返回 CorsFilter 对象
 return new CorsFilter(corsConfigurationSource);
-}
-}
+\}
+\}
 1
 2
 3
@@ -149,12 +152,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
-public class UserController {
+public class UserController \{
 @GetMapping
-public String getAll() {
+public String getAll() \{
 return "成功";
-}
-}
+\}
+\}
 1
 2
 3
@@ -170,20 +173,20 @@ return "成功";
 如果我们项目有用 nginx 做反向代理服务器时，也可以在nginx中配置CORS来解决跨域，配置示例如下：
 
 允许全部域名
-server {
+server \{
 ...
-location / {
+location / \{
 #允许 所有头部 所有域 所有方法
 add_header 'Access-Control-Allow-Origin' '*';
 add_header 'Access-Control-Allow-Headers' '*';
 add_header 'Access-Control-Allow-Methods' '*';
 #OPTIONS 直接返回204
-if ($request_method = 'OPTIONS') {
+if ($request_method = 'OPTIONS') \{
 return 204;
-}
-}
+\}
+\}
 ...
-}
+\}
 1
 2
 3
@@ -199,26 +202,26 @@ return 204;
 13
 14
 允许指定域名
-map $http_origin $corsHost {
+map $http_origin $corsHost \{
 default 0;
 "~https://aa.cn" [https://aa.cn](https://aa.cn);
 "~https://bb.cn" [https://bb.cn](https://bb.cn);
 "~https://cc.cn" [https://cc.cn](https://cc.cn);
-}
-server {
+\}
+server \{
 ...
-location / {
+location / \{
 #允许 所有头部 所有$corsHost域 所有方法
 add_header 'Access-Control-Allow-Origin' $corsHost;
 add_header 'Access-Control-Allow-Headers' '*';
 add_header 'Access-Control-Allow-Methods' '*';
 #OPTIONS 直接返回204
-if ($request_method = 'OPTIONS') {
+if ($request_method = 'OPTIONS') \{
 return 204;
-}
-}
+\}
+\}
 ...
-}
+\}
 1
 2
 3
@@ -243,3 +246,5 @@ return 204;
 ————————————————
 版权声明：本文为CSDN博主「JK凯」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/junkaione/article/details/130766354
+
+:::

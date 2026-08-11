@@ -3,7 +3,10 @@ title: Swagger使用
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 创建 `Controller` 类并新增接口信息
 在 `controller` 包下新增 `TestSwaggerController.java`，代码如下：
 `Package`
@@ -15,12 +18,12 @@ importio.swagger.annotations.ApiImplicitParams;
 importio.swagger.annotations.ApiOperation;
 importorg.springframework.web.bind.annotation.*;
 importjava.util.*;
-@RestControllerpublicclassTestSwaggerController{
+@RestControllerpublicclassTestSwaggerController\{
 staticMap\<Integer, User\> usersMap = Collections.synchronizedMap(newHashMap\<Integer, User\>());
 //
 初始化
 
- usersMapstatic{
+ usersMapstatic\{
         Useruser=newUser();
         user.setId(1);
         user.setName("newbee1");
@@ -31,34 +34,34 @@ staticMap\<Integer, User\> usersMap = Collections.synchronizedMap(newHashMap\<In
         user2.setPassword("222222");
         usersMap.put(1, user);
         usersMap.put(2, user2);
-    }
+    \}
 @ApiOperation(value = "
 获取用户列表
 
-", notes = "")@GetMapping("/users")publicList\<User\> getUserList(){
+", notes = "")@GetMapping("/users")publicList\<User\> getUserList()\{
         List\<User\> users = newArrayList\<User\>(usersMap.values());
         returnusers;
-    }
+    \}
 @ApiOperation(value = "
 新增用户`", notes = "`根据`User`对象新增用户`")@ApiImplicitParam(name = "user", value = "`用户实体
 
-", required = true, dataType = "User")@PostMapping("/users")publicString postUser(@RequestBodyUser user){
+", required = true, dataType = "User")@PostMapping("/users")publicString postUser(@RequestBodyUser user)\{
         usersMap.put(user.getId(), user);
         return"
 新增成功
 
 ";
-    }
+    \}
 @ApiOperation(value = "
 获取用户详细信息`", notes = "`根据`id`来获取用户详细信息`")@ApiImplicitParam(name = "id", value = "`用户
 
-id", required = true, dataType = "int")@GetMapping("/users/{id}")publicUser getUser(@PathVariableInteger id){
+id", required = true, dataType = "int")@GetMapping("/users/\{id\}")publicUser getUser(@PathVariableInteger id)\{
         returnusersMap.get(id);
-    }
+    \}
 @ApiOperation(value = "
 更新用户详细信息
 
-", notes = "")@ApiImplicitParams({
+", notes = "")@ApiImplicitParams(\{
             @ApiImplicitParam(name = "id", value = "
 用户
 
@@ -67,7 +70,7 @@ id", required = true, dataType = "int"),
 用户实体
 
 user", required = true, dataType = "User")
-    })@PutMapping("/users/{id}")publicString putUser(@PathVariableInteger id, @RequestBodyUser user){
+    \})@PutMapping("/users/\{id\}")publicString putUser(@PathVariableInteger id, @RequestBodyUser user)\{
         UsertempUser=usersMap.get(id);
         tempUser.setName(user.getName());
         tempUser.setPassword(user.getPassword());
@@ -76,18 +79,18 @@ user", required = true, dataType = "User")
 更新成功
 
 ";
-    }
+    \}
 @ApiOperation(value = "
 删除用户`", notes = "`根据`id`删除对象`")@ApiImplicitParam(name = "id", value = "`用户
 
-id", required = true, dataType = "int")@DeleteMapping("/users/{id}")publicString deleteUser(@PathVariableInteger id){
+id", required = true, dataType = "int")@DeleteMapping("/users/\{id\}")publicString deleteUser(@PathVariableInteger id)\{
         usersMap.remove(id);
         return"
 删除成功
 
 ";
-    }
-}
+    \}
+\}
  我们新增了一个 `controller` 类并定义了 `5` 个接口，并且在每个接口上通过`@ApiOperation`注解来给`API`增加说明、通过`@ApiImplicitParams`、`@ApiImplicitParam`注解来给参数增加说明。
 接口测试
 在介绍 `Swagger` 的时候我们就说过，它不仅仅是一个接口文档工具，它也是一个接口测试工具，我们可以通过它向后端发送请求、传输参数并获取返回数据，通过这种方式我们也能够进行接口测试，接下来对这些接口进行实际的测试。
@@ -125,3 +128,5 @@ id", required = true, dataType = "int")@DeleteMapping("/users/{id}")publicString
 
  \<https://juejin.cn/book/6844733826191589390/section/6844733826288058382\>
 ```
+
+:::

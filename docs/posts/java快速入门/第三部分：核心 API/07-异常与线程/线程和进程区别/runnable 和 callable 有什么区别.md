@@ -3,7 +3,10 @@ title: runnable 和 callable 有什么区别
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 说一下 runnable 和 callable 有什么区别
 相同点：
 
@@ -19,3 +22,5 @@ tags: [Java, 核心API, OneNote]
 - Callable 接口 call 方法允许抛出异常，可以获取异常信息
 
 注：Callalbe接口支持返回执行结果，需要调用FutureTask.get()得到，此方法会阻塞主进程的继续往下执行，如果不调用不会阻塞。
+
+:::

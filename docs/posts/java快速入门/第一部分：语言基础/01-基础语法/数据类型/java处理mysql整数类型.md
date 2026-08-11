@@ -3,7 +3,10 @@ title: java处理mysql整数类型
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ### MySQL中的整数类型
 
 MySQL数据库支持多种整数类型，根据需要存储的数值范围和存储空间的考虑，可以选择合适的类型：
@@ -37,3 +40,5 @@ Java语言提供了几种基本的整数类型，具体如下：
 - 使用JDBC与数据库交互时，确保正确使用`ResultSet`获取方法，例如使用`getInt`、`getLong`等，这些方法需要与数据库字段的类型相对应。
 
 确保在设计数据库和Java应用程序时，这些方面得到充分考虑，可以有效地预防数据类型不匹配和运行时错误，提升应用的稳定性和性能。
+
+:::

@@ -3,7 +3,10 @@ title: mac 安装Maven
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 要注意版本的选择，要与jdk和springboot版本兼容；
 Maven 安装及配置大体可以划分为三个步骤：下载、安装和配置。
 1.下载
@@ -56,3 +59,5 @@ MAC 终端编辑完成后如何保存
 `source ~/.bash_profile ￼`
  强制系统环境变量生效；或者也可以关闭/重新打开命令行终端，系统环境变量会自动生效。再次输入命令：mvn -version
 如果可以看到类似输出（可能 Maven 或 JDK 版本不一样），表示 Maven 已安装完成，且工作正常。
+
+:::

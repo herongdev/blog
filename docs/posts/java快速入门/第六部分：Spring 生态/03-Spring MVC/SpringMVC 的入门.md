@@ -3,7 +3,10 @@ title: SpringMVC 的入门
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **前期准备**
 **下载开发包：**
 
@@ -14,7 +17,7 @@ tags: [Java, Spring, OneNote]
 
 的 `jar` 包就在之前我们的 `spring` 框架开发包中。
 
-![Exported image](Exported%20image%2020260702233325-0.png)
+
 
 **创建一个**
 
@@ -23,7 +26,7 @@ tags: [Java, Spring, OneNote]
 
 中的内容：
 
-\<a href="${pageContext.request.contextPath}/hello"\>SpringMVC
+\<a href="$\{pageContext.request.contextPath\}/hello"\>SpringMVC
 入门案例
 
 - \</a\>
@@ -120,20 +123,20 @@ class="org.springframework.web.servlet.view.InternalResourceViewResolver"\>
 * @Version 1.0
 */
 @Controller("helloController")
-public class HelloController {
+public class HelloController \{
 @RequestMapping("/hello")
-public String sayHello() {
+public String sayHello() \{
 System.out.println("HelloController
 的 `sayHello` 方法执行了。。。。
 
 ");
 return "success";
-}
-}
+\}
+\}
 ￼
 测试
 
-![C localhost 8585 index. j sp zzcat_SSH Tocats. S C...](Exported%20image%2020260702233329-1.png)
+
 
 **入门案例的执行过程及原理分析**
 
@@ -156,7 +159,7 @@ return "success";
 
 `SpringMVC` **的请求响应流程**
 
-![Incoming request Front controller Delegate request...](Exported%20image%2020260702233332-2.png)
+
 
 **入门案例中涉及的组件**
 `DispatcherServlet`**：前端控制器**
@@ -179,7 +182,7 @@ return "success";
 `HandlAdapter`**：处理器适配器**
 通过 `HandlerAdapter` 对处理器进行执行，这是适配器模式的应用，通过扩展适配器可以对更多类型的处理器进行执行。
 
-![Exported image](Exported%20image%2020260702233336-3.png)
+
 
 `View Resolver`**：视图解析器**
 `View Resolver` 负责将处理结果生成 `View` 视图，`View Resolver` 首先根据逻辑视图名解析成物理视图名即具体的页面地址，再生成 `View` 视图对象，最后对 `View` 进行渲染将处理结果通过页面展示给用户。
@@ -259,12 +262,12 @@ class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
 **使用说明**
 **源码：**
 
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target(\{ElementType.METHOD, ElementType.TYPE\})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Mapping
-public @interface RequestMapping {
-}
+public @interface RequestMapping \{
+\}
  **作用：** 用于建立请求 `URL` 和处理请求方法之间的对应关系。
 出现位置： 类上
 请求
@@ -318,11 +321,11 @@ public @interface RequestMapping {
 配置的一模一样。
 例如：
 
-params = {"accountName"}
+params = \{"accountName"\}
 ，表示请求参数必须有
 
  accountName
-params = {"moeny!100"}
+params = \{"moeny!100"\}
 ，表示请求参数中 `money` 不能是 `100`。
 
 `headers`
@@ -347,17 +350,17 @@ params = {"moeny!100"}
 */
 @Controller("accountController")
 @RequestMapping("/account")
-public class AccountController {
+public class AccountController \{
 ￼
 
-public String findAccount() {
+public String findAccount() \{
 System.out.println("
 查询了账户。。。。
 
 ");
 return "success";
-}
-}
+\}
+\}
 
 `jsp` **中的代码：**
 
@@ -379,7 +382,7 @@ pageEncoding="UTF-8"%\>
 第一种访问方式
 
  --\>
-\<a href="${pageContext.request.contextPath}/account/findAccount"\>
+\<a href="$\{pageContext.request.contextPath\}/account/findAccount"\>
  查询账户
 
 - \</a\>
@@ -414,13 +417,13 @@ pageEncoding="UTF-8"%\>
 * @return
 */
 @RequestMapping(value="/saveAccount",method=RequestMethod.POST)
-public String saveAccount() {
+public String saveAccount() \{
 System.out.println("
 保存了账户
 
 ");
 return "success";
-}
+\}
 ￼
 jsp 代码：
 `\<!--` 请求方式的示例
@@ -446,7 +449,7 @@ _保存账户，_`post` _请求_
 
 请求时，提示错误信息是 `405`，信息是方法不支持 `get` 方式请求
 
-![HTTP Status 405 Status Report Method Not Allowed u...](Exported%20image%2020260702233342-4.png)
+
 
 `params` **属性的示例：**
 **控制器的代码：**
@@ -457,14 +460,14 @@ _保存账户，_`post` _请求_
 
 * @return
 */
-@RequestMapping(value="/removeAccount",params= {"accountName","money\>100"})
-public String removeAccount() {
+@RequestMapping(value="/removeAccount",params= \{"accountName","money\>100"\})
+public String removeAccount() \{
 System.out.println("
 删除了账户
 
 ");
 return "success";
-}
+\}
 jsp
 **中的代码：**
 
@@ -486,5 +489,7 @@ jsp
 当我们点击第一个超链接时`,`可以访问成功。
 当我们点击第二个超链接时，无法访问。如下图：
 
-![HTTP Status 400 Bad Request Status Report Paramete...](Exported%20image%2020260702233345-5.png)
-![SpringXUC Jspe hello 1. Request 11. response ViewR...](Exported%20image%2020260702233348-6.png)
+
+
+
+:::

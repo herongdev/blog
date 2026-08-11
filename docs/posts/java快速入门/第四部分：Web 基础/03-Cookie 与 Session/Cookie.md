@@ -3,7 +3,10 @@ title: Cookie
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **会话技术**
   `1.` 会话：一次会话中包含多次请求和响应。
      `*` 一次会话：浏览器第一次给服务器资源发送请求，会话建立，直到有一方断开为止
@@ -36,7 +39,7 @@ tags: [Java, Web基础, OneNote]
 **实现原理**
    `*` 基于响应头`set-cookie`和请求头`cookie`实现
 
-![set e o cookie o CookieDem01 Rcookie CookieDem02 d...](Exported%20image%2020260702223636-0.png)
+
 
 `cookie`**的细节**
 `1.` 一次可不可以发送多个
@@ -52,7 +55,7 @@ tags: [Java, Web基础, OneNote]
 `2.` 持久化存储：
 `* setMaxAge(int seconds)`
 
-![public CookieDem04 HttpServIet protected void doPo...](Exported%20image%2020260702223639-1.png)
+
 
 `1.` 正数：将`Cookie`数据写到硬盘的文件中。持久化存储。并指定`cookie`存活时间，时间到后，`cookie`文件自动失效
 `2.` 负数：默认值，浏览器关闭后销毁`Cookie`；
@@ -77,7 +80,7 @@ tags: [Java, Web基础, OneNote]
     `* setPath(String path)`：设置`cookie`的获取范围。默认情况下，设置当前的虚拟目录
     `*` 如果要共享，则可以将`path`设置为`"/"`  
 
-![Cookie cl n. Cookie name value 13. ECookie respons...](Exported%20image%2020260702223643-2.png)
+
 
 `2.`
 
@@ -97,3 +100,5 @@ tags: [Java, Web基础, OneNote]
 作用：
     `1. cookie`一般用于存出少量的不太敏感的数据
     `2.` 在不登录的情况下，完成服务器对客户端的身份识别
+
+:::

@@ -3,7 +3,10 @@ title: ServletContext对象
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **概念：**
 代表整个`web`应用，可以和程序的容器`(`服务器`)`来通信。
 
@@ -58,3 +61,5 @@ String c = context.getRealPath("/WEB-INF/c.txt");
 String a = context.getRealPath("/WEB-INF/classes/a.txt");
 System.out.println(a);
 ```
+
+:::

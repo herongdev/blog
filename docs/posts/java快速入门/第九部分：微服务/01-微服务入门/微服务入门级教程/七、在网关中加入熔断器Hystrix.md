@@ -3,7 +3,10 @@ title: 七、在网关中加入熔断器Hystrix
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在微服务中，各个系统之间相互调用，难免出现某个服务挂掉的情况，此时熔断器机制就很重要，我们可以利用熔断器，将超时的请求予以异常处理，避免形成死循环的调用链。
 
 由于我们刚才在搭建网关时没用选择熔断器依赖，所以在网关项目的`pom.xml`手动添加以下依赖：
@@ -91,7 +94,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class ErrorController {
+public class ErrorController \{
 
     /**
      *
@@ -100,7 +103,7 @@ public class ErrorController {
 
      * */
     @RequestMapping(value = "/fallback")
-    public Object fallback () {
+    public Object fallback () \{
         Map\<String , Object\> result = new HashMap\<\>();
         result.put("code" , 0);
         result.put("msg" , "
@@ -109,19 +112,21 @@ public class ErrorController {
 ");
         result.put("state" , false);
         return result;
-    }
-}
- ![micro gateway java v com.mincheng.gateway v contro...](Exported%20image%2020260703001058-0.png)
+    \}
+\}
+ 
 
 然后我们在第一个服务节点里，添加如下代码，模拟超时：
 
-![RestContr011er RequestMappingva1ue student public ...](Exported%20image%2020260703001102-1.png)
+
 
 再通过我们的网关访问`API`接口，发现每当请求到达第一个服务节点时，就会提示服务器繁忙：
 
-![local host8083clientstudentdetail G 0 GitHub JSON ...](Exported%20image%2020260703001104-2.png)
+
 
 小结
 以上就是基本的`Spring Cloud`脚手架，相信还是可以满足大多数人的开发需求的。不足的地方有很多，比如处理跨域、线上环境的注册中心配置、`Gateway`网关的多种配置、熔断器的各种配置，以后都会慢慢地补上，还请大家海涵吧！
 
 原文链接：`https://blog.csdn.net/wzy18210825916/article/details/103444346`
+
+:::

@@ -1,0 +1,254 @@
+---
+title: "js 异步迭代器"
+date: 2026-08-11
+categories:
+  - "JavaScript 系统教程"
+tags:
+  - "JavaScript"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "异步编程"
+description: "dongceha 于 2020 05 17 00:12:25 发布 905 收藏 1 分类专栏： 前端 文章标签： javascript es6 版权 前端 专栏收录该内容 77 篇文章1 订阅 订阅专栏 同步的迭代器模式 众所周知，迭代器模式就是在已有的 对象里 增加一个 迭代。"
+sidebarWeight: 72
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/b-原生js/11-异步编程/js 异步迭代器.md"
+---
+::: v-pre
+
+# js 异步迭代器
+
+> 本节目标：理解“js 异步迭代器”的核心思路，并能把它用于实际开发或面试表达。
+dongceha
+
+于 2020-05-17 00:12:25 发布
+
+905
+收藏 1
+分类专栏： 前端 文章标签： javascript es6
+版权
+
+前端
+专栏收录该内容
+77 篇文章1 订阅
+订阅专栏
+同步的迭代器模式
+众所周知，迭代器模式就是在已有的 对象里 增加一个 迭代函数，然后 通过迭代函数 来执行 对应的函数
+
+const obj = \{
+arr1: [1,2,3,4,5],
+arr2: [1,2,3,4,5],
+next(fn) \{
+const arr = [...this.arr1, ...this.arr2]
+for (val of arr) \{
+fn(val)
+\}
+\}
+\}   obj.next(console.log)
+异步的迭代器模式
+先讲讲 不使用es6 的情况下的做法
+
+// 这里是被异步调用的函数
+function promise1(next, value) \{
+setTimeout(() =\> \{
+console.log(1, value)
+next(2)
+\}, 100);
+\}
+function promise2(next, value) \{
+setTimeout(() =\> \{
+console.log(2, value)
+next(3)
+\}, 100);
+\}   var events = [promise1, promise2]
+做法一   function eventLoop(events, initv) \{
+let index = 0;
+function next(value) \{
+if (index \>= events.length) \{
+return value
+\} else \{
+const fn = events[index]
+fn(next, value)
+\}
+index ++
+\}
+next(initv)
+\}   eventLoop(events, 1)
+这里是基于 约定 的方式 来进行的，也就是说，你异步执行完成以后，一定要执行 传过来的 next 函数，否则 进行不下去，是不是很熟悉？
+
+没错了，vue-router 和 koa2 的 use 都是基于这种写法的
+
+做法二
+这个就是 很有名的 redux compose 中的做法 了，实际上 这个也是基于 约定的方式 来实现的 ，不过要注意的是，如果没有那些 约定的话，这个不是 异步的，这里就不深入讲了，要不然光光这个就可以写一两篇单独的博客了
+
+function compose(...funcs) \{
+if (funcs.length === 0) \{
+return arg =\> arg
+\}   if (funcs.length === 1) \{
+return funcs[0]
+\}   // 每个函数的返回值 都会被 当做 一个
+return funcs.reduce((a, b) =\> (...args) =\> a(b(...args)))
+\}
+然后看一个最简单的中间件 redux-thunk
+
+// 整个过程就是 柯里化 的过程，巧妙地运用了闭包的 概念
+function createThunkMiddleware(extraArgument) \{
+// 返回的函数 其实 是一个 三重返回的 函数
+// 第一重是 用于 redux 中，收集 dispatch 和 store 的闭包
+// const chain = middlewares.map(middleware =\> middleware(middlewareAPI))
+// 第二重 就是 用来执行 上文 中的 compose 的，注意这里的 next ,
+// 其实就是传进来的 需要执行的下一个函数
+// 第三重，就是 接受 dispatch('dosomething') 中的 dosomething 这个参数的
+return (\{ dispatch, getState \}) =\> (next) =\> (action) =\> \{
+if (typeof action === 'function') \{
+return action(dispatch, getState, extraArgument);
+\}   return next(action);
+\};
+\}   const thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;   export default thunk;
+其实都是将接下来的代码的 执行 权利 和时机交给上一个函数 判断
+
+那使用了 es6 之后，又会有怎样的精彩呢？
+
+// 注意，这里的函数的 返回值 都是 一个 Promise
+function promise1(value) \{
+return new Promise(resolve =\> \{
+setTimeout(() =\> \{
+console.log(1, value)
+resolve(1)
+\}, 100);
+\})
+\}
+function promise2(value) \{
+return new Promise(resolve =\> \{
+setTimeout(() =\> \{
+console.log(2, value)
+resolve(2)
+\}, 100);
+\})
+\}   var events = [promise1, promise2]
+做法一
+既然都说了迭代器了，那当然得 出来 es6 之中的 generator 了
+
+function * generatorf(events, val) \{
+for (fn of events) \{
+val = yield fn(val)
+\}
+\}
+let g = generatorf(events, 1);
+function cnext(result) \{
+if (result.done) return;
+result.value.then((val) =\> \{
+cnext(g.next(val))
+\})
+\}
+cnext(g.next())
+可以看到，这里相比于之前，执行 next 的权利被进行了 转移，到了一个专门的函数里面了，当然，如果想要在代码里面获得 next 的控制权，也可以避免使用 cnext，而是 直接在每一个 Promise 的异步函数之中，手动的去调用 g.next()
+
+而使用的场景，类似于我司的 用户校验，是否已经注册了？注册的信息是否完善？是否是 18岁以上？等等
+
+这样的话，每一个 都有额外的 判断和流程图 要走，自然是 将控制权放在代码里更 方便
+
+做法二
+关于 generator 之上，还要 es7 中的 async 和 await 来进行 进一步的封装，这样的话，就简单地只需要几行代码就够了，但是这样的话，就获得不到 函数的 next 控制权了，只能交给 函数一步一步去执行
+
+async function generatorf(events, val) \{
+for (fn of events) \{
+val = await fn(val)
+\}
+\}
+generatorf(events, 1);
+做法三
+做法3其实使用到了 Symbol 关键字
+
+凭什么 异步调用 还和 这东西扯上关系了？看一下 阮一峰 老师 的 es6
+
+没错了，看到这里有没有 心头一颤？和之前 的 generator 很像，但是完全 去除了 generator 的辅助
+
+let g = events[Symbol.iterator](1);
+function cnext(result) \{
+if (result.done) return;
+result.value(1).then((val) =\> \{
+cnext(g.next(val))
+\})
+\}
+cnext(g.next())
+当然，因为这里的数据都被包在了 数组里，所以看不出来，但是 如果 需要执行的 异步函数被写在了一个 配置 JSON 里面呢？
+
+例如：
+
+const events = \{
+steps1: \{
+fn: promise1
+\},
+steps2: \{
+fn: promise2
+\},
+[Symbol.iterator]() \{
+const entries = Object.entries(this);
+let index = 0;
+return \{
+next() \{
+if (index \< entries.length) \{
+const value = entries[index][1].fn
+index ++
+return \{
+value,
+done: false
+\};
+\} else \{
+return \{ value: undefined, done: true \};
+\}
+\}
+\};
+\}
+\}
+async function gen (events, val) \{
+for (const iterator of events) \{
+val = await iterator(val)
+\}
+\}
+gen(events, 1)
+这样就完成了 对于配置项的 异步迭代
+
+当然，如果你想要 在函数里面获得 对应的 操作的权利，那么 就应该换一种写法了
+  const events = \{
+steps1: \{
+fn: promise1
+\},
+steps2: \{
+fn: promise2
+\}
+\}
+function * gen (events, val) \{
+for (const iterator in events) \{
+console.log(iterator)
+val = yield events[iterator].fn(val)
+// val = await iterator(val)
+\}
+\}
+var g = gen(events, 1)
+然后异步执行 的函数 应该这样写，就好像 上面 不适用 es6 的时候一样，需要手动去执行是否next
+
+// 注意，这里的函数的 都需要去执行 一个 g.next 来决定 是否继续往下走
+function promise1(value) \{
+setTimeout(() =\> \{
+console.log(1, value)
+if (true) g.next()
+else // 做其他的操作
+\}, 100);
+\}
+function promise2(value) \{
+setTimeout(() =\> \{
+console.log(1, value)
+if (true) g.next()
+else // 做其他的操作
+\}, 100)
+
+————————————————
+版权声明：本文为CSDN博主「dongceha」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/dongcehao/article/details/106165687
+
+:::

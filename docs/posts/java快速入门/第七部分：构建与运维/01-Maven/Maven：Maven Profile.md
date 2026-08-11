@@ -3,7 +3,10 @@ title: Maven：Maven Profile
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 不同环境的构建很可能是不同的，典型的情况就是数据库的配置。除此之外，有些环境可能需要配置插件使用本地文件，或者使用特殊版本的依赖，或者需要一个特殊的构建名称。要想使得一个构建不做任何修改就能在任何环境下运行，往往是不可能的。为了能让构建在各个环境下方便的移植，`Maven`引入了`profile`的概念。`profile`能够在构建的时候修改`POM`的一个子集，或者添加额外的配置元素。用户可以使用很多方式激活`profile`，以实现构建在不同环境下的移植。
 **针对不同环境的**`profile`
 下面为测试环境和产品环境的`profile`，如下所示。
@@ -145,3 +148,5 @@ tags: [Java, 构建运维, OneNote]
 
  \<https://blog.csdn.net/en_joker/article/details/84232449\>
 ```
+
+:::

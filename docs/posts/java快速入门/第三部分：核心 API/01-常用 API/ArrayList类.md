@@ -3,7 +3,10 @@ title: ArrayList类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **引入——对象数组**
 数组的长度是固定的，无法适应数据变化的需求。
 
@@ -43,8 +46,8 @@ public boolean add(E e)
 参数 `E e` ，在构造`ArrayList`对象时， `\<E\>` 指定了什么数据类型，那么 `add(E e)` 方法中，只能添加什么数据类型的对象。
 使用`ArrayList`类，存储三个字符串元素，代码如下：
 
-public class Test02StudentArrayList {
-public static void main(String[] args) {
+public class Test02StudentArrayList \{
+public static void main(String[] args) \{
 //
 创建学生数组
 
@@ -79,8 +82,8 @@ list.add(s3);
 打印学生`ArrayList`集合
 
 System.out.println(list);
-}
-}
+\}
+\}
 **常用方法和遍历**
 对于元素的操作`,`基本体现在——增、删、查。常用的方法有：
 
@@ -101,15 +104,15 @@ public int size()
 
 转换写法如下：
 
-![byte short long float double char boolean Byte Sho...](Exported%20image%2020260703000421-0.png)
+
 
 那么存储基本类型数据，代码如下：
 `ArrayList`**练习**
 **数值添加到集合**
 生成`6`个`1~33`之间的随机整数`,`添加到集合`,`并遍历
 
-public class Test01ArrayList {
-public static void main(String[] args) {
+public class Test01ArrayList \{
+public static void main(String[] args) \{
 //
 创建`Random` 对象
 
@@ -121,24 +124,24 @@ ArrayList\<Integer\> list = new ArrayList\<\>();
 //
 添加随机数到集合
 
-for (int i = 0; i \< 6; i++) {
+for (int i = 0; i \< 6; i++) \{
 int r = random.nextInt(33) + 1;
 list.add(r);
-}
+\}
 //
 遍历集合输出
 
-for (int i = 0; i \< list.size(); i++) {
+for (int i = 0; i \< list.size(); i++) \{
 System.out.println(list.get(i));
-}
-}
-}
+\}
+\}
+\}
 **打印集合方法**
 定义以指定格式打印集合的方法`(ArrayList`类型作为参数`)`，使用`{}`扩起集合，使用`@`分隔每个元素。
 格式参照 `{`元素 `@`元素`@`元素`}`。
 
-public class Test03ArrayList {
-public static void main(String[] args) {
+public class Test03ArrayList \{
+public static void main(String[] args) \{
 //
 创建集合对象
 
@@ -167,17 +170,17 @@ list.add("
 调用方法
 
 printArrayList(list);
-}
+\}
 
-public static void printArrayList(ArrayList\<String\> list) {
+public static void printArrayList(ArrayList\<String\> list) \{
 //
 拼接左括号
 
-System.out.print("{");
+System.out.print("\{");
 //
 遍历集合
 
-for (int i = 0; i \< list.size(); i++) {
+for (int i = 0; i \< list.size(); i++) \{
 //
 获取元素
 
@@ -189,23 +192,23 @@ String s = list.get(i);
 
 ‐
 
- 1) {
+ 1) \{
 System.out.print(s + "@");
-} else {
+\} else \{
 //
 拼接右括号
 
-System.out.print(s + "}");
-}
-}
-}
-}
+System.out.print(s + "\}");
+\}
+\}
+\}
+\}
 **获取集合方法**
 定义获取所有偶数元素集合的方法`(ArrayList`类型作为返回值
 
 )
-public class Test04ArrayList {
-public static void main(String[] args) {
+public class Test04ArrayList \{
+public static void main(String[] args) \{
 //
 创建`Random` 对象
 
@@ -217,18 +220,18 @@ ArrayList\<Integer\> list = new ArrayList\<\>();
 //
 添加随机数到集合
 
-for (int i = 0; i \< 20; i++) {
+for (int i = 0; i \< 20; i++) \{
 int r = random.nextInt(1000) + 1;
 list.add(r);
-}
+\}
 //
 调用偶数集合的方法
 
 ArrayList\<Integer\> arrayList = getArrayList(list);
 System.out.println(arrayList);
-}
+\}
 
-public static ArrayList\<Integer\> getArrayList(ArrayList\<Integer\> list) {
+public static ArrayList\<Integer\> getArrayList(ArrayList\<Integer\> list) \{
 //
 创建小集合`,`来保存偶数
 
@@ -237,7 +240,7 @@ ArrayList\<Integer\> smallList = new ArrayList\<\>();
 遍历
 
 list
-for (int i = 0; i \< list.size(); i++) {
+for (int i = 0; i \< list.size(); i++) \{
 //
 获取元素
 
@@ -245,14 +248,16 @@ Integer num = list.get(i);
 //
 判断为偶数`,`添加到小集合中
 
-if (num % 2 == 0){
+if (num % 2 == 0)\{
 smallList.add(num);
-}
-}
+\}
+\}
 //
 返回小集合
 
 return smallList;
-}
-}
+\}
+\}
 ```
+
+:::

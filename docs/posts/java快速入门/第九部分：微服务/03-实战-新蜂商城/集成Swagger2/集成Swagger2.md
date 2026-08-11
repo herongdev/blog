@@ -3,7 +3,10 @@ title: 集成Swagger2
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 现在公司中都使用前后端分离的方式进行开发，比如该项目就是一个纯后端框架。为了前后端更好的对接，就需要编写`API`文档。
 然而手写`API`文档有如下几个痛点：
 
@@ -46,11 +49,11 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfig \{
 
  @Bean
 
- public Docket docket() {
+ public Docket docket() \{
 
  return new Docket(DocumentationType.SWAGGER_2)
 
@@ -84,7 +87,7 @@ public class SwaggerConfig {
    `}`
  
 
- private ApiInfo apiInfo() {
+ private ApiInfo apiInfo() \{
 
  return new ApiInfoBuilder()
 
@@ -106,8 +109,8 @@ public class SwaggerConfig {
 
  .build();
 
- }
-}
+ \}
+\}
 - `@EnableSwagger2` 开启`Swagger2`
 - `apis` 用来指定扫描的条件
 - `RequestHandlerSelectors.basePackage("com.zhuqc.framework.controller")`，扫描指定包
@@ -125,4 +128,6 @@ public class SwaggerConfig {
 
 打开[Swagger UI](http://localhost:8080/swagger-ui.html)
 
-![swagger localhost8080swaggerui.html Bing mincheng ...](Exported%20image%2020260703003036-0.png)
+
+
+:::

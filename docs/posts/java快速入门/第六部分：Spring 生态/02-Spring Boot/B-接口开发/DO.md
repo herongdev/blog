@@ -3,7 +3,10 @@ title: DO
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 package cn.iocoder.yudao.module.place.dal.dataobject;
 
 import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
@@ -26,7 +29,7 @@ import lombok.*;
 @Builder // Lombok注解，为类创建builder
 @NoArgsConstructor // Lombok注解，生成无参数构造方法
 @AllArgsConstructor // Lombok注解，生成全参数构造方法
-public class PlaceDO extends BaseDO {
+public class PlaceDO extends BaseDO \{
 
 /**
 * 编号，代表唯一的地点ID
@@ -45,13 +48,15 @@ private String name;
 private String description;
 
 /**
-* 状态，代表地点的状态。取值由 {@link TODO common_status 对应的类} 枚举定义
+* 状态，代表地点的状态。取值由 \{@link TODO common_status 对应的类\} 枚举定义
 */
 private Byte status;
-}
+\}
 
 DO (Data Object) 是用于与数据库交互的对象，它与数据库中的表结构对应。
 
 在 ORM（Object-Relational Mapping，对象-关系映射）中，我们通常使用 DO 对象来表示数据库中的一行数据。这样，我们可以在程序中通过操作 DO 对象来实现对数据库的增删改查。
 
 在这个 PlaceDO 类中，id, name, description, status 等字段分别对应 place 表的各个字段。通过 @TableName、@TableId 等 MyBatis-Plus 的注解，我们将这些字段与数据库表结构关联起来。同时，通过 Lombok 的注解，如 @Data、@Builder、@NoArgsConstructor、@AllArgsConstructor 等，我们可以为这个 DO 类生成常用的 getter、setter 方法、无参/全参构造函数、以及 builder 模式等。
+
+:::

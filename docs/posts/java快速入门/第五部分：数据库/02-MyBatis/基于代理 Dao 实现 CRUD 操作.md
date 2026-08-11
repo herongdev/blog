@@ -3,7 +3,10 @@ title: 基于代理 Dao 实现 CRUD 操作
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `mybatis` **环境搭建步骤**
 第一步：创建 `maven` 工程
 第二步：导入坐标
@@ -35,7 +38,7 @@ User findById(Integer userId);
 
  --\>
 \<select id="findById" resultType="com.itheima.domain.User" parameterType="int"\>
-select * from user where id = #{uid}
+select * from user where id = #\{uid\}
 \</select\>
  **细节：**
 `resultType` **属性：**用于指定结果集的类型。
@@ -45,23 +48,23 @@ select * from user where id = #{uid}
 
 `3` **在测试类添加测试**
 
-public class MybastisCRUDTest {
+public class MybastisCRUDTest \{
 private InputStream in ;
 private SqlSessionFactory factory;
 private SqlSession session;
 private IUserDao userDao;
 @Test
-public void testFindOne() {
+public void testFindOne() \{
 //6.
 执行操作
 
 User user = userDao.findById(41);
 System.out.println(user);
-}
+\}
 @Before//
 在测试方法执行之前执行
 
-public void init()throws Exception {
+public void init()throws Exception \{
 //1.
 读取配置文件
 
@@ -82,19 +85,19 @@ session = factory.openSession();
 创建 `Dao` 的代理对象
 
 userDao = session.getMapper(IUserDao.class);
-}
+\}
 @After//
 在测试方法执行完成之后执行
 
-public void destroy() throws Exception{
+public void destroy() throws Exception\{
 session.commit();
 //7.
 释放资源
 
 session.close();
 in.close();
-}
-}
+\}
+\}
 
 `2.2` **保存操作**
 `2.2.1` **在持久层接口中添加新增方法**
@@ -116,7 +119,7 @@ int saveUser(User user);
 --\>
 \<insert id="saveUser" parameterType="com.itheima.domain.User"\>
 insert into user(username,birthday,sex,address)
-values(#{username},#{birthday},#{sex},#{address})
+values(#\{username\},#\{birthday\},#\{sex\},#\{address\})
 \</insert\>
  **细节：**
 `parameterType` 属性：
@@ -132,14 +135,14 @@ values(#{username},#{birthday},#{sex},#{address})
 `Object Graphic Navigation Language` 对象图导航语言
 它是按照一定的语法格式来获取数据的。
 语法格式就是使用 `#{`对象`.`对象`}`的方式传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
-#{user.username}
+#\{user.username\}
 它会先去找 `user` 对象，然后在 `user` 对象中找到 `username` 属性，并调用
 `getUsername()`方法把值取出来。但是我们在 `parameterType` 属性上指定了实体类名称，所以可以省略 `user.`
 而直接写 `username`。
 `2.2.3` **添加测试类中的测试方法**
 
 @Test
-public void testSave(){
+public void testSave()\{
 User user = new User();
 user.setUsername("modify User property");
 user.setAddress("
@@ -158,7 +161,7 @@ userDao.saveUser(user);
 System.out.println("
 `保存操作之后：`
 "+user);
-}
+\}
  打开 `Mysql` 数据库发现并没有添加任何记录，原因是什么？
 这一点和 `jdbc` 是一样的，我们在实现增删改时一定要去控制事务的提交，那么在 `mybatis` 中如何控制事务
 提交呢？
@@ -166,13 +169,13 @@ System.out.println("
 
 @After//
 `在测试方法执行完成之后执行`
-public void destroy() throws Exception{
+public void destroy() throws Exception\{
 session.commit();
 //7.
 `释放资源`
 session.close();
 in.close();
-}
+\}
 2.2.4
 **问题扩展：新增用户** `id` **的返回值**
 新增用户后，同时还要返回当前新增用户的 `id` 值，因为 `id` 是由数据库的自动增长来实现的，所以就相
@@ -186,7 +189,7 @@ in.close();
 select last_insert_id();
 \</selectKey\>
 insert into user(username,birthday,sex,address)
-values(#{username},#{birthday},#{sex},#{address})
+values(#\{username\},#\{birthday\},#\{sex\},#\{address\})
 \</insert\>
 - 传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
 - `
@@ -207,13 +210,13 @@ int updateUser(User user);
 
  --\>
 \<update id="updateUser" parameterType="com.itheima.domain.User"\>
-update user set username=#{username},birthday=#{birthday},sex=#{sex},
-address=#{address} where id=#{id}
+update user set username=#\{username\},birthday=#\{birthday\},sex=#\{sex\},
+address=#\{address\} where id=#\{id\}
 \</update\>
 2.3.3
 `**加入更新的测试方法**`
 @Test
-public void testUpdateUser()throws Exception{
+public void testUpdateUser()throws Exception\{
 //1.
 `根据 `id` 查询`
 User user = userDao.findById(52);
@@ -224,7 +227,7 @@ user.setAddress("
 ");
 int res = userDao.updateUser(user);
 System.out.println(res);
-}
+\}
 - `2.4` **用户删除**
 - `2.4.1` **在持久层接口中添加删除方法**
 
@@ -242,19 +245,19 @@ int deleteUser(Integer userId);
 
  --\>
 \<delete id="deleteUser" parameterType="java.lang.Integer"\>
-delete from user where id = #{uid}
+delete from user where id = #\{uid\}
 \</delete\>
 2.4.3
 **加入删除的测试方法**
 
 @Test
-public void testDeleteUser() throws Exception {
+public void testDeleteUser() throws Exception \{
 //6.
 执行操作
 
 int res = userDao.deleteUser(52);
 System.out.println(res);
-}
+\}
 
 `2.5` **用户模糊查询**
 `2.5.1` **在持久层接口中添加模糊查询方法**
@@ -273,23 +276,23 @@ List\<User\> findByName(String username);
 
  --\>
 \<select id="findByName" resultType="com.itheima.domain.User" parameterType="String"\>
-select * from user where username like #{username}
+select * from user where username like #\{username\}
 \</select\>
 2.5.3
 **加入模糊查询的测试方法**
 
 @Test
-public void testFindByName(){
+public void testFindByName()\{
 传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
 //5.
 `执行查询一个方法`
 List\<User\> users = userDao.findByName("%
 `王`
 %");
-for(User user : users){
+for(User user : users)\{
 System.out.println(user);
-}
-}
+\}
+\}
  在控制台输出的执行 `SQL` 语句如下：
 我们在配置文件中没有加入`%`来作为模糊查询的条件，所以在传入字符串实参时，就需要给定模糊查询的标
 识`%`。配置文件中的`#{username}`也只是一个占位符，所以 `SQL` 语句显示为“？”。
@@ -299,7 +302,7 @@ System.out.println(user);
 
  --\>
 \<select id="findByName" parameterType="string" resultType="com.itheima.domain.User"\>
-select * from user where username like '%${value}%'
+select * from user where username like '%$\{value\}%'
 \</select\>
  我们在上面将原来的`#{}`占位符，改成了`${value}`。注意如果用模糊查询的这种写法，那么`${value}`的写
 法就是固定的，不能写成其它名字。
@@ -310,20 +313,20 @@ select * from user where username like '%${value}%'
 `测试模糊查询操作`
 */
 @Test
-public void testFindByName(){
+public void testFindByName()\{
 //5.
 `执行查询一个方法`
 List\<User\> users = userDao.findByName("
 `王`
 ");
-for(User user : users){
+for(User user : users)\{
 System.out.println(user);
-}
-}
+\}
+\}
  在控制台输出的执行 `SQL` 语句如下：
 可以发现，我们在程序代码中就不需要加入模糊查询的匹配符`%`了，这两种方式的实现效果是一样的，但执行
 的语句是不一样的。传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
-2.5.5 #{}
+2.5.5 #\{\}
 **与**`${}`**的区别**
 `#{}`**表示一个占位符号**
 通过`#{}`可以实现 `preparedStatement` 向占位符中设置值，自动进行 `java` 类型和 `jdbc` 类型转换，
@@ -359,12 +362,12 @@ select count(*) from user;
 2.6.3
 `**加入聚合查询的测试方法**`
 @Test
-public void testFindTotal() throws Exception {
+public void testFindTotal() throws Exception \{
 //6.
 `执行操作`
 int res = userDao.findTotal();
 System.out.println(res);
-}
+\}
 
 `2.7 Mybatis` **与** `JDBC` **编程的比较**
 `1.`数据库链接创建、释放频繁造成系统资源浪费从而影响系统性能，如果使用数据库链接池可解决此问题。
@@ -382,3 +385,5 @@ System.out.println(res);
 解决：
 `Mybatis` 自动将 `sql` 执行结果映射至 `java` 对象，通过 `statement` 中的 `resultType` 定义输出结果的
 类型。
+
+:::

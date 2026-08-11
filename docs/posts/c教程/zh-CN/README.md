@@ -202,7 +202,7 @@ gcc -std=c23 -Wall -Wextra -Wpedantic main.c -o main
 
 - [51. 从源代码到可执行文件：编译管道](./06-编译与构建/051-From Source to Executable The Compilation Pipeline.md)
 - [52. 预处理器和宏](./06-编译与构建/052-The Preprocessor and Macros.md)
-- [53. 条件编译（#if、#ifdef、#ifndef）](./06-编译与构建/053-Conditional Compilation (%23if, %23ifdef, %23ifndef).md)
+- [53. 条件编译（#if、#ifdef、#ifndef）](./06-编译与构建/053-Conditional Compilation (if, ifdef, ifndef).md)
 - [54. 内联函数和标头卫生](./06-编译与构建/054-Inline Functions and Header Hygiene.md)
 - [55. Makefile 和构建自动化](./06-编译与构建/055-Makefiles and Build Automation.md)
 - [56. 链接多个文件](./06-编译与构建/056-Linking Multiple Files.md)

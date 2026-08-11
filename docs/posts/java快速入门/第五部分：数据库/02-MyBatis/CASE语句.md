@@ -3,7 +3,10 @@ title: CASE语句
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在 SQL 中，CASE 表达式是一种条件表达式，可以基于条件来返回不同的值。它的基本格式如下：
 CASE
 WHEN condition1 THEN result1
@@ -54,3 +57,5 @@ FROM products;
 在这个示例中，如果 age 小于 18，我们返回商品的半价，否则返回原价。
 
 CASE 表达式非常强大，并可以用在几乎任何地方：在 SELECT、WHERE、ORDER BY 和其他子句中。
+
+:::

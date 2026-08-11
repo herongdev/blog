@@ -3,7 +3,10 @@ title: AJAX：
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 1. 概念： ASynchronous JavaScript And XML	异步的JavaScript 和 XML
 1. 异步和同步：客户端和服务器端相互通信的基础上
@@ -93,3 +96,5 @@ Ajax 是一种在无需重新加载整个网页的情况下，能够更新部分
 * callback：回调函数
 * type：响应结果的类型
 ```
+
+:::

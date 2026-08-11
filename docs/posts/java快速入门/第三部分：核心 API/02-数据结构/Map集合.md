@@ -3,7 +3,10 @@ title: Map集合
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 现实生活中，我们常会看到这样的一种集合：IP地址与主机名，身份证号与个人，系统用户名与系统用户对象等，这种一一对应的关系，就叫做映射。
 
@@ -39,8 +42,8 @@ public Set\<Map.Entry\<K,V\>\> entrySet() : 获取到Map集合中所有的键值
 方法isEmpty()来检查结构是否为空：boolean isEmpty = look.isEmpty();
 
 Map接口的方法演示
-public class MapDemo {
-public static void main(String[] args) {
+public class MapDemo \{
+public static void main(String[] args) \{
 //创建 map对象
 HashMap\<String, String\> map = new HashMap\<String, String\>();
 //添加元素到集合
@@ -54,8 +57,8 @@ System.out.println(map);
 // 想要查看 黄晓明的媳妇 是谁
 System.out.println(map.get("黄晓明"));
 System.out.println(map.get("邓超"));
-}
-}
+\}
+\}
 
 **Map****集合遍历键找值方式**
 键找值方式：即通过元素中的键，获取键所对应的值
@@ -64,8 +67,8 @@ System.out.println(map.get("邓超"));
 2. 遍历键的Set集合，得到每一个键。
 3. 根据键，获取键所对应的值。方法提示: get(K key)
 代码演示：
-public class MapDemo01 {
-public static void main(String[] args) {
+public class MapDemo01 \{
+public static void main(String[] args) \{
 //创建Map集合对象
 HashMap\<String, String\> map = new HashMap\<String,String\>();
 //添加元素到集合
@@ -75,14 +78,14 @@ map.put("薛之谦", "大张伟");
 //获取所有的键 获取键集
 Set\<String\> keys = map.keySet();
 // 遍历键集 得到 每一个键
-for (String key : keys) {
+for (String key : keys) \{
 //key 就是键
 //获取对应值
 String value = map.get(key);
 System.out.println(key+"的CP是："+value);
-}
-}
-}
+\}
+\}
+\}
 
 **Entry****键值对对象**
 我们已经知道， Map 中存放的是两种对象，一种称为**key**(键)，一种称为**value**(值)，它们在在 Map 中是一一对应关系，这一对对象又称做 Map 中的一个 Entry(项) 。 Entry 将键值对的对应关系封装成了对象。即键值对对象，这样我们在遍历 Map 集合时，就可以从每一个键值对（ Entry ）对象中获取对应的键与对应的值。
@@ -98,8 +101,8 @@ public Set\<Map.Entry\<K,V\>\> entrySet() : 获取到Map集合中所有的键值
 1. 获取Map集合中，所有的键值对(Entry)对象，以Set集合形式返回。方法提示: entrySet() 。
 2. 遍历包含键值对(Entry)对象的Set集合，得到每一个键值对(Entry)对象。
 3. 通过键值对(Entry)对象，获取Entry对象中的键与值。 方法提示: getkey() getValue()
-public class MapDemo02 {
-public static void main(String[] args) {
+public class MapDemo02 \{
+public static void main(String[] args) \{
 // 创建Map集合对象
 HashMap\<String, String\> map = new HashMap\<String,String\>();
 // 添加元素到集合
@@ -109,57 +112,57 @@ map.put("薛之谦", "大张伟");
 // 获取 所有的 entry对象 entrySet
 Set\<Entry\<String,String\>\> entrySet = map.entrySet();
 // 遍历得到每一个entry对象
-for (Entry\<String, String\> entry : entrySet) {
+for (Entry\<String, String\> entry : entrySet) \{
 // 解析
 String key = entry.getKey();
 String value = entry.getValue();
 System.out.println(key+"的CP是:"+value);
-}
-}
-}
+\}
+\}
+\}
 
 **HashMap****存储自定义类型键值**
 练习：每位学生（姓名，年龄）都有自己的家庭住址。那么，既然有对应关系，则将学生对象和家庭住址存储到 map集合中。学生作为键, 家庭住址作为值。
 注意，学生姓名相同并且年龄相同视为同一名学生。
 编写学生类：
-public class Student {
+public class Student \{
 private String name;
 private int age;
-public Student() {
-}
-public Student(String name, int age) {
+public Student() \{
+\}
+public Student(String name, int age) \{
 this.name = name;
 this.age = age;
-}
-public String getName() {
+\}
+public String getName() \{
 return name;
-}
-public void setName(String name) {
+\}
+public void setName(String name) \{
 this.name = name;
-}
-public int getAge() {
+\}
+public int getAge() \{
 return age;
-}
-public void setAge(int age) {
+\}
+public void setAge(int age) \{
 this.age = age;
-}
+\}
 @Override
-public boolean equals(Object o) {
+public boolean equals(Object o) \{
 if (this == o)
 return true;
 if (o == null || getClass() != o.getClass())
 return false;
 Student student = (Student) o;
 return age == student.age && Objects.equals(name, student.name);
-}
+\}
 @Override
-public int hashCode() {
+public int hashCode() \{
 return Objects.hash(name, age);
-}
-}
+\}
+\}
 编写测试类：
-public class HashMapTest {
-public static void main(String[] args) {
+public class HashMapTest \{
+public static void main(String[] args) \{
 //1,创建Hashmap集合对象。
 Map\<Student,String\> map = new HashMap\<Student,String\>();
 //2,添加元素。
@@ -170,12 +173,12 @@ map.put(newStudent("zhouqi",25), "广州");
 map.put(newStudent("wangwu",22), "南京");
 //3,取出元素。键找值方式
 Set\<Student\>keySet = map.keySet();
-for(Student key: keySet){
+for(Student key: keySet)\{
 Stringvalue = map.get(key);
 System.out.println(key.toString()+"....."+value);
-}
-}
-}
+\}
+\}
+\}
 
 当给HashMap中存放自定义对象时，如果自定义对象作为key存在，这时要保证对象唯一，必须复写对象的hashCode和equals方法。
 如果要保证map中存放的key和取出的顺序一致，可以使用 java.util.LinkedHashMap 集合来存放。
@@ -183,18 +186,18 @@ System.out.println(key.toString()+"....."+value);
 **LinkedHashMap**
 我们知道HashMap保证成对元素唯一，并且查询速度很快，可是成对元素存放进去是没有顺序的，那么我们要保证有序，还要速度快怎么办呢？
 在HashMap下面有一个子类LinkedHashMap，它是链表和哈希表组合的一个数据存储结构。
-public class LinkedHashMapDemo {
-public static void main(String[] args) {
+public class LinkedHashMapDemo \{
+public static void main(String[] args) \{
 LinkedHashMap\<String, String\> map = new LinkedHashMap\<String, String\>();
 map.put("邓超", "孙俪");
 map.put("李晨", "范冰冰");
 map.put("刘德华", "朱丽倩");
 Set\<Entry\<String, String\>\> entrySet = map.entrySet();
-for (Entry\<String, String\> entry : entrySet) {
+for (Entry\<String, String\> entry : entrySet) \{
 System.out.println(entry.getKey() + " " + entry.getValue());
-}
-}
-}
+\}
+\}
+\}
 结果:
 邓超 孙俪
 李晨 范冰冰
@@ -210,4 +213,6 @@ System.out.println(entry.getKey() + " " + entry.getValue());
 4. 判断Map中是否有该键。
 5. 如果没有，第一次出现，存储次数为1；如果有，则说明已经出现过，获取到对应的值进行++，再次存储。
 6. 打印最终结果
-![public class MapTest public static void args Syste...](Exported%20image%2020260703001151-0.png)
+
+
+:::

@@ -3,7 +3,10 @@ title: DO或POJO
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 数据映射类，通常也叫做实体类或者POJO (Plain Old Java Object)。
 
 主要
@@ -28,7 +31,7 @@ import lombok.*;
 @Builder // Lombok注解，为类创建builder
 @NoArgsConstructor // Lombok注解，生成无参数构造方法
 @AllArgsConstructor
-public class ActivityTypeDO extends BaseDO {
+public class ActivityTypeDO extends BaseDO \{
 
 @TableId // MyBatis-Plus注解，标识该字段为数据库表的主键
 private Integer id;
@@ -39,4 +42,6 @@ private String typeName;
 @TableField("description")// 对应数据库的type_name字段
 private String description; // 对应数据库的description字段
 
-}
+\}
+
+:::

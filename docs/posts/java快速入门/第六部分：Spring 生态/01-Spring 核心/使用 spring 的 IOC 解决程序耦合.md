@@ -3,7 +3,10 @@ title: 使用 spring 的 IOC 解决程序耦合
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 本章我们使用的案例是，账户的业务层和持久层的依赖关系解决。
 
 在开始 `spring` 的配置之前，我们要先准备一下环境。由于我们是使用 `spring` 解决依赖关系，并不是真正的要做增删改查操作，所以此时我们没必要写实体类。并且我们在此处使用的是 `java` 工程，不是`java web` 工程。
@@ -44,57 +47,57 @@ http://repo.springsource.org/libs-release-local/org/springframework/spring
 账户的业务层接口
 
 */
-public interface IAccountService {
+public interface IAccountService \{
 /**
 *
 保存账户（此处只是模拟，并不是真的要保存）
 
 */
 void saveAccount();
-}
+\}
 /**
 *
 账户的业务层实现类
 
 */
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService \{
 //
 **此处的依赖关系有待解决**
 
 private IAccountDao accountDao = new AccountDaoImpl();
 
-public void saveAccount() {
+public void saveAccount() \{
 accountDao.saveAccount();
-}
-}￼
+\}
+\}￼
 /**
 *
 账户的持久层接口
 
 */
-public interface IAccountDao {
+public interface IAccountDao \{
 /**
 *
 保存账户
 
 */
 void saveAccount();
-}
+\}
 
 /**
 *
 账户的持久层实现类
 
 */
-public class AccountDaoImpl implements IAccountDao {
+public class AccountDaoImpl implements IAccountDao \{
 
-public void saveAccount() {
+public void saveAccount() \{
 System.out.println("
 保存了账户
 
 ");
-}
-}
+\}
+\}
 **基于** `XML` **的配置（入门案例）**`[`**掌握**`]`
 **第一步：拷贝必备的** `jar` **包到工程的** `lib` **目录中**
 **第二步：在类的根路径下创建一个任意名称的** `xml` **文件（不能是中文）**
@@ -136,13 +139,13 @@ http://www.springframework.org/schema/beans/spring-beans.xsd"\>
 模拟一个表现层
 
 */
-public class Client {
+public class Client \{
 /**
 *
 使用 `main` 方法获取容器测试执行￼
 
 */
-public static void main(String[] args) {
+public static void main(String[] args) \{
 //1.
 使用 `ApplicationContext` 接口，就是在获取 `spring` 容器
 
@@ -154,8 +157,8 @@ IAccountService aService = (IAccountService) ac.getBean("accountService");
 System.out.println(aService);
 IAccountDao aDao = (IAccountDao) ac.getBean("accountDao");
 System.out.println(aDao);
-}
-}
+\}
+\}
 
 `3.3Spring` **基于** `XML` **的** `IOC` **细节**`[`**掌握**
 
@@ -164,8 +167,8 @@ System.out.println(aDao);
 
 **中工厂的类结构图**
 
-![Type hierarchy of ore. springfruevork. beans. fact...](Exported%20image%2020260702230109-0.png)
-![00 a 1 6 1X0 0 u00u0 040 u00 q ! 2 09 0 2 q 0 ag 0...](Exported%20image%2020260702230112-1.png)
+
+
 
 `BeanFactory` **和** `ApplicationContext` **的区别**
 
@@ -269,11 +272,11 @@ System.out.println(aDao);
 模拟一个静态工厂，创建业务层实现类
 
 */
-public class StaticFactory {
-public static IAccountService createAccountService(){
+public class StaticFactory \{
+public static IAccountService createAccountService()\{
 return new AccountServiceImpl();
-}
-}
+\}
+\}
 \<!--
 此种方式是`:`
 使用 `StaticFactory` 类中的静态方法 `createAccountService` 创建对象，并存入 `spring` 容器
@@ -306,11 +309,11 @@ return new AccountServiceImpl();
 此工厂创建对象，必须现有工厂实例对象，再调用方法
 
 */
-public class InstanceFactory {
-public IAccountService createAccountService(){
+public class InstanceFactory \{
+public IAccountService createAccountService()\{
 return new AccountServiceImpl();
-}
-}
+\}
+\}
 \<!--
 此种方式是：
 先把工厂的创建交给 `spring` 来管理。
@@ -345,21 +348,21 @@ factory-method="createAccountService"\>\</bean\>
 
 /**
 */
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService \{
 private String name;
 private Integer age;
 private Date birthday;
-public AccountServiceImpl(String name, Integer age, Date birthday) {
+public AccountServiceImpl(String name, Integer age, Date birthday) \{
 this.name = name;
 this.age = age;
 this.birthday = birthday;
-}
+\}
 
 @Override
-public void saveAccount() {
+public void saveAccount() \{
 System.out.println(name+","+age+","+birthday);
-}
-}
+\}
+\}
  使用构造函数的方式，给 `service` 中的属性传值
 要求：
 类中需要提供一个对应参数列表的构造函数。
@@ -406,24 +409,24 @@ _张三_
 顾名思义，就是在类中提供需要注入成员的 `set` 方法。具体代码如下：
 
 /** */
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService \{
 private String name;
 private Integer age;
 private Date birthday;
-public void setName(String name) {
+public void setName(String name) \{
 this.name = name;
-}
-public void setAge(Integer age) {
+\}
+public void setAge(Integer age) \{
 this.age = age;
-}
-public void setBirthday(Date birthday) {
+\}
+public void setBirthday(Date birthday) \{
 this.birthday = birthday;
-}
+\}
 @Override
-public void saveAccount() {
+public void saveAccount() \{
 System.out.println(name+","+age+","+birthday);
-}
-}
+\}
+\}
 \<!--
 通过配置文件给 `bean` 中的属性传值：使用 `set` 方法的方式
 涉及的标签：
@@ -460,24 +463,24 @@ System.out.println(name+","+age+","+birthday);
 使用 `p` 名称空间注入，本质还是调用类中的 `set` 方法
 
 */
-public class AccountServiceImpl4 implements IAccountService {
+public class AccountServiceImpl4 implements IAccountService \{
 private String name;
 private Integer age;
 private Date birthday;
-public void setName(String name) {
+public void setName(String name) \{
 this.name = name;
-}
-public void setAge(Integer age) {
+\}
+public void setAge(Integer age) \{
 this.age = age;
-}
-public void setBirthday(Date birthday) {
+\}
+public void setBirthday(Date birthday) \{
 this.birthday = birthday;
-}
+\}
 @Override
-public void saveAccount() {
+public void saveAccount() \{
 System.out.println(name+","+age+","+birthday);
-}
-}
+\}
+\}
  **配置文件代码：**
 
 \<beans xmlns="http://www.springframework.org/schema/beans"
@@ -495,35 +498,35 @@ p:name="test" p:age="21" p:birthday-ref="now"/\>
 顾名思义，就是给类中的集合成员传值，它用的也是`set`方法注入的方式，只不过变量的数据类型都是集合。我们这里介绍注入数组，`List,Set,Map,Properties`。具体代码如下：
 
 /***/
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService \{
 private String[] myStrs;
 private List\<String\> myList;
 private Set\<String\> mySet;
 private Map\<String,String\> myMap;
 private Properties myProps;
-public void setMyStrs(String[] myStrs) {
+public void setMyStrs(String[] myStrs) \{
 this.myStrs = myStrs;
-}
-public void setMyList(List\<String\> myList) {
+\}
+public void setMyList(List\<String\> myList) \{
 this.myList = myList;
-}
-public void setMySet(Set\<String\> mySet) {
+\}
+public void setMySet(Set\<String\> mySet) \{
 this.mySet = mySet;
-}
-public void setMyMap(Map\<String, String\> myMap) {
+\}
+public void setMyMap(Map\<String, String\> myMap) \{
 this.myMap = myMap;
-}
-public void setMyProps(Properties myProps) {
+\}
+public void setMyProps(Properties myProps) \{
 this.myProps = myProps;
-}
+\}
 @Override
-public void saveAccount() {
+public void saveAccount() \{
 System.out.println(Arrays.toString(myStrs));
 System.out.println(myList);
 System.out.println(mySet);
 System.out.println(myMap);
-}
-}
+\}
+\}
 \<!--
 注入集合数据
 
@@ -601,3 +604,5 @@ map,entry,props,prop
 \</property\>
 \</bean\>
 ```
+
+:::

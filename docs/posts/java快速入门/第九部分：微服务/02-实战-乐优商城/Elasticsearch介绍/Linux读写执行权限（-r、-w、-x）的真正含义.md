@@ -3,7 +3,10 @@ title: Linux读写执行权限（-r、-w、-x）的真正含义
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 - 同一权限对文件和目录的含义也不相同。
 - **rwx** **权限对文件的作用**
 
@@ -58,3 +61,5 @@ tags: [Java, 微服务, OneNote]
 `\> 来自`
  \<http://c.biancheng.net/view/757.html\>
 ```
+
+:::

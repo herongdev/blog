@@ -3,20 +3,23 @@ title: 根据MultipartFile在服务器创建文件
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 @Override
 @SneakyThrows
-public String createFile(String name, String path, byte[] content) {
+public String createFile(String name, String path, byte[] content) \{
 // 根据文件内容和名称获取MIME类型
 String type = FileTypeUtils.getMineType(content, name);
 // 如果path为空，则使用文件内容和名称生成默认路径
-if (StrUtil.isEmpty(path)) {
+if (StrUtil.isEmpty(path)) \{
 path = FileUtils.generatePath(content, name);
-}
+\}
 // 如果name为空，则使用生成的路径作为文件名
-if (StrUtil.isEmpty(name)) {
+if (StrUtil.isEmpty(name)) \{
 name = path;
-}
+\}
 // 从文件配置服务中获取主文件客户端
 FileClient client = fileConfigService.getMasterFileClient();
 // 确保获取的文件客户端不为空
@@ -35,4 +38,6 @@ file.setSize(content.length); // 设置文件大小
 fileMapper.insert(file);
 // 返回上传文件的URL
 return url;
-}
+\}
+
+:::

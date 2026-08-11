@@ -3,7 +3,10 @@ title: XML解析
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **解析：**操作`xml`文档，将文档中的数据读取到内存中。
 `*` 操作`xml`文档
 `1.` 解析`(`读取`)`：将文档中的数据读取到内存中
@@ -32,7 +35,7 @@ tags: [Java, Web基础, OneNote]
 
 `*` 代码：
 
-![2 . student . xmI path String path JscupDemoI . cl...](Exported%20image%2020260702233444-0.png)
+
 
 对象的使用：
 `1. Jsoup`：工具类，可以解析`html`或`xml`文档，返回
@@ -85,4 +88,6 @@ tags: [Java, Web基础, OneNote]
 `*` 查询`w3cshool`参考手册，使用`xpath`的语法完成查询
 `*` 代码：
 
-![I . Student. xmI path SC ling path JsoupDem06. cla...](Exported%20image%2020260702233446-1.png)
+
+
+:::

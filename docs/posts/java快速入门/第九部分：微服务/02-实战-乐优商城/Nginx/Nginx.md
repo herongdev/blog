@@ -3,7 +3,10 @@ title: Nginx
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **什么是****Nginx**
 Nginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。由俄罗斯的程序设计师Igor Sysoev所开发，官方测试nginx能够支支撑5万并发链接，并且cpu、内存等资源消耗却非常低，运行非常稳定。开源、免费。
@@ -21,14 +24,16 @@ nginx作为负载均衡服务器，用户请求先到达nginx，再由nginx根�
 nginx负载均衡服务器：10.10.1.146
 tomcat1服务器：10.10.1.146:8080
 tomcat2服务器：10.10.1.146:8081
-![upstream tomcatserverl server server 10.10.1.146 8...](Exported%20image%2020260702233529-0.png)
-![up e y v 127 0 9090dm v 127 0 80weight 2 server 12...](Exported%20image%2020260702233535-1.png)
+
+
 
 - image.png
 - 启动2个tomcat和nginx服务后即可看到效果：
 
-![Home G 8080.wzf.com Documentation Configuration Ex...](Exported%20image%2020260702233540-2.png)
+
 \> 来自
 
  \<https://www.jianshu.com/p/4f7d17a7ccbb\>
 ```
+
+:::

@@ -3,7 +3,10 @@ title: 报错：Failed to start bean ‘documentationPluginsBootstrapper’
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 两种解决办法
 
 1. 配置`WebMvcConfigurer.java`
@@ -20,7 +23,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 @Configuration
-public class WebMvcConfigurer extends WebMvcConfigurationSupport {
+public class WebMvcConfigurer extends WebMvcConfigurationSupport \{
 
     /**
      *
@@ -28,7 +31,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
 
      */
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) \{
         registry.addResourceHandler("/**").addResourceLocations(
                 "classpath:/static/");
         registry.addResourceHandler("swagger-ui.html", "doc.html").addResourceLocations(
@@ -36,7 +39,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**").addResourceLocations(
                 "classpath:/META-INF/resources/webjars/");
         super.addResourceHandlers(registry);
-    }
+    \}
 
 `}`
 
@@ -48,3 +51,5 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 ```
+
+:::

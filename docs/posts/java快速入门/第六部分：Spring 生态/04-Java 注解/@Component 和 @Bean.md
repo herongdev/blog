@@ -1,9 +1,12 @@
 ---
-title: @Component 和 @Bean
+title: "@Component 和 @Bean"
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 @Component 和 @Bean 都用于定义 Spring Bean，并由 Spring 容器进行管理。然而，它们用于不同的场景并具有不同的用途：
 
 @Component
@@ -16,9 +19,9 @@ tags: [Java, Spring, OneNote]
 java
 Copy code
 @Component
-public class MyComponent {
+public class MyComponent \{
 // ...
-}
+\}
 @Bean
 定义方式：@Bean 是一个方法级别的注解，通常在一个使用 @Configuration 注解的类中使用。
 用途：用于定义需要进行一些额外配置或需要以编程方式进行初始化的 Spring Bean。
@@ -28,14 +31,16 @@ public class MyComponent {
 java
 Copy code
 @Configuration
-public class MyConfig {
+public class MyConfig \{
 @Bean
-public MyBean myBean() {
+public MyBean myBean() \{
 // Initialization logic
 return new MyBean();
-}
-}
+\}
+\}
 小结
 @Component 用于类定义，Spring 会自动创建 Bean。
 @Bean 用于方法定义，通常在 @Configuration 类中使用，用于创建并返回实际的 Bean。
 这两种方法都允许您注册 Spring Bean，但是根据您的具体需求和使用场景，您可能会选择其中一种。
+
+:::

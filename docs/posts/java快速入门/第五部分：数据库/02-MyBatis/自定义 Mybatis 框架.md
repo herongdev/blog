@@ -3,7 +3,10 @@ title: 自定义 Mybatis 框架
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **知识点：**
 
 - （`Factory` 工厂模式）
@@ -16,7 +19,7 @@ tags: [Java, 数据库, OneNote]
 - 元数据的反射等。
 **分析流程**
 
-![, AyCistCr](Exported%20image%2020260702225344-0.png)
+
 
 **前期准备**
 
@@ -31,7 +34,7 @@ tags: [Java, 数据库, OneNote]
 - ArtifactId:mybatis02
 - Packing:jar
 
-![day01_eesy_04mybatis_design com.itheima O IUserDao...](Exported%20image%2020260702225348-1.png)
+
 
 **引入相关坐标**
 
@@ -84,15 +87,15 @@ tags: [Java, 数据库, OneNote]
 \</dependencies\>
 **引入工具类到项目中**
 
-![public class Configuration private private private...](Exported%20image%2020260702225351-2.png)
-![gauthor httpwww.ithiema.com public class mapper pr...](Exported%20image%2020260702225353-3.png)
+
+
 
 /**
 *
 用于解析配置文件
 
 */
-public class XMLConfigBuilder {
+public class XMLConfigBuilder \{
 /**
 *
 解析主配置文件，把里面的内容填充到 `DefaultSqlSession` 所需要的地方
@@ -105,8 +108,8 @@ dom4j+xpath
 * @param session
 */
 public static void loadConfiguration(DefaultSqlSession session,InputStream
-config){
-try{
+config)\{
+try\{
 //
 定义封装连接信息的配置对象（`mybatis` 的配置对象）
 
@@ -129,7 +132,7 @@ List\<Element\> propertyElements = root.selectNodes("//property");
 //5.
 遍历节点
 
-for(Element propertyElement : propertyElements){
+for(Element propertyElement : propertyElements)\{
 //
 判断节点是连接数据库的哪部分信息
 
@@ -137,7 +140,7 @@ for(Element propertyElement : propertyElements){
 取出 `name` 属性的值
 
 String name = propertyElement.attributeValue("name");
-if("driver".equals(name)){
+if("driver".equals(name))\{
 //
 表示驱动
 
@@ -146,8 +149,8 @@ if("driver".equals(name)){
 
 String driver = propertyElement.attributeValue("value");
 cfg.setDriver(driver);
-}
-if("url".equals(name)){
+\}
+if("url".equals(name))\{
 //
 表示连接字符串
 
@@ -156,8 +159,8 @@ if("url".equals(name)){
 
 String url = propertyElement.attributeValue("value");
 cfg.setUrl(url);
-}
-if("username".equals(name)){
+\}
+if("username".equals(name))\{
 //
 表示用户名
 
@@ -166,8 +169,8 @@ if("username".equals(name)){
 
 String username = propertyElement.attributeValue("value");
 cfg.setUsername(username);
-}
-if("password".equals(name)){
+\}
+if("password".equals(name))\{
 //
 表示密码
 
@@ -176,8 +179,8 @@ if("password".equals(name)){
 
 String password = propertyElement.attributeValue("value");
 cfg.setPassword(password);
-}
-}
+\}
+\}
 //
 取出 `mappers` 中的所有 `mapper` 标签，判断他们使用了 `resource` 还是 `class` 属性
 
@@ -185,12 +188,12 @@ List\<Element\> mapperElements = root.selectNodes("//mappers/mapper");
 //
 遍历集合
 
-for(Element mapperElement : mapperElements){
+for(Element mapperElement : mapperElements)\{
 //
 判断 `mapperElement` 使用的是哪个属性
 
 Attribute attribute = mapperElement.attribute("resource");
-if(attribute != null){
+if(attribute != null)\{
 System.out.println("
 使用的是
 
@@ -215,7 +218,7 @@ Map\<String,Mapper\> mappers = loadMapperConfiguration(mapperPath);
 给 `configuration` 中的 `mappers` 赋值
 
 cfg.setMappers(mappers);
-}else{
+\}else\{
 System.out.println("
 使用的是注解
 
@@ -235,38 +238,38 @@ Map\<String,Mapper\> mappers = loadMapperAnnotation(daoClassPath);
 给 `configuration` 中的 `mappers` 赋值
 
 cfg.setMappers(mappers);
-}
-}
+\}
+\}
 //
 把配置对象传递给
 
  DefaultSqlSession
 session.setCfg(cfg);
-}catch(Exception e){
+\}catch(Exception e)\{
 throw new RuntimeException(e);
-}finally{
-try {
+\}finally\{
+try \{
 config.close();
-}catch(Exception e){
+\}catch(Exception e)\{
 e.printStackTrace();
-}
-}
-}
-![ffUHAFJU, mapperpath return valuemapperXtq, privat...](Exported%20image%2020260702225355-4.png)
-![param daoCLasspath e tur private static mapString,...](Exported%20image%2020260702225358-5.png)
+\}
+\}
+\}
 
-}
+
+
+\}
 
 /**
 *
 负责执行 `SQL` 语句，并且封装结果集
 
 */
-public class Executor {
-public \<E\> List\<E\> selectList(Mapper mapper, Connection conn) {
+public class Executor \{
+public \<E\> List\<E\> selectList(Mapper mapper, Connection conn) \{
 PreparedStatement pstm = null;
 ResultSet rs = null;
-try {
+try \{
 //1.
 取出 `mapper` 中的数据
 
@@ -287,7 +290,7 @@ rs = pstm.executeQuery();
 List\<E\> list = new ArrayList\<E\>();//
 定义返回值
 
-while(rs.next()) {
+while(rs.next()) \{
 //
 实例化要封装的实体类对象
 
@@ -306,7 +309,7 @@ int columnCount = rsmd.getColumnCount();
 //
 遍历总列数
 
-for (int i = 1; i \<= columnCount; i++) {
+for (int i = 1; i \<= columnCount; i++) \{
 //
 获取每列的名称，列名的序号是从 `1` 开始的
 
@@ -331,37 +334,37 @@ username);
 把获取的列的值，给对象赋值
 
 writeMethod.invoke(obj,columnValue);
-}
+\}
 //
 把赋好值的对象加入到集合中
 
 list.add(obj);
-}
+\}
 return list;
-} catch (Exception e) {
+\} catch (Exception e) \{
 throw new RuntimeException(e);
-} finally {
+\} finally \{
 release(pstm,rs);
-}
-}
+\}
+\}
 
-private void release(PreparedStatement pstm,ResultSet rs){
-if(rs != null){
-try {
+private void release(PreparedStatement pstm,ResultSet rs)\{
+if(rs != null)\{
+try \{
 rs.close();
-}catch(Exception e){
+\}catch(Exception e)\{
 e.printStackTrace();
-}
-}
-if(pstm != null){
-try {
+\}
+\}
+if(pstm != null)\{
+try \{
 pstm.close();
-}catch(Exception e){
+\}catch(Exception e)\{
 e.printStackTrace();
-}
-}
-}
-}
+\}
+\}
+\}
+\}
 
 /**
 *
@@ -369,7 +372,7 @@ e.printStackTrace();
 
 \</p\>
 */
-public class DataSourceUtil {
+public class DataSourceUtil \{
 /**
 *
 获取连接
@@ -377,17 +380,17 @@ public class DataSourceUtil {
 * @param cfg
 * @return
 */
-public static Connection getConnection(Configuration cfg) {
-try {
+public static Connection getConnection(Configuration cfg) \{
+try \{
 Class.forName(cfg.getDriver());
 Connection conn =
 DriverManager.getConnection(cfg.getUrl(),cfg.getUsername() , cfg.getPassword());
 return conn;
-} catch (Exception e) {
+\} catch (Exception e) \{
 throw new RuntimeException(e);
-}
-}
-}
+\}
+\}
+\}
 **编写**
 
 - SqlMapConfig.xml
@@ -455,7 +458,7 @@ _使用类加载器读取配置文件的类_
 
 `class` `Resources`
 
-{
+\{
 /**
 *
 _根据传入的参数，获取一个字节输入流_
@@ -469,12 +472,12 @@ public
 
 `static` `InputStream` `getResourceAsStream(String`
 
-filePath){
+filePath)\{
 return
 
 Resources.class.getClassLoader().getResourceAsStream(filePath);
-}
-}
+\}
+\}
 **编写** `Mapper` **类**
 
 /**
@@ -498,32 +501,32 @@ _实体类的全限定类名_
 
 `public` `String`
 
-getQueryString(){
+getQueryString()\{
 return
 
 queryString;
-}
+\}
 
 `public` `void`
 
-setQueryString(StringqueryString){
+setQueryString(StringqueryString)\{
 this.queryString=queryString;
-}
+\}
 
 `public` `String`
 
-getResultType(){
+getResultType()\{
 return
 
 resultType;
-}
+\}
 
 `public` `void`
 
-setResultType(StringresultType){
+setResultType(StringresultType)\{
 this.resultType=resultType;
-}
-}
+\}
+\}
 **编写** `Configuration` **配置类**
 
 /**
@@ -535,7 +538,7 @@ _自定义_`mybatis`_的配置类_
 
 `class` `Configuration`
 
-{
+\{
 private
 
 `String`
@@ -565,73 +568,73 @@ password;
 
 `public` `Map\<String,Mapper\>`
 
-getMappers(){
+getMappers()\{
 return
 
 mappers;
-}
+\}
 
 `public` `void`
 
-setMappers(Map\<String,Mapper\>mappers){
+setMappers(Map\<String,Mapper\>mappers)\{
 this.mappers.putAll(mappers);//
 _此处需要使用追加的方式_
 `}`
 
 `public` `String`
 
-getDriver(){
+getDriver()\{
 return
 
 driver;
-}
+\}
 
 `public` `void` `setDriver(String`
 
-driver){
+driver)\{
 this.driver=driver;
-}
+\}
 
 `public` `String`
 
-getUrl(){
+getUrl()\{
 return
 
 url;
-}
+\}
 
 `public` `void` `setUrl(String`
 
-url){
+url)\{
 this.url=url;
-}
+\}
 
 `public` `String`
 
-getUsername(){
+getUsername()\{
 returnusername;
-}
+\}
 
 `public` `void` `setUsername(String`
 
-username){
+username)\{
 this.username=username;
-}
+\}
 
 `public` `String`
 
-getPassword(){
+getPassword()\{
 return
 
 password;
-}
+\}
 
 `public` `void` `setPassword(String`
 
-password){
+password)\{
 this.password=password;
-}
-}
+\}
+\}
 **编写** `User` **实体类**
 `User` 实体类：
 
@@ -665,85 +668,85 @@ address;
 
 `public` `Integer`
 
-getId(){
+getId()\{
 return
 
 id;
-}
+\}
 
 `public` `void`
 
-setId(Integerid){
+setId(Integerid)\{
 this.id=id;
-}
+\}
 
-publicStringgetUsername(){
+publicStringgetUsername()\{
 return
 
 username;
-}
+\}
 
 `public` `void`
 
-setUsername(Stringusername){
+setUsername(Stringusername)\{
 this.username=username;
-}
+\}
 
 `public` `Date`
 
-getBirthday(){
+getBirthday()\{
 return
 
 birthday;
-}
+\}
 
 `public` `void`
 
-setBirthday(Datebirthday){
+setBirthday(Datebirthday)\{
 this.birthday=birthday;
-}
+\}
 
 `public` `String`
 
-getSex(){
+getSex()\{
 return
 
 sex;
-}
+\}
 
 `public` `void`
 
-setSex(Stringsex){
+setSex(Stringsex)\{
 this.sex=sex;
-}
+\}
 
 `public` `String`
 
-getAddress(){
+getAddress()\{
 return
 
 address;
-}
+\}
 
 `public` `void`
 
-setAddress(Stringaddress){
+setAddress(Stringaddress)\{
 this.address=address;
-}
+\}
 
 @Override
-publicStringtoString(){
+publicStringtoString()\{
 return
 
-"User{"+
+"User\{"+
 "id="+id+
 ",username='"+username+'\''+
 ",birthday="+birthday+
 ",sex='"+sex+'\''+
 ",address='"+address+'\''+
-'}';
-}
-}
+'\}';
+\}
+\}
 **基于** `XML` **的自定义** `mybatis` **框架**
 **编写持久层接口和**
 
@@ -756,7 +759,7 @@ return
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
- public interface IUserDao {
+ public interface IUserDao \{
 /**
 *
 查询所有用户
@@ -764,7 +767,7 @@ return
 * @return
 */
 List\<User\> findAll();
-}
+\}
 \<?xml version="1.0" encoding="UTF-8"?\>
 \<mapper namespace="com.itheima.dao.IUserDao"\>
 \<!--
@@ -793,7 +796,7 @@ select * from user
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public class SqlSessionFactoryBuilder {
+public class SqlSessionFactoryBuilder \{
 /**
 *
 根据传入的流，实现对 `SqlSessionFactory` 的创建
@@ -803,15 +806,15 @@ public class SqlSessionFactoryBuilder {
 
 * @return
 */
-public SqlSessionFactory build(InputStream in) {
+public SqlSessionFactory build(InputStream in) \{
 DefaultSqlSessionFactory factory = new DefaultSqlSessionFactory();
 //
 给 `factory` 中 `config` 赋值
 
 factory.setConfig(in);
 return factory;
-}
-}
+\}
+\}
 编写 `SqlSessionFactory` 接口和实现类
 
 /**
@@ -823,7 +826,7 @@ return factory;
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public interface SqlSessionFactory {
+public interface SqlSessionFactory \{
 /**
 *
 创建一个新的 `SqlSession` 对象
@@ -831,7 +834,7 @@ public interface SqlSessionFactory {
 * @return
 */
 SqlSession openSession();
-}
+\}
 /**
 *
 * \<p\>Title: DefaultSqlSessionFactory\</p\>
@@ -841,21 +844,21 @@ SqlSession openSession();
  \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public class DefaultSqlSessionFactory implements SqlSessionFactory {
+public class DefaultSqlSessionFactory implements SqlSessionFactory \{
 private InputStream config = null;
-public void setConfig(InputStream config) {
+public void setConfig(InputStream config) \{
 this.config = config;
-}
+\}
 @Override
-public SqlSession openSession() {
+public SqlSession openSession() \{
 DefaultSqlSession session = new DefaultSqlSession();
 //
 调用工具类解析 `xml` 文件
 
 XMLConfigBuilder.loadConfiguration(session, config);
 return session;
-}
-}
+\}
+\}
 编写 SqlSession 接口和实现类
 
 /**
@@ -867,7 +870,7 @@ return session;
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public interface SqlSession {
+public interface SqlSession \{
 /**
 *
 创建 `Dao` 接口的代理对象
@@ -882,7 +885,7 @@ public interface SqlSession {
 
 */
 void close();
-}
+\}
 /**
 *
 * \<p\>Title: DefaultSqlSession\</p\>
@@ -892,14 +895,14 @@ void close();
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public class DefaultSqlSession implements SqlSession {
+public class DefaultSqlSession implements SqlSession \{
 //
 核心配置对象
 
 private Configuration cfg;
-public void setCfg(Configuration cfg) {
+public void setCfg(Configuration cfg) \{
 this.cfg = cfg;
-}
+\}
 //
 连接对象
 
@@ -907,15 +910,15 @@ private Connection conn;
 //
 调用 `DataSourceUtils` 工具类获取连接
 
-public Connection getConn() {
+public Connection getConn() \{
 ￼
 
 conn = DataSourceUtil.getDataSource(cfg).getConnection();
 return conn;
-} catch (Exception e) {
+\} catch (Exception e) \{
 throw new RuntimeException(e);
-}
-}
+\}
+\}
 /**
 *
 动态代理：
@@ -948,33 +951,33 @@ throw new RuntimeException(e);
 
 */
 @Override
-public \<T\> T getMapper(Class\<T\> daoClass) {
+public \<T\> T getMapper(Class\<T\> daoClass) \{
 conn = getConn();
 System.out.println(conn);
 T daoProxy = (T) Proxy.newProxyInstance(daoClass.getClassLoader(),new
-Class[] {daoClass}, new MapperProxyFactory(cfg.getMappers(),conn));
+Class[] \{daoClass\}, new MapperProxyFactory(cfg.getMappers(),conn));
 return daoProxy;
-}
+\}
 //
 释放资源
 
 @Override
-public void close() {
-try {
+public void close() \{
+try \{
 System.out.println(conn);
 conn.close();
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 //
 查询所有方法
 
-public \<E\> List\<E\> selectList(String statement){
+public \<E\> List\<E\> selectList(String statement)\{
 Mapper mapper = cfg.getMappers().get(statement);
 return new Executor().selectList(mapper,conn);
-}
-}
+\}
+\}
 ￼
 
 /**
@@ -986,13 +989,13 @@ return new Executor().selectList(mapper,conn);
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public class MapperProxyFactory implements InvocationHandler {
+public class MapperProxyFactory implements InvocationHandler \{
 private Map\<String,Mapper\> mappers;
 private Connection conn;
-public MapperProxyFactory(Map\<String, Mapper\> mappers,Connection conn) {
+public MapperProxyFactory(Map\<String, Mapper\> mappers,Connection conn) \{
 this.mappers = mappers;
 this.conn = conn;
-}
+\}
 /**
 *
 对当前正在执行的方法进行增强
@@ -1022,7 +1025,7 @@ this.conn = conn;
 */
 @Override
 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
-{
+\{
 //1.
 取出方法名
 
@@ -1041,20 +1044,20 @@ String key = className+"."+methodName;
 
  mapper
 Mapper mapper = mappers.get(key);
-if(mapper == null) {
+if(mapper == null) \{
 throw new IllegalArgumentException("
 传入的参数有误，无法获取执行的必要条件
 
 ");
-}
+\}
 //5.
 创建 `Executor` 对象
 
 Executor executor = new Executor();
 ￼
 
-}
-}
+\}
+\}
 **运行测试类**
 
 /**
@@ -1066,8 +1069,8 @@ Executor executor = new Executor();
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public class MybatisTest {
-public static void main(String[] args)throws Exception {
+public class MybatisTest \{
+public static void main(String[] args)throws Exception \{
 //1.
 读取配置文件
 
@@ -1093,16 +1096,16 @@ IUserDao userDao = session.getMapper(IUserDao.class);
 使用代理对象执行查询所有方法
 
 List\<User\> users = userDao.findAll();
-for(User user : users) {
+for(User user : users) \{
 System.out.println(user);
-}
+\}
 //7.
 释放资源
 
 session.close();
 in.close();
-}
-}
+\}
+\}
 **基于注解方式定义** `Mybatis` **框架**
 **自定义**`@Select` **注解**
 
@@ -1116,9 +1119,9 @@ in.close();
 */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Select {
+public @interface Select \{
 String value();
-}
+\}
 **修改持久层接口**
 
 /**
@@ -1130,7 +1133,7 @@ String value();
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public interface IUserDao {
+public interface IUserDao \{
 /**
 *
 查询所有用户
@@ -1139,7 +1142,7 @@ public interface IUserDao {
 */
 @Select("select * from user")
 List\<User\> findAll();
-}
+\}
 **修改**
 
 - SqlMapConfig.xml
@@ -1192,7 +1195,7 @@ List\<User\> findAll();
 
 工厂模式的原理如下图：
 
-![O Fro duct function O int Product_A function O int...](Exported%20image%2020260702225402-6.png)
+
 
 代理模式(MapperProxyFactory)
 **组成：**
@@ -1209,7 +1212,7 @@ List\<User\> findAll();
 动态代理方式来编写 `MapperProxyFactory` 类。
 动态代理模型图：
 
-![Cinterface dosomething void realSubject RealSubjec...](Exported%20image%2020260702225405-7.png)
+
 
 **构建者模式**`(SqlSessionFactoryBuilder)`
 其核心思想是将一个“复杂对象的构建算法”与它的“部件及组装方式”分离，使得构件算法和组装方式可以独立应对变化；利用同样的构建算法可以创建不同的表示，不同的构建过程可以利用相同的部件组装方式。
@@ -1217,7 +1220,7 @@ List\<User\> findAll();
 首先我们一起来学习构建者模式，通过百度百科如下：
 具体设计模式的模型图如下：
 
-![Drector0 P ct Product Abstr](Exported%20image%2020260702225406-8.png)
+
 
 从图中我们可以看出，创建者模式由四部分组成。
 **抽象创建者角色**：给出一个抽象接口，以规范产品对象的各个组成成分的建造。一般而言，此接口独立于应用程序的商业逻辑。模式中直接创建产品对象的是具体创建者角色。具体创建者必须实现这个接口的两种方法：一是建造方法，比如图中的 `buildPart1` 和 `buildPart2` 方法；另一种是结果返回方法，即图中的 `getProduct` 方法。一般来说，产品所包含的零件数目与建造方法的数目相符。换言之，有多少零件，就有多少相应的建造方法。
@@ -1240,3 +1243,5 @@ List\<User\> findAll();
 
 框架的学习，我们将前面的基础知识很好的结合在一起，并且强化了我们的设计模式及
 使用。希望大家能够抽时间多练习，这也是系统架构师的必由之路。
+
+:::

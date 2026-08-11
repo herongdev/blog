@@ -3,7 +3,10 @@ title: IDE
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 1. `IDEA`：
 
     `ide`
@@ -14,3 +17,5 @@ tags: [Java, Java基础, OneNote]
 - 按两下`shift`可搜索类，资源，配置项，方法等
 - 按`ctrl+f`在本页==按照文本的内容查找==
 - 按`ctrl+shift+f`在全局==按照文本的内容查找==
+
+:::

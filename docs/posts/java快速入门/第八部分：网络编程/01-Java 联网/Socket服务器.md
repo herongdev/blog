@@ -3,7 +3,10 @@ title: Socket服务器
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 网络编程, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 服务器端套接字的工作原理与客户端套接字类似，只是它还包含accept()方法。服务器套接字监听TCP端口上的客户连接；服务器套接字监听TCP端口上的客户连接；当客户连接到该端口时，accept()方法将接收该连接。通过使用客户套接字和服务器套接字，可以创建通过网络进行通信的应用程序。
 
@@ -19,3 +22,5 @@ servo.accept();
 
 由于Socket和ServerSocket类不是final的，您可以创建这些类的子类，并使用默认套接字实现或自己的实现。这使得网络功能灵活得多。
 ```
+
+:::

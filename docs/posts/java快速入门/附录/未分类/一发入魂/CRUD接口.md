@@ -3,7 +3,10 @@ title: CRUD接口
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 附录, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `mp`封装了一些最基础的`CRUD`方法，只需要直接继承`mp`提供的接口，无需编写任何`SQL`，即可食用。`mp`提供了两套接口，分别是`Mapper CRUD`接口和`Service CRUD`接口。并且`mp`还提供了条件构造器`Wrapper`，可以方便地组装`SQL`语句中的`WHERE`条件，参见条件构造器小节
 
 `Mapper CRUD`接口
@@ -33,7 +36,7 @@ tags: [Java, 附录, OneNote]
 比如
 
 @Test
-public void test3() {
+public void test3() \{
   QueryWrapper\<User\> wrapper = new QueryWrapper\<\>();
   wrapper.select("id","name","email").likeRight("name","
 黄
@@ -41,7 +44,7 @@ public void test3() {
 ");
   List\<Map\<String, Object\>\> maps = userMapper.selectMaps(wrapper);
   maps.forEach(System.out::println);
-}
+\}
 进行数据统计
 比如
 `//` 按照直属上级进行分组，查询每组的平均年龄，最大年龄，最小年龄
@@ -50,20 +53,20 @@ public void test3() {
  * select avg(age) avg_age ,min(age) min_age, max(age) max_age from user group by manager_id having sum(age) \< 500;
  **/
 @Test
-public void test3() {
+public void test3() \{
   QueryWrapper\<User\> wrapper = new QueryWrapper\<\>();
   wrapper.select("manager_id", "avg(age) avg_age", "min(age) min_age", "max(age) max_age")
-    .groupBy("manager_id").having("sum(age) \< {0}", 500);
+    .groupBy("manager_id").having("sum(age) \< \{0\}", 500);
   List\<Map\<String, Object\>\> maps = userMapper.selectMaps(wrapper);
   maps.forEach(System.out::println);
-}
+\}
 
 `selectObjs`
 只会返回第一个字段（第一列）的值，其他字段会被舍弃
 比如
 
 @Test
-public void test3() {
+public void test3() \{
   QueryWrapper\<User\> wrapper = new QueryWrapper\<\>();
   wrapper.select("id", "name").like("name", "
 黄
@@ -71,7 +74,7 @@ public void test3() {
 ");
   List\<Object\> objects = userMapper.selectObjs(wrapper);
   objects.forEach(System.out::println);
-}
+\}
  得到的结果，只封装了第一列的`id`
 
 `selectCount`
@@ -79,7 +82,7 @@ public void test3() {
 比如
 
 @Test
-public void test3() {
+public void test3() \{
   QueryWrapper\<User\> wrapper = new QueryWrapper\<\>();
   wrapper.like("name", "
 黄
@@ -87,5 +90,7 @@ public void test3() {
 ");
   Integer count = Math.toIntExact(userMapper.selectCount(wrapper));
   System.out.println(count);
-}
+\}
 ```
+
+:::

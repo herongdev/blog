@@ -1,9 +1,12 @@
 ---
-title: @ConfigurationProperties 和 @Value
+title: "@ConfigurationProperties 和 @Value"
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 @ConfigurationProperties 和 @Value 都是Spring Boot提供的两种常见的配置属性绑定方法，它们都可以将配置文件中的属性绑定到Java对象中。但它们有一些明显的区别和使用场景：
 
 1. @ConfigurationProperties：
@@ -28,3 +31,5 @@ tags: [Java, Spring, OneNote]
 
 总结：
 虽然两者都能完成属性的绑定，但是@ConfigurationProperties 更适用于处理复杂、分组或需要验证的配置属性，而 @Value 则更适合简单的属性绑定或需要使用SpEL的场景。在实际开发中，您可以根据具体需求选择合适的方式。
+
+:::

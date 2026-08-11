@@ -3,10 +3,13 @@ title: linux命令行终端的翻屏滚屏more-less-head-tail
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `(2018-05-03 14:17:27)`
 
-[![Exported image](Exported%20image%2020260702224810-0.gif)](javascript:;)
+[](javascript:;)
 
 [转载▼](http://javascript:;)
 分类： [LAMP/LNMP](http://blog.sina.com.cn/s/articlelist_1890348012_4_1.html)开发
@@ -150,3 +153,5 @@ tail   -n  行数值  文件名；
 
  \<http://blog.sina.com.cn/s/blog_70ac6bec0102yxf7.html\>
 ```
+
+:::

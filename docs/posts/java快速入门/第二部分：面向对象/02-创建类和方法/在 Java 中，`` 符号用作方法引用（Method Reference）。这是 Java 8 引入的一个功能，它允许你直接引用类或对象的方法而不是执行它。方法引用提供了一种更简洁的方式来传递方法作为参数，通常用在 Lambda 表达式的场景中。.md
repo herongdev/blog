@@ -3,7 +3,10 @@ title: 在 Java 中，`` 符号用作方法引用（Method Reference）。这是
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 面向对象, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在 Java 中，`::` 符号用作方法引用（Method Reference）。这是 Java 8 引入的一个功能，它允许你直接引用类或对象的方法而不是执行它。方法引用提供了一种更简洁的方式来传递方法作为参数，通常用在 Lambda 表达式的场景中。
 
 方法引用有四种主要形式：
@@ -39,3 +42,5 @@ button.setOnClickListener(this::handleButtonClick);
 在您的代码中，`registerForActivityResult` 方法需要一个 `ActivityResultCallback` 类型的参数。这个参数是一个函数接口，需要一个方法引用或 Lambda 表达式。因此，使用 `this::onPermissionResult` 作为参数是合适的，因为它提供了一个方法的引用，而不是立即执行该方法。
 
 如果你直接使用 `this.onPermissionResult`，它会尝试立即调用该方法并期望将其结果（而不是方法本身）传递给 `registerForActivityResult`，这通常不是你想要的行为，并且会导致编译错误，因为它不满足 `registerForActivityResult` 所期望的参数类型。
+
+:::

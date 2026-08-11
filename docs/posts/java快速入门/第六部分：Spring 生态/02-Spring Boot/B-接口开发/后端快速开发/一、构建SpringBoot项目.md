@@ -3,7 +3,10 @@ title: 一、构建SpringBoot项目
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 最常用的两种方式：
 一、使用`Spring Initializr`构建项目
 
@@ -42,12 +45,12 @@ tags: [Java, Spring, OneNote]
 
 controller
 @RestController
-Public class IndexController{
+Public class IndexController\{
 @GetMapping("/index")
-    publicStringindex() {
+    publicStringindex() \{
         return "Hello World";
-    }
-}
+    \}
+\}
 - `@RestController`注解，相当于`@Controller`和`@ResponseBody`的结合，用于返回`json`数据。
 - `@GetMapping("/index")`，相当于`@RequestMapping(value = "/index", method = RequestMethod.GET)`，用于接收`GET`请求
 
@@ -69,3 +72,5 @@ Public class IndexController{
 
  \<https://juejin.cn/post/6844904159917899783\>
 ```
+
+:::

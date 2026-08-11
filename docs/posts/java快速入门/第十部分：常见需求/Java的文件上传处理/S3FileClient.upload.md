@@ -3,14 +3,17 @@ title: S3FileClient.upload
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 // 上传到文件存储器
 FileClient client = fileConfigService.getMasterFileClient();
 Assert.notNull(client, "客户端(master) 不能为空");
 String url = client.upload(content, path, type);
 
 @Override
-public String upload(byte[] content, String path, String type) throws Exception {
+public String upload(byte[] content, String path, String type) throws Exception \{
 // 方法签名：上传文件，接受文件内容（byte数组），文件存储路径，和内容类型
 // 使用 MinioClient 的 putObject 方法，配置上传参数
 client.putObject(PutObjectArgs.builder()
@@ -22,4 +25,6 @@ client.putObject(PutObjectArgs.builder()
 // 拼接并返回文件的访问 URL，通过拼接域名和文件路径
 return config.getDomain() + "/" + path;
 // 返回值是文件的完整访问 URL，例如 [https://your-bucket.your-endpoint.com/path/to/your/file](https://your-bucket.your-endpoint.com/path/to/your/file)
-}
+\}
+
+:::

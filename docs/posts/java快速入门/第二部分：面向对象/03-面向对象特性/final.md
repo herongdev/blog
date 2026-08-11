@@ -3,7 +3,10 @@ title: final
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 面向对象, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 Java提供了 final 关键字， 用于修饰**不可改变**内容。
 
@@ -88,3 +91,5 @@ this.age = age;
 }
 被final修饰的常量名称，一般都有书写规范，所有字母都**大写**。
 ```
+
+:::

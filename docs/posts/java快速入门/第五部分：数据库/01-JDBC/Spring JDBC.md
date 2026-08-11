@@ -3,7 +3,10 @@ title: Spring JDBC
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `Spring`框架对`JDBC`的简单封装。提供了一个`JDBCTemplate`对象简化`JDBC`的开发
 
 **步骤：**
@@ -58,4 +61,6 @@ DataSource
 
 `*` 代码：
 
-![public class JcLbcTempIaCeDem02 private JcTempIaCe...](Exported%20image%2020260702224141-0.png) ![Tesc public void CesC6 String select from emp list...](Exported%20image%2020260702224142-1.png)
+ 
+
+:::

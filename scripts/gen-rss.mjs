@@ -33,6 +33,7 @@ async function main() {
   for (const file of files) {
     const raw = await fs.readFile(file, 'utf8')
     const { data, content } = matter(raw)
+    if (data.feed === false) continue
     const url = toArticleUrl(file)
     feed.addItem({
       title: data.title || url,
@@ -54,5 +55,4 @@ main().catch((e) => {
   console.error(e)
   process.exit(1)
 })
-
 

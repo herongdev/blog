@@ -3,7 +3,10 @@ title: Response
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 响应消息：服务器端发送给客户端的数据
 
 **数据格式：**
@@ -58,3 +61,5 @@ hello , response
 \</body\>
 \</html\>
 ```
+
+:::

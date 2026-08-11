@@ -3,7 +3,10 @@ title: Collection集合
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 方法演示：
 ~~~java
@@ -44,3 +47,5 @@ public static void main(String[] args) {
 ~~~
 \> tips: 有关Collection中的方法可不止上面这些，其他方法可以自行查看API学习。
 ```
+
+:::

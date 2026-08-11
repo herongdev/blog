@@ -1,9 +1,12 @@
 ---
-title: @ResponseBody
+title: "@ResponseBody"
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 @ResponseBody, 这个注解有什么作用，详细介绍一下，可以打比方
 
 @ResponseBody 是Spring框架中一个用于处理HTTP请求的注解，它通常与@Controller和@RequestMapping等注解一起使用。这个注解的作用是告诉Spring的方法，返回值应直接作为HTTP响应体（Response Body）返回给客户端，而不是作为模板名或页面名。
@@ -20,19 +23,21 @@ tags: [Java, Web基础, OneNote]
 
 示例
 @Controller
-public class MyController {
+public class MyController \{
 
 @RequestMapping("/withoutResponseBody")
-public String withoutResponseBody() {
+public String withoutResponseBody() \{
 return "index"; // 返回一个名为 'index' 的模板或视图
-}
+\}
 
 @RequestMapping("/withResponseBody")
 @ResponseBody
-public String withResponseBody() {
+public String withResponseBody() \{
 return "Hello, world!"; // 直接返回字符串作为HTTP响应体
-}
-}
+\}
+\}
 在上面的例子中，访问/withoutResponseBody会返回一个名为index的模板或视图，而访问/withResponseBody会直接返回字符串"Hello, world!"作为HTTP响应体。
 
 这就是@ResponseBody的基本作用和用法。希望这能帮助你更好地理解这个注解！
+
+:::

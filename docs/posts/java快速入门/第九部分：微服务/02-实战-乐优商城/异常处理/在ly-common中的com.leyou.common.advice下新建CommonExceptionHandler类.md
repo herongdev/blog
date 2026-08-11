@@ -3,14 +3,17 @@ title: 在ly-common中的com.leyou.common.advice下新建CommonExceptionHandler�
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 在ly-common中的com.leyou.common.advice下新建CommonExceptionHandler类
-![leyou lycommon com.leyou.common advice e CommonExc...](Exported%20image%2020260702233907-0.png)
+
 
 `修改ly-common的pom文件，引入spring-webmvc`
 
-![groupldorg.springframework.boot groupld artifactld...](Exported%20image%2020260702233909-1.png)
+
 
 CommonExceptionHandler内容如下
 ==package====com.leyou.common.advice====;==
@@ -38,17 +41,17 @@ CommonExceptionHandler内容如下
 ==}==
 
 在ly-item-service的pom文件中引入ly-common包
-![dependency groupldmysqlgroupld artifactldmysql con...](Exported%20image%2020260702233911-2.png)
+
 
 - 启动类只能扫描同目录下的所有包，所以要注意层级关系
 - 由于原生异常类只能接收空参或字符串参数，所以，我们自定义异常处理
 - 在ly-common包下新建包和类exception.LyException
 
-![leyou lycommon com.leyou.common advice exception e...](Exported%20image%2020260702233912-3.png)
+
 
 `先新建异常的枚举包和类enums.ExceptionEnums，注意类型选enum`
 
-![leyou lycommon com.leyou.common advice enums Excep...](Exported%20image%2020260702233915-4.png)
+
 
 LyException类代码如下：
 ==package====com.leyou.common.exception====;==
@@ -145,3 +148,5 @@ LyException类代码如下：
 ==}==
 ==}==
 ```
+
+:::

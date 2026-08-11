@@ -3,7 +3,10 @@ title: Linux下的tar压缩解压缩命令详解
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 - tar
 - -c:
 
@@ -574,3 +577,5 @@ clocale
 
  \<https://www.cnblogs.com/manong--/p/8012324.html\>
 ```
+
+:::

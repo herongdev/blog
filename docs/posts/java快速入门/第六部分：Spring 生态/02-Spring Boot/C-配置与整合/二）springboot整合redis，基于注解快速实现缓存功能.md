@@ -3,7 +3,10 @@ title: 二）springboot整合redis，基于注解快速实现缓存功能
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 隐 风
 
 已于 2022-06-21 08:33:41 修改
@@ -281,7 +284,7 @@ port: 6379
 */
 @Configuration
 @EnableCaching
-public class RedisConfig extends CachingConfigurerSupport {
+public class RedisConfig extends CachingConfigurerSupport \{
 
 /**
 * 自定义配置 RedisTemplate
@@ -292,7 +295,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 @Bean
 @Primary
 @SuppressWarnings("all")
-public RedisTemplate\<String, Object\> redisTemplate(RedisConnectionFactory factory) {
+public RedisTemplate\<String, Object\> redisTemplate(RedisConnectionFactory factory) \{
 // 我们为了自己开发方便，一般直接使用 \<String, Object\>
 RedisTemplate\<String, Object\> template = new RedisTemplate\<String, Object\>();
 template.setConnectionFactory(factory);
@@ -314,7 +317,7 @@ template.setValueSerializer(jackson2JsonRedisSerializer);
 template.setHashValueSerializer(jackson2JsonRedisSerializer);
 template.afterPropertiesSet();
 return template;
-}
+\}
 
 /**
 * 修改 Cacheable 默认序列化方式 使用Redis配置的序列化
@@ -323,7 +326,7 @@ return template;
 * @return RedisCacheManager
 */
 @Bean
-public RedisCacheManager redisCacheManager(RedisTemplate redisTemplate) {
+public RedisCacheManager redisCacheManager(RedisTemplate redisTemplate) \{
 RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory());
 RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
 // 设置默认的超时时间为2小时
@@ -332,8 +335,8 @@ RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaul
 // 设置默认的缓存前缀
 .prefixCacheNameWith("CACHE_");
 return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
-}
-}
+\}
+\}
 
 1
 2
@@ -410,16 +413,16 @@ return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
 @RestController
 @RequestMapping("/menus")
 @Slf4j
-public class MenusController{
+public class MenusController\{
 @Resource
 private MenusService menusService;   @PostMapping("/getOne")
 @ApiOperation(value = "单个查询", notes = "菜单表")
 @Cacheable(value = "MenusController", key = "'menus-' + #menus.id")
-public Menus getOne(@RequestBody Menus menus) {
+public Menus getOne(@RequestBody Menus menus) \{
 log.info("从数据库读取数据");
 return menusService.getOne(menus);
-}
-}
+\}
+\}
 
 1
 2
@@ -453,22 +456,22 @@ return menusService.getOne(menus);
 @RestController
 @RequestMapping("/menus")
 @Slf4j
-public class MenusController{
+public class MenusController\{
 @Resource
 private MenusService menusService;   @PostMapping("/save")
 @ApiOperation(value = "新增或编辑", notes = "菜单表")
 @CachePut(value = "MenusController", key = "'menus-' + #menus.id")
-public Menus save(@RequestBody Menus menus) {
+public Menus save(@RequestBody Menus menus) \{
 return menusService.saveData(menus);
-}
+\}
 
 @PostMapping("/delete")
 @ApiOperation(value = "删除", notes = "菜单表")
 @CacheEvict(value = "MenusController", key = "'menus-' + #menus.id")
-public boolean delete(@RequestBody Menus menus) {
+public boolean delete(@RequestBody Menus menus) \{
 return menusService.delete(menus);
-}
-}
+\}
+\}
 
 1
 2
@@ -529,3 +532,5 @@ return menusService.delete(menus);
 ————————————————
 版权声明：本文为CSDN博主「隐 风」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/a1774381324/article/details/125362883
+
+:::

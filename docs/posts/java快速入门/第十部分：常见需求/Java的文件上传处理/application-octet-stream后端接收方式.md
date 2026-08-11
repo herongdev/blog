@@ -3,7 +3,10 @@ title: application-octet-stream后端接收方式
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在Java后端，当处理使用`application/octet-stream` MIME类型的HTTP请求时，通常意味着数据以原始二进制格式传输。在Java中接收这种类型的数据可以通过多种方式，具体取决于你使用的框架或技术栈。以下是几种常见的处理方法：
 
 ### 1. 使用Servlet API
@@ -34,15 +37,15 @@ resp.getWriter().write("File uploaded successfully!");
 
 ```java
 @RestController
-public class FileUploadController {
+public class FileUploadController \{
 
 @PostMapping(value = "/upload", consumes = "application/octet-stream")
-public ResponseEntity\<String\> uploadFile(@RequestBody byte[] fileData) throws IOException {
+public ResponseEntity\<String\> uploadFile(@RequestBody byte[] fileData) throws IOException \{
 Path path = Paths.get("destination/path/to/file");
 Files.write(path, fileData);
 return ResponseEntity.ok("File uploaded successfully!");
-}
-}
+\}
+\}
 在这个示例中，Spring会自动将接收到的二进制数据转换为`byte[]`，然后你可以使用这个数组来处理文件。
 
 ### 3. 使用Spring Boot
@@ -54,3 +57,5 @@ return ResponseEntity.ok("File uploaded successfully!");
 - 考虑到安全性，当接收文件内容时，应进行适当的文件类型检查和病毒扫描，特别是如果文件将被存储和/或提供给其他用户下载。
 
 这些方法为在Java后端处理`application/octet-stream`数据提供了基本框架，可以根据具体需求进行调整和优化。
+
+:::

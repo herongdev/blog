@@ -1,0 +1,38 @@
+---
+title: "vue-cli中的BASE_URL在哪里定义的"
+date: 2026-08-11
+categories:
+  - "Vue 系统教程"
+tags:
+  - "Vue"
+  - "Vue3"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "路由与状态管理"
+description: "在 Vue CLI 项目中，BASE URL 是一个环境变量，通常用于指定项目在生产环境中的公共路径。它在项目根目录下的 .env 文件或者特定环境的 .env.[mode] 文件中定义，例如：.env.production 或 .env.development。 BASE UR。"
+sidebarWeight: 21
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/vueRouter/vue-cli中的BASE_URL在哪里定义的.md"
+---
+::: v-pre
+
+# vue-cli中的BASE_URL在哪里定义的
+
+> 本节目标：理解“vue-cli中的BASE_URL在哪里定义的”的核心思路，并能把它用于实际开发或面试表达。
+在 Vue CLI 项目中，BASE_URL 是一个环境变量，通常用于指定项目在生产环境中的公共路径。它在项目根目录下的 .env 文件或者特定环境的 .env.[mode] 文件中定义，例如：.env.production 或 .env.development。
+BASE_URL 的默认值是 /。要设置这个值，你可以在 .env 文件或者特定环境的 .env 文件中加入以下内容：
+
+javascriptCopy code
+BASE_URL=/your-base-url/
+将 /your-base-url/ 替换为你的实际公共路径。这个值将影响到你项目的静态资源文件（例如图片、CSS 文件和 JavaScript 文件）的加载。当你在生产环境部署应用时，如果你的应用不是在服务器的根目录下，而是在子目录下，这个值需要正确设置。
+在 Vue CLI 项目中，可以通过 process.env.BASE_URL 访问到 BASE_URL 的值。需要注意的是，在 Vue CLI 3.x 中，BASE_URL 已经被替换为 PUBLIC_PATH，两者具有相同的作用。在 Vue CLI 4.x 和更高版本中，BASE_URL 仍然可以使用，但官方推荐使用 PUBLIC_PATH。
+在项目的 vue.config.js 文件中，你还可以通过设置 publicPath 选项来配置公共路径：
+
+jsCopy code
+module.exports= \{ publicPath: process.env.NODE_ENV=== 'production'? '/your-base-url/': '/'\}
+在这个示例中，根据当前环境（生产或开发），publicPath 选项的值会发生变化。在生产环境中，它将使用 /your-base-url/ 作为公共路径。在开发环境中，它将使用默认的 /。
+
+:::

@@ -1,0 +1,99 @@
+---
+title: "js手写 Promise"
+date: 2026-08-11
+categories:
+  - "JavaScript 系统教程"
+tags:
+  - "JavaScript"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "面试与手写"
+description: "承前：当前一个 promise 完成后，调用其 resolve 变更状态，在这个 resolve 里会依次调用 callbacks 里的回调，这样就执行了 then 里的方法了 启后：上一步中，当 then 里的方法执行完成后，返回一个结果，如果这个结果是个简单的值，就直接调用新。"
+sidebarWeight: 12
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/b-原生js/面试/手写/js手写 Promise.md"
+---
+::: v-pre
+
+# js手写 Promise
+
+> 本节目标：理解“js手写 Promise”的核心思路，并能把它用于实际开发或面试表达。
+```
+==const PENDING = "pending";========const RESOLVED = "resolved";========const REJECTED = "rejected";======
+==function MyPromise(fn) {======  ==//== ==保存初始化状态======  ==var self = this;======
+==//== ==初始化状态======  ==this.state = PENDING;======
+==//== ==用于保存== ==resolve== ==或者== ==rejected== ==传入的值======  ==this.value = null;======
+==//== ==用于保存== ==resolve== ==的回调函数======  ==this.resolvedCallbacks = [];======
+==//== ==用于保存== ==reject== ==的回调函数======  ==this.rejectedCallbacks = [];======
+==//== ==状态转变为== ==resolved== ==方法======  ==function resolve(value) {======    ==//== ==判断传入元素是否为== ==Promise== ==值，如果是，则状态改变必须等待前一个状态改变后再进行改变======    ==if (value instanceof MyPromise) {======      ==return value.then(resolve, reject);======    ==}======
+==//== ==保证代码的执行顺序为本轮事件循环的末尾======    ==setTimeout(() => {======      ==//== ==只有状态为== ==pending== ==时才能转变，======      ==if (self.state === PENDING) {======        ==//== ==修改状态======        ==self.state = RESOLVED;======
+==//== ==设置传入的值======        ==self.value = value;======
+==//== ==执行回调函数======        ==self.resolvedCallbacks.forEach(callback => {======          ==callback(value);======        ==});======      ==}======    ==}, 0);======  ==}======
+==//== ==状态转变为== ==rejected== ==方法======  ==function reject(value) {======    ==//== ==保证代码的执行顺序为本轮事件循环的末尾======    ==setTimeout(() => {======      ==//== ==只有状态为== ==pending== ==时才能转变======      ==if (self.state === PENDING) {======        ==//== ==修改状态======        ==self.state = REJECTED;======
+==//== ==设置传入的值======        ==self.value = value;======
+==//== ==执行回调函数======        ==self.rejectedCallbacks.forEach(callback => {======          ==callback(value);======        ==});======      ==}======    ==}, 0);======  ==}======
+==//== ==将两个方法传入函数执行======  ==try {======    ==fn(resolve, reject);======  ==} catch (e) {======    ==//== ==遇到错误时，捕获错误，执行== ==reject== ==函数======    ==reject(e);======  ==}========}======
+==MyPromise.prototype.then = function(onResolved, onRejected) {======  ==//== ==首先判断两个参数是否为函数类型，因为这两个参数是可选参数======  ==onResolved =======    ==typeof onResolved === "function"======      ==? onResolved======      ==: function(value) {======          ==return value;======        ==};======
+==onRejected =======    ==typeof onRejected === "function"======      ==? onRejected======      ==: function(error) {======          ==throw error;======        ==};======
+==//== ==如果是等待状态，则将函数加入对应列表中======  ==if (this.state === PENDING) {======    ==this.resolvedCallbacks.push(onResolved);======    ==this.rejectedCallbacks.push(onRejected);======  ==}======
+==//== ==如果状态已经凝固，则直接执行对应状态的函数======
+==if (this.state === RESOLVED) {======    ==onResolved(this.value);======  ==}======
+==if (this.state === REJECTED) {======    ==onRejected(this.value);======  ==}========};======
+==折叠==
+**5. 手写 Promise.then**
+==then== 方法返回一个新的 ==promise== 实例，为了在 ==promise== 状态发生变化时（==resolve== / ==reject== 被调用时）再执行 ==then== 里的函数，我们使用一个 ==callbacks== 数组先把传给then的函数暂存起来，等状态改变时再调用。
+```
+
+承前：当前一个 ==promise== 完成后，调用其 ==resolve== 变更状态，在这个 ==resolve== 里会依次调用 ==callbacks== 里的回调，这样就执行了 ==then== 里的方法了
+
+启后：上一步中，当 ==then== 里的方法执行完成后，返回一个结果，如果这个结果是个简单的值，就直接调用新 ==promise== 的 ==resolve==，让其状态变更，这又会依次调用新 ==promise== 的 ==callbacks== 数组里的方法，循环往复。。如果返回的结果是个 ==promise==，则需要等它完成之后再触发新 ==promise== 的 ==resolve==，所以可以在其结果的 ==then== 里调用新 ==promise== 的 ==resolve==
+
+```
+==then(onFulfilled, onReject){======    ==//== ==保存前一个====promise====的====this======    ==const self = this;== ====    ==return new MyPromise((resolve, reject) => {======      ==//== ==封装前一个====promise====成功时执行的函数======      ==let fulfilled = () => {======        ==try{======          ==const result = onFulfilled(self.value); //== ==承前======          ==return result instanceof MyPromise? result.then(resolve, reject) : resolve(result); //====启后======        ==}catch(err){======          ==reject(err)======        ==}======      ==}======      ==//== ==封装前一个====promise====失败时执行的函数======      ==let rejected = () => {======        ==try{======          ==const result = onReject(self.reason);======          ==return result instanceof MyPromise? result.then(resolve, reject) : reject(result);======        ==}catch(err){======          ==reject(err)======        ==}======      ==}======      ==switch(self.status){======        ==case PENDING:== ====          ==self.onFulfilledCallbacks.push(fulfilled);======          ==self.onRejectedCallbacks.push(rejected);======          ==break;======        ==case FULFILLED:======          ==fulfilled();======          ==break;======        ==case REJECT:======          ==rejected();======          ==break;======      ==}======    ==})======   ==}======
+```
+
+连续多个 ==then== 里的回调方法是同步注册的，但注册到了不同的 ==callbacks== 数组中，因为每次 ==then== 都返回新的 ==promise== 实例（参考上面的例子和图）
+
+```
+注册完成后开始执行构造函数中的异步事件，异步完成之后依次调用 ==callbacks== 数组中提前注册的回调
+```
+
+```
+**6. 手写 Promise.all**
+**1) 核心思路**
+```
+
+```
+接收一个 Promise 实例的数组或具有 Iterator 接口的对象作为参数
+```
+
+```
+这个方法返回一个新的 promise 对象，
+```
+
+```
+遍历传入的参数，用Promise.resolve()将参数"包一层"，使其变成一个promise对象
+```
+
+```
+参数所有回调成功才是成功，返回值数组与参数顺序一致
+```
+
+参数数组其中一个失败，则触发失败状态，第一个触发失败的 Promise 错误信息作为 Promise.all 的错误信息。
+
+```
+**2）实现代码**
+一般来说，Promise.all 用来处理多个并发请求，也是为了页面数据构造的方便，将一个页面所用到的在不同接口的数据一起请求过来，不过，如果其中一个接口失败了，多个请求也就失败了，页面可能啥也出不来，这就看当前页面的耦合程度了
+==function promiseAll(promises) {======  ==return new Promise(function(resolve, reject) {======    ==if(!Array.isArray(promises)){======        ==throw new TypeError(`argument must be a array`)======    ==}======    ==var resolvedCounter = 0;======    ==var promiseNum = promises.length;======    ==var resolvedResult = [];======    ==for (let i = 0; i < promiseNum; i++) {======      ==Promise.resolve(promises[i]).then(value=>{======        ==resolvedCounter++;======        ==resolvedResult[i] = value;======        ==if (resolvedCounter == promiseNum) {======            ==return resolve(resolvedResult)======          ==}======      ==},error=>{======        ==return reject(error)======      ==})======    ==}======  ==})========}========// test========let p1 = new Promise(function (resolve, reject) {======    ==setTimeout(function () {======        ==resolve(1)======    ==}, 1000)========})========let p2 = new Promise(function (resolve, reject) {======    ==setTimeout(function () {======        ==resolve(2)======    ==}, 2000)========})========let p3 = new Promise(function (resolve, reject) {======    ==setTimeout(function () {======        ==resolve(3)======    ==}, 3000)========})========promiseAll([p3, p1, p2]).then(res => {======    ==console.log(res) // [3, 1, 2]========})======
+**7. 手写 Promise.race**
+该方法的参数是 Promise 实例数组, 然后其 then 注册的回调方法是数组中的某一个 Promise 的状态变为 fulfilled 的时候就执行. 因为 Promise 的状态**只能改变一次**, 那么我们只需要把 Promise.race 中产生的 Promise 对象的 resolve 方法, 注入到数组中的每一个 Promise 实例中的回调函数中即可.
+==Promise.race = function (args) {======  ==return new Promise((resolve, reject) => {======    ==for (let i = 0, len = args.length; i < len; i++) {======      ==args[i].then(resolve, reject)======    ==}======  ==})========}======
+```
+
+**那么，怎么保证后一个** ****then**** **里的方法在前一个** ****then******（可能是异步）结束之后再执行呢？** 我们可以将传给 ==then== 的函数和新 ==promise== 的 ==resolve== 一起 ==push== 到前一个 ==promise== 的 ==callbacks== 数组中，达到承前启后的效果：
+**注意：**
+
+:::

@@ -3,7 +3,10 @@ title: nginx开机自动启动和chkconfig管理
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 Nginx 是一个很强大的高性能Web和反向代理服务器。虽然使用命令行可以对nginx进行各种操作，比如启动等，但是还是根据不太方便。下面介绍在CentOS下安装后，如何设置开机自启动。
 **首先，在****linux****系统的****/etc/init.d/****目录下创建****nginx****文件，使用如下命令：**
@@ -46,3 +49,5 @@ May 22 17:48:57 gongxm systemd[1]: Starting SYSV: NGINX is an HTTP(S) serve.....
 
  \<https://www.jianshu.com/p/7c5c778f5ffe\>
 ```
+
+:::

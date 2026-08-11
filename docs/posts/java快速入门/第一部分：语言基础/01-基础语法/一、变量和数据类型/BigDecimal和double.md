@@ -3,7 +3,10 @@ title: BigDecimal和double
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 BigDecimal:
 在Java中，BigDecimal类提供了高精度数值计算的操作，尤其适合金融计算。例如，如果你需要准确的结果，而且你的数值计算涉及到很大或者很小的数，那么就可以使用BigDecimal。
 
@@ -20,3 +23,5 @@ BigDecimal vs Double:
 对于大范围、大精度或者科学计算，你可以使用Double。但是要注意，因为double是二进制浮点数，所以它不应该用于需要精确答案的场合。
 
 总的来说，选择使用BigDecimal还是Double，主要取决于你的精度需求和计算的范围。
+
+:::

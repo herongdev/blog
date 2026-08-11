@@ -3,7 +3,10 @@ title: TCP通信程序
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 网络编程, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 TCP通信能实现两台计算机之间的数据交互，通信的两端，要严格区分为客户端（Client）与服务端（Server）。
 
@@ -67,7 +70,7 @@ public Socket accept() ：侦听并接受连接，返回一个新的Socket对象
 4. 【客户端】Socket对象，获取OutputStream，向服务端写出数据。
 5. 【服务端】Scoket对象，获取InputStream，读取客户端发送的数据。
 到此，客户端向服务端发送数据成功。
-![Exported image](Exported%20image%2020260703003121-0.png)
+
 
 自此，服务端向客户端回写数据。
 6. 【服务端】Socket对象，获取OutputStream，向客户端回写数据。
@@ -170,3 +173,5 @@ client.close();
 }
 }
 ```
+
+:::

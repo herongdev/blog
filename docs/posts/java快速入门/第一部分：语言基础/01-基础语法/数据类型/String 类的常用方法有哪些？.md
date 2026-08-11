@@ -3,7 +3,10 @@ title: String 类的常用方法有哪些？
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 - **获取功能**：
     - length()：获取字符串长度。
     - charAt(int index)：获取指定索引位置的字符。
@@ -28,3 +31,5 @@ tags: [Java, Java基础, OneNote]
     - replace(String old, String new)：将指定字符串替换为新的字符串。
     - trim()：去除字符串两端的空格。
     - compareTo(String str)：按字典顺序比较两个字符串。
+
+:::

@@ -3,7 +3,10 @@ title: IO异常的处理
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **JDK7****前处理**
 之前的入门练习，我们一直把异常抛出，而实际开发中并不能这样处理，建议使用 try...catch...finally 代码块，处理异常部分，代码使用演示：
@@ -94,3 +97,5 @@ e.printStackTrace();
 }
 }
 ```
+
+:::

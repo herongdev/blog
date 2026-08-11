@@ -3,7 +3,10 @@ title: Linux入门介绍
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **从操作系统说起**
 说到Linux呢，肯定要知道它是怎么来的，所以要从操作系统讲起。
@@ -39,7 +42,7 @@ tags: [Java, 构建运维, OneNote]
 同样做以上几件事情。
 首先你得有台machine装了Linux啊！那我们先采用虚拟机的方式，centos7安装教程附在文末。
 假如你成功进入了Linux系统，假如你能看到下面这个界面：
-![Exported image](Exported%20image%2020260702224224-0.png)
+
 
 centos一共有7个界面，可以按Ctrl+Alt+F1~F7 进行切换，其中F1 是图形界面，其它几个是文字界面，现在看到的这个界面就是默认的F1。为了方便，我们现在像在windows下直接在图形界面打开终端。选择Application\>Favorites\>Terminal 便会弹出终端，开始执行命令：
 #同理，你所在的位置是系统盘下的用户主目录，在Linux下用符号~表示￼[user_name@machine_name ~]$
@@ -70,3 +73,5 @@ Linux有许多windows以及Mac这种主打图形交互界面的系统所无法�
 
 **当然，****Linux****的致命缺点，命令行的交互方式始终无法流行，使得使用率无法提高，一般只用于搭建家庭服务器，无法普及到每台个人计算机。**
 ```
+
+:::

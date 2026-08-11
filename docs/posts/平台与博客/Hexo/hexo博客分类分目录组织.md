@@ -242,6 +242,6 @@ A：不是必须，但**强烈建议**。这样 Git 与编辑器里都更可管�
 A：直接移动文件夹即可；只要 front-matter 的 `categories` 不改，URL 不会变（避免 SEO 损失）。
 
 **Q：图片怎么引用？**
-A：启用 `post_asset_folder: true` 后，文章内用相对路径（如 `![](切片入门/示意图.png)`）即可。
+A：启用 `post_asset_folder: true` 后，文章内使用相对路径即可，例如图片放在与文章同名的资源目录中，再通过 Markdown 图片语法引用。
 
 ---

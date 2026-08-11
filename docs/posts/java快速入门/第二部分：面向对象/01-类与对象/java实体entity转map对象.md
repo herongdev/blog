@@ -3,7 +3,10 @@ title: java实体entity转map对象
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 面向对象, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 方法一：一句搞定，直接返回`map`对象（弊端新的对象无法扩展字段）：
 
 import org.springframework.cglib.beans.BeanMap;
@@ -33,8 +36,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-public class test {
-    public static void main(String[] arg){
+public class test \{
+    public static void main(String[] arg)\{
     	SystemEntity systemEntity = new SystemEntity();
     	systemEntity.setName("
 张三
@@ -46,73 +49,75 @@ public class test {
 
 ");
         System.out.println(transitionEntitySe(systemEntity));
-    }
+    \}
 
 `//`实体类转`HashMap-`第一种方法
 
-    public static HashMap\<String,Object\> transitionEntity(Object onClass){
+    public static HashMap\<String,Object\> transitionEntity(Object onClass)\{
         HashMap\<String,Object\> hashMap = new HashMap\<String,Object\>();
         Method[] methods = onClass.getClass().getMethods();
-        for(Method method:methods){
-            try {
+        for(Method method:methods)\{
+            try \{
                 //
 获取方法时，默认会有`getClass,`需要排除
 
-                if(method.getName().indexOf("get")==0&&!method.getName().equals("getClass")){
+                if(method.getName().indexOf("get")==0&&!method.getName().equals("getClass"))\{
                     hashMap.put(method.getName().substring(3,4).toLowerCase()+method.getName().substring(4),method.invoke(onClass));
-                }
-            } catch (IllegalAccessException e) {
+                \}
+            \} catch (IllegalAccessException e) \{
                 e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            \} catch (InvocationTargetException e) \{
                 e.printStackTrace();
-            }
-        }
+            \}
+        \}
         return hashMap;
-    }
+    \}
 
 `//`实体类转`HashMap-`第二种方法`-`建议
 
-    public static HashMap\<String,Object\> transitionEntitySe(Object onClass){
+    public static HashMap\<String,Object\> transitionEntitySe(Object onClass)\{
         HashMap\<String,Object\> hashMap = new HashMap\<String,Object\>();
         Field[] fields = onClass.getClass().getDeclaredFields();
-        for(Field field:fields){
+        for(Field field:fields)\{
             //
 反射时让私有变量变成可访问
 
             field.setAccessible(true);
-            try {
+            try \{
                 hashMap.put(field.getName(),field.get(onClass));
-            } catch (IllegalAccessException e) {
+            \} catch (IllegalAccessException e) \{
                 e.printStackTrace();
-            }
-        }
+            \}
+        \}
         return hashMap;
-    }
-}
+    \}
+\}
 实体类
 
-public class SystemEntity {
+public class SystemEntity \{
     private int id;
     private String name;
 
-    public int getId() {
+    public int getId() \{
         return id;
-    }
-    public void setId(int id) {
+    \}
+    public void setId(int id) \{
         this.id = id;
-    }
+    \}
 
-    public String getName() {
+    public String getName() \{
         return name;
-    }
+    \}
 
-    public void setName(String name) {
+    public void setName(String name) \{
         this.name = name;
-    }
-}
+    \}
+\}
  执行结果
 `{name=`张三
 
-, id=0}
-{name=
+, id=0\}
+\{name=
 李四`, id=0}`
+
+:::

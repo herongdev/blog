@@ -3,7 +3,10 @@ title: spring 中的bean具体指什么
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 spring 中的bean具体指什么，我是新手，和我详细说明一下，可以打比方
 
 Spring中的bean是Spring IoC容器管理的对象。IoC（控制反转）容器负责实例化、配置和组装bean。通过Spring IoC容器，你可以将对象之间的依赖关系从代码中解耦出来，转移到Spring配置文件或注解中。
@@ -29,3 +32,5 @@ Spring中的bean是Spring IoC容器管理的对象。IoC（控制反转）容器
 4. 单例和原型：默认情况下，Spring只为每个bean定义创建一个实例（单例）。但如果你需要，也可以配置为每次请求都创建一个新实例（原型）。
 
 希望这个比喻和详细说明可以帮助你更好地理解Spring中的bean和IoC容器的作用！
+
+:::

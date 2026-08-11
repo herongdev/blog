@@ -3,7 +3,10 @@ title: mappers
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 附录, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 mappers目录中的XML文件通常是在使用MyBatis或者MyBatis-Spring时用到的。MyBatis是一个优秀的持久层框架，它支持定制化SQL、存储过程以及高级映射。MyBatis消除了几乎所有的JDBC代码和参数的手工设置以及结果集的检索。
 
 MyBatis通过XML或注解配置SQL语句，然后开发者可以直接调用已映射的SQL语句。这些xxxxx.xml文件，即Mapper XML文件，就是用来定义SQL映射语句的。每个mapper xml文件通常与一个Java接口相对应，这个接口被称为Mapper接口。
@@ -15,3 +18,5 @@ MyBatis通过XML或注解配置SQL语句，然后开发者可以直接调用已�
 至于如何找到对应的XML文件，这个是在MyBatis的配置文件中进行的。你可以在MyBatis的全局配置文件mybatis-config.xml中使用\<mappers\>标签导入所有的Mapper XML文件，也可以在Spring的配置文件中使用\<bean\>和\<property\>标签进行配置。
 
 这些文件并不是自动生成的，需要开发者根据实际需求手动创建和编写。但是，有一些开发工具和插件，如IntelliJ IDEA中的MyBatis plugin，可以帮助你更容易地创建和管理这些Mapper XML文件和Mapper接口。
+
+:::

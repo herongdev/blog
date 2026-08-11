@@ -1,0 +1,102 @@
+---
+title: "Vue3.0 中的 monorepo 管理模式"
+date: 2026-08-11
+categories:
+  - "Vue 系统教程"
+tags:
+  - "Vue"
+  - "Vue3"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "响应式与组合式 API"
+description: "前言 前段时间9月21日参加了在成都举办的第五届FEDAY， 印象比较深刻的是白鹭引擎首席架构师@王泽分享的《框架开发中的基础设施搭建》，提到了在下一代白鹭引擎中使用到monorepo模式，以用来管理多个模块，协调各个模块之间的依赖更新。 正好在国庆期间10月5日尤大公开了vue。"
+sidebarWeight: 59
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/vue3/与vue2的比较/Vue3.0 中的 monorepo 管理模式.md"
+---
+::: v-pre
+
+# Vue3.0 中的 monorepo 管理模式
+
+> 本节目标：理解“Vue3.0 中的 monorepo 管理模式”的核心思路，并能把它用于实际开发或面试表达。
+**前言**
+前段时间9月21日参加了在成都举办的[第五届FEDAY](https://fequan.com/2019/)， 印象比较深刻的是白鹭引擎首席架构师@王泽分享的[《框架开发中的基础设施搭建》](http://www.sohu.com/a/343217202_463970)，提到了在下一代白鹭引擎中使用到monorepo模式，以用来管理多个模块，协调各个模块之间的依赖更新。
+正好在国庆期间10月5日尤大公开了[vue3.0](https://github.com/vuejs/vue-next)已完成的源码，也是采用了monorepo管理模式，看来monorepo确实有其独到的优势，再加上以前在项目中遇到过相关的痛点，所以深入地了解了一下这种模式，本文将基于vue3.0讨论如何通过monorepo模式来管理代码的。
+**什么是 monorepo？**
+monorepo是一种将多个package放在一个repo中的代码管理模式，摒弃了传统的多个package多个repo的模式。
+目前 Babel, React, Angular, Ember, Meteor, Jest等许多开源项目都使用该种模式来管理代码。
+**解决的问题**
+
+1. 多个repo难以管理，编辑器需要打开多个项目；
+2. 某个模块升级，依赖改模块的其他模块需要手动升级，容易疏漏；
+3. 公用的npm包重复安装，占据大量硬盘容量，比如打包工具webpack会在每个项目中安装一次；
+4. 对新人友好，一句命令即可完成所有模块的依赖安装，且整个项目模块不用到各个仓库去找；
+
+**带来的问题**
+
+1. 所有package代码集中在一个项目，单个项目体积较大；
+2. 所有package代码对所有人可见，无法做权限管理；
+
+**如何实现 monorepo？**
+目前业界最佳实践是采用[yarn workspace](https://yarnpkg.com/lang/en/docs/workspaces/) + [lerna](https://github.com/lerna/lerna) 来实现。
+yarn workspace可以实现在一个项目中实现多个模块的依赖新增和共用，而lerna的功能则更完善，不仅可以管理多个模块，还有清除模块node_modules，发布模块到npm，自动更新模块间版本依赖，并支持全量发布和根据改动单独发布等功能。
+yarn官方推荐用yarn来处理依赖安装，用lerna来处理依赖更新和发布问题。
+下面开始基于monorepo模式来搭建一个仿vue3.0的项目
+**1. 全局安装 yarn 和 lerna**
+$ npm i -g yarn lerna复制代码
+**2. 初始化项目**
+$ mkdir vue-next && cd vue-next $ lerna init
+// 此时项目结构vue-next|-packages|-lerna.json|-package.json复制代码
+**3. 添加yarn workspace配置**
+// vue-next/package.json"private": true, // 项目根目录下的private必须设置成true，否则workspace不会被启用"workspaces": [ // 指定需要管理的模块 "packages/*"],复制代码
+**4. 添加模块内容**
+// 此时项目结构vue-next|-packages // packages下的所有包结构类似，下面仅展示了compiler-core包的目录结构 |-compiler-core // 与平台无关的编译器 |-__tests__ // 测试用例 |-src // 源文件 |-index.js // 根文件 |-package.json // 包配置 |-compiler-dom // 与浏览器相关的编译器 |-reactivity // 数据响应式系统 |-runtime-core // 与平台无关的runtime |-runtime-dom // 与浏览器相关的runtime |-runtime-test // 为了测试的轻量级runtime |-server-renderer // 服务端渲染 |-shared // 内部帮助方法 |-template-explorer // 预览模版转化成render函数的工具 |-vue // 用于构建完整的vue版本
+|-lerna.json|-package.json复制代码
+**5. 安装相关依赖**
+项目中一般只会用到以下3种安装形式
+**5.1 给根项目安装依赖（一般是公用的开发工具）**
+// yarn 使用 workspace 模式安装 npm 包时必须加 -W 参数$ yarn add -W -D rollup typescript jest prettier ...复制代码
+**5.2 给package安装外部npm包**
+// @vue/compiler-core 是取 vue-next/packages/compiler-core/package.json 的 name 字段$ yarn workspace @vue/compiler-core add acorn estree-walker source-map $ yarn workspace @vue/template-explorer add monaco-editor 复制代码
+**5.3 给package安装内部npm包**
+// @vue/compiler-core 是取 vue-next/packages/compiler-core/package.json 的 name 字段$ yarn workspace @vue/compiler-dom add @vue/compiler-core@3.0.0-alpha.1 // 一定要指定正确的版本号，不然会到npm查找包$ yarn workspace @vue/runtime-core add @vue/reactivity@3.0.0-alpha.1 $ yarn workspace @vue/runtime-dom add @vue/runtime-core@3.0.0-alpha.1 $ yarn workspace @vue/runtime-test add @vue/runtime-core@3.0.0-alpha.1 $ yarn workspace vue add @vue/compiler-dom@3.0.0-alpha.1 @vue/runtime-dom@3.0.0-alpha.1 // 可同时安装多个复制代码
+至此已经完成了项目的基础搭建（打包等工程化内容略过，本文主要介绍monorepo相关），似乎主要是yarn在工作，lerna没有没有派上用场，下面来介绍lerna在哪些地方可以赋能vue3.0。
+**lerna介绍**
+A tool for managing JavaScript projects with multiple packages.
+一个在js项目中用来管理多个package的工具。
+主要是便于开发者更加高效简便地管理package本身，依赖，发布。
+**1. 初始化项目**
+// 生成基本项目结构和 lerna 配置$ lerna init 复制代码
+**2. 安装依赖**
+如果需要重新安装依赖，切记在删除项目根路径的node_modules前进行git提交保存，因为monorepo模式是以软链接的形式来实现内部 package 引用的，直接删除整个node_modules的同时会把所有package的文件删掉，难以恢复！
+建议永不进行删除整个node_modules的操作，可以进入node_modules全选后再取消勾选内部package软链接再删除。
+// 给所有 package 安装依赖，在对于的目录生成 node_modules，并在 node_modules 中为内部package生成软链接$ lerna bootstrap// 默认会使用 npm 安装，但是本项目使用 yarn，可以指定使用 yarn$ lerna bootstrap --npm-client=yarn // 或者在 lerna.json 配置 \{"npmClient": "yarn"\}// 上述安装方式如果不同package之间安装了同一个npm包，会造成重复安装，增加安装时间和项目体积// 可以利用 node_modules 向上查找的特性，将所有依赖安装到项目根路径的 node_modules 中，lerna 加上 --hosit即可$ lerna bootstrap --hosit// 使用lerna bootstrap --npm-client=yarn --hoist// 会有冲突，报错--hoist is not supported with --npm-client=yarn, use yarn workspaces instead------------------------------------------------$ yarn // 推荐！！ 用 yarn workspace 特性替代 lerna bootstrap复制代码
+**3. 清除pacakge中多余的node_modules**
+// 在 6.2 安装依赖时，部分npm包会给当前的package目录安装 node_modules// 同时根路径中的 node_modules 也会安装项目$ lerna clean复制代码
+**4. 查看所有pacakge**
+// package.json 中设置了 "private": true 的 package 不会展示$ lerna ls复制代码
+**5. 查看有改动的pacakge**
+// package.json 中设置了 "private": true 的 package 不会展示// 在 Independent mode 下只有改动过的 package 才会被发布// vue3.0 采用的是 Fixed/Locked mode (default)，每次都会发布所有 package，package 版本跟随项目的版本走$ lerna changed复制代码
+**6. 推送到git和发布到npm（重要）**
+// 根据当前的 lerna 模式（Fixed/Locked mode (default) 或者 Independent mode）来进行整包发布或者有改动的 package 单独发布// 每次发布会自动更新相关package的版本号，并且会更新引用该package的其他package依赖$ lerna publish 复制代码
+[monorepo demo 链接](https://github.com/lilililee/monorepo-example)
+**总结**
+本文介绍了monorepo管理模式的实现，通过yarn workspace和lerna两者相结合，达到了在一个repo 中高效便捷地管理多个package的目的。
+在我们日常工作中可能没有开发白鹭引擎，vue这类大型框架的需求，但是这不代表我们用不到该模式，下面我总结了几种适合monorepo管理模式的场景：
+
+1. 大型框架，依赖自身开发的多个独立底层模块支撑；
+2. 后台项目，技术栈统一的多个后台系统，每个系统作为独立的package单独开发，优化开发和打包时间，同时共用的组件和js方法可以作为一个package；
+3. ui组件库，各个组件之间独立实现按需加载，例如饿了么的移动端组件库[mint-ui](https://github.com/ElemeFE/mint-ui/)；
+4. sdk，接入同一sdk的不同渠道代码统一管理；
+5. ...
+
+**参考资料**
+[框架开发中的基础设施搭建](http://www.sohu.com/a/343217202_463970)
+[Vue 3 源码导读](https://juejin.im/post/6844903957421096967)
+[基于lerna和yarn workspace的monorepo工作流](https://zhuanlan.zhihu.com/p/71385053)
+ \> 来自 \<[https://juejin.cn/post/6844903961896435720](https://juejin.cn/post/6844903961896435720)\>
+
+:::

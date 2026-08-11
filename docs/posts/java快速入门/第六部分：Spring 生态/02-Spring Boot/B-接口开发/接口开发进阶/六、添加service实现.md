@@ -3,7 +3,10 @@ title: 六、添加service实现
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 package com.mincheng.construction.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -42,3 +45,5 @@ public class MenusServiceImpl extends ServiceImpl\<MenusMapper, Menus\>
     }
 }
 ```
+
+:::

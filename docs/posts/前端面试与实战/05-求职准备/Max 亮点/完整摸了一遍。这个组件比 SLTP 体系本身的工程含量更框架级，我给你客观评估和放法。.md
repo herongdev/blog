@@ -1,0 +1,126 @@
+---
+title: "完整摸了一遍。这个组件比 SLTP 体系本身的工程含量更框架级，我给你客观评估和放法。"
+date: 2026-08-11
+categories:
+  - "前端面试与实战"
+tags:
+  - "前端面试"
+  - "算法"
+  - "求职"
+  - "教程"
+  - "OneNote"
+  - "求职准备"
+description: "完整摸了一遍。这个组件比 SLTP 体系本身的工程含量更\"框架级\"，我给你客观评估和放法。 一、客观评估：值不值得写 结论：值得写，且属于上等亮点。 给你 3 条客观理由： 1. 架构思维是\"框架级\"而不是\"业务级\" ： 严格四层分层 core (纯 TS pipeline +。"
+sidebarWeight: 6
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/a-吊打面试官/简历设计/Max 亮点/完整摸了一遍。这个组件比 SLTP 体系本身的工程含量更框架级，我给你客观评估和放法。.md"
+---
+::: v-pre
+
+# 完整摸了一遍。这个组件比 SLTP 体系本身的工程含量更框架级，我给你客观评估和放法。
+
+> 本节目标：理解“完整摸了一遍。这个组件比 SLTP 体系本身的工程含量更框架级，我给你客观评估和放法。”的核心思路，并能把它用于实际开发或面试表达。
+完整摸了一遍。这个组件比 SLTP 体系本身的工程含量更"框架级"，我给你客观评估和放法。
+
+## 一、客观评估：值不值得写
+
+**结论：值得写，且属于上等亮点。** 给你 3 条客观理由：
+
+1. **架构思维是"框架级"而不是"业务级"**：
+- 严格四层分层 `core (纯 TS pipeline + utils) → composables (Vue 桥接) → strategy (4 种 locale 策略) → component (headless + 默认皮肤)`；
+- 用了 **Headless Component + Strategy + Pipeline** 三种设计模式叠加；
+- **三段式 pipeline** 把"初始化态 / 输入态 / 操作态"分相处理（`applyInit / applyInput / applyOperation`）—— 这是一般 number input 组件最容易翻车的点（输入 `1.0` 立刻被补成 `1`、光标乱跳），这套设计专门解决；
+- 这种分层只在框架/UI 库里能见到，业务前端能写出来的人不多。
+
+2. **金融场景独到细节，全部能讲故事**：
+- **显示层禁止四舍五入**，强制用 Decimal `trunc()` 向零截断 —— 报价不会被偷偷"涨上去"；
+- **从 `step` 反推最小显示位数**（含科学计数法 `1e-5` 解析）—— 解决 JS `1.00010` 被丢成 `1.0001` 但金融 step=0.00001 必须显示 5 位的坑；
+- **`presentation: auto`** 双态展示：聚焦走 `leanTyping`（不补尾随零，保护 `1.0` `0.`）/失焦走 `pretty`（按 step 补零、按 locale 千分号）；
+- **4 种 locale 策略**：`intl` 3 位分组 / `cjk4` 4 位分组（万/亿）/ `currency` 货币 / `leanTyping`，按 `Intl.NumberFormat` 反推每个 locale 的 `decimalChar / groupChar` 并缓存；
+- **7 种舍入模式**（half-up/down/even、up/down/ceil/floor/trunc）；
+- **全程 Decimal.js**：step 累加、model 同步用 `lessThan(1e-10)` 容差比较防循环、加速因子 `product` 模式连乘；
+- **IME 合成保护** + **滚轮 throttle 16ms** + **长按连发**（300ms 判定 + 100ms 间隔）+ **修饰键加速**（shift×10 / ctrl×5 / alt×0.1，max/product 两种组合）+ **触屏支持**；
+- **受控 / 非受控双模**：`isControlled = modelValue !== undefined`，非受控首次"初始提升"，失焦 `finalize()` 强制规范化。
+
+3. **复用面真实可考证**：
+- 是 **SLTP 体系（亮点 2）的底座**；
+- 直接复用：`LimitPriceInput.vue`（限价单输入）、`PriceEditor.vue`（订单改价）、`CloseTabPane.vue`（平仓数量）、`SLTPField.vue`（止盈止损）—— **4+ 个金融关键输入入口共用同一个 headless**；
+- 错误码与 i18n 解耦：内核 emit `'inValid' / 'lessThanMin' / 'greaterThanMax' / 'negativeNotAllowed'` 等 key，皮肤层做 18 语言翻译，业务可以无缝换皮。
+
+**风险提示**：`core/pipeline.ts` 里 `applyInit` 还有几处 `console.warn` 残留（line 25/30/37/40），看起来像开发期日志没清。简历不会暴露这个，但**面试 deep-dive 时如果被追问到代码细节，最好提前清掉，或者面试时主动说"目前在清理 verbose log"**。
+
+---
+
+## 二、怎么放进简历（最佳放法）
+
+**不要让它和 SLTP 那条互相抢戏。** 我建议两条并排，分工：
+
+- **SLTP 那条**（亮点 2）：强调"业务规则编排 + 4 入口共用一份控制器"；
+- **NumericInput 这条**（新增亮点 / 独立 Top）：强调"框架级工程能力 + 金融精度细节 + 复用底座"。
+
+这样面试官看完会形成一个清晰认知：**你既能做业务规则的复杂封装，也能下沉做基建组件**——这正是"前端技术负责人"的画像。
+
+排在 Top 8 的位置建议放在 **第 6 位**（紧挨 Worker 化那条），这样上半段基建 / 下半段业务，节奏好。
+
+---
+
+## 三、可以直接放进简历的两段
+
+### 1）追加到「技术亮点扫描」（第 14 条）
+
+【技术亮点 14】Headless 数值输入框：分层 pipeline + 多策略 + 金融精度
+
+- **文件位置**：
+- `src/components/numeric-input/core/{core,pipeline,types,constants}.ts`、`utils/{number,format}.ts`
+- `src/components/numeric-input/composables/{useNumericCore,useNumericInteractions,useSplitOptions,useModelSync}.ts`
+- `src/components/numeric-input/components/{NumericInputHeadless,NumericInput}.vue`
+- `src/components/numeric-input/numberStrategy.ts`
+- **实现内容**：
+- 严格四层分层 —— `core`（纯 TS pipeline + utils）→ `composables`（Vue 桥接）→ `strategy`（4 种 locale 策略）→ `component`（headless + 默认皮肤），框架级工程能力；
+- **三段式 pipeline** 把"初始化态 / 输入态 / 操作态"完全分相：`applyInit` 走 clamp + 步长对齐 + 精度舍入；`applyInput` 保留用户原始字符串只做校验、不格式化（避免光标跳/补零干扰输入）；`applyOperation` 在 spin/wheel/keyboard/setModel 时统一规范化；
+- **双态展示**：`presentation: auto/typing/pretty`，聚焦用 `createLeanTypingStrategy`（不从 step 推断补零，保护 `1.0` `0.`），失焦用 `createIntlNumberStrategy / cjk4 / currency`（按 step 推断补尾随零、按 locale 千分号或 CJK 4 位分组）；
+- **4 种 locale 策略**：`Intl.NumberFormat` 反推每个 locale 的 `decimalChar / groupChar` 并缓存；
+- **7 种舍入模式**（half-up / half-down / half-even / up / down / ceil / floor / trunc），金融场景默认显示层 `trunc` 向零截断、显式禁用四舍五入，避免报价被偷偷"涨上去"；
+- **从 step 反推最小显示位数**（含科学计数法 `1e-5` 字符串解析），解决 JS `1.00010` 被丢成 `1.0001` 但金融 5 位 digits 必须保留的坑；
+- **全程 Decimal.js**：step 累加、model 同步用 `lessThan(1e-10)` 容差比较防循环更新、加速因子 `product` 模式连乘；
+- **完备交互**：滚轮 throttle 16ms、键盘 ArrowUp/Down + PageUp/Down + 修饰键加速（shift×10 / ctrl×5 / alt×0.1，max/product 双组合模式）、长按连发（300ms 长按判定 + 100ms 间隔）、IME 合成保护、触屏 touchstart/touchend；
+- **受控 / 非受控双模**：`isControlled = modelValue !== undefined`，非受控首次"初始提升"一次 model，失焦 `finalize()` 强制规范化；
+- **错误码与 i18n 解耦**：内核 emit `'inValid' / 'lessThanMin' / 'greaterThanMax' / 'negativeNotAllowed'`，皮肤层挂 18 语言翻译，业务可换皮零成本；
+- **复用面**：SLTPField、LimitPriceInput、PriceEditor、CloseTabPane 等 4+ 个金融关键输入入口共用同一份 headless。
+- **技术栈**：Vue 3 Composition API、`defineModel`、Headless Component / Strategy / Pipeline 三种模式、Decimal.js、`Intl.NumberFormat`、`useThrottleFn`、TypeScript。
+- **业务价值**：所有金融数值输入（价格、数量、止盈止损、限价、改价、平仓等）共用一套精度无误差、locale 自适应、IME/触屏/键盘/滚轮全场景可控的输入原语。新增金融输入场景从"造一个 number input"降级为"挑配置策略"。
+- **简历建议表述**：
+\> 自研 Headless 数值输入框：以「core pipeline + 4 种 locale 策略 + Vue composable 桥接 + 默认皮肤」四层分层封装，三段式 pipeline 分相处理初始化/输入/操作，聚焦/失焦双态展示策略，全程 Decimal.js 精算并显式禁用显示层四舍五入；支持 7 种舍入模式、修饰键加速、长按连发、IME 保护、受控/非受控双模、错误码 i18n 解耦；**作为 SLTPField / LimitPriceInput / PriceEditor / CloseTabPane 等 4+ 个金融关键输入入口的统一底座**，新增金融输入场景从写组件降级为选策略。
+
+---
+
+### 2）插入「核心简历亮点」第 6 位（其余条目顺延）
+
+\> **【框架级 Headless 数值输入底座】**
+\> 自研以「core pipeline + 4 种 locale 策略 + composable 桥接 + 默认皮肤」四层分层的 Headless Numeric Input：三段式 pipeline 把初始化/输入/操作三相分离（解决传统 number input "输入 `1.0` 即被补 `1`"等顽疾），聚焦/失焦双态展示策略，**显示层显式禁用四舍五入并用 Decimal.js trunc 截断**（防金融报价被偷涨）、按 step 反推最小小数位（兜住 JS `1.00010` 被丢精度）、IME / 触屏 / 滚轮 / 修饰键加速 / 长按连发 / 受控-非受控双模全场景可控；作为 **SLTPField、LimitPriceInput、PriceEditor、CloseTabPane** 等 4+ 个金融输入入口的统一底座。
+
+---
+
+## 四、合并后 Top 8 的最终顺序（仅作建议）
+
+| # | 亮点 | 性质 |
+| --- | --- | --- |
+| 1 | 实时行情列表 — Worker + rAF + 虚拟化 | 性能 / 实时 |
+| 2 | 自研 SL/TP 输入体系 | 业务深度 |
+| 3 | 交易 WebSocket 全链路 | 通信 / 自愈 |
+| 4 | K 线自定义 Datafeed | 图表 / 实时 |
+| 5 | 金融级 MFA 编排框架 | 安全 / 编排 |
+| 6 | **Headless 数值输入底座**（新加） ⭐ | **框架基建** |
+| 7 | 独立 Web Worker 化的计算密集模块 | 性能 |
+| 8 | HTTP 中台层 + 跨流程编排 + i18n + 业务规则落地 | 工程基建 |
+
+\> **写法建议**：1~5 当"技术深度题"；6~7 当"工程基建"；8 当"业务深度"。
+\> 每条都带量化（4 入口 / 4 策略 / 7 舍入模式 / 18 语言 / 20fps / 数千品种 等），与代码点一一对应，被追问不会慌。
+
+---
+
+需要我把第 6 条和第 2 条的"协同关系"再写一段过渡话术（用于面试自我介绍中口头表达"我先做了 NumericInput 这个底座，再用它和 4 个 composable 搭起 SL/TP 这一层业务积木"）吗？
+
+:::

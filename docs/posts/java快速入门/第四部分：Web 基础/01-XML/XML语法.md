@@ -3,7 +3,10 @@ title: XML语法
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **基本语法：**
 `1. xml`文档的后缀名
 
@@ -68,7 +71,7 @@ tags: [Java, Web基础, OneNote]
 
 **约束：**规定`xml`文档的书写规则
 
-![xm xm colorredcolor xml xm](Exported%20image%2020260702233440-0.png)
+
 
 `*` 作为框架的使用者`(`程序员`)`，做到以下即可：
 `1.` 能够在`xml`中引入约束文档
@@ -103,3 +106,5 @@ xsi:schemaLocation="http://www.itcast.cn/xml  student.xsd"
 xmlns="http://www.itcast.cn/xml"
 xsi:schemaLocation="http://www.itcast.cn/xml  student.xsd"\>
 ```
+
+:::

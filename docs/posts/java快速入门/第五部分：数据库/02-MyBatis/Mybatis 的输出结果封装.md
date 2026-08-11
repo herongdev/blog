@@ -3,7 +3,10 @@ title: Mybatis 的输出结果封装
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `4.1 resultType` **配置结果类型**
 
 `resultType`
@@ -81,50 +84,50 @@ select * from user
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public class User implements Serializable {
+public class User implements Serializable \{
 private Integer userId;
 private String userName;
 private Date userBirthday;
 private String userSex;
 private String userAddress;
-public Integer getUserId() {
+public Integer getUserId() \{
 return userId;
-}
-public void setUserId(Integer userId) {
+\}
+public void setUserId(Integer userId) \{
 this.userId = userId;
-}
-public String getUserName() {
+\}
+public String getUserName() \{
 return userName;
-}
-public void setUserName(String userName) {
+\}
+public void setUserName(String userName) \{
 this.userName = userName;
-}
-public Date getUserBirthday() {
+\}
+public Date getUserBirthday() \{
 return userBirthday;
-}
-public void setUserBirthday(Date userBirthday) {
+\}
+public void setUserBirthday(Date userBirthday) \{
 传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
 this.userBirthday = userBirthday;
-}
-public String getUserSex() {
+\}
+public String getUserSex() \{
 return userSex;
-}
-public void setUserSex(String userSex) {
+\}
+public void setUserSex(String userSex) \{
 this.userSex = userSex;
-}
-public String getUserAddress() {
+\}
+public String getUserAddress() \{
 return userAddress;
-}
-public void setUserAddress(String userAddress) {
+\}
+public void setUserAddress(String userAddress) \{
 this.userAddress = userAddress;
-}
+\}
 @Override
-public String toString() {
+public String toString() \{
 return "User [userId=" + userId + ", userName=" + userName + ", userBirthday="
 + userBirthday + ", userSex="
 + userSex + ", userAddress=" + userAddress + "]";
-}
-}
+\}
+\}
 4.1.3.2 Dao
 **接口**
 
@@ -150,13 +153,13 @@ select * from user
 **测试查询结果**
 
 @Test
-public void testFindAll() {
+public void testFindAll() \{
 传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
 List\<User\> users = userDao.findAll();
-for(User user : users) {
+for(User user : users) \{
 System.out.println(user);
-}
-}
+\}
+\}
 - **为什么名称会有值呢？**
 - **因为：**`mysql` **在** `windows` **系统中不区分大小写！**
 
@@ -236,11 +239,13 @@ id
 **测试结果**
 
 @Test
-public void testFindAll() {
+public void testFindAll() \{
 List\<User\> users = userDao.findAll();
-for(User user : users) {
+for(User user : users) \{
 System.out.println(user);
-}
-}
+\}
+\}
  **运行结果：**传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
 `
+
+:::

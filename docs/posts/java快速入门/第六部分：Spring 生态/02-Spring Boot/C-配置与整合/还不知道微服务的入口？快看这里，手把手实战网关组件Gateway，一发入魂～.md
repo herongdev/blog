@@ -3,7 +3,10 @@ title: 还不知道微服务的入口？快看这里，手把手实战网关组�
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 隐 风
 
 于 2022-04-12 20:23:51 发布
@@ -88,7 +91,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 [https://maven.apache.org/
 \<dependency\>
 \<groupId\>org.springframework.cloud\</groupId\>
 \<artifactId\>spring-cloud-dependencies\</artifactId\>
-\<version\>${spring-cloud.version}\</version\>
+\<version\>$\{spring-cloud.version\}\</version\>
 \<type\>pom\</type\>
 \<scope\>import\</scope\>
 \</dependency\>
@@ -227,3 +230,5 @@ port: 8081
 ————————————————
 版权声明：本文为CSDN博主「隐 风」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/a1774381324/article/details/124074749
+
+:::

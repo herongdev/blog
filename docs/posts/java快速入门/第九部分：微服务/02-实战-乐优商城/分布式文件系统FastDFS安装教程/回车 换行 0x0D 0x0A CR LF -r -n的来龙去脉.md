@@ -3,7 +3,10 @@ title: 回车 换行 0x0D 0x0A CR LF -r -n的来龙去脉
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **【回车和换行的历史】**
 在计算机还没有出现之前，有一种叫做电传打字机（Teletype Model 33）的玩意，每秒钟可以打10个字符。但是它有一个问题，就是打完一行，需要回车换行，此过程，要用去0.2秒，正好可以打两个字符。要是在这0.2秒里面，又有新的字符传过来，那么这个字符将丢失。
@@ -109,3 +112,5 @@ dos2unix file_name
 
  \<https://www.crifan.com/detailed_carriage_return_0x0d_0x0a_cr_lf__r__n_the_context/\>
 ```
+
+:::

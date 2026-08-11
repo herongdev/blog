@@ -3,14 +3,17 @@ title: nginx 缓存设置
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
-[![17106515](Exported%20image%2020260702233637-0.png)](https://img2018.cnblogs.com/blog/1165731/201906/1165731-20190623163943116-1290262811.png)
+::: v-pre
+
+[](https://img2018.cnblogs.com/blog/1165731/201906/1165731-20190623163943116-1290262811.png)
 
 ==Nginx====缓存配置指南==
 **1.****如何配置基本缓存设置**
 开启简单的缓存配置，只需要两个指令：proxy_cache_path和proxy_cache。proxy_cache_path配置缓存的存放地址和其他的一些常用配置，proxy_cache指令是为了启动缓存。
 
-proxy_cache_path /path/to/cache levels=1:2 keys_zone=mycache:10m max_size=10g inactive=60m use_temp_path=off;￼server {￼# ...￼    location / {￼        proxy_cache mycache;￼        proxy_pass [http://my_upstream](http://my_upstream);￼    }￼}
+proxy_cache_path /path/to/cache levels=1:2 keys_zone=mycache:10m max_size=10g inactive=60m use_temp_path=off;￼server \{￼# ...￼    location / \{￼        proxy_cache mycache;￼        proxy_pass [http://my_upstream](http://my_upstream);￼    \}￼\}
 
 相关配置说明如下：
 
@@ -36,7 +39,7 @@ Default: —￼Context: http , server , location
 proxy_no_cache $cookie_nocache $arg_nocache$arg_comment;￼proxy_no_cache $http_pragma    $http_authorization;
 其中，cookie_nocache、arg_nocache...皆为变量，可以根据你访问的匹配策略来设置，其值只有2类，0和非0;
 访问匹配策略例如：
-if ($request_uri ~ ^/(login|register|password\/reset)/) { set $cookie_nocache 1; }
+if ($request_uri ~ ^/(login|register|password\/reset)/) \{ set $cookie_nocache 1; \}
 如果在此链式配置中，只要有一个值不为0，则不会cache；例如：
 proxy_no_cache $cookie_nocache(0) $arg_nocache(1) $arg_comment(0)
 则不会被cache。`
@@ -82,15 +85,15 @@ Syntax:  proxy_cache_min_uses number;￼Default: proxy_cache_min_uses 1;￼Conte
 **3. nginx****缓存扩展**
 **(1)proxy_cache_use_stale****增强站点容错能力**
 源站有问题时，nginx可以通过proxy_cache_use_stale指令开启容错能力，即使用缓存内容来响应客户端的请求。举例如下：
-location / {  ￼    ...  ￼    proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;  ￼}
+location / \{  ￼    ...  ￼    proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;  ￼\}
 如上配置表示，当作为cache的NGINX收到源站返回error、timeout或者其他指定的5XX错误，并且在其缓存中有请求文件的陈旧版本，则会将这些陈旧版本的文件而不是错误信息发送给客户端。
 **(2)****多磁盘分割缓存**
 使用NGINX，不需要建立一个RAID（磁盘阵列）。如果有多个硬盘，NGINX可以用来在多个硬盘之间分割缓存。举例如下：
 # 我们假设每块硬盘挂载在相应的目录中：/mnt/disk1、/mnt/disk2、/mnt/disk3￼
 proxy_cache_path /mnt/disk1 levels=1:2 keys_zone=cache_1:256m max_size=1024G use_temp_path=off;￼proxy_cache_path /mnt/disk2 levels=1:2 keys_zone=cache_2:256m max_size=1024G use_temp_path=off;￼proxy_cache_path /mnt/disk3 levels=1:2 keys_zone=cache_3:256m max_size=1024G use_temp_path=off;
 
-split_clients $request_uri $disk {￼    33.3%     1;￼    33.3%     2;￼    *         3;￼}￼
-location / {￼    proxy_pass [http://backend](http://backend);￼    proxy_cache_key $request_uri;￼    proxy_cache cache_$disk;￼}
+split_clients $request_uri $disk \{￼    33.3%     1;￼    33.3%     2;￼    *         3;￼\}￼
+location / \{￼    proxy_pass [http://backend](http://backend);￼    proxy_cache_key $request_uri;￼    proxy_cache cache_$disk;￼\}
 
 在这份配置中，使用了3个独立的缓存，每个缓存专用一块硬盘，另外，3个独立的线程池也各自专用一块硬盘。
 缓存之间（其结果就是磁盘之间）的负载均衡使用split_clients模块，split_clients非常适用于这个任务。
@@ -99,3 +102,5 @@ location / {￼    proxy_pass [http://backend](http://backend);￼    proxy_cach
 
  \<https://www.cnblogs.com/bdhk/p/9198499.html\>
 ```
+
+:::

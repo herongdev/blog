@@ -1,0 +1,80 @@
+---
+title: "实现在线预览PDF的几种解决方案"
+date: 2026-08-11
+categories:
+  - "Vue 系统教程"
+tags:
+  - "Vue"
+  - "Vue3"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "项目实战"
+description: "因客户需要实现PDF的预览处理，在网上找了一些PDF在线预览的解决方案，有的用PDFJS的在线预览方式，有的使用PDFObject的嵌入式显示，有的通过转换JPG/PNG方式实现间接显示的方式，开始是想通过简单的方式，能够使用JS插件实现预览最好，可是在线预览总是有一些不足，如不。"
+sidebarWeight: 64
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/实战/实现在线预览PDF的几种解决方案.md"
+---
+::: v-pre
+
+# 实现在线预览PDF的几种解决方案
+
+> 本节目标：理解“实现在线预览PDF的几种解决方案”的核心思路，并能把它用于实际开发或面试表达。
+
+> 说明：原 OneNote 中有图片引用，但图片未包含在导出目录中；本页保留了可用的文字与代码内容。
+因客户需要实现PDF的预览处理，在网上找了一些PDF在线预览的解决方案，有的用PDFJS的在线预览方式，有的使用PDFObject的嵌入式显示，有的通过转换JPG/PNG方式实现间接显示的方式，开始是想通过简单的方式，能够使用JS插件实现预览最好，可是在线预览总是有一些不足，如不同浏览器的兼容问题，甚至不同的手机平台中展示的效果也不一样，不过最好还是采用了间接的方式，把PDF转换为图片展示效果，达到客户的要求。
+**1****、在线实现预览的方式**
+一开始我还是很倾向使用这种方式，希望能采用一个较为好的JS插件的方式，实现PDF的在线预览（通过Web预览），因此在Github上找到排名比较高的PDF插件
+
+一看排名还是很高的，那么采用它应该不错，查看自带的PDF文件，效果还是杠杠的。
+
+不过客户的要求是显示正常的发票PDF文件，换一下文件地址，有部分信息显示不了，找了一下没有看到解决方法，所以效果不达标。
+
+连基本的发票也显示不了，那我这个就不能用它来显示发票PDF文件了。
+最后，测试了使用PDFObject（[https://pdfobject.com/](https://pdfobject.com/) ）的方式实现在线嵌入PDF显示的方式，这个JS插件也是不错的，同样可以在GitHub上可以找到。
+它的使用也是很简单的，如下代码所示。
+\<script src="/js/pdfobject.js"\>\</script\>\<script\>PDFObject.embed("/pdf/sample-3pp.pdf", "#example1");\</script\>
+如果需要设置预览窗口的大小，通过设置样式即可。
+\<style\>.pdfobject-container \{ height: 500px;\}.pdfobject \{ border: 1px solid #666; \}\</style\>
+
+显示的效果是正常的了，不过我在苹果手机打开Safari浏览器测试发现，不能正常显示。
+
+因此也不能使用来进行预览显示。
+在实际的测试中，发现安卓手机的浏览器对于预览PDF也是支持不一，有些直接下载PDF，不支持预览显示。
+为了避免这些问题，最好找了一个折中的方案，把PDF转换为图片进行显示，图片在不同的浏览器中显示可是没有问题的。
+**2****、****PDF****转换图片进行显示**
+把PDF转换为图片也有很多控件处理，例如Aspose.Pdf、Spire.Pdf、 pdfiumviewer 等等，不同的第三方类库使用的方法有所差异，不过思路都很类似。
+本来倾向于使用Aspose.Pdf的，不过发现转换后的发票信息还是缺失了某些中文字符或者乱码，导致不能正常显示。
+后来寻找Spire.Pdf 版本以及对应的绿色版本，终于能够转换为正确的格式了，因此也就使用这个第三方控件进行转换图片使用了。
+至于在线预览，我们在第一次请求PDF预览文件的时候，生成对应的图片文件，后面直接返回路径即可。
+实现的预览效果如下所示。
+
+由于我们是在asp.net MVC的项目上进行显示的，因此需要修改控制器的处理逻辑，对图片的生成进行判断处理即可。
+控制器后台的实现代码如下所示。
+
+[](javascript:void\(0\);)
+
+//判断是否存在PDF生成的图片文件， //生成的jpg文件名为附件的ID string pdfjpgPath = string.Format("/GenerateFiles/pdf/\{0\}.jpg", info.ID); string pdfjpg = Server.MapPath(pdfjpgPath);
+//PDF文件路径，相对目录即可 string pdfPath = @"/Content/Template/fapiao.pdf"; string pdfRealPath = Server.MapPath(pdfPath);
+//如果不存在，则生成，否则返回已生成的文件 if(!FileUtil.IsExistFile(pdfjpg)) \{  //破解 ModifyInMemory_Spire.ActivateMemoryPatching(); PdfDocument doc = new PdfDocument(pdfRealPath); var image = doc.SaveAsImage(0, Spire.Pdf.Graphics.PdfImageType.Bitmap, 300, 300); FileUtil.BytesToFile(ImageHelper.ImageToBytes(image), pdfjpg); \} //存储一个路径 info.SavePath = pdfjpgPath;//修改使用这个属性返回使用
+
+[](javascript:void\(0\);)
+
+最后返回对应的Json信息即可
+//序列号返回对象信息 string result = JsonConvert.SerializeObject(info, Formatting.Indented); return Content(result);
+我们在页面视图中，通过ajax请求处理即可实现图片的动态显示了。
+
+[](javascript:void\(0\);)
+
+//刷新列表 var ID = ''; function Refresh() \{ var filename = $("#WHC_FileName").val(); //获取或生成对应的PDF文件，根据路径显示 $.getJSON("/PdfView/FindByFileName?r=" + Math.random() + "&name=" + filename, function (info) \{ if (info != '') \{ //获取图片路径，设置显示 $("#imgfapiao").attr("src", info.SavePath); \} \}); \}
+
+[](javascript:void\(0\);)
+
+最后实现了图片的预览展示。
+
+上面就是我的一个解决思路，如果您有更好的方式解决PDF在线预览问题，欢迎彼此交流。
+ \> 来自 \<[https://www.cnblogs.com/wuhuacong/p/9566764.html](https://www.cnblogs.com/wuhuacong/p/9566764.html)\>
+
+:::

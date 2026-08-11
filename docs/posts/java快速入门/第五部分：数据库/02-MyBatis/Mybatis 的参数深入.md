@@ -3,7 +3,10 @@ title: Mybatis 的参数深入
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `3.1 parameterType` **配置参数**
 
 `3.1.1`
@@ -49,15 +52,15 @@ java.lang.String
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public class QueryVo implements Serializable {
+public class QueryVo implements Serializable \{
 private User user;
-public User getUser() {
+public User getUser() \{
 return user;
-}
-public void setUser(User user) {
+\}
+public void setUser(User user) \{
 this.user = user;
-}
-}
+\}
+\}
 传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
 3.2.2
 `**编写持久层接口**`
@@ -70,7 +73,7 @@ this.user = user;
 \</p\>
 * \<p\>Company: http://www.itheima.com/ \</p\>
 */
-public interface IUserDao {
+public interface IUserDao \{
 /**
 *
 `根据 `QueryVo` 中的条件查询用户`
@@ -79,7 +82,7 @@ public interface IUserDao {
 * @return
 */
 List\<User\> findByVo(QueryVo vo);
-}
+\}
 3.2.3
 `**持久层接口的映射文件**`
 
@@ -88,13 +91,13 @@ List\<User\> findByVo(QueryVo vo);
  --\>
 \<select id="findByVo" resultType="com.itheima.domain.User"
 parameterType="com.itheima.domain.QueryVo"\>
-select * from user where username like #{user.username};
+select * from user where username like #\{user.username\};
 \</select\>
 3.2.4
 `**测试包装类作为参数**`
 
 @Test
-public void testFindByQueryVo() {
+public void testFindByQueryVo() \{
 QueryVo vo = new QueryVo();
 User user = new User();
 user.setUserName("%
@@ -102,9 +105,11 @@ user.setUserName("%
 %");
 vo.setUser(user);
 List\<User\> users = userDao.findByVo(vo);
-for(User u : users) {
+for(User u : users) \{
 System.out.println(u);
-}
-}
+\}
+\}
 传智播客——专注于 `Java`、`.Net` 和 `Php`、网页平面设计工程师的培训
 `
+
+:::

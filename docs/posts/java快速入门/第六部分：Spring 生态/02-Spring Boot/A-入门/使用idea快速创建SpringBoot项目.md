@@ -3,11 +3,14 @@ title: 使用idea快速创建SpringBoot项目
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
-![Java Enterprise C JBoss O J2ME C Clouds Spring And...](Exported%20image%2020260702230253-0.png)
-![New Module project Metadata Group Artifact Type La...](Exported%20image%2020260702230255-1.png)
-![Dependencies Core web Template Engines SQL NoSQL I...](Exported%20image%2020260702230257-2.png)
-![New Module Module name Module file location C d a ...](Exported%20image%2020260702230259-3.png)
+::: v-pre
+
+
+
+
+
 
 通过idea快速创建的SpringBoot项目的pom.xml中已经导入了我们选择的web的起步依赖的坐标
 \<?xml version="1.0" encoding="UTF-8"?\>
@@ -44,3 +47,5 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 \<scope\>test\</scope\>
 可以使用快速入门的方式创建Controller进行访问，此处不再赘述
 ```
+
+:::

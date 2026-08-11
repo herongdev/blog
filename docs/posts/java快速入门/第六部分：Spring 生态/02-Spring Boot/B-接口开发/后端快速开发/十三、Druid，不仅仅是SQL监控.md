@@ -3,7 +3,10 @@ title: 十三、Druid，不仅仅是SQL监控
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `Druid`为监控而生的数据库连接池`,`下面来实际操作下`.`
 
 **具体实现**
@@ -21,14 +24,14 @@ tags: [Java, Spring, OneNote]
 `Druid`有自己的监控页面，要想访问只需要配置参数`spring.datasource.druid.stat-view-servlet.enabled=true`即可。
 启动项目后，访问`http://localhost:8080/druid`，看到监控页面。
 
-![Exported image](Exported%20image%2020260702230409-0.png)
+
 
 因为监控页面里的信息是比较敏感的，所以一般都会对其进行登录验证。 要想实现登录验证，只需要配置如下参数：
 `#` 指定登录的账号和密码
 
 spring.datasource.druid.stat-view-servlet.login-username=root
 spring.datasource.druid.stat-view-servlet.login-password=123456
-![Exported image](Exported%20image%2020260702230411-1.png)
+
 
 重启项目后，访问会发现需要登录才能访问。
 
@@ -125,3 +128,5 @@ spring:
 
  \<https://juejin.cn/post/6844904186727907342\>
 ```
+
+:::

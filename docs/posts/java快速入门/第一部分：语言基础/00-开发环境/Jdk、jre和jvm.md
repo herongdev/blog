@@ -3,7 +3,10 @@ title: Jdk、jre和jvm
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `Java`**虚拟机——**
 
 - JVM
@@ -16,7 +19,7 @@ tags: [Java, Java基础, OneNote]
 统上，这个特性称为`Java`**语言的跨平台特性**。该特性是由`JVM`实现的，我们编写的程序运行在`JVM`上，而`JVM`
 运行在操作系统上。
 
-![winfiMJJVM Windows linfifrtJJVM Linux macFfi MJJVM...](Exported%20image%2020260703000624-0.png)
+
 
 如图所示，`Java`的虚拟机本身不具备跨平台功能的，每个操作系统下都有不同版本的虚拟机。
 
@@ -38,7 +41,7 @@ tags: [Java, Java基础, OneNote]
 我们想要运行一个已有的`Java`程序，那么只需安装 `JRE` 即可。
 我们想要开发一个全新的`Java`程序，那么必须安装 `JDK` 。
 
-![IQQLAPlsEJPN AmAet Java Plugin Java HotSpot Cuent ...](Exported%20image%2020260703000632-1.png)
+
 
 小贴士：
 三者关系： `JDK \> JRE \> JVM`
@@ -47,15 +50,15 @@ tags: [Java, Java基础, OneNote]
 **配置环境变量作用**
 开发`Java`程序，需要使用`JDK`中提供的工具，工具在`JDK9`安装目录的 `bin` 目录下。
 
-![Javas jdk9.o.1 iava.dll java.exe javaaccessbridge....](Exported%20image%2020260703000639-2.png)
+
 
 在`DOS`命令行下使用这些工具，就要先进入到`JDK`的`bin`目录下，这个过程就会非常的麻烦。
 
-![SEN NUsers cd java9 jdk9..l bin jauac javac option...](Exported%20image%2020260703000645-3.png)
+
 
 不进入`JDK`的 `bin` 目录，这些工具就不能使用，会报错。
 
-![0 CWindowssystem32 cmd.exe jauac](Exported%20image%2020260703000652-4.png)
+
 
 为了开发方便，我们想**在任意的目录下都可以使用**`JDK`**的开发工具**，则必须要配置环境变量，配置环境变量的意义
 在于告诉操作系统，我们使用的`JDK`开发工具在哪个目录下。
@@ -125,3 +128,5 @@ tags: [Java, Java基础, OneNote]
 `6.`
 
 环境变量配置完成，重新开启`DOS`命令行，在任意目录下输入 `javac` 命令。
+
+:::

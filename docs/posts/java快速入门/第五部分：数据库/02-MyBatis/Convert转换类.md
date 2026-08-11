@@ -3,7 +3,10 @@ title: Convert转换类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 - 使用@Mapper注解定义一个Interface：
 
 @Mapper
@@ -28,3 +31,5 @@ PlaceRespVO convert(PlaceDO bean);
 //如果你需要做很多的翻译工作，自己一一地翻译会很累，而且容易出错。
 //MapStruct就是一个自动化的翻译工具，你只需要告诉它源语言和目标语言的规则（也就是定义一个接口和方法），
 //它就可以帮你生成一个高效且类型安全的"翻译器"，让你的翻译工作变得更简单，更容易维护。
+
+:::

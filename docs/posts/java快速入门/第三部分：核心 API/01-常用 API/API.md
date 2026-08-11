@@ -3,7 +3,10 @@ title: API
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `API(Application Programming Interface)`，应用程序编程接口。
 
 `Java API`是一本程序员的字典 ，是`JDK`中提供给我们使用的类的说明文档。这些类将底层的代码实现封装了起来，我们不需要关心这些类是如何实现的，只需要学习这些类如何使用即可。
@@ -37,3 +40,5 @@ tags: [Java, 核心API, OneNote]
 `7.`
 
 使用成员方法。
+
+:::

@@ -3,12 +3,15 @@ title: 商品微服务：CRUD
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
-![iJ](Exported%20image%2020260702233743-0.png)
+::: v-pre
+
+
 `创建子服务：ly-item`
 
-![Add as module to .O.OSNAPSHOT Pa rent Groupld Arti...](Exported%20image%2020260702233747-1.png)
-![New Module Module name Content root Module file lo...](Exported%20image%2020260702233749-2.png)
+
+
 
 在pom中将包类型改为pom
 \<?xmlversion="1.0"encoding="UTF-8"?\>
@@ -82,7 +85,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0http://maven.apache.org/xsd
 \</project\>
 
 新建启动类
-![lyitem lyiteminterface lyitemservice com.leyou Lyl...](Exported%20image%2020260702233755-3.png)
+
 
 packagecom.leyou;
 
@@ -92,11 +95,11 @@ importorg.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-publicclass LyItemApplication{
-publicstaticvoid main(String[]args){
+publicclass LyItemApplication\{
+publicstaticvoid main(String[]args)\{
 SpringApplication._run_(LyItemApplication.class,args);
-}
-}
+\}
+\}
 
 新建application.yml
 server:
@@ -117,15 +120,17 @@ prefer-ip-address:true
 ip-address:127.0.0.1
 
 修改ly-gateway配置文件
-![name eureka client api gateway service url default...](Exported%20image%2020260702233757-4.png)
+
 
 至此，微服务搭建完毕
 依次启动LyRegistry,LyItemApplication，LyGateway进行测试
 在浏览器中打开[http://127.0.0.1:10086/](http://127.0.0.1:10086/)
 可以在gateway的配置文件中修改拉取的时间，默认30s
 关键字fetch
-![server port spring appt i n.e apigateway eureka de...](Exported%20image%2020260702233759-5.png)
+
 
 `如果不想eruka注册自己，可以在ly-registry中进行配置`
 
-![server port 18886 sprung application name lyregist...](Exported%20image%2020260702233803-6.png)
+
+
+:::

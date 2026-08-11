@@ -3,7 +3,10 @@ title: Center OS 安装 jdk1.8
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **1****、源码包准备：**
 首先到官网下载jdk-8u66-linux-x64.tar.gz，
@@ -48,8 +51,10 @@ ln -s /usr/local/java/jdk1.8.0_171/bin/java /usr/bin/java
 ==java -version==
 
 看看是否安装成功，成功则显示如下
-![rootLocaLhost jd 3va version TM SE Runtime Hotspot...](Exported%20image%2020260702224829-0.png)
+
 \> 来自
 
  \<https://www.jianshu.com/p/d5a335c7da2b\>
 ```
+
+:::

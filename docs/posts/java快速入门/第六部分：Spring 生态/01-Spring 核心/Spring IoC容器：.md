@@ -3,7 +3,10 @@ title: Spring IoC容器：
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在教程前面介绍 
 
 `Spring`
@@ -78,3 +81,5 @@ org.springframework.web.context.ContextLoaderListener
 
  \<http://c.biancheng.net/view/4248.html\>
 ```
+
+:::

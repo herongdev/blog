@@ -3,7 +3,10 @@ title: JAVA后端——调用第三方URL接口
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 在项目里有时候需要在后端引用别人的url，java用来调用的方法也有好几种，比如HttpURLConnection，还有apache的HttpClient，简单封装了一下HttpClient的get和post的方法。一般情况下应该是够用了
 
@@ -137,3 +140,5 @@ post方式：请求报文有请求体， post的请求参数通过请求体提�
 ￼总结
 调用完，直接 JSON.parseObject(res.toString())，转成json，就比较好处理了。简单记录一下，以后可能还用的到。
 ```
+
+:::

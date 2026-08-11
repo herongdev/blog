@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs",
+    "docs:dev": "node ./node_modules/vitepress/bin/vitepress.js dev docs",
+    "docs:build": "node --max-old-space-size=8192 ./node_modules/vitepress/bin/vitepress.js build docs",
+    "docs:preview": "node ./node_modules/vitepress/bin/vitepress.js preview docs",
+    "tutorials:import:onenote": "python3 scripts/import-onenote-tutorials.py",
     "rss": "node scripts/gen-rss.mjs",
     "build": "npm run docs:build && npm run rss"
   },

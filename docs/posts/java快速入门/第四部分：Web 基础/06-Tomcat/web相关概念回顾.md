@@ -3,7 +3,10 @@ title: web相关概念回顾
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **软件架构**
 `1. C/S`：客户端`/`服务器端
 `2. B/S`：浏览器`/`服务器端
@@ -42,3 +45,5 @@ tags: [Java, Web基础, OneNote]
 `* JBOSS`：`JBOSS`公司的，大型的`JavaEE`服务器，支持所有的`JavaEE`规范，收费的。
 `* Tomcat`：`Apache`基金组织，中小型的`JavaEE`服务器，仅仅支持少量的`JavaEE`规范`servlet/jsp`。开源的，免费的。
 `* JavaEE`：`Java`语言在企业级开发中使用的技术规范的总和，一共规定了`13`项大的规范
+
+:::

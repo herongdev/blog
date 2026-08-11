@@ -3,7 +3,10 @@ title: java实体entity转map对象
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 方法一：一句搞定，直接返回`map`对象（弊端新的对象无法扩展字段）：
 
 import org.springframework.cglib.beans.BeanMap;
@@ -26,3 +29,5 @@ Map map = JSONObject.parseObject(json, Map.class);
 ​​​​​​​
 
 方法三：利用反射（技术大佬可以尝试此方案）——详见原文
+
+:::

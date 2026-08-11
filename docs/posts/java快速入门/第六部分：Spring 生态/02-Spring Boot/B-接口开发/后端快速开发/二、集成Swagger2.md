@@ -3,7 +3,10 @@ title: 二、集成Swagger2
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 具体实现
 添加`Maven`依赖
 
@@ -34,9 +37,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfig \{
   @Bean
-  public Docket docket() {
+  public Docket docket() \{
     return new Docket(DocumentationType.SWAGGER_2)
         .select()
         // apis
@@ -57,8 +60,8 @@ path
 文档信息
 
         .apiInfo(apiInfo());
-  }
-  private ApiInfo apiInfo() {
+  \}
+  private ApiInfo apiInfo() \{
     return new ApiInfoBuilder()
         .title("
 从零搭建后端框架
@@ -73,8 +76,8 @@ path
         .contact(new Contact("zhuqianchang", "", ""))
         .version("0.0.1")
         .build();
-  }
-}
+  \}
+\}
 - `@EnableSwagger2` 开启`Swagger2`
 - `apis` 用来指定扫描的条件
 - `RequestHandlerSelectors.basePackage("com.zhuqc.framework.controller")`，扫描指定包
@@ -94,22 +97,22 @@ path
 `@Api(description = "Hello`服务
 
 ")
-@RestControllerpublic class HelloController {
+@RestControllerpublic class HelloController \{
 @ApiOperation(value = "
 打招呼`", notes = "`打招呼详情描述
 
 ")
-    @ApiImplicitParams({
+    @ApiImplicitParams(\{
             @ApiImplicitParam(name = "name", value = "
 用户名
 
 ", required = true)
-    })
-    @GetMapping("/hello/{name}")
-    public String hello(@PathVariableString name) {
+    \})
+    @GetMapping("/hello/\{name\}")
+    public String hello(@PathVariableString name) \{
         returnString.format("Hello %s!", name);
-    }
-}
+    \}
+\}
 常见注解
 
 - `@Api` 修饰整个类，描述整个`Controller`的作用
@@ -123,3 +126,5 @@ path
 
 启动项目
 准备工作已完成，启动项目后访问`Swagger`地址：`http://localhost:8080/swagger-ui.html`
+
+:::

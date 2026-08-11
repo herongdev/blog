@@ -3,7 +3,10 @@ title: AOP 的相关概念理解
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **什么是**
 
 - AOP
@@ -39,32 +42,32 @@ tags: [Java, Spring, OneNote]
 * @Company http://www.ithiema.com
 * @Version 1.0
 */
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService \{
 private IAccountDao accountDao;
-public void setAccountDao(IAccountDao accountDao) {
+public void setAccountDao(IAccountDao accountDao) \{
 this.accountDao = accountDao;
-}
+\}
 @Override
-public void saveAccount(Account account) throws SQLException {
+public void saveAccount(Account account) throws SQLException \{
 accountDao.save(account);
-}
+\}
 @Override
-public void updateAccount(Account account) throws SQLException{
+public void updateAccount(Account account) throws SQLException\{
 accountDao.update(account);
-}
+\}
 @Override
-public void deleteAccount(Integer accountId) throws SQLException{
+public void deleteAccount(Integer accountId) throws SQLException\{
 accountDao.delete(accountId);
-}
+\}
 @Override
-public Account findAccountById(Integer accountId) throws SQLException {
+public Account findAccountById(Integer accountId) throws SQLException \{
 return accountDao.findById(accountId);
-}
+\}
 @Override
-public List\<Account\> findAllAccount() throws SQLException{
+public List\<Account\> findAllAccount() throws SQLException\{
 return accountDao.findAll();
-}
-}
+\}
+\}
  **问题就是：**
 事务被自动控制了。换言之，我们使用了
 
@@ -90,7 +93,7 @@ void transfer(String sourceName,String targetName,Float money);
 **业务层实现类：**
 
 @Override
-public void transfer(String sourceName, String targetName, Float money) {
+public void transfer(String sourceName, String targetName, Float money) \{
 //
 根据名称查询两个账户信息
 
@@ -109,7 +112,7 @@ int i=1/0; //
 模拟转账异常
 
 accountDao.update(target);
-}
+\}
  当我们执行时，由于执行有异常，转账失败。但是因为我们是每次执行持久层方法都是独立事务，导致无法实
 现事务控制（**不符合事务的一致性**）
 
@@ -130,85 +133,85 @@ accountDao.update(target);
 * @Company http://www.ithiema.com
 * @Version 1.0
 */
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService \{
 ￼
 
 private IAccountDao accountDao = new AccountDaoImpl();
 @Override
-public void saveAccount(Account account) {
-try {
+public void saveAccount(Account account) \{
+try \{
 TransactionManager.beginTransaction();
 accountDao.save(account);
 TransactionManager.commit();
-} catch (Exception e) {
+\} catch (Exception e) \{
 TransactionManager.rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 TransactionManager.release();
-}
-}
+\}
+\}
 @Override
-public void updateAccount(Account account) {
-try {
+public void updateAccount(Account account) \{
+try \{
 TransactionManager.beginTransaction();
 accountDao.update(account);
 TransactionManager.commit();
-} catch (Exception e) {
+\} catch (Exception e) \{
 TransactionManager.rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 TransactionManager.release();
-}
-}
+\}
+\}
 @Override
-public void deleteAccount(Integer accountId) {
-try {
+public void deleteAccount(Integer accountId) \{
+try \{
 TransactionManager.beginTransaction();
 accountDao.delete(accountId);
 TransactionManager.commit();
-} catch (Exception e) {
+\} catch (Exception e) \{
 TransactionManager.rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 TransactionManager.release();
-}
-}
+\}
+\}
 传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
 @Override
-public Account findAccountById(Integer accountId) {
+public Account findAccountById(Integer accountId) \{
 Account account = null;
-try {
+try \{
 TransactionManager.beginTransaction();
 account = accountDao.findById(accountId);
 TransactionManager.commit();
 return account;
-} catch (Exception e) {
+\} catch (Exception e) \{
 TransactionManager.rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 TransactionManager.release();
-}
+\}
 return null;
-}
+\}
 @Override
-public List\<Account\> findAllAccount() {
+public List\<Account\> findAllAccount() \{
 List\<Account\> accounts = null;
-try {
+try \{
 TransactionManager.beginTransaction();
 accounts = accountDao.findAll();
 TransactionManager.commit();
 return accounts;
-} catch (Exception e) {
+\} catch (Exception e) \{
 TransactionManager.rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 TransactionManager.release();
-}
+\}
 return null;
-}
+\}
 @Override
-public void transfer(String sourceName, String targetName, Float money) {
-try {
+public void transfer(String sourceName, String targetName, Float money) \{
+try \{
 TransactionManager.beginTransaction();
 Account source = accountDao.findByName(sourceName);
 Account target = accountDao.findByName(targetName);
@@ -219,14 +222,14 @@ accountDao.update(source);
 int i=1/0;
 accountDao.update(target);
 TransactionManager.commit();
-} catch (Exception e) {
+\} catch (Exception e) \{
 TransactionManager.rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 TransactionManager.release();
-}
-}
-}
+\}
+\}
+\}
 TransactionManager
 **类的代码：**
 
@@ -240,7 +243,7 @@ TransactionManager
 * @Company http://www.ithiema.com
 * @Version 1.0
 */
-public class TransactionManager {
+public class TransactionManager \{
 //
 定义一个
 
@@ -249,43 +252,43 @@ private static DBAssit dbAssit = new DBAssit(C3P0Utils.getDataSource(),true);
 //
 开启事务
 
-public static void beginTransaction() {
-try {
+public static void beginTransaction() \{
+try \{
 dbAssit.getCurrentConnection().setAutoCommit(false);
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 //
 提交事务
 
-public static void commit() {
-try {
+public static void commit() \{
+try \{
 dbAssit.getCurrentConnection().commit();
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 //
 回滚事务传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
-public static void rollback() {
-try {
+public static void rollback() \{
+try \{
 dbAssit.getCurrentConnection().rollback();
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 //
 `释放资源`
 
-public static void release() {
-try {
+public static void release() \{
+try \{
 dbAssit.releaseConnection();
-} catch (Exception e) {
+\} catch (Exception e) \{
 e.printStackTrace();
-}
-}
-}
+\}
+\}
+\}
 **新的问题**
 上一小节的代码，通过对业务层改造，已经可以实现事务控制了，但是由于我们添加了事务控制，也产生了一
 个新的问题：
@@ -330,7 +333,7 @@ e.printStackTrace();
 `能做基本的表演和危险的表演`
 
 */
-public interface IActor {
+public interface IActor \{
 /**
 *
 `基本演出`
@@ -345,7 +348,7 @@ public void basicAct(float money);
 * @param money
 */
 public void dangerAct(float money);
-}
+\}
 /**
 *
 `一个演员`
@@ -354,21 +357,21 @@ public void dangerAct(float money);
 //
 `实现了接口，就表示具有接口中的方法实现。即：符合经纪公司的要求`
 
-public class Actor implements IActor{
-public void basicAct(float money){
+public class Actor implements IActor\{
+public void basicAct(float money)\{
 System.out.println("
 `拿到钱，开始基本的表演：`
 "+money);
-}
-public void dangerAct(float money){
+\}
+public void dangerAct(float money)\{
 System.out.println("
 `拿到钱，开始危险的表演：`
 "+money);
-}
-}
+\}
+\}
 传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
-public class Client {
-public static void main(String[] args) {
+public class Client \{
+public static void main(String[] args) \{
 //
 一个剧组找演员：
 
@@ -437,7 +440,7 @@ final Actor actor = new Actor();//
 IActor proxyActor = (IActor) Proxy.newProxyInstance(
 actor.getClass().getClassLoader(),
 actor.getClass().getInterfaces(),
-new InvocationHandler() {
+new InvocationHandler() \{
 /**
 *
 执行被代理对象的任何方法，都会经过该方法。
@@ -474,7 +477,7 @@ new InvocationHandler() {
 */
 @Override
 public Object invoke(Object proxy, Method method, Object[] args)
-throws Throwable {
+throws Throwable \{
 String name = method.getName();
 Float money = (Float) args[0];
 Object rtValue = null;
@@ -482,11 +485,11 @@ Object rtValue = null;
 //
 `每个经纪公司对不同演出收费不一样，此处开始判断`
 
-if("basicAct".equals(name)){
+if("basicAct".equals(name))\{
 //
 `基本演出，没有 `2000` 不演`
 
-if(money \> 2000){
+if(money \> 2000)\{
 //
 `看上去剧组是给了 `8000`，实际到演员手里只有`
  4000
@@ -494,13 +497,13 @@ if(money \> 2000){
 `这就是我们没有修改原来 `basicAct` 方法源码，对方法进行了增强`
 
 rtValue = method.invoke(actor, money/2);
-}
-}
-if("dangerAct".equals(name)){
+\}
+\}
+if("dangerAct".equals(name))\{
 //
 `危险演出`,`没有 `5000` 不演`
 
-if(money \> 5000){
+if(money \> 5000)\{
 //
 `看上去剧组是给了 `50000`，实际到演员手里只有`
  25000
@@ -508,11 +511,11 @@ if(money \> 5000){
 `这就是我们没有修改原来 `dangerAct` 方法源码，对方法进行了增强`
 
 rtValue = method.invoke(actor, money/2);
-}
-}
+\}
+\}
 return rtValue;
-}
-});
+\}
+\});
 //
 `没有经纪公司的时候，直接找演员。`
 
@@ -523,8 +526,8 @@ return rtValue;
 
 proxyActor.basicAct(8000f);
 proxyActor.dangerAct(50000f);
-}
-}
+\}
+\}
 1.2.4.4
 - **使用** `CGLib` **的** `Enhancer` **类创建代理对象**
 - 还是那个演员的例子，只不过不让他实现接口。
@@ -534,22 +537,22 @@ proxyActor.dangerAct(50000f);
 `一个演员`
 
 */
-public class Actor{//
+public class Actor\{//
 `没有实现任何接口`
 
-public void basicAct(float money){
+public void basicAct(float money)\{
 System.out.println("
 `拿到钱，开始基本的表演：`
 "+money);
-}
-public void dangerAct(float money){
+\}
+public void dangerAct(float money)\{
 System.out.println("
 `拿到钱，开始危险的表演：`
 "+money);
 传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
-}
-}
-public class Client {
+\}
+\}
+public class Client \{
 /**
 *
 基于子类的动态代理
@@ -586,10 +589,10 @@ public class Client {
 
 * @param args
 */
-public static void main(String[] args) {
+public static void main(String[] args) \{
 final Actor actor = new Actor();
 Actor cglibActor = (Actor) Enhancer.create(actor.getClass(),
-new MethodInterceptor() {
+new MethodInterceptor() \{
 /**
 *
 执行被代理对象的任何方法，都会经过该方法。在此方法内部就可以对被代理对象的任何
@@ -619,34 +622,34 @@ new MethodInterceptor() {
 */
 @Override
 public Object intercept(Object proxy, Method method, Object[] args,
-MethodProxy methodProxy) throws Throwable {
+MethodProxy methodProxy) throws Throwable \{
 String name = method.getName();
 Float money = (Float) args[0];
 Object rtValue = null;
-if("basicAct".equals(name)){
+if("basicAct".equals(name))\{
 //
 基本演出
 
-if(money \> 2000){
+if(money \> 2000)\{
 rtValue = method.invoke(actor, money/2);
-}
-}
+\}
+\}
 传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
-if("dangerAct".equals(name)){
+if("dangerAct".equals(name))\{
 //
 `危险演出`
 
-if(money \> 5000){
+if(money \> 5000)\{
 rtValue = method.invoke(actor, money/2);
-}
-}
+\}
+\}
 return rtValue;
-}
-});
+\}
+\});
 cglibActor.basicAct(10000);
 cglibActor.dangerAct(100000);
-}
-}
+\}
+\}
 - **思考：**
 - 这个故事（示例）讲完之后，我们从中受到什么启发呢？它到底能应用在哪呢？
 
@@ -663,14 +666,14 @@ cglibActor.dangerAct(100000);
 * @Company http://www.ithiema.com
 * @Version 1.0
 */
-public class BeanFactory {
+public class BeanFactory \{
 /**
 *
 `创建账户业务层实现类的代理对象`
 
 * @return
 */
-public static IAccountService getAccountService() {
+public static IAccountService getAccountService() \{
 //1.
 `定义被代理对象`
 
@@ -681,7 +684,7 @@ final IAccountService accountService = new AccountServiceImpl();
 IAccountService proxyAccountService = (IAccountService)
 Proxy.newProxyInstance(accountService.getClass().getClassLoader(),
 accountService.getClass().getInterfaces(),new
-InvocationHandler() {
+InvocationHandler() \{
 /**
 *
 `执行被代理对象的任何方法，都会经过该方法。`
@@ -693,9 +696,9 @@ InvocationHandler() {
 @Override
 public Object invoke(Object proxy, Method method,
 传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
-Object[] args) throws Throwable {
+Object[] args) throws Throwable \{
 Object rtValue = null;
-try {
+try \{
 //
 开启事务
 
@@ -708,24 +711,24 @@ rtValue = method.invoke(accountService, args);
 提交事务
 
 TransactionManager.commit();
-}catch(Exception e) {
+\}catch(Exception e) \{
 //
 回滚事务
 
 TransactionManager.rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 //
 释放资源
 
 TransactionManager.release();
-}
+\}
 return rtValue;
-}
-});
+\}
+\});
 return proxyAccountService;
-}
-}
+\}
+\}
  **当我们改造完成之后，业务层用于控制事务的重复代码就都可以删掉了。**
 **第**`2`**章** `Spring` **中的** `AOP[`**掌握**
 
@@ -884,56 +887,56 @@ http://www.springframework.org/schema/aop/spring-aop.xsd"\>
 * @Company http://www.ithiema.com
 * @Version 1.0
 */
-public class TransactionManager {
+public class TransactionManager \{
 //
 `定义一个`
  DBAssit
 private DBAssit dbAssit ;
-public void setDbAssit(DBAssit dbAssit) {
+public void setDbAssit(DBAssit dbAssit) \{
 this.dbAssit = dbAssit;
-}
+\}
 //
 `开启事务`
 
-public void beginTransaction() {
-try {
+public void beginTransaction() \{
+try \{
 dbAssit.getCurrentConnection().setAutoCommit(false);
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
 //
 提交事务
 
-public void commit() {
-try {
+public void commit() \{
+try \{
 dbAssit.getCurrentConnection().commit();
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 //
 回滚事务
 
-public void rollback() {
-try {
+public void rollback() \{
+try \{
 dbAssit.getCurrentConnection().rollback();
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 //
 释放资源
 
-public void release() {
-try {
+public void release() \{
+try \{
 dbAssit.releaseConnection();
-} catch (Exception e) {
+\} catch (Exception e) \{
 e.printStackTrace();
-}
-}
-}
+\}
+\}
+\}
 2.2.2
 **配置步骤**
 
@@ -1172,12 +1175,12 @@ pointcut-ref
 
 * @return
 */
-public Object transactionAround(ProceedingJoinPoint pjp) {
+public Object transactionAround(ProceedingJoinPoint pjp) \{
 //
 定义返回值
 
 Object rtValue = null;
-try {
+try \{
 //
 获取方法执行所需的参数
 
@@ -1194,20 +1197,20 @@ rtValue = pjp.proceed(args);
 后置通知：提交事务
 
 commit();
-}catch(Throwable e) {
+\}catch(Throwable e) \{
 //
 异常通知：回滚事务
 
 rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 //
 最终通知：释放资源
 
 release();
-}
+\}
 return rtValue;
-}
+\}
 2.3
 **基于注解的** `AOP` **配置**
 
@@ -1267,11 +1270,11 @@ http://www.springframework.org/schema/context/spring-context.xsd"\>
 * @Version 1.0
 */
 @Service("accountService")
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService \{
 @Autowired
 private IAccountDao accountDao;
 传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
-}
+\}
 /**
 *
 账户的持久层实现类
@@ -1283,10 +1286,10 @@ private IAccountDao accountDao;
 * @Version 1.0
 */
 @Repository("accountDao")
-public class AccountDaoImpl implements IAccountDao {
+public class AccountDaoImpl implements IAccountDao \{
 @Autowired
 private DBAssit dbAssit ;
-}
+\}
 2.3.1.4
 **第四步：在配置文件中指定** `spring` **要扫描的包**
 
@@ -1314,14 +1317,14 @@ private DBAssit dbAssit ;
 * @Version 1.0
 */
 @Component("txManager")
-public class TransactionManager {
+public class TransactionManager \{
 //
 定义一个
 
  DBAssit
 @Autowired
 private DBAssit dbAssit ;
-}
+\}
 2.3.2.2
 **第二步：在通知类上使用**`@Aspect` **注解声明为切面**
 **作用：**
@@ -1340,13 +1343,13 @@ private DBAssit dbAssit ;
 @Aspect//
 `表明当前类是一个切面类`
 
-public class TransactionManager {
+public class TransactionManager \{
 //
 `定义一个`
  DBAssit
 @Autowired
 private DBAssit dbAssit ;
-}
+\}
 2.3.2.3
 `**第三步：在增强的方法上使用注解配置通知**`
 
@@ -1362,13 +1365,13 @@ value
 `开启事务`
 
 @Before("execution(* com.itheima.service.impl.*.*(..))")
-public void beginTransaction() {
-try {
+public void beginTransaction() \{
+try \{
 dbAssit.getCurrentConnection().setAutoCommit(false);
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 @AfterReturning
 - **作用：**
 - 把当前方法看成是后置通知。
@@ -1381,14 +1384,14 @@ value
 `提交事务`
 
 @AfterReturning("execution(* com.itheima.service.impl.*.*(..))")
-public void commit() {
+public void commit() \{
 传智播客——专注于 `Java`、`.Net` 和`Php`、网页平面设计工程师的培训
-try {
+try \{
 dbAssit.getCurrentConnection().commit();
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 @AfterThrowing
  **作用：**
 把当前方法看成是异常通知。
@@ -1402,13 +1405,13 @@ e.printStackTrace();
 回滚事务
 
 @AfterThrowing("execution(* com.itheima.service.impl.*.*(..))")
-public void rollback() {
-try {
+public void rollback() \{
+try \{
 dbAssit.getCurrentConnection().rollback();
-} catch (SQLException e) {
+\} catch (SQLException e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 @After
  **作用：**
 把当前方法看成是最终通知。
@@ -1422,13 +1425,13 @@ e.printStackTrace();
 释放资源
 
 @After("execution(* com.itheima.service.impl.*.*(..))")
-public void release() {
-try {
+public void release() \{
+try \{
 dbAssit.releaseConnection();
-} catch (Exception e) {
+\} catch (Exception e) \{
 e.printStackTrace();
-}
-}
+\}
+\}
 2.3.2.4
 **第四步：在** `spring` **配置文件中开启** `spring` **对注解** `AOP` **的支持**
 
@@ -1459,12 +1462,12 @@ value
 * @return
 */
 @Around("execution(* com.itheima.service.impl.*.*(..))")
-public Object transactionAround(ProceedingJoinPoint pjp) {
+public Object transactionAround(ProceedingJoinPoint pjp) \{
 //
 `定义返回值`
 
 Object rtValue = null;
-try {
+try \{
 //
 `获取方法执行所需的参数`
 
@@ -1481,20 +1484,20 @@ rtValue = pjp.proceed(args);
 `后置通知：提交事务`
 
 commit();
-}catch(Throwable e) {
+\}catch(Throwable e) \{
 //
 `异常通知：回滚事务`
 
 rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 //
 `最终通知：释放资源`
 
 release();
-}
+\}
 return rtValue;
-}
+\}
 2.3.4
 `**切入点表达式注解**`
 
@@ -1507,7 +1510,7 @@ return rtValue;
 ：指定表达式的内容
 
 @Pointcut("execution(* com.itheima.service.impl.*.*(..))")
-private void pt1() {}
+private void pt1() \{\}
  **引用方式：**
 
 /**
@@ -1520,12 +1523,12 @@ private void pt1() {}
 @Around("pt1()")//
 **注意：千万别忘了写括号**
 
-public Object transactionAround(ProceedingJoinPoint pjp) {
+public Object transactionAround(ProceedingJoinPoint pjp) \{
 //
 定义返回值
 
 Object rtValue = null;
-try {
+try \{
 //
 获取方法执行所需的参数
 
@@ -1542,26 +1545,28 @@ rtValue = pjp.proceed(args);
 后置通知：提交事务
 
 commit();
-}catch(Throwable e) {
+\}catch(Throwable e) \{
 //
 异常通知：回滚事务
 
 rollback();
 e.printStackTrace();
-}finally {
+\}finally \{
 //
 最终通知：释放资源
 
 release();
-}
+\}
 return rtValue;
-}
+\}
 2.3.5
 **不使用** `XML` **的配置方式**
 
 @Configuration
 @ComponentScan(basePackages="com.itheima")
 @EnableAspectJAutoProxy
-public class SpringConfiguration {
-}
+public class SpringConfiguration \{
+\}
 ```
+
+:::

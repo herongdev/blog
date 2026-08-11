@@ -3,7 +3,10 @@ title: Maven的packaging类型
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在Maven中，\<packaging\>元素用于定义项目的打包方式。以下是几种常见的\<packaging\>类型：
 
 jar：这是Maven默认的打包方式，会生成一个.jar文件。JAR（Java ARchive）文件格式是Java应用程序或库的常用打包方式，它包含了项目的编译后的.class文件和相关的元数据。
@@ -19,3 +22,5 @@ maven-plugin：生成一个可以在Maven构建生命周期中使用的插件。
 ejb：用于EJB应用程序的打包，生成一个.jar文件。EJB（Enterprise JavaBean）是Java EE的一部分，用于构建企业级应用。
 
 这些打包方式都有各自的使用场景，需要根据具体的项目需求来选择合适的打包方式。
+
+:::

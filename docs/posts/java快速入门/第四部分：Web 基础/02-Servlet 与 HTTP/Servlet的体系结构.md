@@ -3,7 +3,10 @@ title: Servlet的体系结构
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 Servlet -- 接口
 |
@@ -16,7 +19,7 @@ GenericServlet：将Servlet接口中其他的方法做了默认空实现，只�
 HttpServlet：对http协议的一种封装，简化操作
 1. 定义类继承HttpServlet
 2. 复写doGet/doPost方法
-![HttPServlet service](Exported%20image%2020260702225927-0.png)
+
 
 **Servlet****相关配置**
 urlpartten:Servlet访问路径
@@ -27,3 +30,5 @@ urlpartten:Servlet访问路径
 3. *.do：扩展名匹配
 4.  使用通配符优先级最低
 ```
+
+:::

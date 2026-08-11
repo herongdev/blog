@@ -3,7 +3,10 @@ title: Java枚举详解
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 枚举对应英文`(enumeration,`简写 `enum)`；
 
 - 枚举是一组常量的集合；
@@ -24,14 +27,14 @@ tags: [Java, Java基础, OneNote]
 - 在`Season`内部，直接创建固定对象
 - 对外暴露对象`(`通过为对象添加 `public static final` 修饰符`)`
 
-public class Demo03 {
-    public static void main(String[] args) {
+public class Demo03 \{
+    public static void main(String[] args) \{
         System.out.println(Season.AUTUMN);
         System.out.println(Season.SUMMER);
-    }
-}
+    \}
+\}
 
-class Season {
+class Season \{
     private String name;
     private String desc;
     //
@@ -53,26 +56,26 @@ class Season {
 
 ");
 
-    private Season(String name, String desc) {
+    private Season(String name, String desc) \{
         this.name = name;
         this.desc = desc;
-    }
+    \}
  ​
 
-    public String getName() {
+    public String getName() \{
         return name;
-    }
-    public String getDesc() {
+    \}
+    public String getDesc() \{
         return desc;
-    }
+    \}
     @Override
-    public String toString() {
-        return "Season{" +
+    public String toString() \{
+        return "Season\{" +
                 "name='" + name + '\'' +
                 ", desc='" + desc + '\'' +
-                '}';
-    }
-}
+                '\}';
+    \}
+\}
 使用`enum`关键字实现枚举
 
 - 使用 `enum` 关键字代替 `class`；
@@ -81,14 +84,14 @@ class Season {
 - 如果有多个对象，需要使用 ，间隔；
 - 如果使用 `enum` 关键字来实现枚举，要求将定义的常量对象写在最前面；
 
-public class Demo04 {
-    public static void main(String[] args) {
+public class Demo04 \{
+    public static void main(String[] args) \{
         System.out.println(Season2.SPRING);
         System.out.println(Season2.SUMMER);
-    }
-}
+    \}
+\}
 
-enum  Season2 {
+enum  Season2 \{
     SPRING("
 春天`", "`温暖`"),WINTER("`夏天`", "`炎热`"),SUMMER("`夏天`", "`炎热`"),AUTUMN("`秋天`", "`凉爽`");`
 ​
@@ -97,26 +100,26 @@ enum  Season2 {
     private String desc;
  ​
 
-    private Season2(String name, String desc) {
+    private Season2(String name, String desc) \{
         this.name = name;
         this.desc = desc;
-    }
+    \}
 
-    public String getName() {
+    public String getName() \{
         return name;
-    }
-    public String getDesc() {
+    \}
+    public String getDesc() \{
         return desc;
-    }
+    \}
 
     @Override
-    public String toString() {
-        return "Season{" +
+    public String toString() \{
+        return "Season\{" +
                 "name='" + name + '\'' +
                 ", desc='" + desc + '\'' +
-                '}';
-    }
-}
+                '\}';
+    \}
+\}
  注意事项
 
 - _当我们使用_`enum`_关键字开发一个枚举类时，默认会继承_`Enum`_类；而且该枚举类是一个_`final`_类_
@@ -134,8 +137,8 @@ _使用关键字_`enum`_时，会隐式继承_`Enum`_类，这样就可以使用
 - `valueOf()`：将字符串转换成已有的枚举对象，要求字符串必须为已有的常量名，否则报异常！
 - `compareTo()`：比较两个枚举常量的大小`(`编号`),`返回的结果是两个枚举常量的编号相减得到的数；
 
-public class Demo05 {
-    public static void main(String[] args) {
+public class Demo05 \{
+    public static void main(String[] args) \{
         Season2 autumn = Season2.AUTUMN;
 
         System.out.println(autumn.name());
@@ -143,18 +146,18 @@ public class Demo05 {
         System.out.println(autumn.ordinal());
 
         Season2[] values = Season2.values();
-        for (Season2 season : values) {
+        for (Season2 season : values) \{
             System.out.println(season);
-        }
+        \}
 
         Season2 autumn1 = Season2.valueOf("AUTUMN");
         System.out.println("season1="+autumn1);
         System.out.println(autumn == autumn1);
 
         System.out.println(Season2.AUTUMN.compareTo(Season2.SUMMER));
-    }
-}
-enum  Season2{
+    \}
+\}
+enum  Season2\{
     SPRING("
 春天`", "`温暖`"),WINTER("`冬天`", "`寒冷`"),SUMMER("`夏天`", "`炎热`"),AUTUMN("`秋天`", "`凉爽
 
@@ -163,24 +166,24 @@ enum  Season2{
     private String name;
     private String desc;
 
-    private Season2(String name, String desc) {
+    private Season2(String name, String desc) \{
         this.name = name;
         this.desc = desc;
-    }
-    public String getName() {
+    \}
+    public String getName() \{
         return name;
-    }
-    public String getDesc() {
+    \}
+    public String getDesc() \{
         return desc;
-    }
+    \}
     @Override
-    public String toString() {
-        return "Season{" +
+    public String toString() \{
+        return "Season\{" +
                 "name='" + name + '\'' +
                 ", desc='" + desc + '\'' +
-                '}';
-    }
-}
+                '\}';
+    \}
+\}
 
 `enum`的使用细节
 
@@ -193,7 +196,7 @@ package com.mincheng.organization.common;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 @Getter
-public enum ResultCode {
+public enum ResultCode \{
 
  SUCCESS(true),
 
@@ -215,13 +218,13 @@ public enum ResultCode {
 
 3000 - 3999 */;
 
- private ResultCode(Boolean success) {
+ private ResultCode(Boolean success) \{
 
  this.success = success;
    `}`
  
 
- private ResultCode(Boolean success, Integer errorCode, String errorMessage) {
+ private ResultCode(Boolean success, Integer errorCode, String errorMessage) \{
 
  this.success = success;
 
@@ -236,7 +239,9 @@ public enum ResultCode {
  private Integer errorCode;
 
  private String errorMessage;
-}
+\}
 - 先定义枚举对象
 - 再定义构造函数或属性；
 - 构造函数默认就是`private`，不必要加；
+
+:::

@@ -3,14 +3,17 @@ title: Object类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `` `java.lang.Object` ``类是`Java`语言中的根类，即所有类的父类。它中描述的所有方法子类都可以使用。在对象实例化的时候，最终找的父类就是`Object`。
 如果一个类没有特别指定父类，那么默认则继承自`Object`类。例如：
 
 java
-public class MyClass /*extends Object*/ {
+public class MyClass /*extends Object*/ \{
   // ...
-}
+\}
 
  根据`JDK`源代码及`Object`类的`API`文档，`Object`类当中包含的方法有`11`个。今天我们主要学习其中的`2`个：
 
@@ -31,17 +34,17 @@ public class MyClass /*extends Object*/ {
 如果不希望使用`toString`方法的默认行为，则可以对它进行覆盖重写。例如自定义的`Person`类：
 
 java
-public class Person {
+public class Person \{
 private String name;
 private int age;
 @Override
-public String toString() {
-return "Person{" + "name='" + name + '\'' + ", age=" + age + '}';
-}
+public String toString() \{
+return "Person\{" + "name='" + name + '\'' + ", age=" + age + '\}';
+\}
 //
 `省略构造器与`
 Getter Setter
-}
+\}
 
  在`IntelliJ IDEA`中，可以点击`` `Code` ``菜单中的`` `Generate...` ``，也可以使用快捷键`` `alt+insert` ``，点击`` `toString()` ``选项。选择需要包含的成员变量并确定。如下图所示：
 
@@ -62,12 +65,12 @@ Getter Setter
 
 java
 import java.util.Objects;
-public class Person {   
+public class Person \{   
     private String name;
     private int age;
     
 @Override
-public boolean equals(Object o) {
+public boolean equals(Object o) \{
 //
 `如果对象地址一样，则认为相同`
 if (this == o)
@@ -83,8 +86,8 @@ Person person = (Person) o;
 要求基本类型相等，并且将引用类型交给`java.util.Objects`类的`equals`静态方法取用结果
 
 return age == person.age && Objects.equals(name, person.name);
-}
-}
+\}
+\}
 
  这段代码充分考虑了对象为空、类型一致等问题，但方法内容并不唯一。大多数`IDE`都可以自动生成`equals`方法的代码内容。在`IntelliJ IDEA`中，可以使用`` `Code` ``菜单中的`` `Generate…` ``选项，也可以使用快捷键`` `alt+insert` ``，并选择`` `equals() and hashCode()` ``进行自动代码生成。如下图所示：
 
@@ -103,8 +106,10 @@ return age == person.age && Objects.equals(name, person.name);
 我们可以查看一下源码，学习一下：
 
 ~~~java
-public static boolean equals(Object a, Object b) {
+public static boolean equals(Object a, Object b) \{
 return (a == b) || (a != null && a.equals(b));
-}
+\}
 ~~~
 ```
+
+:::

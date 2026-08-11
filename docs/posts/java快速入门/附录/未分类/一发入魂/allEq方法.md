@@ -3,7 +3,10 @@ title: allEq方法
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 附录, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 @Test
 public void test3() {
@@ -86,3 +89,5 @@ public void test3() {
  users.forEach(System.out::println);
 }
 ```
+
+:::

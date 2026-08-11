@@ -3,7 +3,10 @@ title: SpringBoot页面展示Thymeleaf
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 开发传统Java WEB工程时，我们可以使用JSP页面模板语言，但是在SpringBoot中已经不推荐使用了。SpringBoot支持如下页面模板语言
 
@@ -139,3 +142,5 @@ th:include
 
  \<https://www.jianshu.com/p/a842e5b5012e\>
 ```
+
+:::

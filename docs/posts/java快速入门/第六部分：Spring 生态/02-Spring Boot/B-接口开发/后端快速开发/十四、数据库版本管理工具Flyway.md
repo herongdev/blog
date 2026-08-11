@@ -3,7 +3,10 @@ title: 十四、数据库版本管理工具Flyway
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 前言
 在项目中，经常会进行版本的升级。在版本升级时，就会牵扯到数据库的升级。 平时可能我们有一个文件系统保存`SQL`脚本，需要升到哪个版本就执行对应的`SQL`脚本。这样很麻烦，并且容易出错。
 
@@ -38,7 +41,7 @@ tags: [Java, Spring, OneNote]
 **命名规范**
 `SQL`文件命名规范：前缀 `+` 版本号 `+` 双下划线 `+` 描述 `+` 后缀
 
-![Exported image](Exported%20image%2020260702230415-0.png)
+
 
 也可以通过配置对命名规范进行修改，如下：
 
@@ -129,20 +132,20 @@ PRIMARYKEY (`id`)
 添加`Maven`配置和`SQL`脚本后，即可启动项目。
 若启动成功，则出现如下信息：
 
-![Exported image](Exported%20image%2020260702230417-1.png)
+
 
 查看数据库，生成了`flyway-schema-history`表，该表用于记录执行的`SQL`信息。如下：
 
-![Exported image](Exported%20image%2020260702230418-2.png)
+
 
 该表名可以通过配置`spring.flyway.table=flyway_schema_history`修改。
 除该表外还执行了配置的`SQL`脚本，生成了业务表，如下：
 
-![Exported image](Exported%20image%2020260702230421-3.png)
+
 
 若初始数据库非空，则会出现如下错误：
 
-![Exported image](Exported%20image%2020260702230422-4.png)
+
 
 可以通过配置`spring.flyway.baseline-on-migrate=true`，将当前的数据库结构设为基线版本，`SQL`脚本在基线版本上执行。
 
@@ -203,3 +206,5 @@ PRIMARYKEY (`id`)
 
 总结
 至此，我们成功的通过`Flyway`对数据库版本进行管理。
+
+:::

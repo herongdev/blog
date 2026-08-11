@@ -3,7 +3,10 @@ title: 3-安装Nginx和fastdfs-nginx-module模块
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `**安装****Nginx****所需依赖**`
 
 `yum -y install pcre pcre-devel`  
@@ -38,32 +41,34 @@ tags: [Java, 微服务, OneNote]
 ==编译安装：====￼====make====￼====make install====￼==
 
 ==查看安装路径：====whereis nginx==
-![whereis nginx nginx usrlocalnginx](Exported%20image%2020260702234623-0.jpeg)
+
 
 ==启动、停止：====￼====cd /usr/local/nginx/sbin/====￼====./nginx== ==￼====./nginx -s stop== ==#====此方式相当于先查出====nginx====进程====id====再使用====kill====命令强制杀掉进程====￼====./nginx -s quit #====此方式停止步骤是待====nginx====进程处理任务完毕进行停止====￼====./nginx -s reload====￼==
 
 ==验证启动状态：====wget "====http://127.0.0.1===="==
-![roothzabj mind204 usrlocalsrc wget http127...1 201...](Exported%20image%2020260702234625-1.jpeg)
+
 
 `==查看此时的====nginx====版本：发现====fastdfs====模块已经安装好了==`
 
-![roothzabj usrlocalnginxsbinnginx V nginx version n...](Exported%20image%2020260702234628-2.jpeg)
+
 
 **8.****配置****Nginx****和****fastdfs-nginx-module****模块**
 **配置****nginx****，****80****端口****server****增加****location****如图：****￼****vim /usr/local/nginx/conf/nginx.conf**
 ==#====添加如下配置==
-==server {==
+==server \{==
     ==listen       8888====;==    ==##== ==该端口为====storage.conf====中的====http.server_port====相同==
     ==server_name  localhost====;==
-    ==location== ==~====/group[0-9]/ {==
+    ==location== ==~====/group[0-9]/ \{==
         ==ngx_fastdfs_module====;==
-    ==}==
+    ==\}==
     ==error_page   500 502 503 504  /50x.html====;==
-    ==location = /50x.html {==
+    ==location = /50x.html \{==
     ==root   html====;==
-    ==}==
-==}==
+    ==\}==
+==\}==
 ==#====测试下载，用外部浏览器访问刚才已传过的====nginx====安装包====,====引用返回的====ID==
 ==http://192.168.52.1:8888/group1/M00/00/00/wKgAQ1pysxmAaqhAAA76tz-dVgg.tar.gz==
 ==#====弹出下载单机部署全部跑通==
 ```
+
+:::

@@ -5,7 +5,10 @@ categories: [Java 快速入门]
 tags: [Java, Spring, SpringBoot]
 sidebarWeight: 1
 description: Spring Boot 分四门：入门、接口开发、配置与整合、排错。
+lastUpdated: false
 ---
+::: v-pre
+
 # Spring Boot 教程索引
 
 | 子系列 | 说明 |
@@ -16,3 +19,5 @@ description: Spring Boot 分四门：入门、接口开发、配置与整合、�
 | **D-排错** | 常见报错与解决方案 |
 
 按 **A → B → C**，遇到报错查 **D**。
+
+:::

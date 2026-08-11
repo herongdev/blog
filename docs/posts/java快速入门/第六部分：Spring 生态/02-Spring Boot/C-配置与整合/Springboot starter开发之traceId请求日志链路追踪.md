@@ -3,7 +3,10 @@ title: Springboot starter开发之traceId请求日志链路追踪
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 隐 风
 
 于 2021-10-04 16:09:43 发布
@@ -32,25 +35,25 @@ MDC：（Mapped Diagnostic Context，映射调试上下文）是 log4j 和 logba
 * @description traceId工具类
 * @since 2021/10/2 11:10
 */
-public class TraceIdUtil {
+public class TraceIdUtil \{
 private static final String TRACE_ID = "traceId";
 
-public static void set() {
+public static void set() \{
 MDC.put(TRACE_ID, generate());
-}
+\}
 
-public static String get() {
+public static String get() \{
 return MDC.get(TRACE_ID);
-}
+\}
 
-public static void remove() {
+public static void remove() \{
 MDC.remove(TRACE_ID);
-}
+\}
 
-public static String generate() {
+public static String generate() \{
 return UUID.randomUUID().toString().replace("-", "").substring(0, 16);
-}
-}
+\}
+\}
 
 1
 2
@@ -82,47 +85,47 @@ springboot环境注入工具类
 * @description 资源配置工具类
 * @since 2021/10/2 0:02
 */
-public class PropertySourcesUtil {
+public class PropertySourcesUtil \{
 
 private static final String NAME = "aop.yinfeng";
 
 private static ConfigurableEnvironment environment;
 private static SpringApplication application;
 
-public static void setEnvironment(ConfigurableEnvironment environment) {
-if (PropertySourcesUtil.environment == null) {
+public static void setEnvironment(ConfigurableEnvironment environment) \{
+if (PropertySourcesUtil.environment == null) \{
 PropertySourcesUtil.environment = environment;
-}
-}
+\}
+\}
 
-public static SpringApplication getApplication() {
+public static SpringApplication getApplication() \{
 return application;
-}
+\}
 
-public static void setApplication(SpringApplication application) {
+public static void setApplication(SpringApplication application) \{
 PropertySourcesUtil.application = application;
-}
+\}
 
-public static void set(String key, Object value) {
+public static void set(String key, Object value) \{
 getSourceMap().put(key, value);
-}
+\}
 
-public static Object get(String key) {
+public static Object get(String key) \{
 return getSourceMap().get(key);
-}
+\}
 
-public static Map\<String, Object\> getSourceMap() {
+public static Map\<String, Object\> getSourceMap() \{
 PropertySource\<?\> propertySource = environment.getPropertySources().get(NAME);
 Map\<String, Object\> source;
-if (propertySource == null) {
+if (propertySource == null) \{
 source = new LinkedHashMap\<String, Object\>();
 propertySource = new MapPropertySource(NAME, source);
 environment.getPropertySources().addLast(propertySource);
-}
+\}
 source = (Map\<String, Object\>) propertySource.getSource();
 return source;
-}
-}
+\}
+\}
 
 1
 2
@@ -178,13 +181,13 @@ return source;
 */
 @Data
 @ConfigurationProperties(prefix = "aop.logging")
-public class LogProperties {
+public class LogProperties \{
 
 private String logDir;
 // 因为logback和log4j的日志格式略有不同，所以提供2种打印格式
-private String logbackPattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %X{traceId} %-5level %logger{30} : %msg%n";
-private String log4jPattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %X{traceId} %-5level %clr{%-30.30c{1.}}{cyan} : %msg%n";
-}
+private String logbackPattern = "%d\{yyyy-MM-dd HH:mm:ss.SSS\} %X\{traceId\} %-5level %logger\{30\} : %msg%n";
+private String log4jPattern = "%d\{yyyy-MM-dd HH:mm:ss.SSS\} %X\{traceId\} %-5level %clr\{%-30.30c\{1.\}\}\{cyan\} : %msg%n";
+\}
 
 1
 2
@@ -207,38 +210,38 @@ private String log4jPattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %X{traceId} %-5level 
 * @description 环境注入抽象类
 * @since 2021/10/1 17:55
 */
-public abstract class AbstractEnvironmentPostProcessor implements EnvironmentPostProcessor {
+public abstract class AbstractEnvironmentPostProcessor implements EnvironmentPostProcessor \{
 
 private static final String DEV = "dev";
 private static final String STG = "stg";
 private static final String PRD = "prod";
 
 @Override
-public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) \{
 PropertySourcesUtil.setEnvironment(environment);
 final List\<String\> profiles = Arrays.asList(environment.getActiveProfiles());
-if (profiles.contains(PRD)) {
+if (profiles.contains(PRD)) \{
 doPrd(environment, application);
-} else if (profiles.contains(STG)) {
+\} else if (profiles.contains(STG)) \{
 doStg(environment, application);
-} else {
+\} else \{
 doDev(environment, application);
-}
+\}
 onProfile(environment, application);
-}
+\}
 
-protected void doPrd(ConfigurableEnvironment environment, SpringApplication application) {
-}
+protected void doPrd(ConfigurableEnvironment environment, SpringApplication application) \{
+\}
 
-protected void doStg(ConfigurableEnvironment environment, SpringApplication application) {
-}
+protected void doStg(ConfigurableEnvironment environment, SpringApplication application) \{
+\}
 
-protected void doDev(ConfigurableEnvironment environment, SpringApplication application) {
-}
+protected void doDev(ConfigurableEnvironment environment, SpringApplication application) \{
+\}
 
-protected void onProfile(ConfigurableEnvironment environment, SpringApplication application) {
-}
-}
+protected void onProfile(ConfigurableEnvironment environment, SpringApplication application) \{
+\}
+\}
 
 1
 2
@@ -283,25 +286,25 @@ protected void onProfile(ConfigurableEnvironment environment, SpringApplication 
 * @since 2021/10/1 17:52
 */
 @EnableConfigurationProperties(LogProperties.class)
-public class LogEnvAdvice extends AbstractEnvironmentPostProcessor {
+public class LogEnvAdvice extends AbstractEnvironmentPostProcessor \{
 
 @Override
-protected void onProfile(ConfigurableEnvironment environment, SpringApplication application) {
+protected void onProfile(ConfigurableEnvironment environment, SpringApplication application) \{
 final Binder binder = Binder.get(environment);
 final BindResult\<LogProperties\> bindResult = binder.bind("aop.logging", Bindable.of(LogProperties.class));
 LogProperties logProperties = new LogProperties();
-if (bindResult.isBound()) {
+if (bindResult.isBound()) \{
 logProperties = bindResult.get();
-}
+\}
 // 配置日志打印格式
-if (isLogback(application)) {
+if (isLogback(application)) \{
 PropertySourcesUtil.set("logging.pattern.console", logProperties.getLogbackPattern());
 PropertySourcesUtil.set("logging.pattern.file", logProperties.getLogbackPattern());
 return;
-}
+\}
 PropertySourcesUtil.set("logging.pattern.console", logProperties.getLog4jPattern());
 PropertySourcesUtil.set("logging.pattern.file", logProperties.getLog4jPattern());
-}
+\}
 
 /**
 * 判断是否是logback日志格式
@@ -309,11 +312,11 @@ PropertySourcesUtil.set("logging.pattern.file", logProperties.getLog4jPattern())
 * @param application application
 * @return
 */
-private boolean isLogback(SpringApplication application) {
+private boolean isLogback(SpringApplication application) \{
 final LoggingSystem loggingSystem = LoggingSystem.get(application.getClassLoader());
 return LogbackLoggingSystem.class.equals(loggingSystem.getClass());
-}
-}
+\}
+\}
 
 1
 2
@@ -361,13 +364,13 @@ org.springframework.boot.env.EnvironmentPostProcessor=com.yinfeng.common.envirom
 * @description 日志拦截器
 * @since 2021/10/2 11:09
 */
-public class LogInterceptor implements HandlerInterceptor {
+public class LogInterceptor implements HandlerInterceptor \{
 
 @Override
-public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) \{
 TraceIdUtil.set();
 return true;
-}
+\}
 
 /**
 * 回收资源，防止oom
@@ -378,10 +381,10 @@ return true;
 * @throws Exception
 */
 @Override
-public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception \{
 TraceIdUtil.remove();
-}
-}
+\}
+\}
 
 1
 2
@@ -414,15 +417,15 @@ TraceIdUtil.remove();
 * @description 拦截器增强
 * @since 2021/10/2 11:15
 */
-public class InterceptorAdvice implements WebMvcConfigurer {
+public class InterceptorAdvice implements WebMvcConfigurer \{
 
 @Override
-public void addInterceptors(InterceptorRegistry registry) {
+public void addInterceptors(InterceptorRegistry registry) \{
 // 将拦截器注入到容器中
 final InterceptorRegistration registration = registry.addInterceptor(new LogInterceptor()).order(Integer.MIN_VALUE);
 registration.addPathPatterns("/**");
-}
-}
+\}
+\}
 
 1
 2
@@ -481,3 +484,5 @@ registration.addPathPatterns("/**");
 ————————————————
 版权声明：本文为CSDN博主「隐 风」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/a1774381324/article/details/120600130
+
+:::

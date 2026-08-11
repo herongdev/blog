@@ -3,7 +3,10 @@ title: File类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 ==Java== ==流====(Stream)==
 
@@ -13,7 +16,7 @@ tags: [Java, 核心API, OneNote]
 java.io.File 类是文件和目录路径名的抽象表示，主要用于文件和目录的创建、查找和删除等操作。
 
 **构造方法**
-![Ing, FileString, FileString FileString, Choose Dec...](Exported%20image%2020260702223750-0.png)
+
 
 public File(String pathname) ：通过将给定的文件路径或文件名字符串转换为抽象路径名来创建新的 File实例。
 
@@ -255,7 +258,7 @@ System.out.println(file);
 - ==下面的实例演示了====File====对象的使用：==
 - **实例**
 
-![import java.io. File public class DirList public s...](Exported%20image%2020260702223752-1.png)
+
 
 ==以上实例编译运行结果如下：==
 ==Directory== ==of== ==/====java====￼====bin== ==is== ==a directory====￼====lib== ==is== ==a directory====￼====demo== ==is== ==a directory====￼====test====.====txt== ==is== ==a file====￼====README== ==is== ==a file====￼====index====.====html== ==is== ==a file====￼====include== ==is== ==a directory==
@@ -263,3 +266,5 @@ System.out.println(file);
 
  \<https://www.runoob.com/java/java-file.html\>
 ```
+
+:::

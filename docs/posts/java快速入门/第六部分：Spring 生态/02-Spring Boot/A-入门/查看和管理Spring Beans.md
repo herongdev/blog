@@ -3,7 +3,10 @@ title: 查看和管理Spring Beans
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在IntelliJ IDEA中查看和管理Spring Beans的具体方法取决于你是否已经安装并配置了相应的插件以及项目是否已正确设置为Spring项目。下面是如何在IntelliJ IDEA中打开和使用Spring Beans窗口的步骤：
 
 ### 安装和配置
@@ -38,3 +41,5 @@ tags: [Java, Spring, OneNote]
 - **识别配置问题**：该窗口还可以帮助你识别常见的配置错误，如循环依赖、未满足的依赖等。
 
 确保利用IntelliJ IDEA的这些高级功能来增强你对Spring项目的理解和控制，这对开发和维护Spring应用非常有帮助。如果窗口中没有显示预期的信息，重新检查项目配置和Spring相关插件的设置是否正确。
+
+:::

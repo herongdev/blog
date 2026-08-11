@@ -3,18 +3,21 @@ title: StringBuilder类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **字符串拼接问题**
 由于`String`类的对象内容不可改变，所以每当进行字符串拼接时，总是会在内存中创建一个新的对象。例如：
 ~~~java
 
-public class StringDemo {
-public static void main(String[] args) {
+public class StringDemo \{
+public static void main(String[] args) \{
 String s = "Hello";
 s += "World";
 System.out.println(s);
-}
-}
+\}
+\}
 ~~~
  在`API`中对`String`类有这样的描述：字符串是常量，它们的值在创建后不能被更改。
 
@@ -42,8 +45,8 @@ System.out.println(s);
 ：构造一个`StringBuilder`容器，并将字符串添加进去。
 
 java
-public class StringBuilderDemo {
-public static void main(String[] args) {
+public class StringBuilderDemo \{
+public static void main(String[] args) \{
 StringBuilder sb1 = new StringBuilder();
 System.out.println(sb1); // (
 `空白`
@@ -52,8 +55,8 @@ System.out.println(sb1); // (
 `使用带参构造`
 StringBuilder sb2 = new StringBuilder("itcast");
 System.out.println(sb2); // itcast
-}
-}
+\}
+\}
 `## 4.4`
 
 **常用方法**
@@ -69,8 +72,8 @@ System.out.println(sb2); // itcast
 `append`方法具有多种重载形式，可以接收任意类型的参数。任何数据作为参数都会将对应的字符串内容添加到`StringBuilder`中。例如：
 
 java
-public class Demo02StringBuilder {
-    public static void main(String[] args) {
+public class Demo02StringBuilder \{
+    public static void main(String[] args) \{
         //
 `创建对象`
         StringBuilder builder = new StringBuilder();
@@ -97,8 +100,8 @@ public class Demo02StringBuilder {
 `链式编程`
         builder.append("hello").append("world").append(true).append(100);
         System.out.println("builder:"+builder);
-    }
-}
+    \}
+\}
 `\>`
 
 备注：`StringBuilder`已经覆盖重写了`Object`当中的`toString`方法。
@@ -106,8 +109,8 @@ public class Demo02StringBuilder {
 通过`toString`方法，`StringBuilder`对象将会转换为不可变的`String`对象。如：
 
 java
-public class Demo16StringBuilder {
-public static void main(String[] args) {
+public class Demo16StringBuilder \{
+public static void main(String[] args) \{
 //
 `链式创建`
 StringBuilder sb = new StringBuilder("Hello").append("World").append("Java");
@@ -115,5 +118,7 @@ StringBuilder sb = new StringBuilder("Hello").append("World").append("Java");
 `调用方法`
 String str = sb.toString();
 System.out.println(str); // HelloWorldJava
-}
-}
+\}
+\}
+
+:::

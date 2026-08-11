@@ -5,7 +5,9 @@ categories: [Java 快速入门]
 tags: [Java, 后端, 编程入门, 学习路线]
 description: 从碎片笔记回到一条能写项目、能查错、能讲清楚设计边界的 Java 学习路线。
 sidebarWeight: 1
+lastUpdated: false
 ---
+::: v-pre
 
 # 为什么要重新系统学习 Java？
 
@@ -55,3 +57,5 @@ sidebarWeight: 1
 - 错误要写下来：每次报错都记录输入、预期、实际、定位过程和修复方式。
 
 下一步：打开 [01-课程路线图](./01-课程路线图.md)。
+
+:::

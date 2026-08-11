@@ -1,0 +1,198 @@
+---
+title: "手动搭建Webpack 5和Vue 3 开发环境"
+date: 2026-08-11
+categories:
+  - "Vue 系统教程"
+tags:
+  - "Vue"
+  - "Vue3"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "项目实战"
+description: "想必绝大多数用 Vue 开发过项目的同学，或多或少会有以下两种情况： 长此以往，会导致你对整个项目的把控度越来越低。面试下一家公司的面试官问你，是否手动搭建过 Vue 项目的时候，对配置一问三不知🤔️ 。本文着重为大家讲解从 0 到 1 搭建 Vue 3.x 开发环境 的过程中遇。"
+sidebarWeight: 67
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/实战/手动搭建Webpack 5和Vue 3 开发环境.md"
+---
+::: v-pre
+
+# 手动搭建Webpack 5和Vue 3 开发环境
+
+> 本节目标：理解“手动搭建Webpack 5和Vue 3 开发环境”的核心思路，并能把它用于实际开发或面试表达。
+
+> 说明：原 OneNote 中有图片引用，但图片未包含在导出目录中；本页保留了可用的文字与代码内容。
+想必绝大多数用 Vue 开发过项目的同学，或多或少会有以下两种情况：
+
+```
+用 Vue CLI 工具去搭建一个项目。
+```
+
+```
+在领导或同事搭建好的项目基础上做业务。
+```
+
+长此以往，会导致你对整个项目的把控度越来越低。面试下一家公司的面试官问你，是否手动搭建过 Vue 项目的时候，对配置一问三不知🤔️ 。本文着重为大家讲解从 0 到 1 搭建 Vue 3.x **开发环境** 的过程中遇到的疑问。
+这里提前说明，本文侧重新手向，只搭建了开发环境，主要是让大家了解一个过程，是一篇入门级别的文章，大佬对自己够自信的话，就看到这里，就此作罢。
+**开源代码**
+本文章源码：[github.com/Nick930826/](https://github.com/Nick930826/hand-vue3-project)…
+新蜂商城开源仓库：[github.com/newbee-ltd](https://github.com/newbee-ltd)（内涵 Vue 2.x 和 Vue 3.x 的 H5 商城开源代码）
+Vue 3.x + Vant 3.x 高仿微信记账本开源地址：[github.com/Nick930826/](https://github.com/Nick930826/daily-cost)…
+原创不易，有帮助的还望点赞支持，这将是我持续原创输出的动力。还有，打榜别给我投票，我还差这点钱吗？
+**配置** **Webpack** **环境**
+我们先抛开 Vue ，针对 Webpack 先搭建一个项目最初的模样，在你喜欢的目录下新建一个文件夹，并初始化项目：
+// 创建文件夹mkdir hand-vue3-project && cd hand-vue3-project// 初始化项目npm init -y复制代码
+此时你将会得到一个只有 package.json 文件的项目，接下来我们安装 webpack 和 webpack-cli ，命令行如下：
+yarn add webpack webpack-cli -D复制代码
+webpack-cli 是执行 webpack 的工具。webpack 4.x 版本以后，剥离出了 webpack-cli ，所以这里我们需要单独下载它。
+接下来在根目录添加如下 src 文件夹，并且在 src 文件夹内添加 main.js 文件，内容我们先不添加。再在根目录添加 index.html 和 webpack.config.js ，添加完后结构如下所示：
+
+```
+接下来我们给 webpack.config.js 添加内容：
+// webpack.config.jsconst path = require('path')
+module.exports = {  mode: 'development', // 环境模式  entry: path.resolve(__dirname, './src/main.js'), // 打包入口  output: {    path: path.resolve(__dirname, 'dist'), // 打包出口    filename: 'js/[name].js' // 打包完的静态资源文件名  }}复制代码
+修改 package.json 的 scripts 属性：
+"scripts": {  "dev": "webpack --config ./webpack.config.js"}复制代码
+运行打包指令 yarn dev , 如下所示代表成功：
+```
+
+```
+图中的 js/main.js 就是我们通过 webpack 将 main.js 打包完后的代码，打开之后你会发现里面啥都没有，接下来我们给 index.html 添加内容，然后通过 html-webpack-plugin 插件，将 index.html 作为模板，打出到 dist 文件夹。
+通过指令添加 html-webpack-plugin 插件：
+yarn add html-webpack-plugin -D复制代码
+在 webpack.config.js 下引入并使用：
+const path = require('path')const HtmlWebpackPlugin = require('html-webpack-plugin')
+module.exports = {  mode: 'development',  entry: path.resolve(__dirname, './src/main.js'),  output: {    path: path.resolve(__dirname, 'dist'),    filename: 'js/[name].js'  },  plugins: [    new HtmlWebpackPlugin({      template: path.resolve(__dirname, './index.html'), // 我们要使用的 html 模板地址      filename: 'index.html', // 打包后输出的文件名      title: '手搭 Vue 开发环境' // index.html 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量    })  ]}复制代码
+上述是对 html-webpack-plugin 插件比较常用的描述，如果想深入了解配置项的同学请移步 [Github](https://juejin.cn/post/6921161482663100423)官网 。 最后我们给 index.html 加上内容：
+<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title><%= htmlWebpackPlugin.options.title %></title></head><body>  <div id="root"></div></body></html>复制代码
+给 main.js 来点内容：
+const root = document.getElementById('root')root.textContent = '你妈贵姓？'复制代码
+运行打包指令 yarn dev ，我们来看看 dist 目录下会多出什么：
+我们不妨直接在浏览器打开 index.html 看看，会有什么效果：
+这么一想，大家结合我前面那篇[《你好，谈谈你对前端路由的理解》](https://juejin.cn/post/6917523941435113486), 完全就可以直接在 main.js 里开始敲页面了。 js 功底好的同学，可以直接通过 js 的 DOM 操作能力，创建标签塞入 root 节点。
+这合适吗？谁让我这么干，我就一套五连鞭，抽它。
+稍作思考之后，我便义无反顾地选择引入 Vue 。
+**引入** **Vue 3.x**
+引入 Vue 3.x ，指令如下：
+yarn add vue@next -S复制代码
+这里注意，要使用 vue@next 才能成功引入 Vue 3.x，否则就会引入 2.x 的最高版本。这里 -S 是指生产环境需要用到的包 — dependencies。同理 -D 表示开发环境需要的依赖。
+引入成功之后，我们在 src 目录下新建 App.vue ：
+<template>  <div>“喂你好，是尼克陈吗？我是叮咚买菜的送菜员，由于您电话打不通，	特意在页面里跟您说一声，您菜到家了。”</div></template>
+<script>export default {  }</script>复制代码
+瞧瞧，正儿八经的 Vue 模板页面。我现在想把它引入到 root 节点下，怎么玩？ 打开 main.js 添加如下内容：
+import { createApp } from 'vue' // Vue 3.x 引入 vue 的形式import App from './App.vue' // 引入 APP 页面组建
+const app = createApp(App) // 通过 createApp 初始化 appapp.mount('#root') // 将页面挂载到 root 节点复制代码
+整完之后，我快乐的去打包，给我报了个错。
+大致意思就是说，“您可能需要适当的 loader 程序来处理 .vue 文件类型，当前没有配置任何 loader 来处理此文件。” 此时我准备用 **脑子 **想一想，让浏览器去识别 .vue 结尾的文件，这不合适。我们必须让它变成浏览器认识的语言，那就是 js ，于是我们需要添加下面几个插件：
+```
+
+vue-loader：它是基于 webpack 的一个的 loader 插件，解析和转换 .vue  文件，提取出其中的逻辑代码 script、样式代码 style、以及 HTML 模版 template，再分别把它们交给对应的 loader 去处理如 style-loader 、 less-loader 等等，核心的作用，就是 提取 。
+
+```
+@vue/compiler-sfc： Vue 2.x 时代，需要 vue-template-compiler 插件处理 .vue 内容为 ast ， Vue 3.x 则变成 @vue/compiler-sfc 。
+```
+
+```
+安装的时候注意 vue-loader 需要通过 yarn add vue-loader@next 安装最新版本。
+```
+
+```
+然后我们为 webpack.config.js 添加如下内容：
+const path = require('path')const HtmlWebpackPlugin = require('html-webpack-plugin')// 最新的 vue-loader 中，VueLoaderPlugin 插件的位置有所改变const { VueLoaderPlugin } = require('vue-loader/dist/index')
+module.exports = {  mode: 'development',  entry: path.resolve(__dirname, './src/main.js'),  output: {    path: path.resolve(__dirname, 'dist'),    filename: 'js/[name].js'  },  module: {    rules: [      {        test: /\.vue$/,        use: [          'vue-loader'        ]      }    ]  },  plugins: [    new HtmlWebpackPlugin({      template: path.resolve(__dirname, './index.html'),      filename: 'index.html',      title: '手搭 Vue 开发环境'    }),    // 添加 VueLoaderPlugin 插件    new VueLoaderPlugin()  ]}复制代码
+VueLoaderPlugin 的职责是将你定义过的其它规则复制并应用到 .vue 文件里相应语言的块。例如，如果你有一条匹配 /\.js$/ 的规则，那么它会应用到 .vue 文件里的 <script> 块。
+我们再次运行打包指令 yarn dev ，浏览器打开 dist/index.html 如下所示：
+还没完，我如果在 App.vue 中加入 style 内容，如下所示：
+<template>  <div>“喂你好，是尼克陈吗？我是叮咚买菜的送菜员，  由于您电话打不通，特意在页面里跟您说一声，您菜到家了。</div></template>
+<script>export default {  }</script><style>  div {    color: yellowgreen;  }</style>复制代码
+打包又回报错：
+意思就是说，又少 loader 了，我们还需增加下面几个插件：
+```
+
+```
+style-loader：将 css 样式插入到页面的 style 标签中。
+```
+
+```
+css-loader：处理样式中的 url ，如 url('@/static/img.png') ，这时浏览器是无法识别 @ 符号的。
+```
+
+这里插播一下，vue-style-loader 是服务端渲染的时候，需要的 loader，包括 less-loader、sass-loader 都是在用到的时候，才去添加。
+
+```
+安装完后，我们在 webpack.config.js 下添加如下代码：
+module: {	rules: [  	...    {      test: /\.css$/,        use: [          'style-loader',          'css-loader'        ]    }    ...  ]}复制代码
+又可以快乐的打包了呢，打完后浏览器打开 index.html 如下所示：
+还有一个小插件是必备的， clean-webpack-plugin ，它的作用就是每次打包的时候，都会把 dist 目录清空，防止文件变动后，还有残留一些老的文件，以及避免一些缓存问题。 webpack.config.js 配置如下：
+const CleanWebpackPlugin = require('clean-webpack-plugin')plugins: [   new CleanWebpackPlugin()]复制代码
+讲到这， Vue 3.x 引入的部分就告一段落了，接下来我们再聊聊 babel 。
+**理解与配置** **babel**
+可以正常敲 Vue 代码之后，我们还要考虑一下代码的浏览器兼容情况，毕竟现代前端框架 Vue 、 React 、 Angular 等都是对浏览器有要求的。就比如 IE 全员不支持箭头函数，这你找谁说理。
+```
+
+图片来自 caniuse.com
+**babel** **是什么**
+以我自己的理解， babel 是把我们随心所欲（最新特性一顿乱写）写的代码，编译成浏览器可识别的代码（低版本浏览器对新特性的支持不友好），就比如上述箭头函数，经过 babel 的转化后，就会变成普通的函数。
+**babel** **的使用方式**
+它有三种使用方式：
+
+```
+使用单体文件。
+```
+
+```
+命令行（babel-cli）。
+```
+
+```
+构建工具如 webpack 中的 babel-loader 插件。
+```
+
+我们前端常用的就是第三种，构建工具的插件形式。毕竟现在大多数前端项目都是基于 webpack 构建的。 这里我们不对 babel 做深究，不然要跑题了，下一篇再为大家细讲 babel 。 我们开始对上述项目做 babel 相关的配置，我们需要下面几个插件：
+
+```
+@babel-core： babel 的核心库。
+```
+
+@babel-preset-env：它取代了 es2015 es2016 es2017 ，通过配置浏览器版本的形式，将编译的主动权，交给了插件。
+
+```
+@babel-loader： webpack 的 loader 插件，用于编译代码，转化成浏览器读得懂的代码。
+```
+
+```
+安装完上述插件之后，我们在 webpack.config.js 下添加如下代码：
+module: {	rules: [  	{      test: /\.js$/,      exclude: /node_modules/, // 不编译node_modules下的文件      loader: 'babel-loader'    },  ]}复制代码
+编译的时候，需要读取配置，最新的 babel 配置文件需要在根目录下添加 babel.config.js 文件：
+module.exports = {  presets: [    ["@babel/preset-env", {      "targets": {        "browsers": ["last 2 versions"] // 最近 2 个版本的浏览器      }    }]  ]}复制代码
+这里 browsers 的配置，就是让 env 去识别要打包代码到什么程度，版本选的越新，打包出来的代码就越小。因为通常版本越低的浏览器，代码转译的量会更大。具体的配置可以参考 [github.com/browserslis](https://github.com/browserslist/browserslist)…
+为了能体现出打包后的效果，我们在 App.vue 下添加一些代码：
+<template>  <div>“喂你好，是尼克陈吗？我是叮咚买菜的送菜员，由于您电话打不通，特意在页面里跟您说一声，您菜到家了。</div></template><script>export default {  setup() {    const testFunction = () => {      console.log('滚!!!')    }    return {      testFunction    }  }}</script><style>  div {    color: yellowgreen;  }</style>复制代码
+然后我们运行打包指令 yarn dev ，打完包后我们浏览器打开 dist/index.html 查看代码：
+**箭头函数变成了普通函数。**
+我再将 babel.config.js 的目标浏览器配置改成如下所示：
+module.exports = {  presets: [    ["@babel/preset-env", {      "targets": {        "browsers": ["last 1 chrome version"]      }    }]  ]}复制代码
+因为我制定了谷歌最新版本，所以打包之后，代码并没有从箭头函数变为普通函数。
+**配置** **devServer**
+每次写完代码都要重新打包才能看到效果，“TMD 烦死了”。这里需要一个实时更新最新代码的能力。于是 webpack-dev-server 为我们实现了这个能力。 安装它：
+yarn add webpack-dev-server -D复制代码
+在 webpack.config.js 下添加如下配置：
+devServer: {  contentBase: path.resolve(__dirname, './dist'),  port: 8080,  publicPath: '/'}复制代码
+修改 package.json 运行脚本：
+"scripts": {	"dev": "webpack serve --progress --config ./webpack.config.js"}复制代码
+注意了啊，webpack-cli 升级到 4.x 的时候，就不能用 webpack-dev-server 跑脚本了，而是改为 webpack serve 去跑。
+成功之后如下所示：
+```
+
+此时静态资源 main.js 跑在浏览器的内存里，热更新的速度那是相当快啊。
+**总结**
+本文主要是将讲解一个搭建 Vue 3 可运行的最小单位，所以还有不少配置需要添加，如 file-loader 、 url-loader 、 @babel/polyfill 等等等等。关注我的开源项目，后续会添加更多的配置，文中就不赘述了，祝大家工作学习愉快。
+ \> 来自
+
+```
+ <https://juejin.cn/post/6921161482663100423>
+```
+
+:::

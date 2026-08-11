@@ -1,0 +1,45 @@
+---
+title: "组件中 data 为什么是一个函数？"
+date: 2026-08-11
+categories:
+  - "Vue 系统教程"
+tags:
+  - "Vue"
+  - "Vue3"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "面试复习"
+description: "因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，如果组件中 data 选项是一个函数，那么每个实例可以维护一份被返回对象的独立的拷贝，组件实例之间的 data 属性值不会互相影响。"
+sidebarWeight: 33
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/面试/组件中 data 为什么是一个函数？.md"
+---
+::: v-pre
+
+# 组件中 data 为什么是一个函数？
+
+> 本节目标：理解“组件中 data 为什么是一个函数？”的核心思路，并能把它用于实际开发或面试表达。
+```
+为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？
+// data
+data() {
+    return {
+        message: "子组件",
+        childName: this.name
+    }
+}
+// new Vue
+new Vue({
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
+})
+```
+
+因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，如果组件中 data 选项是一个函数，那么每个实例可以维护一份被返回对象的独立的拷贝，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。
+
+:::

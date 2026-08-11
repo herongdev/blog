@@ -3,7 +3,10 @@ title: maven 仓库
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **常用的** `maven` **命令**
 `compile`：编译
 
@@ -108,3 +111,5 @@ tags: [Java, 构建运维, OneNote]
 `\<build\>`
 
 ：项目构建配置，配置编译、运行插件等。
+
+:::

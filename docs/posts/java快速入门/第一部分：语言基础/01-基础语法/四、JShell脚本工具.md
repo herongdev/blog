@@ -3,7 +3,10 @@ title: 四、JShell脚本工具
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `JShell`**脚本工具是**`JDK9`**的新特性**
 什么时候会用到 `JShell` 工具呢，当我们编写的代码非常少的时候，而又不愿意编写类，`main`方法，也不愿意去编译和运行，这个时候可以使用`JShell`工具。
 
@@ -15,3 +18,5 @@ tags: [Java, Java基础, OneNote]
 - JShell
 
 工具，只适合片段代码的测试，开发更多内容，建议编写在方法中。
+
+:::

@@ -3,7 +3,10 @@ title: String类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `java.lang.String` 类代表字符串。
 `Java`程序中所有的字符串文字（例如 `"abc"` ）都可以被看作是实现此类的实例。
 
@@ -40,7 +43,7 @@ String s2 = "abc";
 String str = "abc";
  相当于：
 
-char data[] = {'a', 'b', 'c'};
+char data[] = \{'a', 'b', 'c'\};
 String str = new String(data);
 // String
 底层是靠字符数组实现的。
@@ -75,12 +78,12 @@ public String(byte[] bytes)
 //
 通过字符数组构造
 
-char chars[] = {'a', 'b', 'c'};
+char chars[] = \{'a', 'b', 'c'\};
 String str2 = new String(chars);
 //
 通过字节数组构造
 
-byte bytes[] = { 97, 98, 99 };
+byte bytes[] = \{ 97, 98, 99 \};
 String str3 = new String(bytes);
 **常用方法**
 **判断功能的方法**
@@ -93,8 +96,8 @@ public boolean equalsIgnoreCase (String anotherString)
 
 方法演示，代码如下：
 
-public class String_Demo01 {
-public static void main(String[] args) {
+public class String_Demo01 \{
+public static void main(String[] args) \{
 //
 创建字符串对象
 
@@ -119,8 +122,8 @@ System.out.println("
 ‐‐‐‐‐‐‐‐‐‐‐
 
 ");
-}
-}
+\}
+\}
 Object
 是” 对象”的意思，也是一种引用类型。
 作为参数类型，表示任意对象都可以传递到方法中。
@@ -165,25 +168,25 @@ public String[] split(String regex)
 ：将此字符串按照给定的`regex`（规则）拆分为字符串数组。
 方法演示，代码如下：
 
-public class String_Demo03 {
-public static void main(String[] args) {
+public class String_Demo03 \{
+public static void main(String[] args) \{
 //
 创建字符串对象
 
 String s = "aa|bb|cc";
 String[] strArray = s.split("|"); // ["aa","bb","cc"]
-for(int x = 0; x \< strArray.length; x++) {
+for(int x = 0; x \< strArray.length; x++) \{
 System.out.println(strArray[x]); // aa bb cc
-}
-}
-}
+\}
+\}
+\}
 
 `String`**类的练习**
 **统计字符个数**
 键盘录入一个字符，统计字符串中大小写字母及数字字符个数
 
-public class StringTest2 {
-public static void main(String[] args) {
+public class StringTest2 \{
+public static void main(String[] args) \{
 //
 键盘录入一个字符串数据
 
@@ -203,18 +206,18 @@ int numberCount = 0;
 //
 遍历字符串，得到每一个字符
 
-for(int x=0; x\<s.length(); x++) {
+for(int x=0; x\<s.length(); x++) \{
 char ch = s.charAt(x);
 //
 拿字符进行判断
 
-if(ch\>='A'&&ch\<='Z') {
+if(ch\>='A'&&ch\<='Z') \{
 bigCount++;
-}else if(ch\>='a'&&ch\<='z') {
+\}else if(ch\>='a'&&ch\<='z') \{
 smallCount++;
-}else if(ch\>='0'&&ch\<='9') {
+\}else if(ch\>='0'&&ch\<='9') \{
 numberCount++;
-}else {
+\}else \{
 System.out.println("
 该字符
 
@@ -223,8 +226,8 @@ System.out.println("
 非法
 
 ");
-}
-}
+\}
+\}
 //
 输出结果
 
@@ -252,6 +255,8 @@ System.out.println("
 个
 
 ");
-}
-}
+\}
+\}
 ```
+
+:::

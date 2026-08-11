@@ -3,7 +3,10 @@ title: linux 切换用户
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 可以使用su命令来切换用户，su是switch user切换用户的缩写。
 
@@ -19,3 +22,5 @@ su #切换到root用户
 
  \<https://zhidao.baidu.com/question/245014725872933324.html\>
 ```
+
+:::

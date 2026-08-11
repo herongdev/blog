@@ -3,7 +3,10 @@ title: Spring实例化Bean的三种方法
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在面向对象的程序中，要想调用某个类的成员方法，就需要先实例化该类的对象。在 
 
 `Spring`
@@ -17,8 +20,8 @@ tags: [Java, Spring, OneNote]
 在项目的 `src` 目录下创建一个名为 `com.mengma.instance.constructor` 的包，在该包下创建一个实体类 `Person1`，如下所示。
 
 package com.mengma.instance.constructor;
-public class Person1 {
-}
+public class Person1 \{
+\}
 3.
 **创建** `Spring` **配置文件**
 在 `com.mengma.instance.constructor` 包下创建 `Spring` 的配置文件 `applicationContext.xml`，编辑后如下所示。
@@ -38,9 +41,9 @@ package com.mengma.instance.constructor;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-public class InstanceTest1 {
+public class InstanceTest1 \{
 @Test
-public void test() {
+public void test() \{
 //
 定义`Spring`配置文件的路径
 
@@ -54,12 +57,12 @@ xmlPath);
 通过容器获取`id`为`person1`的实例
 
 System.out.println(applicationContext.getBean("person1"));
-}
-}
+\}
+\}
  上述文件中，首先在 `test()` 方法中定义了 `Spring` 配置文件的路径，然后 `Spring` 容器会加载配置文件。在加载的同时，`Spring` 容器会通过实现类 `Person1` 中默认的无参构造函数对 `Bean` 进行实例化。
 `5.` **运行程序并查看结果**
 使用 `JUnit` 测试运行 `test()` 方法，运行成功后，控制台的输出结果如图 `1` 所示。
- ![Exported image](Exported%20image%2020260702230052-0.png)
+ 
 
 图 `1`  输出结果
 从图 `1` 的输出结果中可以看出，`Spring` 容器已经成功对 `Bean` 进行了实例化，并输出了结果。
@@ -77,14 +80,14 @@ System.out.println(applicationContext.getBean("person1"));
 在 `com.mengma.instance.static_factory` 包下创建一个名为 `MyBeanFactory` 的类，并在该类中创建一个名为 `createBean()` 的静态方法，用于创建 `Bean` 的实例，如下所示。
 
 package com.mengma.instance.static_factory;
-public class MyBeanFactory {
+public class MyBeanFactory \{
 //
 创建`Bean`实例的静态工厂方法
 
-public static Person2 createBean() {
+public static Person2 createBean() \{
 return new Person2();
-}
-}
+\}
+\}
 3.
 **创建** `Spring` **配置文件**
 在 `com.mengma.instance.static_factory` 包下创建 `Spring` 的配置文件 `applicationContext.xml`，编辑后如下所示。
@@ -105,9 +108,9 @@ package com.mengma.instance.static_factory;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-public class InstanceTest2 {
+public class InstanceTest2 \{
 @Test
-public void test() {
+public void test() \{
 //
 定义`Spring`配置文件的路径
 
@@ -120,14 +123,14 @@ xmlPath);
 通过容器获取`id`为`person2`实例
 
 System.out.println(applicationContext.getBean("person2"));
-}
-}
+\}
+\}
 5.
 **运行程序并查看结果**
 使用 `JUnit` 测试运行 `test()` 方法，运行成功后，控制台的输出结果如图 `2` 所示。
 
 从图 `2` 的输出结果中可以看出，使用静态工厂的方式也成功对 `Bean` 进行了实例化。
- ![Exported image](Exported%20image%2020260702230053-1.png)
+ 
 
 图 `2`  输出结果
 **实例工厂方式实例化**
@@ -140,20 +143,20 @@ System.out.println(applicationContext.getBean("person2"));
 在 `com.mengma.instance.factory` 包下创建一个名为 `MyBeanFactory` 的类，编辑后如下所示。
 
 package com.mengma.instance.factory;
-public class MyBeanFactory {
-public MyBeanFactory() {
+public class MyBeanFactory \{
+public MyBeanFactory() \{
 System.out.println("person3
 工厂实例化中
 
 ");
-}
+\}
 //
 创建`Bean`的方法
 
-public Person3 createBean() {
+public Person3 createBean() \{
 return new Person3();
-}
-}
+\}
+\}
  上述代码中，使用默认无参的构造方法输出 `person3` 工厂实例化中语句，使用 `createBean` 成员方法创建 `Bean` 的实例。
 `3.` **创建** `Spring` **配置文件**
 在 `com.mengma.instance.factory` 包下创建 `Spring` 的配置文件 `applicationContext.xml`，如下所示。
@@ -196,9 +199,9 @@ package com.mengma.instance.factory;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-public class InstanceTest3 {
+public class InstanceTest3 \{
 @Test
-public void test() {
+public void test() \{
 //
 定义`Spring`配置文件的路径
 
@@ -212,12 +215,12 @@ xmlPath);
 通过容器获取`id`为`person3`实例
 
 System.out.println(applicationContext.getBean("person3"));
-}
-}
+\}
+\}
 5.
 **运行程序并查看结果**
 使用 `JUnit` 测试运行 `test()` 方法，运行成功后，控制台的输出结果如图 `3` 所示。
- ![Exported image](Exported%20image%2020260702230055-2.png)
+ 
 
 图 `3`  输出结果
 从图 `3` 的输出结果中可以看出，使用实例工厂的方式也同样对 `Bean` 进行了实例化。
@@ -225,3 +228,5 @@ System.out.println(applicationContext.getBean("person3"));
 
  \<http://c.biancheng.net/view/4256.html\>
 ```
+
+:::

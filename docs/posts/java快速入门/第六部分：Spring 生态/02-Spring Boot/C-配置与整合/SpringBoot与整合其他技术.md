@@ -3,7 +3,10 @@ title: SpringBoot与整合其他技术
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **5.1 SpringBoot****整合****Mybatis**
 **5.1.1** **添加****Mybatis****的起步依赖**
@@ -236,3 +239,5 @@ System.out.println(userListData);
 }
 }
 ```
+
+:::

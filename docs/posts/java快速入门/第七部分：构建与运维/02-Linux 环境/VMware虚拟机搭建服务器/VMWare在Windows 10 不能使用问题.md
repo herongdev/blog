@@ -3,7 +3,10 @@ title: VMWare在Windows 10 不能使用问题
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 最近在Windows 10上折腾虚拟机。安装了VMWare Workstation 15后又想试试微软自家的Hyper-v。结果安装完Hyper-v后发现VMWare不能用了，提示：在启用了Credential Guard/Device Guard的设备上不能使用。
 VMWare 官方的问题页面[https://kb.vmware.com/s/article/2146361](https://kb.vmware.com/s/article/2146361)。
@@ -17,3 +20,5 @@ VMWare 官方的问题页面[https://kb.vmware.com/s/article/2146361](https://kb
 
  \<https://www.jianshu.com/p/9f1782657060\>
 ```
+
+:::

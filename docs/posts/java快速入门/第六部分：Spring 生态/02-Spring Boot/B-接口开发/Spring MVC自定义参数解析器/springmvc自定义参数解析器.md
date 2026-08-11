@@ -3,7 +3,10 @@ title: springmvc自定义参数解析器
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 shan&cen
 
 于 2020-08-18 14:36:49 发布
@@ -50,30 +53,30 @@ springmvc所有的映射方法中形式参数的值注入都是靠springmvc自�
 代码(UserArgumentResolver类,核心实现HandlerMethodArgumentResolver接口)
 //实现HandlerMethodArgumentResolver接口中的2个方法
 @Component
-public class UserArgumentResolver implements HandlerMethodArgumentResolver {
+public class UserArgumentResolver implements HandlerMethodArgumentResolver \{
 @Autowired
 private IUserInfoRedisService userInfoRedisService;
 //先判断参数类型和是否贴了自定义注解的,都满足就返回true,然后进行下一步获取数据
 @Override
-public boolean supportsParameter(MethodParameter methodParameter) {
+public boolean supportsParameter(MethodParameter methodParameter) \{
 //判断类型,并且使用自定义注解限制
 return methodParameter.getParameterType() == UserInfo.class
 && methodParameter.hasParameterAnnotation(UserParameter.class);
-}
+\}
 //如果成功则再获取数据
 @Override
 public Object resolveArgument(MethodParameter methodParameter
 , ModelAndViewContainer modelAndViewContainer
 , NativeWebRequest nativeWebRequest
 , WebDataBinderFactory webDataBinderFactory)
-throws Exception {
+throws Exception \{
 //获取token
 String token = nativeWebRequest.getHeader("token");
 //获取用户对象
 UserInfo user = userInfoRedisService.getUserByToken(token);
 return user;
-}
-}
+\}
+\}
 1.将请求映射方法声明形式参数的UserInfo类型的参数,解析成当前登录用户对象并注入
 //方法1:用来匹配
 指定该解析器能解析参数类型,返回值为boolean类型,
@@ -119,19 +122,19 @@ return user;
 主配置类(哪个服务需要用到自定义参数解析器,哪个服务就要配置这个,不一定是主配置了,只要实现WebMvcConfigurer接口即可)
 //我们需要在主配置中将我们自定义的解析器交给springmvc管理
 @SpringBootApplication
-public class APP implements WebMvcConfigurer {
+public class APP implements WebMvcConfigurer \{
 @Autowired
 private UserArgumentResolver userArgumentResolver;
 
-public static void main(String[] args) {
+public static void main(String[] args) \{
 SpringApplication.run(APP.class, args);
-}
+\}
 //简写add,idea会提示该方法,将自定义参数解析器交给springmvc管理
 @Override
-public void addArgumentResolvers(List\<HandlerMethodArgumentResolver\> resolvers) {
+public void addArgumentResolvers(List\<HandlerMethodArgumentResolver\> resolvers) \{
 resolvers.add(userArgumentResolver);
-}
-}
+\}
+\}
 1
 2
 3
@@ -150,13 +153,13 @@ resolvers.add(userArgumentResolver);
 自定义注解(防止都使用自定义注解,所以使用自定义注解来限制)
 //如果要进行用户编辑,映射方法接受参数也是UserInfo,此时怎么区分,使用自定义注解区分
 //表示贴在参数上
-@Target({ElementType.PARAMETER})
+@Target(\{ElementType.PARAMETER\})
 @Retention(RetentionPolicy.RUNTIME)
 /*登录校验注解
 约定:如果该注解贴在某个参数上表示使用自定义解析器
 如果没有贴就使用springmvc的解析器*/
-public @interface UserParameter {
-}
+public @interface UserParameter \{
+\}
 1
 2
 3
@@ -170,15 +173,15 @@ public @interface UserParameter {
 
 //当我们需要获取登录用户信息时就贴上注解,这样获取的就是当前登录的,已经存到redis中的用户信息了
 @GetMapping("/info")
-public Object info(@UserParameter UserInfo userInfo) {
+public Object info(@UserParameter UserInfo userInfo) \{
 return JsonResult.success(userInfo);
-}
+\}
 //当我们不要当前登录用户信息,而是页面其他需要封装的信息时,我们就不贴注解,它会默认使用springmvc解析器帮我们进行封装
 //验证
 @GetMapping("/info2")
-public Object info2(UserInfo userInfo) {
+public Object info2(UserInfo userInfo) \{
 return JsonResult.success(userInfo);
-}
+\}
 1
 2
 3
@@ -191,30 +194,30 @@ return JsonResult.success(userInfo);
 10
 11
 另一种 (获取cookie中的user对象)
-public class UserArgumentresolver implements HandlerMethodArgumentResolver {
+public class UserArgumentresolver implements HandlerMethodArgumentResolver \{
 @Autowired
 private RedisService redisService;
 
 @Override
-public boolean supportsParameter(MethodParameter methodParameter) {
+public boolean supportsParameter(MethodParameter methodParameter) \{
 return methodParameter.getParameterType() == User.class
 && methodParameter.hasParameterAnnotation(ValidationAnno.class);
-}
+\}
 
 @Override
 public Object resolveArgument(MethodParameter methodParameter
 , ModelAndViewContainer modelAndViewContainer
 , NativeWebRequest nativeWebRequest
-, WebDataBinderFactory webDataBinderFactory) throws Exception {
+, WebDataBinderFactory webDataBinderFactory) throws Exception \{
 HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
 String token = CookieUtil.getToken(request, "userToken");
 User user = redisService.get(MemberKeyPrefix.USER_TOKEN, token, User.class);
-if (user != null) {
+if (user != null) \{
 return user;
-}
+\}
 return null;
-}
-}
+\}
+\}
 1
 2
 3
@@ -247,3 +250,5 @@ springmvc自定义参数解析器可以让我们自定义的注入一些信息,�
 ————————————————
 版权声明：本文为CSDN博主「shan&amp;cen」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/weixin_47555380/article/details/108076468
+
+:::

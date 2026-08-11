@@ -3,7 +3,10 @@ title: linux下chrome和chromedriver的安装
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 1、安装chrome
 用下面的命令安装最新的 Google Chrome
@@ -30,3 +33,5 @@ chmod +x /usr/bin/chromedriver
 
  \<https://www.cnblogs.com/z-x-y/p/9506941.html\>
 ```
+
+:::

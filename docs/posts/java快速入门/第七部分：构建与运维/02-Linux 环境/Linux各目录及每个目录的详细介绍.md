@@ -3,7 +3,10 @@ title: Linux各目录及每个目录的详细介绍
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `【常见目录说明】`
 
 |
@@ -69,7 +72,7 @@ tags: [Java, 构建运维, OneNote]
 这个目录平时是空的，系统非正常关机而留下“无家可归”的文件（windows下叫什么.chk）就在这里
 
 Linux目录和Windows目录有着很大的不同，Linux目录类似一个树，最顶层是其根目录，如下图：
-![bin boot wife dev home opt zhangsan otherwives](Exported%20image%2020260702224606-0.jpeg)
+
 
 /bin 二进制可执行命令
 /dev 设备特殊文件
@@ -276,3 +279,5 @@ s c s i磁带驱动器驱动程序。
 
  \<https://www.cnblogs.com/zhuchenglin/p/8686924.html\>
 ```
+
+:::

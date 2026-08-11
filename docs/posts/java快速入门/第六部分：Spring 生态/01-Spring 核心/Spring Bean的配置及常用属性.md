@@ -3,7 +3,10 @@ title: Spring Bean的配置及常用属性
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 作为 
 
 `Spring`
@@ -55,3 +58,5 @@ com.mengma.domain.Person2--\>
 
  \<http://c.biancheng.net/view/4254.html\>
 ```
+
+:::

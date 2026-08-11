@@ -3,7 +3,10 @@ title: SpringMVC 的基本概念
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **关于三层架构和** `MVC`
 
 **三层架构**
@@ -69,7 +72,7 @@ tags: [Java, Spring, OneNote]
 `SpringMVC` 已经成为目前最主流的 `MVC` 框架之一，并且随着 `Spring3.0` 的发布，全面超越 `Struts2`，成为最优秀的 `MVC` 框架。
 它通过一套注解，让一个简单的 `Java` 类成为处理请求的控制器，而无须实现任何接口。同时它还支持`RESTful` 编程风格的请求。   `SpringMVC` **在三层架构的位置**
 
-![pringMVC JSP, MyBatis DAO, Data Access object](Exported%20image%2020260702233318-0.png)
+
 
 `SpringMVC` **的优势**
 `1`、清晰的角色划分：
@@ -153,3 +156,5 @@ tags: [Java, Spring, OneNote]
 - Struts2
 
 的 `OGNL` 表达式使页面的开发效率相比 `Spring MVC` 更高些，但执行效率并没有比 `JSTL` 提升，尤其是 `struts2` 的表单标签，远没有 `html` 执行效率高。
+
+:::

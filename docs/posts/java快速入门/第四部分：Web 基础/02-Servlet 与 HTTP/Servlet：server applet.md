@@ -3,7 +3,10 @@ title: Servlet：server applet
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **概念：**运行在服务器端的小程序
 `* Servlet`就是一个接口，定义了`Java`类被浏览器访问到`(tomcat`识别`)`的规则。
 `*` 将来我们自定义一个类，实现`Servlet`接口，复写方法。
@@ -39,16 +42,16 @@ Servlet --\>
 `4. tomcat`会将字节码文件加载进内存，并且创建其对象
 `5.` 调用其方法
 
-![public class Serv1etDem01 Override public void ser...](Exported%20image%2020260702225914-0.png)
+
 
 `Servlet`**中的生命周期方法：**
 
-![public class Serv1etDem01 implements Servlet Overr...](Exported%20image%2020260702225917-1.png)
+
 
 `1.` 被创建：执行`init`方法，只执行一次。
 `Servlet`什么时候被创建：默认情况下，第一次被访问时，`Servlet`被创建；可以配置执行`Servlet`的创建时机，在`\<servlet\>`标签下配置：
 
-![servlet servlet name servlet name servlet class . ...](Exported%20image%2020260702225920-2.png)
+
 
 `1.` 第一次被访问时，创建`\<load-on-startup\>`的值为负数
 `2.` 在服务器启动时，创建`\<load-on-startup\>`的值为`0`或正整数
@@ -80,9 +83,11 @@ Servlet --\>
 `IDEA`**与**`tomcat`**的相关配置**
 `1. IDEA`会为每一个`tomcat`部署的项目单独建立一份配置文件
 
-![G run 20190813 100347 96Artifact servletwar explod...](Exported%20image%2020260702225921-3.png)
+
 
 `2.` 工作空间项目和`tomcat`部署的`web`项目
 `* tomcat`真正访问的是“`tomcat`部署的`web`项目”，`"tomcat`部署的`web`项目`"`对应`"`工作空间项目`"` 的`web`目录下的所有资源
 `* WEB-INF`目录下的资源不能被浏览器直接访问。
 `3.` 断点调试：使用`"`小虫子`"`启动 `dubug` 启动
+
+:::

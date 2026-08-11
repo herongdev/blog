@@ -3,7 +3,10 @@ title: java word转pdf
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 引入信赖
 我放入了百度网盘中；
 引入依赖 (maven仓库是没有的，需要在项目中引用)
@@ -13,7 +16,7 @@ tags: [Java, 常见需求, OneNote]
 \<artifactId\>aspose-words\</artifactId\>
 \<version\>15.12.0\</version\>
 \<scope\>system\</scope\>
-\<systemPath\>${project.basedir}/src/main/resources/lib/aspose-words-15.12.0-jdk16.jar\</systemPath\>
+\<systemPath\>$\{project.basedir\}/src/main/resources/lib/aspose-words-15.12.0-jdk16.jar\</systemPath\>
 \</dependency\>
 使用以下命令将 JAR 文件安装到你的本地 Maven 仓库（将 path/to/aspose-words-XX.X.X-jdkXX.jar 替换为你下载的 JAR 文件的实际路径）：
 mvn install:install-file -Dfile=/Users/hr/softProjects/hunanminsheng/ms-app-back/ms-admin/src/main/resources/lib/aspose-words-15.12.0-jdk16.jar -DgroupId=com.aspose -DartifactId=aspose-words -Dversion=15.12.0 -Dpackaging=jar
@@ -29,7 +32,7 @@ mvn install:install-file -Dfile=/Users/hr/softProjects/hunanminsheng/ms-app-back
     - system 是一个特殊的依赖范围，表示该依赖不来自 Maven 的中心仓库，而是从文件系统的某个位置取得。这与其他常见的范围（如 compile, runtime, test, provided）不同。
 3. systemPath：
     - systemPath 是与 scope 为 system 相关的元素。它指定了系统中该依赖的具体位置。
-    - 在这里，它使用了 ${project.basedir} 变量，这是一个 Maven 内置的属性，代表项目的基础目录（通常是包含 pom.xml 文件的目录）。
+    - 在这里，它使用了 $\{project.basedir\} 变量，这是一个 Maven 内置的属性，代表项目的基础目录（通常是包含 pom.xml 文件的目录）。
     - 综合来看，该路径指向的是项目基础目录下的 src/main/resources/lib/aspose-words-15.12.0-jdk16.jar。这意味着，这个 JAR 文件需要手动放在这个指定的位置。
 
 使用 system 范围和 systemPath 是一种非常不推荐的做法，因为它使得项目的构建依赖于特定的文件系统布局，从而降低了可移植性。更好的方法是将这些 JAR 文件放入一个私有的 Maven 仓库（如 Nexus 或 Artifactory），或者如果有许可的话，上传到 Maven 中心仓库。如果这些都不可行，至少应该确保所有开发人员和构建系统都可以访问到这个 JAR 文件的确切位置。
@@ -58,33 +61,35 @@ import com.aspose.words.SaveFormat;
 import org.springframework.core.io.ClassPathResource;   import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;   public class wordTest {
-private static boolean license = false;   public String wordToPdf() throws Exception {
+import java.io.InputStream;   public class wordTest \{
+private static boolean license = false;   public String wordToPdf() throws Exception \{
 FileOutputStream os = null;
-try {
+try \{
 //凭证 不然切换后有水印
 InputStream is = new ClassPathResource("/license.xml").getInputStream();
 License aposeLic = new License();
 aposeLic.setLicense(is);
 license = true;
-if (!license) {
+if (!license) \{
 System.out.println("License验证不通过...");
 return null;
-}
+\}
 //生成一个空的PDF文件
 File file = new File("D:\\a.pdf");
 os = new FileOutputStream(file);
 //要转换的word文件
 Document doc = new Document("D:\\aa.word");
 doc.save(os, SaveFormat.PDF);
-} catch (Exception e) {
+\} catch (Exception e) \{
 e.printStackTrace();
-} finally {
-if (os != null) {
-try {
+\} finally \{
+if (os != null) \{
+try \{
 os.close();
-} catch (IOException e) {
+\} catch (IOException e) \{
 e.printStackTrace();
-}
-}
-}   }
+\}
+\}
+\}   \}
+
+:::

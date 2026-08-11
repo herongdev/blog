@@ -6,6 +6,8 @@ outline: [2,3]
 
 欢迎来到文章索引。请选择一个分类开始阅读：
 
+- [OneNote 系统教程总览](/posts/onenote教程总览)
+  - JavaScript、Vue、React、前端面试与实战，以及已有的 Java 快速入门
 - [AI Agent 编码转岗](/posts/ai-agent-coding-career/)
   - Agent 编码能力升级、Mini Codex、Coding Agent Runtime、AI 应用工程师项目路线
 - 架构与请求

@@ -3,7 +3,10 @@ title: Junit单元测试：
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **测试分类：**
 `1.` 黑盒测试：不需要写代码，给输入值，看程序是否能够输出期望的值。
 `2.` 白盒测试：需要写代码的。关注程序具体的执行流程。
@@ -34,3 +37,5 @@ tags: [Java, 核心API, OneNote]
 **补充：**
 `@Before`：修饰的方法会在测试方法之前被自动执行
 `@After`：修饰的方法会在测试方法执行之后自动被执行
+
+:::

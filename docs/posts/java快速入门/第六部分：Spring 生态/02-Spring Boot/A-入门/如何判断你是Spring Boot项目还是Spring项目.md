@@ -3,7 +3,10 @@ title: 如何判断你是Spring Boot项目还是Spring项目
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 要判断你是使用Spring Boot还是Spring项目，可以检查以下几点：
 **依赖项**：
 
@@ -12,5 +15,7 @@ tags: [Java, Spring, OneNote]
 
 **启动类**：
 
-- **Spring Boot**：有一个包含@SpringBootApplication注解的主启动类。例如：￼￼java￼复制代码￼@SpringBootApplicationpublicclassApplication{￼ publicstaticvoidmain(String[] args){￼ SpringApplication.run(Application.class, args);￼ }￼}￼
+- **Spring Boot**：有一个包含@SpringBootApplication注解的主启动类。例如：￼￼java￼复制代码￼@SpringBootApplicationpublicclassApplication\{￼ publicstaticvoidmain(String[] args)\{￼ SpringApplication.run(Application.class, args);￼ \}￼\}￼
 - **传统Spring项目**：没有@SpringBootApplication注解的主启动类，通常通过配置文件（如web.xml）或Java配置类启动应用程序。
+
+:::

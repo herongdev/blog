@@ -3,7 +3,10 @@ title: SqlMapConfig.xml配置文件
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 数据库, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **6.1** **配置内容**
 **6.1.1 SqlMapConfig.xml** **中配置的内容和顺序**
 **-properties****（属性）**
@@ -56,10 +59,10 @@ _erties"_\>
 \</properties\>
 **6.2.3** **此时我们的** **dataSource** **标签就变成了引用上面的配置**
 \<dataSource type=_"POOLED"_\>
-\<property name=_"driver"_ value=_"__${jdbc.driver}__"_/\>
-\<property name=_"url"_ value=_"__${jdbc.url}__"_/\>
-\<property name=_"username"_ value=_"__${jdbc.username}__"_/\>
-\<property name=_"password"_ value=_"__${jdbc.password}__"_/\>
+\<property name=_"driver"_ value=_"__$\{jdbc.driver\}__"_/\>
+\<property name=_"url"_ value=_"__$\{jdbc.url\}__"_/\>
+\<property name=_"username"_ value=_"__$\{jdbc.username\}__"_/\>
+\<property name=_"password"_ value=_"__$\{jdbc.password\}__"_/\>
 \</dataSource\>传智播客——专注于 Java、.Net 和 Php、网页平面设计工程师的培训
 **6.3 typeAliases****（类型别名）**
 在前面我们讲的 Mybatis 支持的默认别名，我们也可以采用自定义别名方式来开发。
@@ -84,3 +87,5 @@ _erties"_\>
 注册指定包下的所有 mapper 接口
 如：\<package name="cn.itcast.mybatis.mapper"/\>
 **注意：此种方法要求** **mapper** **接口名称和** **mapper** **映射文件名称相同，且放在同一个目录中。**
+
+:::

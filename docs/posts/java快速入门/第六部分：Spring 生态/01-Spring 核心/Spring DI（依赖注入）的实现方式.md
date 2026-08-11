@@ -3,7 +3,10 @@ title: Spring DI（依赖注入）的实现方式
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 依赖注入（`Dependency Injection`，`DI`）和控制反转含义相同，它们是从两个角度描述的同一个概念。
 
 当某个 
@@ -29,15 +32,15 @@ tags: [Java, Spring, OneNote]
 在 `springDemo01` 项目的 `com.mengma.ioc` 包下创建一个名为 `PersonService` 的接口，该接口中包含一个 `addPerson()` 方法，如下所示。
 
 package com.mengma.ioc;
-public interface PersonService {
+public interface PersonService \{
 public void addPerson();
-}
+\}
 2.
 **创建接口实现类** `PersonServiceImpl`
 在 `com.mengma.ioc` 包下创建一个名为 `PersonServiceImpl` 的类，该类实现了 `PersonService` 接口，如下所示。
 
 package com.mengma.ioc;
-public class PersonServiceImpl implements PersonService {
+public class PersonServiceImpl implements PersonService \{
 //
 定义接口声明
 
@@ -45,14 +48,14 @@ private PersonDao personDao;
 //
 提供`set()`方法，用于依赖注入
 
-public void setPersonDao(PersonDao personDao) {
+public void setPersonDao(PersonDao personDao) \{
 this.personDao = personDao;
-}
+\}
 //
 实现`PersonService`接口的方法
 
 @Override
-public void addPerson() {
+public void addPerson() \{
 personDao.add(); //
 调用`PersonDao`中的`add()`方法
 
@@ -60,8 +63,8 @@ System.out.println("addPerson()
 执行了
 
 ...");
-}
-}
+\}
+\}
  上述代码中，首先声明了 `personDao` 对象，并为其添加 `setter` 方法，用于依赖注入，然后实现了 `PersonDao` 接口的 `addPerson()` 方法，并在方法中调用 `save()` 方法和输出一条语句。
 `3.` **在** `applicationContext.xml` **中添加配置信息**
 在 `applicationContext.xml` 配置文件中添加一个 `\<bean\>` 元素，用于实例化 `PersonServiceImpl` 类，并将 `personDao` 的实例注入到 `personService` 中，其实现代码如下所示：
@@ -79,7 +82,7 @@ System.out.println("addPerson()
 在 `FirstTest` 类中创建一个名为 `test2()` 的方法，编辑后如下所示：
 
 @Test
-public void test2() {
+public void test2() \{
 //
 定义`Spring`配置文件的路径
 
@@ -98,11 +101,11 @@ PersonService personService = (PersonService) applicationContext
 调用`personService`的`addPerson()`方法
 
 personService.addPerson();
-}
+\}
 5.
 **运行项目并查看结果**
 使用 `JUnit` 测试运行 `test2()` 方法，运行成功后，控制台的输出结果如图 `1` 所示。
- ![Exported image](Exported%20image%2020260702230042-0.png)
+ 
 
 图 `1`  运行结果
 从图 `1` 的输出结果中可以看出，使用 `Spring` 容器获取 `userService` 的实例后，调用了该实例的 `addPerson()` 方法，在该方法中又调用了 `PersonDao` 实现类中的 `add()` 方法，并输出了结果。这就是 `Spring` 容器属性 `setter` 注入的方式，也是实际开发中较为常用的一种方式。
@@ -110,3 +113,5 @@ personService.addPerson();
 
  \<http://c.biancheng.net/view/4253.html\>
 ```
+
+:::

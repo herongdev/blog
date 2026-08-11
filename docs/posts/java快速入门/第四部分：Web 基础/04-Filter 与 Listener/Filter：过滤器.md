@@ -3,7 +3,10 @@ title: Filter：过滤器
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **概念：**
 `*` 生活中的过滤器：净水器，空气净化器，土匪。
 `* web`中的过滤器：当访问服务器的资源时，过滤器可以将请求拦截下来，完成一些特殊的功能。
@@ -25,7 +28,7 @@ tags: [Java, Web基础, OneNote]
 
 代码：
 
-![Exported image](Exported%20image%2020260702223712-0.png)
+
 
 **过滤器细节：**
 `1. web.xml`配置
@@ -144,3 +147,5 @@ tags: [Java, Web基础, OneNote]
 `1.` 增强参数列表
 `2.` 增强返回值类型
 `3.` 增强方法体执行逻辑
+
+:::

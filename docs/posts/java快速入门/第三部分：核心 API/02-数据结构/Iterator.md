@@ -3,7 +3,10 @@ title: Iterator
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 接口Iterator提供了一种以定义好的顺序遍历一系列元素的标准方式。虽然不能在数据结构外使用这个接口，但了解Iterator接口的工作原理将有助于您理解其他Java数据结构。
 
@@ -30,3 +33,5 @@ System.out.println(ob);
 }
 注意：由于Iterator是接口，所以不能将经用作数据结构；相反，您在实现了接口的数据结构中使用Iterator定义的方法。这为很多Java标准数据结构提供了一致的接口，使得它们学习和使用起来更容易。
 ```
+
+:::

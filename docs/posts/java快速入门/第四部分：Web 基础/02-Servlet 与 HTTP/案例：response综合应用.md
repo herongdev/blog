@@ -3,7 +3,10 @@ title: 案例：response综合应用
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 案例：
 `1.` **完成重定向**
 `*` 重定向：资源跳转的方式
@@ -74,3 +77,5 @@ http://localhost/day15/responseDemo2/day15/responseDemo2
 
 给服务器使用：不需要加虚拟目录
 `*` 转发路径
+
+:::

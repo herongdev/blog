@@ -3,7 +3,10 @@ title: 多模块Maven项目
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 多模块Maven项目。您的主要应用可能是在ms-admin模块中，因为它的名称和其包含的资源文件（如application.yml、logback.xml等）都暗示它可能是主应用模块。
 
 一、顶级容器pom.xml；
@@ -87,42 +90,42 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 [http://maven.apache.org/x
 \<dependency\>
 \<groupId\>com.alibaba\</groupId\>
 \<artifactId\>druid-spring-boot-starter\</artifactId\>
-\<version\>${druid.version}\</version\>
+\<version\>$\{druid.version\}\</version\>
 \</dependency\>
 
 \<!-- 解析客户端操作系统、浏览器等 --\>
 \<dependency\>
 \<groupId\>eu.bitwalker\</groupId\>
 \<artifactId\>UserAgentUtils\</artifactId\>
-\<version\>${bitwalker.version}\</version\>
+\<version\>$\{bitwalker.version\}\</version\>
 \</dependency\>
 
 \<!-- SpringBoot集成mybatis框架 --\>
 \<dependency\>
 \<groupId\>org.mybatis.spring.boot\</groupId\>
 \<artifactId\>mybatis-spring-boot-starter\</artifactId\>
-\<version\>${mybatis-spring-boot.version}\</version\>
+\<version\>$\{mybatis-spring-boot.version\}\</version\>
 \</dependency\>
 
 \<!-- pagehelper 分页插件 --\>
 \<dependency\>
 \<groupId\>com.github.pagehelper\</groupId\>
 \<artifactId\>pagehelper-spring-boot-starter\</artifactId\>
-\<version\>${pagehelper.boot.version}\</version\>
+\<version\>$\{pagehelper.boot.version\}\</version\>
 \</dependency\>
 
 \<!-- 获取系统信息 --\>
 \<dependency\>
 \<groupId\>com.github.oshi\</groupId\>
 \<artifactId\>oshi-core\</artifactId\>
-\<version\>${oshi.version}\</version\>
+\<version\>$\{oshi.version\}\</version\>
 \</dependency\>
 
 \<!-- Swagger3依赖 --\>
 \<dependency\>
 \<groupId\>io.springfox\</groupId\>
 \<artifactId\>springfox-boot-starter\</artifactId\>
-\<version\>${swagger.version}\</version\>
+\<version\>$\{swagger.version\}\</version\>
 \<exclusions\>
 \<exclusion\>
 \<groupId\>io.swagger\</groupId\>
@@ -135,91 +138,91 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 [http://maven.apache.org/x
 \<dependency\>
 \<groupId\>commons-io\</groupId\>
 \<artifactId\>commons-io\</artifactId\>
-\<version\>${commons.io.version}\</version\>
+\<version\>$\{commons.io.version\}\</version\>
 \</dependency\>
 
 \<!-- 文件上传工具类 --\>
 \<dependency\>
 \<groupId\>commons-fileupload\</groupId\>
 \<artifactId\>commons-fileupload\</artifactId\>
-\<version\>${commons.fileupload.version}\</version\>
+\<version\>$\{commons.fileupload.version\}\</version\>
 \</dependency\>
 
 \<!-- excel工具 --\>
 \<dependency\>
 \<groupId\>org.apache.poi\</groupId\>
 \<artifactId\>poi-ooxml\</artifactId\>
-\<version\>${poi.version}\</version\>
+\<version\>$\{poi.version\}\</version\>
 \</dependency\>
 
 \<!-- velocity代码生成使用模板 --\>
 \<dependency\>
 \<groupId\>org.apache.velocity\</groupId\>
 \<artifactId\>velocity-engine-core\</artifactId\>
-\<version\>${velocity.version}\</version\>
+\<version\>$\{velocity.version\}\</version\>
 \</dependency\>
 
 \<!-- collections工具类 --\>
 \<dependency\>
 \<groupId\>commons-collections\</groupId\>
 \<artifactId\>commons-collections\</artifactId\>
-\<version\>${commons.collections.version}\</version\>
+\<version\>$\{commons.collections.version\}\</version\>
 \</dependency\>
 
 \<!-- 阿里JSON解析器 --\>
 \<dependency\>
 \<groupId\>com.alibaba.fastjson2\</groupId\>
 \<artifactId\>fastjson2\</artifactId\>
-\<version\>${fastjson.version}\</version\>
+\<version\>$\{fastjson.version\}\</version\>
 \</dependency\>
 
 \<!-- Token生成与解析--\>
 \<dependency\>
 \<groupId\>io.jsonwebtoken\</groupId\>
 \<artifactId\>jjwt\</artifactId\>
-\<version\>${jwt.version}\</version\>
+\<version\>$\{jwt.version\}\</version\>
 \</dependency\>
 
 \<!-- 验证码 --\>
 \<dependency\>
 \<groupId\>com.github.penggle\</groupId\>
 \<artifactId\>kaptcha\</artifactId\>
-\<version\>${kaptcha.version}\</version\>
+\<version\>$\{kaptcha.version\}\</version\>
 \</dependency\>
 
 \<!-- 定时任务--\>
 \<dependency\>
 \<groupId\>com.ms\</groupId\>
 \<artifactId\>ms-quartz\</artifactId\>
-\<version\>${ms.version}\</version\>
+\<version\>$\{ms.version\}\</version\>
 \</dependency\>
 
 \<!-- 代码生成--\>
 \<dependency\>
 \<groupId\>com.ms\</groupId\>
 \<artifactId\>ms-generator\</artifactId\>
-\<version\>${ms.version}\</version\>
+\<version\>$\{ms.version\}\</version\>
 \</dependency\>
 
 \<!-- 核心模块--\>
 \<dependency\>
 \<groupId\>com.ms\</groupId\>
 \<artifactId\>ms-framework\</artifactId\>
-\<version\>${ms.version}\</version\>
+\<version\>$\{ms.version\}\</version\>
 \</dependency\>
 
 \<!-- 系统模块--\>
 \<dependency\>
 \<groupId\>com.ms\</groupId\>
 \<artifactId\>ms-system\</artifactId\>
-\<version\>${ms.version}\</version\>
+\<version\>$\{ms.version\}\</version\>
 \</dependency\>
 
 \<!-- 通用工具--\>
 \<dependency\>
 \<groupId\>com.ms\</groupId\>
 \<artifactId\>ms-common\</artifactId\>
-\<version\>${ms.version}\</version\>
+\<version\>$\{ms.version\}\</version\>
 \</dependency\>
 
 \</dependencies\>
@@ -246,9 +249,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 [http://maven.apache.org/x
 \<artifactId\>maven-compiler-plugin\</artifactId\>
 \<version\>3.1\</version\>
 \<configuration\>
-\<source\>${java.version}\</source\>
-\<target\>${java.version}\</target\>
-\<encoding\>${project.build.sourceEncoding}\</encoding\>
+\<source\>$\{java.version\}\</source\>
+\<target\>$\{java.version\}\</target\>
+\<encoding\>$\{project.build.sourceEncoding\}\</encoding\>
 \</configuration\>
 \</plugin\>
 \</plugins\>
@@ -280,3 +283,5 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 [http://maven.apache.org/x
 \</pluginRepositories\>
 
 \</project\>
+
+:::

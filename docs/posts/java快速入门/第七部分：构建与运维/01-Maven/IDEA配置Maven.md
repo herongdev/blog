@@ -3,39 +3,42 @@ title: IDEA配置Maven
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `Idea` 自带了`apache maven`，默认使用的是内置`maven`，所以我们可以配置全局`setting`，来调整一下配置，比如远程仓库地址，本地编译环境变量等。
 
 `1.`打开`Settings,`在输入框输入`maven`，如图
 
-![Default Settings q maven Appearance Behavior Notif...](Exported%20image%2020260702225033-0.png)
+
 
 `2.`如果本地设置了`MAVEN_OPTS` 系统环境变量，这个步骤可以忽略。
 
-![Default Settings Q maven V Appearance Behavior Not...](Exported%20image%2020260702225039-1.png)
+
 
  `3.`如果配置了本地`apache-maven setting.xml` 中的软件源，这步骤可以忽略。
 
-![Default Settings Q maven V Appearance Behavior Not...](Exported%20image%2020260702225042-2.png)
+
 **利用**`maven`**骨架建立一个**`webapp`
 选择`create new project-Maven-Create from archetype`。找到`maven-archetype-webapp`这个骨架，然后`next`。
 
-![New Project Java Java Enterprise Clouds Spring Jav...](Exported%20image%2020260702225044-3.png)
+
 
 输入`GroupId`和`ArtifactId`后下一步。
 
-![New project Groupld A rtifactld Vers ion com.examp...](Exported%20image%2020260702225047-4.png)
+
 
 填写本地的`maven`环境，这里可以选择自己本地的环境，也可以用`idea`自带的`maven3.0.5`。配置相应的配置文件，`idea`自带的`maven`是没有配置文件的，需要单独配置的可以在相应的目录中添加`setting.xml`文件，例如需要配置`jdk`版本或者`maven mirror`的。
 
-![New Project Maven home directory. Bundled Maven 3 ...](Exported%20image%2020260702225049-5.png)
+
 
 由于`maven`骨架和一些`jar`需要去`maven`的仓库下载，所以创建项目的时候速度会非常慢（外国的服务器你懂得），因此我们可以直接访问`http://repo1.maven.org/maven2/archetype-catalog.xml`，把这个`xml`下载下来放到本地的`maven`目录中，然后在添加一个参数`archetypeCatalog=internal`就可以了。
 `next` 填写项目名称，`finish`即可。
 建立相应的目录
 项目创建完成后，`src-main`下建立`java`目录后，是无法在该目录下创建新的包和`java`类等文件的。在`idea`中需要对目录进行标注。
 
-![pmject Structure Ptojct Settings Libraries Platfor...](Exported%20image%2020260702225051-6.png)
+
 
 `Sources` 一般用于标注类似 `src` 这种可编译目录。有时候我们不单单项目的 `src` 目录要可编译，还有其他一些特别的目录也许我们也要作为可编译的目录，就需要对该目录进行此标注。只有 `Sources` 这种可编译目录才可以新建 `Java` 类和包，这一点需要牢记。
 `Tests` 一般用于标注可编译的单元测试目录。在规范的 `maven` 项目结构中，顶级目录是 `src`，`maven` 的 `src` 我们是不会设置为 `Sources` 的，而是在其子目录 `main` 目录下的 `java` 目录，我们会设置为 `Sources`。而单元测试的目录是 `src - test - java`，这里的 `java` 目录我们就会设置为 `Tests`，表示该目录是作为可编译的单元测试目录。一般这个和后面几个我们都是在 `maven` 项目下进行配置的，但是我这里还是会先说说。从这一点我们也可以看出 `IntelliJ IDEA` 对 `maven` 项目的支持是比较彻底的。
@@ -46,7 +49,7 @@ tags: [Java, 构建运维, OneNote]
 （引用自`http://wiki.jikexueyuan.com/project/intellij-idea-tutorial/eclipse-java-web-project-introduce.html`）
 标注完后，建立如下的目录。
 
-![mavenspringmvc j avaft6 com.example comtroller dao...](Exported%20image%2020260702225053-7.png)
+
 
 **配置**`Maven`**和**`SpringMVC`
 配置`Maven`的`pom.xml`
@@ -152,14 +155,14 @@ jstl--\>
 
 --\>
             \<resource\>
-                \<directory\>${basedir}/src/main/java\</directory\>
+                \<directory\>$\{basedir\}/src/main/java\</directory\>
                 \<includes\>
                     \<include\>**/*.properties\</include\>
                     \<include\>**/*.xml\</include\>
                 \</includes\>
             \</resource\>
             \<resource\>
-                \<directory\>${basedir}/src/main/resources\</directory\>
+                \<directory\>$\{basedir\}/src/main/resources\</directory\>
             \</resource\>
         \</resources\>
         \<plugins\>
@@ -177,7 +180,7 @@ jstl--\>
 \</project\>
  更新完`pom.xml`文件后，`idea`应该会自动下载相应的`jar`包（可能需要`vpn`），如果没有自动下载的话，可以点击“`Reimport All Maven Projects`”按钮进行项目的重新载入。如图所示。
 
-![Maven Projects mavenspringmvc Maven Webapp Lifecyc...](Exported%20image%2020260702225058-8.png)
+
 
 `jar`下载完成后，所有项目所需的依赖就已经添加完成了。
 
@@ -325,7 +328,7 @@ html)- --\>
 
 log4j.appender.A1=org.apache.log4j.ConsoleAppender
 log4j.appender.A1.layout=org.apache.log4j.PatternLayout
-log4j.appender.A1.layout.ConversionPattern=%-d{yyyy-MM-dd HH:mm:ss,SSS} [%c]-[%p] %m%n
+log4j.appender.A1.layout.ConversionPattern=%-d\{yyyy-MM-dd HH:mm:ss,SSS\} [%c]-[%p] %m%n
 
 # File
 输出 一天一个文件`,`输出路径可以定制`,`一般在根路径下
@@ -335,7 +338,7 @@ log4j.appender.R.File=log.txt
 log4j.appender.R.MaxFileSize=500KB
 log4j.appender.R.MaxBackupIndex=10
 log4j.appender.R.layout=org.apache.log4j.PatternLayout
-log4j.appender.R.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] [%c] [%p] - %m%n
+log4j.appender.R.layout.ConversionPattern=%d\{yyyy-MM-dd HH:mm:ss,SSS\} [%t] [%c] [%p] - %m%n
 controller
 和`view`的编写
 在`controller`下新建一个“`HomeController`”。编写如下代码。
@@ -357,7 +360,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 "/home"
 @Controller
 @RequestMapping("/home")
-public class HomeController {
+public class HomeController \{
     //
 添加一个日志器
 
@@ -368,7 +371,7 @@ public class HomeController {
 
 action
     @RequestMapping("/index")
-    public  String index(){
+    public  String index()\{
         //
 输出日志文件
 
@@ -377,8 +380,8 @@ action
 返回一个`index.jsp`这个视图
 
         return "index";
-    }
-}
+    \}
+\}
  在`views`文件夹下建立一个`jsp`文件，名为“`index.jsp`”
 
 基本的代码编写就完成了。
@@ -424,3 +427,5 @@ action
 ————————————————
 版权声明：本文为`CSDN`博主「`Jimmy-`尹」的原创文章，遵循 `CC 4.0 BY-SA` 版权协议，转载请附上原文出处链接及本声明。
 原文链接：`https://blog.csdn.net/jason201710/article/details/101757687`
+
+:::

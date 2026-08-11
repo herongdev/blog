@@ -3,7 +3,10 @@ title: Linux下如何添加屏幕分辨率
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 服务器在`linux`环境下的屏幕分辨率可能会出现不适用的情况，在终端也没有合适的分辨率选项。这个时候就需要使用命令添加新的分辨率。详细步骤如下：
 `step1`：找到合适显示器的分辨率
 `step2`：打开命令窗口，输入`cvt 1920 1024`（假设屏幕合适的分辨率为`1920*1024`）
@@ -18,3 +21,5 @@ tags: [Java, 构建运维, OneNote]
 
  \<https://blog.csdn.net/iamzxxing/article/details/87859492\>
 ```
+
+:::

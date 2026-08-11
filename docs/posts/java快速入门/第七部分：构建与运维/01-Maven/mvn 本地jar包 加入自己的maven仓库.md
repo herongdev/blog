@@ -3,7 +3,10 @@ title: mvn 本地jar包 加入自己的maven仓库
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `-Dfile` ：你的`jar`的名称
 `-DgroupId :`在`pom`中的
 
@@ -22,3 +25,5 @@ tags: [Java, 构建运维, OneNote]
 
  \<https://www.cnblogs.com/gzhbk/p/11585051.html\>
 ```
+
+:::

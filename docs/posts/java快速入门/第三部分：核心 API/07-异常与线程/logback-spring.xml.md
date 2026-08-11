@@ -3,7 +3,10 @@ title: logback-spring.xml
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 这个`logback-spring.xml`文件配置了Logback日志记录系统的行为。以下是该配置文件的详细作用和解释：
 
 完整示例：
@@ -12,14 +15,14 @@ tags: [Java, 核心API, OneNote]
 \<!-- 控制台输出 --\>
 \<appender name="console" class="ch.qos.logback.core.ConsoleAppender"\>
 \<encoder\>
-\<pattern\>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n\</pattern\>
+\<pattern\>%d\{yyyy-MM-dd HH:mm:ss\} %-5level %logger\{36\} - %msg%n\</pattern\>
 \</encoder\>
 \</appender\>
 \<!-- 文件输出 --\>
 \<appender name="file" class="ch.qos.logback.core.FileAppender"\>
 \<file\>app.log\</file\>
 \<encoder\>
-\<pattern\>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n\</pattern\>
+\<pattern\>%d\{yyyy-MM-dd HH:mm:ss\} %-5level %logger\{36\} - %msg%n\</pattern\>
 \</encoder\>
 \</appender\>
 \<!-- 为特定包设置日志级别 --\>
@@ -41,7 +44,7 @@ tags: [Java, 核心API, OneNote]
 控制台输出（ConsoleAppender）
 \<appender name="console" class="ch.qos.logback.core.ConsoleAppender"\>
 \<encoder\>
-\<pattern\>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n\</pattern\>
+\<pattern\>%d\{yyyy-MM-dd HH:mm:ss\} %-5level %logger\{36\} - %msg%n\</pattern\>
 \</encoder\>
 \</appender\>
 
@@ -59,7 +62,7 @@ tags: [Java, 核心API, OneNote]
 \<appender name="file" class="ch.qos.logback.core.FileAppender"\>
 \<file\>app.log\</file\>
 \<encoder\>
-\<pattern\>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n\</pattern\>
+\<pattern\>%d\{yyyy-MM-dd HH:mm:ss\} %-5level %logger\{36\} - %msg%n\</pattern\>
 \</encoder\>
 \</appender\>
 
@@ -87,3 +90,5 @@ tags: [Java, 核心API, OneNote]
 自定义日志级别
 你可以根据需要为特定的包或类自定义日志级别。例如，如果你希望为`com.hunanminsheng.zhslappbackend`包设置`DEBUG`级别的日志记录，可以在`
 这个配置文件将`com.hunanminsheng.zhslappbackend`包的日志级别设置为`DEBUG`，并将日志消息输出到控制台和文件`app.log`。
+
+:::

@@ -1,0 +1,325 @@
+---
+title: "matchPath方法"
+date: 2026-08-11
+categories:
+  - "React 系统教程"
+tags:
+  - "React"
+  - "Redux"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "状态管理与路由"
+description: "path to regexp regulex 思路： 使用 path to regexp 用来生成路径对应的正则； 然后，我们用这个正则去匹配实际路径中的各种参数； 最后，获得实际路径中的参数值； 举例如下： let pathToRegExp require('path to r。"
+sidebarWeight: 15
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/react-router/matchPath方法.md"
+---
+::: v-pre
+
+# matchPath方法
+
+> 本节目标：理解“matchPath方法”的核心思路，并能把它用于实际开发或面试表达。
+
+> 说明：原 OneNote 中有图片引用，但图片未包含在导出目录中；本页保留了可用的文字与代码内容。
+- [path-to-regexp](https://www.npmjs.com/package/path-to-regexp)
+- [regulex](https://jex.im/regulex)
+
+思路：
+
+- 使用 [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) 用来生成路径对应的正则；
+- 然后，我们用这个正则去匹配实际路径中的各种参数；
+- 最后，获得实际路径中的参数值；
+
+举例如下：
+let pathToRegExp = require('path-to-regexp');
+let keys = [];
+/**
+ * strict 是否允许结尾有一个可选的/
+ * sensitive 是否大小写敏感
+ * end 是否匹配整个字符串，true必须整个字符匹配才返回true，如果false，前缀匹配就返回True
+ */
+let regexp = pathToRegExp('/user/:id', keys, \{ end: true, sensitive: true, strict: true \});
+console.log(regexp);
+let result = '/user/1'.match(regexp);
+console.log("key", keys)
+keys = keys.map(item =\> item.name);
+let [, ...values] = result;
+let params = keys.reduce((memo, key, index) =\> \{
+  memo[key] = values[index]
+  return memo;
+\}, \{\});
+console.log(params);
+以上代码打印结果：
+
+**/home结束，****end****为****true**
+let \{ pathToRegexp \} = require('path-to-regexp');
+let regxp = pathToRegexp('/home', [], \{ end: true \});
+console.log(regxp);//   /^\/home\/?$/i
+console.log(regxp.test('/home'));
+console.log(regxp.test('/home/2'));
+
+**/home非结束**
+let \{ pathToRegexp \} = require('path-to-regexp');
+let regx2 = pathToRegexp('/home', [], \{ end: false \});
+console.log(regx2);//   /^\/home\/?(?=\/|$)/i
+console.log(regx2.test('/home'));
+console.log(regx2.test('/home/'));
+console.log(regx2.test('/home//'));
+console.log(regx2.test('/home/2'));
+
+**路径参数**
+
+```
+let { pathToRegexp } = require('path-to-regexp');
+let params = [];
+let regx3 = pathToRegexp('/user/:id', params, { end: true });
+console.log(regx3);
+console.log(params);
+```
+
+```
+src/react-router/matchPath
+import pathToRegexp from 'path-to-regexp';
+function compilePath(path, options) {
+  const keys = [];
+  const regexp = pathToRegexp(path, keys, options);
+  return { regexp, keys };
+}
+function matchPath(pathname, options = {}) {
+  const { path = "/", exact = false, strict = false, sensitive = false } = options;
+  const { regexp, keys } = compilePath(path, { end: exact, strict, sensitive });
+  const match = regexp.exec(pathname);
+  if (!match) return null;
+  const [url, ...values] = match;
+  const isExact = pathname === url;//
+  if (exact && !isExact) return null;//如果希望精确，但其实不精确返回确
+  return {
+    path,//Route里的path属性
+    url,//正则匹配到的浏览器的pathname部分
+    isExact,//是否实现了精确匹配
+    params: keys.reduce((memo, key, index) => {
+      memo[key.name] = values[index]
+      return memo;
+    }, {})
+  }
+}
+/**
+ * 浏览器的pathname  /user/1
+ * path /user
+ * match是能匹配上的
+ * exact=true;
+ * /user/1 不完全 相等/user  表示非精确匹配
+ *
+ * Home   path = /
+ * location.pathname /user
+ * 匹配的部分就是 /
+ * / === /user不相等就是false
+ */
+export default matchPath;
+```
+
+src\react-router-dom\Route.js
+import React from 'react';
+import RouterContext from './RouterContext';
+import matchPath from './matchPath';
+class Route extends React.Component \{
+  static contextType = RouterContext;
+  render() \{
+    const \{ history, location \} = this.context;
+    const \{ component: RouteComponent, computedMatch, render, children \} = this.props;
+    const match = computedMatch ? computedMatch : matchPath(location.pathname, this.props);
+    const routeProps = \{ history, location \};
+    let renderElement = null;// null也一个合法的react渲染节点 代表我们render的返顺值，代表此组件将要渲染的内容
+    if (match) \{
+      routeProps.match = match;
+      //RouteComponent\>render\>children
+      if (RouteComponent) \{//如果传递了 component属性，优先渲染component
+        renderElement = \<RouteComponent \{...routeProps\} /\>
+      \} else if (render) \{
+        renderElement = render(routeProps);
+      \} else if (children) \{
+        renderElement = children(routeProps);
+      \} else \{
+        renderElement = null;
+      \}
+    \} else \{//TODO
+      if (children) \{
+        renderElement = children(routeProps);
+      \} else \{
+        renderElement = null;
+      \}
+    \}
+    return renderElement
+  \}
+\}
+export default Route;
+/**
+ * 指定一个route组件如何渲染有三种方式
+ * 1.component 如果你渲染的是一个固定 的组件，确定的组件的话就可以component
+ * 2.render 如果你想自己确认，自定义渲染逻辑就可以用render
+ *
+ * 1和2都是要求路径匹配才渲染或执行，如果路径不匹配什么不渲染
+ * 3.children
+ * 不管路由是否匹配，都渲染
+ */
+
+**6. 实现Link**
+**6.1 src\index.tsx**
+src\index.tsx
+import React from 'react';import ReactDOM from 'react-dom';+import \{ HashRouter as Router, Route, Link \} from './react-router-dom';import Home from './components/Home';import User from './components/User';import Profile from './components/Profile';ReactDOM.render( \<Router\> \<div\>+ \<ul\>+ \<li\>\<Link to="/"\>Home\</Link\>\</li\>+ \<li\>\<Link to="/user"\>User\</Link\>\</li\>+ \<li\>\<Link to="/profile"\>Profile\</Link\>\</li\>+ \</ul\>+ \<Route path="/" component=\{Home\} exact /\> \<Route path="/user" component=\{User\} /\> \<Route path="/profile" component=\{Profile\} /\> \</div\> \</Router\> , document.getElementById('root'));
+**6.2 history\types.tsx**
+src\history\types.tsx
+export interface Location \{ pathname: string; state?: any;\}export interface History \{ location: Location;+ push(path: string, state?: any): void;\}
+**6.3 react-router-dom\types.tsx**
+src\react-router-dom\types.tsx
+import \{ History \} from '../history';export type Location = History['location'];export interface ContextValue \{ location?: Location;+ history?: History\}export interface match\<Params = \{\}\> \{ params: Params; isExact: boolean; path: string; url: string;\}export interface RouteComponentProps\<Params = \{\}\> \{ history: History; location: Location; match?: match\<Params\>;\}
+**6.4 Link.tsx**
+src\react-router-dom\Link.tsx
+import React, \{ Component \} from 'react'import RouterContext from './context';import \{ LocationDescriptor \} from '../history';export interface LinkProps \{ to: LocationDescriptor;\}export default class Link extends Component\<LinkProps\> \{ static contextType = RouterContext; render() \{ return ( \<a \{...this.props\} onClick=\{() =\> this.context.history.push(this.props.to)\}\>\{this.props.children\}\</a\> ) \}\}
+**6.5 HashRouter.tsx**
+src\react-router-dom\HashRouter.tsx
+import React, \{ Component \} from 'react'import Context from './context';import \{ ContextValue \} from './types';+import \{ LocationDescriptor, Location \} from '../history';interface Props \{ \}interface State \{ location: Location;\}export default class HashRouter extends Component\<Props, State\> \{ locationState: any state = \{ location: \{+ pathname: window.location.hash.slice(1),+ state: null \} \} componentWillMount() \{ window.addEventListener('hashchange', (event: HashChangeEvent) =\> \{ this.setState(\{ location: \{ ...this.state.location, pathname: window.location.hash.slice(1) || '/',+ state: this.locationState \} \}); \}); window.location.hash = window.location.hash || '/'; \} render(): React.ReactNode \{+ let that = this; let value: ContextValue = \{ location: this.state.location, history: \{ location: this.state.location,+ push(to: LocationDescriptor) \{+ if (typeof to === 'object') \{+ let \{ pathname, state \} = to;+ that.locationState = state;+ window.location.hash = pathname!;+ \} else \{+ window.location.hash = to;+ \} \} \} \} return ( \<Context.Provider value=\{value\}\> \{this.props.children\} \</Context.Provider\> ) \}\}
+**7. 引入bootstrap**
+cnpm i bootstrap@3 -S
+**7.1 src\index.tsx**
+src\index.tsx
+import React from 'react';import ReactDOM from 'react-dom';import \{ HashRouter as Router, Route, Link \} from './react-router-dom';import Home from './components/Home';import User from './components/User';import Profile from './components/Profile';+import 'bootstrap/dist/css/bootstrap.css';ReactDOM.render( \<Router\>+ \<\>+ \<div className="navbar navbar-inverse"\>+ \<div className="container-fluid"\>+ \<div className="navbar-heading"\>+ \<div className="navbar-brand"\>珠峰架构\</div\>+ \</div\>+ \<ul className="nav navbar-nav"\>+ \<li\>\<Link to="/"\>Home\</Link\>\</li\>+ \<li\>\<Link to="/user"\>User\</Link\>\</li\>+ \<li\>\<Link to="/profile"\>Profile\</Link\>\</li\>+ \</ul\>+ \</div\>+ \</div\>+ \<div className="container"\>+ \<div className="row"\>+ \<div className="col-md-12"\>+ \<Route path="/" exact component=\{Home\} /\>+ \<Route path="/user" component=\{User\} /\>+ \<Route path="/profile" component=\{Profile\} /\>+ \</div\>+ \</div\>+ \</div\>+ \</\> \</Router\> , document.getElementById('root'));
+**8. Redirect&Switch**
+**8.1 src\index.tsx**
+src\index.tsx
+import React from 'react';import ReactDOM from 'react-dom';+import \{ HashRouter as Router, Route, Link, Redirect, Switch \} from './react-router-dom';import Home from './components/Home';import User from './components/User';import Profile from './components/Profile';import 'bootstrap/dist/css/bootstrap.css';ReactDOM.render( \<Router\> \<\> \<div className="navbar navbar-inverse"\> \<div className="container-fluid"\> \<div className="navbar-heading"\> \<div className="navbar-brand"\>珠峰架构\</div\> \</div\> \<ul className="nav navbar-nav"\> \<li\>\<Link to="/"\>Home\</Link\>\</li\> \<li\>\<Link to="/user"\>User\</Link\>\</li\> \<li\>\<Link to="/profile"\>Profile\</Link\>\</li\> \</ul\> \</div\> \</div\> \<div className="container"\> \<div className="row"\> \<div className="col-md-12"\>+ \<Switch\>+ \<Route path="/" exact component=\{Home\} /\>+ \<Route path="/user" component=\{User\} /\>+ \<Route path="/profile" component=\{Profile\} /\>+ \<Redirect to="/" /\>+ \</Switch\> \</div\> \</div\> \</div\> \</\> \</Router\> , document.getElementById('root'));
+**8.2 react-router-dom\index.tsx**
+src\react-router-dom\index.tsx
+import HashRouter from './HashRouter';import Route from './Route';import Link from './Link';+import Switch from './Switch';+import Redirect from './Redirect';export \{ HashRouter, Route, Link,+ Switch,+ Redirect\}export * from './types';
+**8.3 Switch.tsx**
+src\react-router-dom\Switch.tsx
+import React, \{ Component \} from 'react'import Context from './context';import \{ pathToRegexp \} from 'path-to-regexp';interface Props \{ children: Array\<JSX.Element\>\}export default class Switch extends Component\<Props\> \{ static contextType = Context; render() \{ let pathname = this.context.location.pathname; if (this.props.children) \{ for (let i = 0; i \< this.props.children.length; i++) \{ let child: JSX.Element = this.props.children[i]; let \{ path = '/', component: Component, exact = false \} = child.props; let regxp = pathToRegexp(path, [], \{ end: exact \}); let result = pathname.match(regxp); if (result) \{ return child; \} \} \} return null; \}\}
+**8.4 Redirect.tsx**
+src\react-router-dom\Redirect.tsx
+import React, \{ Component \} from 'react'import \{ LocationDescriptor \} from '../history';interface Props \{ to: LocationDescriptor;\}export default class extends Component\<Props\> \{ static contextType = Context; render() \{ this.context.history.push(this.props.to); return null; \}\}
+**9. 路径参数**
+**9.1 User.tsx**
+src\components\User.tsx
+import React, \{ Component \} from 'react';+import \{ RouteComponentProps, Link, Route \} from '../react-router-dom';+import UserAdd from './UserAdd';+import UserDetail from './UserDetail';+import UserList from './UserList';interface Params \{ \}type Props = RouteComponentProps\<Params\> & \{
+\}export default class User extends Component \{ render() \{ return (+ \<div className="row"\>+ \<div className="col-md-2"\>+ \<ul className="nav nav-stack"\>+ \<li\>\<Link to="/user/list"\>用户列表\</Link\>\</li\>+ \<li\>\<Link to="/user/add"\>添加用户\</Link\>\</li\>+ \</ul\>+ \</div\>+ \<div className="col-md-10"\>+ \<Route path="/user/add" component=\{UserAdd\} /\>+ \<Route path="/user/list" component=\{UserList\} /\>+ \<Route path="/user/detail/:id" component=\{UserDetail\} /\>+ \</div\>+ \</div\>+ ) \}\}
+/**\{ history: H.History; location: H.Location\<S\>; match: match\<Params\>; staticContext?: C;\}export interface Location\<S = LocationState\> \{ pathname: Pathname; search: Search; state: S; hash: Hash; key?: LocationKey;\}export interface match\<Params extends \{ [K in keyof Params]?: string \} = \{\}\> \{ params: Params; isExact: boolean; path: string; url: string;\} */
+**9.2 UserAdd.tsx**
+src\components\UserAdd.tsx
+import React, \{ Component, RefObject \} from 'react';import \{ RouteComponentProps \} from '../react-router-dom';
+type Props = RouteComponentProps;export default class UserAdd extends Component\<Props\> \{ usernameRef: RefObject\<HTMLInputElement\> constructor(props: Props) \{ super(props); this.usernameRef = React.createRef\<HTMLInputElement\>(); \} handleSubmit = (event: React.FormEvent\<HTMLFormElement\>) =\> \{ event.preventDefault(); let username = this.usernameRef.current!.value; let usersStr = localStorage.getItem('users'); let users = usersStr ? JSON.parse(usersStr) : []; users.push(\{ id: Date.now() + '', username \}); localStorage.setItem('users', JSON.stringify(users)); this.props.history.push('/user/list'); \} render() \{ return ( \<form onSubmit=\{this.handleSubmit\}\> \<input className="form-control" type="text" ref=\{this.usernameRef\} /\> \<button type="submit" className="btn btn-primary"\>提交\</button\> \</form\> ) \}\}
+**9.3 src\types.tsx**
+src\types.tsx
+export interface User \{ id?: string; username?: string;\}
+**9.4 UserList.tsx**
+src\components\UserList.tsx
+import React, \{ Component \} from 'react'import \{ Link, RouteComponentProps \} from '../react-router-dom';import \{ User \} from '../types';type Props = RouteComponentProps;interface State \{ users: Array\<User\>\}
+export default class UserList extends Component\<Props, State\> \{ state = \{ users: [] \} componentDidMount() \{ let usersStr = localStorage.getItem('users'); let users: Array\<User\> = usersStr ? JSON.parse(usersStr) : []; this.setState(\{ users \}); \} render() \{ return ( \<ul className="list-group"\> \{ this.state.users.map((user: User, index) =\> ( \<li className="list-group-item" key=\{index\}\> \<Link to=\{\{ pathname: `/user/detail/${user.id}`, state: user \}\}\>\{user.username\}\</Link\> \</li\> )) \} \</ul\> ) \}\}
+**9.5 UserDetail.tsx**
+src\components\UserDetail.tsx
+import React, \{ Component \} from 'react';import \{ RouteComponentProps \} from '../react-router-dom';import \{ User \} from '../types';interface Params \{ id: string;\}type Props = RouteComponentProps\<Params, any, User\> & \{
+\}
+interface State \{ user: User\}export default class UserDetail extends Component\<Props, State\> \{ state = \{ user: \{\} \} componentDidMount() \{ let user: User = this.props.location.state!; if (!user) \{ let usersStr = localStorage.getItem('users'); let users = usersStr ? JSON.parse(usersStr) : []; let id = this.props.match!.params.id; user = users.find((user: User) =\> user.id === id); \} if (user) this.setState(\{ user \}); \} render() \{ let user: User = this.state.user; return ( \<div\> \{user.id\}:\{user.username\} \</div\> ) \}\}
+**9.6 history\types.tsx**
+src\history\types.tsx
++export interface Location\<T = any\> \{+ pathname: string;+ state?: T;+\}+export type LocationDescriptor = string | Location;+export interface History\<T = any\> \{+ location: Location\<T\>;+ push(pathname: string): void;+ push(to: Location): void;+\}
+**9.7 Link.tsx**
+src\react-router-dom\Link.tsx
+import React, \{ Component \} from 'react'import RouterContext from './context';+import \{ LocationDescriptor \} from '../history';interface Props \{+ to: LocationDescriptor;\}export default class Link extends Component\<Props\> \{ static contextType = RouterContext; render() \{ return ( \<a onClick=\{() =\> this.context.history.push(this.props.to)\}\>\{this.props.children\}\</a\> ) \}\}
+**9.8 Route.tsx**
+
+src\react-router-dom\Route.tsx
+import React, \{ Component,ComponentType \} from 'react';import RouterContext from './context';+import \{ RouteComponentProps, match \} from './';+import \{ pathToRegexp, Key \} from 'path-to-regexp';interface Props \{ path: string; exact?: boolean;+ component: ComponentType\<RouteComponentProps\<any\>\>\}export default class Route extends Component\<Props\> \{ static contextType = RouterContext; render() \{ let \{ path, component: RouteComponent, exact = false \} = this.props; let pathname = this.context.location.pathname;+ let keys: Array\<Key\> = [];+ let regxp = pathToRegexp(path, keys, \{ end: exact \}); let result = pathname.match(regxp); if (result) \{+ let [url, ...values] = result;+ let paramNames = keys.map((item: Key) =\> item.name);+ let memo: Record\<string, any\> = \{\};+ //values=['zhufeng',10] paramNames=['name','age']+ let params = values.reduce((memo: Record\<string, any\>, val: string, index: number) =\> \{+ memo[paramNames[index]] = val;+ return memo;+ \}, memo);+ type ParamsType = typeof params;+ //当路由路径和当前路径成功匹配，会生成一个match对象+ let matchResult: match\<ParamsType\> = \{+ url, //URL中匹配到的部分+ path, //用来的路径正则，取自path属性+ isExact: pathname === url,//判断匹配到的url是否和完整路径匹配+ params+ \}+ let props: RouteComponentProps\<ParamsType\> = \{+ location: this.context.location,+ history: this.context.history,+ match: matchResult+ \}+ return \<RouteComponent \{...props\} /\>;+ \} return null; \}\}
+**9.9 react-router-dom\types.tsx**
+src\react-router-dom\types.tsx
+import \{ Location, History \} from '../history';export interface ContextValue \{ location?: Location; history?: History\}export interface match\<Params = \{\}\> \{ params: Params; isExact: boolean; path: string; url: string;\}+export interface RouteComponentProps\<Params = \{\}, staticContext = \{\}, State = any\> \{+ history: History;+ location: Location\<State\>;+ match?: match\<Params\>;+\}
+**9.10 Home.tsx**
+src\components\Home.tsx
+import React, \{ Component \} from 'react';+import \{ RouteComponentProps \} from '../react-router-dom';+type Props = RouteComponentProps;+export default class Home extends Component\<Props\> \{ render() \{ return ( \<div\>Home\</div\> ) \}\}
+**9.11 Profile.tsx**
+src\components\Profile.tsx
+import React, \{ Component \} from 'react';+import \{ RouteComponentProps \} from '../react-router-dom';+type Props = RouteComponentProps;+export default class Profile extends Component\<Props\> \{ render() \{ return ( \<div\>Profile\</div\> ) \}\}
+**10. 受保护的路由**
+**10.1 src\index.tsx**
+src\index.tsx
+import React from 'react';import ReactDOM from 'react-dom';import \{ HashRouter as Router, Route, Link, Redirect, Switch \} from './react-router-dom';import Home from './components/Home';import User from './components/User';import Profile from './components/Profile';+import Protected from './components/Protected';+import Login from './components/Login';import 'bootstrap/dist/css/bootstrap.css';ReactDOM.render( \<Router\> \<\> \<div className="navbar navbar-inverse"\> \<div className="container-fluid"\> \<div className="navbar-heading"\> \<div className="navbar-brand"\>珠峰架构\</div\> \</div\> \<ul className="nav navbar-nav"\> \<li\>\<Link to="/"\>Home\</Link\>\</li\> \<li\>\<Link to="/user"\>User\</Link\>\</li\> \<li\>\<Link to="/profile"\>Profile\</Link\>\</li\> \</ul\> \</div\> \</div\> \<div className="container"\> \<div className="row"\> \<div className="col-md-12"\> \<Switch\> \<Route path="/" exact component=\{Home\} /\> \<Route path="/user" component=\{User\} /\>+ \<Route path="/login" component=\{Login\} /\>+ \<Protected path="/profile" component=\{Profile\} /\> \<Redirect to="/" /\> \</Switch\> \</div\> \</div\> \</div\> \</\> \</Router\> , document.getElementById('root'));
+**10.2 Protected.tsx**
+src\components\Protected.tsx
+import React from 'react'import \{ Route, Redirect \} from '../react-router-dom';interface Props extends Record\<string, any\> \{ path: string; component: React.ComponentType\<any\>;\}export default (props: Props) =\> \{ let \{ component: RouteComponent, path \} = props; return ( \<Route path=\{path\} render=\{ (props: any) =\> ( localStorage.getItem('logined') ? \<RouteComponent \{...props\} /\> : \<Redirect to=\{\{ pathname: '/login', state: \{ from: props.location.pathname \} \}\} /\> ) \} /\> )\}
+**10.3 Login.tsx**
+src\components\Login.tsx
+import React, \{ Component \} from 'react';import \{ RouteComponentProps \} from '../react-router-dom';type Props = RouteComponentProps;export default class Login extends Component\<Props\> \{ handleClick = () =\> \{ localStorage.setItem('logined', 'true'); if (this.props.location.state) this.props.history.push(this.props.location.state.from); \} render() \{ return ( \<button className="btn btn-primary" onClick=\{this.handleClick\}\>登录\</button\> ) \}\}
+**10.4 Route.tsx**
+src\react-router-dom\Route.tsx
+import React, \{ Component, ComponentType \} from 'react';import RouterContext from './context';import \{ RouteComponentProps, match \} from './';import \{ pathToRegexp, Key \} from 'path-to-regexp';interface Props \{ path?: string; exact?: boolean; component?: ComponentType\<RouteComponentProps\<any\>\>;+ render?: (props: any) =\> React.ReactNode\}export default class Route extends Component\<Props\> \{ static contextType = RouterContext; render() \{+ let \{ path="/", component: RouteComponent, exact = false, render \} = this.props; let pathname = this.context.location.pathname; let keys: Array\<Key\> = []; let regxp = pathToRegexp(path, keys, \{ end: exact \}); let result = pathname.match(regxp); if (result) \{ let [url, ...values] = result; let paramNames = keys.map((item: Key) =\> item.name); let memo: Record\<string, any\> = \{\}; let params = values.reduce((memo: Record\<string, any\>, val: string, index: number) =\> \{ memo[paramNames[index]] = val; return memo; \}, memo); type ParamsType = typeof params; let matchResult: match\<ParamsType\> = \{ url: pathname, isExact: pathname === url, path, params \}
+let props: RouteComponentProps\<ParamsType\> = \{ location: this.context.location, history: this.context.history, match: matchResult \}+ if (RouteComponent)+ return \<RouteComponent \{...props\} /\>;+ else if (render) \{+ return render(props);+ \} else \{+ return null;+ \} \} return null; \}\}
+**11. 自定义导航**
+**11.1 src\index.tsx**
+src\index.tsx
+import React from 'react';import ReactDOM from 'react-dom';+import \{ HashRouter as Router, Route, MenuLink, Redirect, Switch \} from './react-router-dom';import Home from './components/Home';import User from './components/User';import Profile from './components/Profile';import Protected from './components/Protected';import Login from './components/Login';import 'bootstrap/dist/css/bootstrap.css';ReactDOM.render( \<Router\> \<\> \<div className="navbar navbar-inverse"\> \<div className="container-fluid"\> \<div className="navbar-heading"\> \<div className="navbar-brand"\>珠峰架构\</div\> \</div\> \<ul className="nav navbar-nav"\>+ \<li\>\<MenuLink exact to="/"\>Home\</MenuLink\>\</li\>+ \<li\>\<MenuLink exact to="/user"\>User\</MenuLink\>\</li\>+ \<li\>\<MenuLink exact to="/profile"\>Profile\</MenuLink\>\</li\> \</ul\> \</div\> \</div\> \<div className="container"\> \<div className="row"\> \<div className="col-md-12"\> \<Switch\> \<Route path="/" exact component=\{Home\} /\> \<Route path="/user" component=\{User\} /\> \<Route path="/login" component=\{Login\} /\> \<Protected path="/profile" component=\{Profile\} /\> \<Redirect to="/" /\> \</Switch\> \</div\> \</div\> \</div\> \</\> \</Router\> , document.getElementById('root'));
+**11.2 react-router-dom\index.tsx**
+src\react-router-dom\index.tsx
+import HashRouter from './HashRouter';import Route from './Route';import Link from './Link';import Switch from './Switch';import Redirect from './Redirect';+import MenuLink from './MenuLink';export \{ HashRouter, Route, Link, Switch, Redirect,+ MenuLink\}export * from './types';
+**11.3 MenuLink.tsx**
+src\react-router-dom\MenuLink.tsx
+import React from 'react'import \{ Route, Link \} from '.';import './MenuLink.css';import \{ LocationDescriptor \} from '../history';import \{ match \} from '.';interface Props \{ to: LocationDescriptor, exact?: boolean; children?: React.ReactNode\}export default (props: Props) =\> \{ let \{ to, exact, children \} = props; return \<Route path=\{typeof to === 'object' ? to.pathname! : to\} exact=\{exact\} children=\{ (childProps: any) =\> ( \<Link className=\{childProps.match ? 'active' : ''\} to=\{to\} \{...childProps\}\>\{children\}\</Link\> ) \} /\>\}
+**11.4 MenuLink.css**
+src\react-router-dom\MenuLink.css
+.navbar-inverse .navbar-nav \> li \> .active\{ background-color: green!important; color:red!important;\}
+**12. withRouter**
+**12.1 src\index.tsx**
+import React from 'react';import ReactDOM from 'react-dom';import \{ HashRouter as Router, Route, MenuLink, Redirect, Switch \} from './react-router-dom';import Home from './components/Home';import User from './components/User';import Profile from './components/Profile';import Protected from './components/Protected';import Login from './components/Login';+import NavHeader from './components/NavHeader';import 'bootstrap/dist/css/bootstrap.css';ReactDOM.render( \<Router\> \<\> \<div className="navbar navbar-inverse"\> \<div className="container-fluid"\>+ \<NavHeader title="欢迎来到珠峰架构" /\> \<ul className="nav navbar-nav"\> \<li\>\<MenuLink exact to="/"\>Home\</MenuLink\>\</li\> \<li\>\<MenuLink exact to="/user"\>User\</MenuLink\>\</li\> \<li\>\<MenuLink exact to="/profile"\>Profile\</MenuLink\>\</li\> \</ul\> \</div\> \</div\> \<div className="container"\> \<div className="row"\> \<div className="col-md-12"\> \<Switch\> \<Route path="/" exact component=\{Home\} /\> \<Route path="/user" component=\{User\} /\> \<Route path="/login" component=\{Login\} /\> \<Protected path="/profile" component=\{Profile\} /\> \<Redirect to="/" /\> \</Switch\> \</div\> \</div\> \</div\> \</\> \</Router\> , document.getElementById('root'));
+**12.2 NavHeader.tsx**
+src\components\NavHeader.tsx
+import React from 'react';import \{ RouteComponentProps \} from '../react-router-dom';import \{ withRouter \} from '../react-router-dom';//只有当一个组件是通过路由Route渲染出来的话才会有RouteComponentProps里的属性interface NavHeaderProps \{ title: string;\}
+class NavHeader extends React.Component\<RouteComponentProps & NavHeaderProps\> \{ render() \{ return ( \<div className="navbar-header"\> \<div onClick=\{(event: React.MouseEvent) =\> this.props.history.push('/')\} className="navbar-brand"\>\{this.props.title\}\</div\> \</div\> ) \}\}export default withRouter\<NavHeaderProps\>(NavHeader);
+**12.3 withRouter.tsx**
+src\react-router-dom\withRouter.tsx
+import React from 'react';import \{ Route, RouteComponentProps \} from './';export default function \<NavHeaderProps\>(OldComponent: React.ComponentType\<NavHeaderProps & RouteComponentProps\>) \{ return (props: NavHeaderProps) =\> ( \<Route render=\{ (routeProps: RouteComponentProps) =\> \<OldComponent \{...props\} \{...routeProps\} /\> \} /\> )\}
+**12.4 react-router-dom\index.tsx**
+src\react-router-dom\index.tsx
+import HashRouter from './HashRouter';import Route from './Route';import Link from './Link';import Switch from './Switch';import Redirect from './Redirect';import MenuLink from './MenuLink';+import withRouter from './withRouter';export \{ HashRouter, Route, Link, Switch, Redirect, MenuLink,+ withRouter\}export * from './types';
+**13. 阻止跳转**
+**13.1 UserAdd.tsx**
+src\components\UserAdd.tsx
+import React, \{ Component, RefObject \} from 'react';+import \{ RouteComponentProps, Prompt \} from '../react-router-dom';type Props = RouteComponentProps;+interface State \{+ isBlocking: boolean;+\}+export default class UserAdd extends Component\<Props, State\> \{+ state = \{+ isBlocking: false+ \} usernameRef: RefObject\<HTMLInputElement\> constructor(props: Props) \{ super(props); this.usernameRef = React.createRef\<HTMLInputElement\>(); \} handleSubmit = (event: React.FormEvent\<HTMLFormElement\>) =\> \{ event.preventDefault();+ this.setState(\{+ isBlocking: false+ \}, () =\> \{+ let username = this.usernameRef.current!.value;+ let usersStr = localStorage.getItem('users');+ let users = usersStr ? JSON.parse(usersStr) : [];+ users.push(\{ id: Date.now() + '', username \});+ localStorage.setItem('users', JSON.stringify(users));+ this.props.history.push('/user/list');+ \})
+\} render() \{+ let \{ isBlocking \} = this.state; return ( \<form onSubmit=\{this.handleSubmit\}\>+ \<Prompt+ when=\{isBlocking\}+ message=\{location =\> `你确定要跳转到${location.pathname}吗？`\}+ /\>+ \<input className="form-control" type="text" ref=\{this.usernameRef\} onChange=\{(event: React.ChangeEvent\<HTMLInputElement\>) =\> \{+ this.setState(\{ isBlocking: event.target.value.length \> 0 \});+ \}\} /\> \<button type="submit" className="btn btn-primary"\>提交\</button\> \</form\> ) \}\}
+**13.2 history\types.tsx**
+src\history\types.tsx
++import \{ Message \} from '../react-router-dom';export interface Location\<T = any\> \{ pathname: string; state?: T;\}
+export type LocationDescriptor = string | Location;export interface History\<T = any\> \{ push(pathname: string): void; push(to: Location): void;+ message:Message | null+ block(message: Message | null): void;\}
+**13.3 react-router-dom\types.tsx**
+src\react-router-dom\types.tsx
+import \{ Location, History \} from '../history';export interface ContextValue \{ location?: Location; history?: History\}export interface match\<Params = \{\}\> \{ params: Params; isExact: boolean; path: string; url: string;\}export interface RouteComponentProps\<Params = \{\}, staticContext = \{\}, State = any\> \{ history: History; location: Location\<State\>; match?: match\<Params\>;\}+export interface Message \{+ (location: Location): string+\}
+**13.4 react-router-dom\Prompt.tsx**
+src\react-router-dom\Prompt.tsx
+import React from 'react'import RouterContext from './context';import \{ History \} from '../history';import \{ Message \} from './';interface Props \{ when: boolean; message: Message;\}export default class Prompt extends React.Component\<Props\> \{ static contextType = RouterContext; history: History componentWillUnmount() \{ this.history.block(null); \} render() \{ this.history = this.context.history; const \{ when, message \} = this.props; if (when) \{ this.history.block(message); \} else \{ this.history.block(null); \} return null; \}\}
+**13.5 react-router-dom\HashRouter.tsx**
+src\react-router-dom\HashRouter.tsx
+import React, \{ Component \} from 'react'import Context from './context';import \{ ContextValue \} from './types';import \{ LocationDescriptor, Location \} from '../history';import \{ Message \} from './';interface Props \{ \}interface State \{ location: Location;\}export default class HashRouter extends Component\<Props, State\> \{ locationState: any prompt: Message | null state = \{ location: \{ pathname: window.location.hash.slice(1), state: null \} \} componentWillMount() \{ window.addEventListener('hashchange', (event: HashChangeEvent) =\> \{ this.setState(\{ location: \{ ...this.state.location, pathname: window.location.hash.slice(1) || '/', state: this.locationState \} \}); \}); window.location.hash = window.location.hash || '/'; \} render(): React.ReactNode \{ let that = this; let value: ContextValue = \{ location: this.state.location, history: \{ push(to: LocationDescriptor) \{+ if (that.prompt) \{+ let allow = window.confirm(that.prompt(typeof to === 'object' ? to as Location : \{ pathname: to \}));+ if (!allow) return;+ \} if (typeof to === 'object') \{ let \{ pathname, state \} = to; that.locationState = state; window.location.hash = pathname!; \} else \{ window.location.hash = to; \} \},+ prompt : null,+ block(prompt : Message | null) \{+ that.prompt = prompt ;+ \} \} \} return ( \<Context.Provider value=\{value\}\> \{this.props.children\} \</Context.Provider\> ) \}\}
+**13.6 react-router-dom\index.tsx**
+src\react-router-dom\index.tsx
+import HashRouter from './HashRouter';import Route from './Route';import Link from './Link';import Switch from './Switch';import Redirect from './Redirect';import MenuLink from './MenuLink';import withRouter from './withRouter';+import Prompt from './Prompt';export \{ HashRouter, Route, Link, Switch, Redirect, MenuLink, withRouter,+ Prompt\}export * from './types';
+**14. BrowserRouter**
+**14.1 public\index.html**
+public\index.html
+\<!DOCTYPE html\>\<html lang="en"\>\<head\> \<meta charset="utf-8" /\> \<link rel="icon" href="%PUBLIC_URL%/favicon.ico" /\> \<meta name="viewport" content="width=device-width, initial-scale=1" /\> \<meta name="theme-color" content="#000000" /\> \<title\>React App\</title\>+ \<script\>+ (function (history) \{+ var pushState = history.pushState;+ history.pushState = function (state, title, pathname) \{+ if (typeof window.onpushstate == "function") \{+ window.onpushstate(state, pathname);+ \}+ return pushState.apply(history, arguments);+ \};+ \})(window.history);+ \</script\>\</head\>
+\<body\> \<div id="root"\>\</div\>\</body\>\</html\>
+**14.2 src\index.tsx**
+src\index.tsx
+import ReactDOM from 'react-dom';+import \{ BrowserRouter as Router, Route, MenuLink, Redirect, Switch \} from './react-router-dom';import Home from './components/Home';
+**14.3 BrowserRouter.tsx**
+src\react-router-dom\BrowserRouter.tsx
+import React, \{ Component \} from 'react'import Context from './context';import \{ Message \} from './';import \{ LocationDescriptor, Location \} from '../history';declare global \{ interface Window \{ onpushstate: (state: any, pathname: string) =\> void; \}\}
+export default class BrowserRouter extends Component \{ state = \{ location: \{ pathname: '/' \} \} message: Message | null componentDidMount() \{ window.onpopstate = (event: PopStateEvent) =\> \{ this.setState(\{ location: \{ ...this.state.location, pathname: document.location.pathname, state: event.state \} \}); \}; window.onpushstate = (state: any, pathname: string) =\> \{ this.setState(\{ location: \{ ...this.state.location, pathname, state \} \}); \}; \} render() \{ let that = this; let value = \{ location: that.state.location, history: \{ push(to: LocationDescriptor) \{ if (that.message) \{ let allow = window.confirm(that.message(typeof to == 'object' ? to : \{ pathname: to \})); if (!allow) return; \} if (typeof to === 'object') \{ let \{ pathname, state \} = to; window.history.pushState(state, '', pathname); \} else \{ window.history.pushState('', '', to); \} \}, block(message: Message) \{ that.message = message; \} \} \} return ( \<Context.Provider value=\{value\}\> \{this.props.children\} \</Context.Provider\> ) \}\}
+**14.4 react-router-dom\index.tsx**
+src\react-router-dom\index.tsx
+import HashRouter from './HashRouter';import Route from './Route';import Link from './Link';import Switch from './Switch';import Redirect from './Redirect';import MenuLink from './MenuLink';import withRouter from './withRouter';import Prompt from './Prompt';+import BrowserRouter from './BrowserRouter';export \{ HashRouter, Route, Link, Switch, Redirect, MenuLink, withRouter, Prompt,+ BrowserRouter\}export * from './types';
+**参考** **#**
+**可选参数**
+let express = require("express");let app = express();/* app.get('/member/?:path/?:tag', (req, res) =\> \{ res.json(req.params);\}); */// /^\/member\/?(?:([^\/]+?))\/?(?:([^\/]+?))\/?$/ilet reg = /^\/member\/([^\/]+?)?(?:\/([^\/]+?))?\/?$/;app.get(reg, (req, res) =\> \{ res.json(\{ path: req.params[0], tag: req.params[1] \});\});app.listen(9999);// /member/path
+ \> 来自 \<[http://www.zhufengpeixun.com/strong/html/82.3.react-router.html](http://www.zhufengpeixun.com/strong/html/82.3.react-router.html)\>
+
+:::

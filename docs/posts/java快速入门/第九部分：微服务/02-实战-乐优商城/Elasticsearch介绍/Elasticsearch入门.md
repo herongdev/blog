@@ -3,7 +3,10 @@ title: Elasticsearch入门
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **Elasticsearch****是什么**
 Elasticsearch是一个基于Apache Lucene(TM)的开源搜索引擎，无论在开源还是专有领域，Lucene可以被认为是迄今为止最先进、性能最好的、功能最全的搜索引擎库。 
@@ -129,3 +132,5 @@ _设置集群中__master__节点的初始列表，可以通过这些节点来自
  ==index.query.parse.allow_unmapped_fields: false== ==￼====//== ==不能查找没有在====mapping====中定义的属性==
  以上总结介绍了Elasticsearch中的一些基础知识，包括其中的一些核心概念。只有理解了ES中的这些核心概念，才能对更加得心应手地使用ES，发挥其强大的搜索能力。同时，也介绍了ES的安装和运行，ES的安装和运行是很简单的，只需要极少的简单步骤，就可以开始体验ES。ES的配置非常丰富，安装时自带的配置文件只包含一部分比较核心的配置项，更多的配置内容需要自己去阅读ES的源码时才能被发现。
 ```
+
+:::

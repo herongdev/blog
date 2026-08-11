@@ -3,7 +3,10 @@ title: 使用spring的IoC的实现账户的CRUD
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 实现账户的 CRUD 操作
 
@@ -360,3 +363,5 @@ _http://www.springframework.org/schema/context/spring-context.xsd__"_\>
 \</bean\>
 \</beans\>￼
 ```
+
+:::

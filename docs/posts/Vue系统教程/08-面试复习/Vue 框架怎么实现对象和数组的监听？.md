@@ -1,0 +1,78 @@
+---
+title: "Vue 框架怎么实现对象和数组的监听？"
+date: 2026-08-11
+categories:
+  - "Vue 系统教程"
+tags:
+  - "Vue"
+  - "Vue3"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "面试复习"
+description: "通过以上 Vue 源码部分查看，我们就能知道 Vue 框架是通过遍历数组和递归遍历对象，从而达到利用 Object.defineProperty() 也能对对象和数组（部分方法的操作）进行监听。 vue中是如何监听数组变化？ 我们知道通过Object.defineProperty。"
+sidebarWeight: 16
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/面试/Vue 框架怎么实现对象和数组的监听？.md"
+---
+::: v-pre
+
+# Vue 框架怎么实现对象和数组的监听？
+
+> 本节目标：理解“Vue 框架怎么实现对象和数组的监听？”的核心思路，并能把它用于实际开发或面试表达。
+
+> 说明：原 OneNote 中有图片引用，但图片未包含在导出目录中；本页保留了可用的文字与代码内容。
+```
+如果被问到 Vue 怎么实现数据双向绑定，大家肯定都会回答通过 Object.defineProperty() 对数据进行劫持，但是 Object.defineProperty() 只能对属性进行数据劫持，不能对整个对象进行劫持，同理无法对数组进行劫持，但是我们在使用 Vue 框架中都知道，Vue 能检测到对象和数组（部分方法的操作）的变化，那它是怎么实现的呢？我们查看相关代码如下：
+/**
+ * Observe a list of Array items.
+ */
+observeArray(items: Array<any>) {
+    for(let i = 0, l = items.length; i<l; i++) {
+    observe(items[i])  // observe 功能为监测数据的变化
+}
+  }
+/**
+   * 对属性进行递归遍历
+   */
+let childOb = !shallow && observe(val) // observe 功能为监测数据的变化
+```
+
+通过以上 Vue 源码部分查看，我们就能知道 Vue 框架是通过遍历数组和递归遍历对象，从而达到利用 Object.defineProperty() 也能对对象和数组（部分方法的操作）进行监听。
+
+**vue中是如何监听数组变化？**
+我们知道通过Object.defineProperty()劫持数组为其设置getter和setter后，调用的数组的push、splice、pop等方法改变数组元素时并不会触发数组的setter，这就会造成使用上述方法改变数组后，页面上并不能及时体现这些变化，也就是数组数据变化不是响应式的（对上述不了解的可以参考这篇文章）。但实际用vue开发时，对于响应式数组，使用push、splice、pop等方法改变数组时，页面会及时体现这种变化，那么vue中是如何实现的呢？
+通过vue源码可以看出，vue重写了数组的push、splice、pop等方法。
+
+[](javascript:void\(0\);)
+
+```
+ 1 // src/core/observer/array.js 2  3 // 获取数组的原型Array.prototype，上面有我们常用的数组方法 4 const arrayProto = Array.prototype 5 // 创建一个空对象arrayMethods，并将arrayMethods的原型指向Array.prototype 6 export const arrayMethods = Object.create(arrayProto) 7  8 // 列出需要重写的数组方法名 9 const methodsToPatch = [10   'push',11   'pop',12   'shift',13   'unshift',14   'splice',15   'sort',16   'reverse'17 ]18 // 遍历上述数组方法名，依次将上述重写后的数组方法添加到arrayMethods对象上19 methodsToPatch.forEach(function (method) {20   // 保存一份当前的方法名对应的数组原始方法21   const original = arrayProto[method]22   // 将重写后的方法定义到arrayMethods对象上，function mutator() {}就是重写后的方法23   def(arrayMethods, method, function mutator (...args) {24     // 调用数组原始方法，并传入参数args，并将执行结果赋给result25     const result = original.apply(this, args)26     // 当数组调用重写后的方法时，this指向该数组，当该数组为响应式时，就可以获取到其__ob__属性27     const ob = this.__ob__28     let inserted29     switch (method) {30       case 'push':31       case 'unshift':32         inserted = args33         break34       case 'splice':35         inserted = args.slice(2)36         break37     }38     if (inserted) ob.observeArray(inserted)39     // 将当前数组的变更通知给其订阅者40     ob.dep.notify()41     // 最后返回执行结果result42     return result43   })44 })
+```
+
+[](javascript:void\(0\);)
+
+从上面可以看出array.js中重写了数组的push、pop、shift、unshift、splice、sort、reverse七种方法，重写方法在实现时除了将数组方法名对应的原始方法调用一遍并将执行结果返回外，还通过执行ob.dep.notify()将当前数组的变更通知给其订阅者，这样当使用重写后方法改变数组后，数组订阅者会将这边变化更新到页面中。
+重写完数组的上述7种方法外，我们还需要将这些重写的方法应用到数组上，因此在Observer构造函数中，可以看到在监听数据时会判断数据类型是否为数组。当为数组时，如果浏览器支持__proto__，则直接将当前数据的原型__proto__指向重写后的数组方法对象arrayMethods，如果浏览器不支持__proto__，则直接将arrayMethods上重写的方法直接定义到当前数据对象上；当数据类型为非数组时，继续递归执行数据的监听。
+
+[](javascript:void\(0\);)
+
+```
+ 1 // src/core/observer/index.js 2 export class Observer { 3   ... 4   constructor (value: any) { 5     this.value = value 6     this.dep = new Dep() 7     this.vmCount = 0 8     def(value, '__ob__', this) 9     if (Array.isArray(value)) {10       if (hasProto) {11         protoAugment(value, arrayMethods)12       } else {13         copyAugment(value, arrayMethods, arrayKeys)14       }15       this.observeArray(value)16     } else {17       this.walk(value)18     }19   }20   ...21 }22 function protoAugment (target, src: Object) {23   /* eslint-disable no-proto */24   target.__proto__ = src25   /* eslint-enable no-proto */26 }27 function copyAugment (target: Object, src: Object, keys: Array<string>) {28   for (let i = 0, l = keys.length; i < l; i++) {29     const key = keys[i]30     def(target, key, src[key])31   }32 }
+```
+
+[](javascript:void\(0\);)
+
+经过上述处理后，对于数组，当我们调用其方法处理数组时会按照如下原型链来获取数组方法：
+
+对于响应式数组，当浏览器支持__proto__属性时，使用push等方法时先从其原型arrayMethods上寻找push方法，也就是重写后的方法，处理之后数组的变化会通知到其订阅者，更新页面，当在arrayMethods上查询不到时会向上在Array.prototype上查询；当浏览器不支持__proto__属性时，使用push等方法时会先从数组自身上查询，如果查询不到会向上再Array.prototype上查询。
+对于非响应式数组，当使用push等方法时会直接从Array.prototype上查询。
+值得一提的是源码中通过判断浏览器是否支持__proto__来分别使用protoAugment和copyAugment 方法将重写后的数组方法应用到数组中，这是因为对于IE10及以下的IE浏览器是不支持__proto__属性的：
+上述截图参考于Vue源码解析五——数据响应系统
+结论：
+在将数组处理成响应式数据后，如果使用数组原始方法改变数组时，数组值会发生变化，但是并不会触发数组的setter来通知所有依赖该数组的地方进行更新，为此，vue通过重写数组的某些方法来监听数组变化，重写后的方法中会手动触发通知该数组的所有依赖进行更新。
+ \> 来自 \<[https://www.cnblogs.com/ming1025/p/13082822.html](https://www.cnblogs.com/ming1025/p/13082822.html)\>
+
+:::

@@ -1,0 +1,69 @@
+---
+title: "Vue3使用worker"
+date: 2026-08-11
+categories:
+  - "JavaScript 系统教程"
+tags:
+  - "JavaScript"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "进阶语言能力"
+description: "数据流 一、创建一个shareBuffer，将在创建worker时，通过worker事件发给worker，便于之后的共享操作；获取请求数据，遍历得到Map数据和简洁数据，Map数据为了查询方便，调用values可得到渲染可用的列表数据； 二、将这个简洁数据发送到worker，保存。"
+sidebarWeight: 36
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/b-原生js/webworkers/Vue3使用worker.md"
+---
+::: v-pre
+
+# Vue3使用worker
+
+> 本节目标：理解“Vue3使用worker”的核心思路，并能把它用于实际开发或面试表达。
+数据流
+一、创建一个shareBuffer，将在创建worker时，通过worker事件发给worker，便于之后的共享操作；获取请求数据，遍历得到Map数据和简洁数据，Map数据为了查询方便，调用values可得到渲染可用的列表数据；
+二、将这个简洁数据发送到worker，保存为全局变量，之后worker会更新这个数据，并由这个数据得到计算后的列表简洁数据，并写到另一个内存，供主线程使用。初始化结束；
+三、当有新报价时，将这个报价数据写到报价共享内存中；
+四、worker从这个报价共享内存中按指定间隙读取报价数据，然后计算得到衍生数据，然后将这个数据保存在worker的全局变量中；
+四、默认不排序操作，当主线程传过来排序字段和排序规则时，我们每次读取报价数据后，除了计算衍生数据，还要计算排序后的数据，并将它放在worker中的另一个全局数组类型的变量中；
+五、worker将全局变量中的数组写到最终的列表数据内存中；
+六、主线程读取列表数据内存中的数据，用于渲染；
+
+一、创建一个worker文件，用来处理主线程发来的数据处理逻辑，这个文件会传给new Worker()；
+二、创建一个useWorkerManage的composable文件，用来创建worker实例，保证单例，做好清理和错误处理；同时处理向worker发送消息，并处理worker回发的消息；如果是shareBuffer，还要发送Attach事件，将初始内存发给worker;
+如果是shareBuffer,还要调用从ShareBuffer中提供的方法；
+三、创建一个业务相关的composable或store，这里保存业务要用到的数据，它会调用manage中的方法，将数据发到worker，同时，当worker有数据回发时，通过manage提供的方法来获取数据；
+
+举例
+创建文件：
+
+1. 业务composable，主要提供Ui使用的状态和改变状态的方法；
+2. worker，主要用来帮助主线程计算数据；
+3. workerManage：
+    1. 创建worker实例，单例，做好清理，做好错误处理，shareBuffer还要Atach，将内存发送到worker，以便之后操作；
+    2. 提供操作worker的api供业务composable来调用
+    3. 这些api主要发送数据到worker并监听worker事件，如果是shareBuffer则要读写内存；
+4. 如果是shareBuffer，创建一个内存定义和相关的操作api，api会提供给Manage使用；
+    1. 创建4个内存区域，
+    2. 行情相关的2个，一个保存行情版本和行情数据数量，用int32；一个用于保存行情数据，有时间戳，所在使用float32;
+    3. 列表数据相关2个，一个保存行情的版本和数据数量 ；别一个保存列表数据计算行情衍生和排序后的数据；
+    4. 将这4块内存定义导出，Manange引入后，在创建worker实例时通过attach事件发送给worker;
+    5. 暴露一些api给Manage，主要是使用原子操作读写内存；
+
+一、初始时：将精简数据发到worker中，worker中进行初始化，保存在全局变量中，读取数据的计算结果先更新全局变量；然后写数据时，从全局变量得到要发送到主线程的值；
+
+1. 通过http获得数据，然后将数据初始遍历一次，得到两个数据结构：
+2. 一个是准备给worker的，只有关键数据，尽量精简，减少序列化开支；
+3. 创建一个Map，确保响应性，为了报价变化时，快速查找更新
+4. 使用Array.from(Map.values())得到数组，用于ui渲染；
+5. 同时将精简数据通过workerManage发送给Worker;worker用于初始化，由于发过来的是简单数据，初始化时加上报价及由报价计算出来的相关数据，我们使用worker就是想用它来计算点差，升降等数据；
+6. 致此，数据初始化完毕；
+
+二、当有报价变化时：我们将数据写入到共享内存，worker按指定频率读取计算，然后将结果写到结果内存区域，然后主线程再按指定频率读取，再将数据更新到UI;
+
+1. 从报价价中找到我们表格数据中的报价，我们调用workerMange的方法将报价数据发给worker，如果是shareBuffer，调用manage的api，直接在内存中写入报价内存区域；
+2. 这时数据已经更新到了报价内存中，worker按指定的间隔读取这个内存中的报价数据，然后利用报价数据计算点差等；然后将数据进行排序，最后，将处理后的数据写入到结果内存区域，供主线程使用；
+3. 业务composable按指定间隔读取内存中排序和计算好的数据，然后送到Ui中渲染
+
+:::

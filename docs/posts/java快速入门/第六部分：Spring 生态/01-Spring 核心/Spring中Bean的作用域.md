@@ -3,7 +3,10 @@ title: Spring中Bean的作用域
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 本节先简单介绍了 
 
 `Spring`
@@ -36,9 +39,9 @@ package com.mengma.scope;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-public class PersonTest {
+public class PersonTest \{
 @Test
-public void test() {
+public void test() \{
 //
 定义`Spring`配置文件路径
 
@@ -53,10 +56,10 @@ xmlPath);
 
 System.out.println(applicationContext.getBean("person"));
 System.out.println(applicationContext.getBean("person"));
-}
-}
+\}
+\}
  使用 `JUnit` 测试运行 `test()` 方法，运行成功后，控制台的输出结果如图 `1` 所示。
- ![Exported image](Exported%20image%2020260702230100-0.png)
+ 
 
 图 `1`  输出结果
 从图 `1` 中可以看到，两次输出的结果相同，这说明 `Spring` 容器只创建了一个 `Person` 类的实例。由于 `Spring` 容器默认作用域是 `singleton`，如果不设置 `scope="singleton"`，则其输出结果也将是一个实例。
@@ -70,7 +73,7 @@ System.out.println(applicationContext.getBean("person"));
 在 `Spring` 配置文件中，要将 `Bean` 定义为 `prototype` 作用域，只需将 `\<bean\>` 元素的 `scope` 属性值定义成 `prototype`，其示例代码如下所示：
 `\<bean id="person" class="com.mengma.scope.Person" scope="prototype"/\>`
 将《`singleton`作用域》部分中的配置文件更改成上述代码形式后，再次运行 `test()` 方法，控制台的输出结果如图 `2` 所示。
- ![Exported image](Exported%20image%2020260702230104-1.png)
+ 
 
 图 `2`  输出结果
 从图 `2` 的输出结果中可以看到，两次输出的结果并不相同，这说明在 `prototype` 作用域下，`Spring` 容器创建了两个不同的 `Person` 实例。
@@ -78,3 +81,5 @@ System.out.println(applicationContext.getBean("person"));
 
  \<http://c.biancheng.net/view/4260.html\>
 ```
+
+:::

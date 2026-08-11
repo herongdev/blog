@@ -1,0 +1,31 @@
+---
+title: "vue中 key 值的作用？"
+date: 2026-08-11
+categories:
+  - "Vue 系统教程"
+tags:
+  - "Vue"
+  - "Vue3"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "原理与手写实现"
+description: "vue 中 key 值的作用可以分为两种情况来考虑。 第一种情况是 v if 中使用 key。由于 Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。因此当我们使用 v if 来实现元素切换的时候，如果切换前后含有相同类型的元素，那么这个元素就会被复用。如果是。"
+sidebarWeight: 34
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/f-vue/原理/杂项/vue中 key 值的作用？.md"
+---
+::: v-pre
+
+# vue中 key 值的作用？
+
+> 本节目标：理解“vue中 key 值的作用？”的核心思路，并能把它用于实际开发或面试表达。
+==vue 中 key 值的作用可以分为两种情况来考虑。======
+==第一种情况是 v-if 中使用 key。由于 Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。因此当我们使用====== ==v-if 来实现元素切换的时候，如果切换前后含有相同类型的元素，那么这个元素就会被复用。如果是相同的 input 元素，那么切换====== ==前后用户的输入不会被清除掉，这样是不符合需求的。因此我们可以通过使用 key 来唯一的标识一个元素，这个情况下，使用 key== ==== ==的元素不会被复用。这个时候 key 的作用是用来标识一个独立的元素。======
+==第二种情况是 v-for 中使用 key。用 v-for 更新已渲染过的元素列表时，它默认使用“就地复用”的策略。如果数据项的顺序发生了====== ==改变，Vue 不会移动 DOM 元素来匹配数据项的顺序，而是简单复用此处的每个元素。因此通过为每个列表项提供一个 key 值，来以====== ==便 Vue 跟踪元素的身份，从而高效的实现复用。这个时候 key 的作用是为了高效的更新渲染虚拟 DOM。======
+==详细资料可以参考：== ==《Vue 面试中，经常会被问到的面试题 Vue 知识点整理》== ==《Vue2.0 v-for 中 :key 到底有什么用？》====《vue 中 key 的作用》==
+ \> 来自 \<[https://github.com/CavsZhouyou/Front-End-Interview-Notebook/blob/master/JavaScript/JavaScript.md](https://github.com/CavsZhouyou/Front-End-Interview-Notebook/blob/master/JavaScript/JavaScript.md)\>
+
+:::

@@ -3,7 +3,10 @@ title: IoC 的概念和作用
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **什么是程序的耦合**
 耦合性`(Coupling)`，也叫耦合度，是对模块间关联程度的度量。耦合的强弱取决于模块间接口的复杂性、调用模块的方式以及通过界面传送数据的多少。模块间的耦合度是指模块之间的依赖关系，包括控制关系、调用关系、数据传递关系。模块间联系越多，其耦合性越强，同时表明其独立性越差`(` 降低耦合性，可以提高其独立性`)`。耦合性存在于各个领域，而非软件设计中独有的，但是我们只讨论软件工程中的耦合。
 
@@ -40,16 +43,16 @@ tags: [Java, Spring, OneNote]
 * @Company http://www.ithiema.com
 * @Version 1.0
 */
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService \{
 private IAccountDao accountDao = new AccountDaoImpl();
-}
+\}
  上面的代码表示：
 业务层调用持久层，并且此时业务层在依赖持久层的接口和实现类。如果此时没有持久层实现类，编译将不能通过。这种编译期依赖关系，应该在我们开发中杜绝。我们需要优化代码解决。
 
 **再比如：**
 早期我们的 `JDBC` 操作，注册驱动时，我们为什么不使用 `DriverManager` 的 `register` 方法，而是采用 `Class.forName` 的方式？
 
-public class JdbcDemo1 {
+public class JdbcDemo1 \{
 /**
 * @author
 黑马程序员
@@ -59,7 +62,7 @@ public class JdbcDemo1 {
 * @param args
 * @throws Exception
 */
-public static void main(String[] args) throws Exception {
+public static void main(String[] args) throws Exception \{
 //1.
 注册驱动
 
@@ -77,8 +80,8 @@ Class.forName("com.mysql.jdbc.Driver");
 //5.
 遍历结果集
 
-}
-}
+\}
+\}
  **原因就是：**
 我们的类依赖了数据库的具体驱动类（`MySQL`），如果这时候更换了数据库品牌（比如 `Oracle`），需要修改源码来重新数据库驱动。这显然不是我们想要的。
 
@@ -114,3 +117,5 @@ Class.forName("com.mysql.jdbc.Driver");//
 
 **明确** `ioc` **的作用**：
 削减计算机程序的耦合`(`解除我们代码中的依赖关系`)`。
+
+:::

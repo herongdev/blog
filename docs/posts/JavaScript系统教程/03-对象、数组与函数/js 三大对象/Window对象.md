@@ -1,0 +1,36 @@
+---
+title: "Window对象"
+date: 2026-08-11
+categories:
+  - "JavaScript 系统教程"
+tags:
+  - "JavaScript"
+  - "前端"
+  - "教程"
+  - "OneNote"
+  - "对象、数组与函数"
+description: "ECMAScript虽然没有指出如何直接访问Global对象，但Web浏览器都将这个全局对象作为window对象的一部分加以实现的。因此，在全局作用域中声明的所有变量和函数，都成为了window对象的属性。来看例子： Javascript中的window对象除了扮演ECMAScr。"
+sidebarWeight: 53
+lastUpdated: false
+feed: false
+source: onenote
+sourceNote: "OneNote/b-原生js/引用数据类型-对象/js 三大对象/Window对象.md"
+---
+::: v-pre
+
+# Window对象
+
+> 本节目标：理解“Window对象”的核心思路，并能把它用于实际开发或面试表达。
+
+> 说明：原 OneNote 中有图片引用，但图片未包含在导出目录中；本页保留了可用的文字与代码内容。
+ECMAScript虽然没有指出如何直接访问Global对象，但Web浏览器都将这个全局对象作为window对象的一部分加以实现的。因此，在全局作用域中声明的所有变量和函数，都成为了window对象的属性。来看例子：
+
+Javascript中的window对象除了扮演ECMAScript规定的Global对象的角色外，还承担了很多别的任务。
+
+```
+一种取得Global对象的方法是使用以下代码：
+```
+
+在没有给函数明确指定this值的情况下，this值等于Global对象。这种简单地返回this来取得Global对象，在任何执行环境下都是可行的。
+
+:::

@@ -3,10 +3,13 @@ title: 三、SpringBoot集成Lombok
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 使用`Lombok`需要安装插件，这样在编译时才不会报错。
 
-![Lombok bundled](Exported%20image%2020260702230332-0.png)
+
 
 `Maven`依赖
 
@@ -44,3 +47,5 @@ private static final org.apache.logging.log4j.Logger log = org.apache.logging.lo
 // @Slf4j
 private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogExample.class);
 ```
+
+:::

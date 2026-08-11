@@ -3,7 +3,10 @@ title: Spring Security
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 Spring Security，如何查找呢
 ChatGPT
 Spring Security配置通常在一个或多个Java配置类中定义，这些类通常会用@Configuration注解标注，并且还会使用@EnableWebSecurity注解。这些配置类通常会继承WebSecurityConfigurerAdapter类（对于较旧的Spring Security版本）或者实现SecurityConfigurer\<DefaultSecurityFilterChain, HttpSecurity\>接口（对于较新的Spring Security版本）。
@@ -20,7 +23,7 @@ http.cors();
 java
 Copy code
 @Bean
-public CorsConfigurationSource corsConfigurationSource() {
+public CorsConfigurationSource corsConfigurationSource() \{
 CorsConfiguration configuration = new CorsConfiguration();
 configuration.setAllowedOrigins(Arrays.asList("*"));
 configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -28,7 +31,7 @@ configuration.setAllowCredentials(true);
 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 source.registerCorsConfiguration("/**", configuration);
 return source;
-}
+\}
 这段代码与前面提供的Spring MVC的跨域配置代码非常相似，但是它使用了CorsConfigurationSource而不是WebMvcConfigurer。
 
 您可以通过重写WebSecurityConfigurerAdapter的configure(HttpSecurity http)方法来添加跨域支持。具体代码如下：
@@ -49,18 +52,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter \{
 
 @Override
-protected void configure(HttpSecurity http) throws Exception {
+protected void configure(HttpSecurity http) throws Exception \{
 http.cors().and()
 // your existing http configuration goes here
 // for example: http.authorizeRequests().anyRequest().permitAll();
 ;
-}
+\}
 
 @Bean
-public CorsConfigurationSource corsConfigurationSource() {
+public CorsConfigurationSource corsConfigurationSource() \{
 CorsConfiguration configuration = new CorsConfiguration();
 configuration.setAllowedOrigins(Arrays.asList("*")); // or your preferred origins
 configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")); // or your preferred methods
@@ -70,10 +73,10 @@ configuration.addAllowedHeader("*");
 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 source.registerCorsConfiguration("/**", configuration);
 return source;
-}
+\}
 
 @Override
-public void configure(WebSecurity web) throws Exception {
+public void configure(WebSecurity web) throws Exception \{
 // allow Swagger URL to be accessed without authentication
 web.ignoring().antMatchers(
 "/swagger-ui.html",
@@ -86,8 +89,10 @@ web.ignoring().antMatchers(
 "/webjars/**",
 "/doc.html"
 );
-}
-}
+\}
+\}
 在这个代码示例中，我们通过调用http.cors().and()来启用跨域支持。然后我们提供了一个CorsConfigurationSource类型的bean，它返回一个定义了跨域配置的CorsConfiguration对象。这个配置对象告诉Spring Security允许来自任何源（"*"）的请求，允许任何HTTP方法，并允许任何头部。
 
 如果你的应用需要更细粒度的控制，你可以根据需要修改这个配置。
+
+:::

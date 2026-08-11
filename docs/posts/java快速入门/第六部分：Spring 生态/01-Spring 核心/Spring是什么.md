@@ -3,7 +3,10 @@ title: Spring是什么
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `Spring`
 
  是一个主流的 
@@ -45,3 +48,5 @@ tags: [Java, Spring, OneNote]
 `Spring` 提供面向切面编程，可以方便地实现对程序进行权限拦截和运行监控等功能。
 `6`**）声明式事务的支持**
 只需要通过配置就可以完成对事务的管理，而无须手动编程。
+
+:::

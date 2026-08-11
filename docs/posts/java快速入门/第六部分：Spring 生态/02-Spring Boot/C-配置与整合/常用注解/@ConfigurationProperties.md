@@ -1,9 +1,12 @@
 ---
-title: @ConfigurationProperties
+title: "@ConfigurationProperties"
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 现在，关于 @ConfigurationProperties 的介绍：
 
 @ConfigurationProperties 是Spring Boot提供的一个注解，它允许将配置文件中的属性绑定到一个Java Bean对象上。这个注解经常用于自定义的配置类，以方便地获取多个相关的配置属性。具体地说，它可以从 application.properties 或 application.yml 文件中获取属性并自动注入到Bean的字段中。
@@ -19,3 +22,5 @@ tags: [Java, Spring, OneNote]
 - 自动完成：无需手动为每个字段注入属性，Spring Boot会自动完成这项工作。
 
 希望这能帮助您更好地理解 @ConfigurationProperties 注解！
+
+:::

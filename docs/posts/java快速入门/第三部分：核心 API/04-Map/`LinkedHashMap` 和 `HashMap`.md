@@ -1,9 +1,12 @@
 ---
-title: `LinkedHashMap` 和 `HashMap`
+title: "`LinkedHashMap` 和 `HashMap`"
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `LinkedHashMap` 和 `HashMap` 是 Java 中两种常用的映射类型，都实现了 `Map` 接口，但它们在内部结构和行为上有一些重要的区别。下面是一个表格，详细比较这两者的特点：
 
 |   |   |   |
@@ -23,3 +26,5 @@ tags: [Java, 核心API, OneNote]
 - **使用 `LinkedHashMap`**：当你需要保持元素插入的顺序，或者在 LRU 缓存（最近最少使用缓存）实现中保持访问顺序时。
 
 `LinkedHashMap` 提供的顺序性使其在需要顺序的场景下非常有用，如在缓存策略、记录插入顺序的特定应用中，或者当输出的顺序需要与输入完全一致时。
+
+:::

@@ -3,7 +3,10 @@ title: VMware虚拟机搭建服务器
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 构建运维, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **VMware****的网络连接**
 
@@ -45,27 +48,27 @@ VMware版本秘钥： VF5XA-FNDDJ-085GZ-4NXZ9-N20E6 （如果失效请自行百
 
     `安装完成VMware之后打开软件，点击创建新虚拟机(N)`
 
-    ![Exported image](Exported%20image%2020260702224239-0.png)
+    
 
     ```
     在弹出的窗口中选择“安装程序光盘映像文件(ios)(M)”，点击“浏览”找到下载镜像的位置，双击文件，会识别到这是CentOS 64位系统。
     ```
 
-    ![Exported image](Exported%20image%2020260702224242-1.png)
+    
 
     `下一步，填写用户名以及系统密码，注意一定不要忘记密码！`
 
-    ![Exported image](Exported%20image%2020260702224245-2.png)
+    
 
     `不要装系统C盘就行。`
 
-    ![Exported image](Exported%20image%2020260702224250-3.png)
+    
 
     ```
     最后给这个虚拟系统分配内存空间，参考是20G，选择将虚拟磁盘拆分为多个文件。内存不紧张的可以分配50G，存储单文件。
     ```
 
-    ![Exported image](Exported%20image%2020260702224253-4.png)
+    
 
     `最后，下一步确认安装信息后点击完成，然后泡上一桶泡面，虔诚地等待安装完成。`
 
@@ -93,3 +96,5 @@ Linux一般用于搭建服务器，我们都是将一台闲置的主机配置成
 
  \<https://blog.csdn.net/weixin_40156933/article/details/79940073\>
 ```
+
+:::

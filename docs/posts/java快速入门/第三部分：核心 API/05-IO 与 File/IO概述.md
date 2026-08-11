@@ -3,7 +3,10 @@ title: IO概述
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 当你电脑上插入一个U盘，可以把一个视频，拷贝到你的电脑硬盘里。我们把这种数据的传输，可以看做是一种数据的流动，按照流动的方向，以内存为基准，分为输入input和输出
 output ，即流向内存是输入流，流出内存的输出流。
@@ -19,8 +22,10 @@ Java中I/O操作主要是指使用java.io包下的内容，进行输入、输出
 **字符流** ：以字符为单位，读写数据的流。
 
 **1.3 IO****的流向说明图解**
-![Exported image](Exported%20image%2020260702223733-0.png)
+
 
 `**顶级父类们**`
 
-![InputStream Reader OutputStream Writer](Exported%20image%2020260702223741-1.png)
+
+
+:::

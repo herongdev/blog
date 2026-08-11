@@ -3,7 +3,10 @@ title: springmvc自定义参数解析器-类型转换器
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 好大的月亮
 
 已于 2022-06-24 16:15:43 修改
@@ -42,15 +45,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("selfSpringMVC")
-public class SelfSpringMVCController {
+public class SelfSpringMVCController \{
 
 @GetMapping("testDate")
-public Object testDate(TestDateParams params){
+public Object testDate(TestDateParams params)\{
 System.out.println(params);
 return null;
-}
+\}
 
-}
+\}
 1
 2
 3
@@ -82,7 +85,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
-public class TestDateParams implements Serializable {
+public class TestDateParams implements Serializable \{
 
 private static final long serialVersionUID = -6513336502447867393L;
 
@@ -92,7 +95,7 @@ private LocalDateTime localDateTime;
 
 private LocalDate localDate;
 
-}
+\}
 1
 2
 3
@@ -127,21 +130,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-public class SelfDateConvert implements Converter\<String, Date\> {
+public class SelfDateConvert implements Converter\<String, Date\> \{
 
 @Override
-public Date convert(String source) {
+public Date convert(String source) \{
 Assert.notNull(source, "时间不能为空");
 
 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-try {
+try \{
 return df.parse(source);
-} catch (ParseException e) {
+\} catch (ParseException e) \{
 e.printStackTrace();
 return null;
-}
-}
-}
+\}
+\}
+\}
 
 package com.fchan.convert;
 
@@ -156,16 +159,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Component
-public class SelfLocalDateConvert implements Converter\<String, LocalDate\> {
+public class SelfLocalDateConvert implements Converter\<String, LocalDate\> \{
 
 @Override
-public LocalDate convert(String source) {
+public LocalDate convert(String source) \{
 Assert.notNull(source, "时间不能为空");
 
 DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 return LocalDate.parse(source, df);
-}
-}
+\}
+\}
 
 package com.fchan.convert;
 
@@ -178,16 +181,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class SelfLocalDateTimeConvert implements Converter\<String, LocalDateTime\> {
+public class SelfLocalDateTimeConvert implements Converter\<String, LocalDateTime\> \{
 
 @Override
-public LocalDateTime convert(String source) {
+public LocalDateTime convert(String source) \{
 Assert.notNull(source, "时间不能为空");
 
 DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 return LocalDateTime.parse(source, df);
-}
-}
+\}
+\}
 1
 2
 3
@@ -283,7 +286,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Configuration
-public class WebMvcConfigurerAdapter implements WebMvcConfigurer {
+public class WebMvcConfigurerAdapter implements WebMvcConfigurer \{
 
 @Autowired
 private SelfDateConvert selfDateConvert;
@@ -293,13 +296,13 @@ private SelfLocalDateConvert selfLocalDateConvert;
 private SelfLocalDateTimeConvert selfLocalDateTimeConvert;
 
 @Override
-public void addFormatters(FormatterRegistry registry) {
+public void addFormatters(FormatterRegistry registry) \{
 registry.addConverter(selfDateConvert);
 registry.addConverter(selfLocalDateConvert);
 registry.addConverter(selfLocalDateTimeConvert);
-}
+\}
 
-}
+\}
 
 1
 2
@@ -364,8 +367,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CurrentTime {
-}
+public @interface CurrentTime \{
+\}
 1
 2
 3
@@ -398,7 +401,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
-public class CurrentTestTimeHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class CurrentTestTimeHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver \{
 
 @Autowired
 private ObjectMapper myObjectMapper;
@@ -407,17 +410,17 @@ private ObjectMapper myObjectMapper;
 * 用于判定是否需要处理该参数分解，返回 true 为需要，并会去调用下面的方法resolveArgument。
 */
 @Override
-public boolean supportsParameter(MethodParameter parameter) {
+public boolean supportsParameter(MethodParameter parameter) \{
 return parameter.hasParameterAnnotation(CurrentTime.class)
 &&
 parameter.getParameterType().isAssignableFrom(TestDateParams.class);
-}
+\}
 
 /**
 * 真正用于处理参数分解的方法，返回的 Object 就是 controller 方法上的形参对象。
 */
 @Override
-public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception \{
 
 //webRequest.getHeader("xxx")
 //Map\<String, String[]\> parameterMap = webRequest.getParameterMap();
@@ -425,23 +428,25 @@ public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer m
 String requestBody = getRequestBody(webRequest);
 
 return myObjectMapper.readValue(requestBody, TestDateParams.class);
-}
+\}
 
 private static final String JSONBODYATTRIBUTE = "JSON_REQUEST_BODY";
 
-private String getRequestBody(NativeWebRequest webRequest){
+private String getRequestBody(NativeWebRequest webRequest)\{
 HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
 String jsonBody = (String) webRequest.getAttribute(JSONBODYATTRIBUTE, NativeWebRequest.SCOPE_REQUEST);
-if (jsonBody == null) {
-try {
+if (jsonBody == null) \{
+try \{
 jsonBody = IOUtils.toString(servletRequest.getInputStream());
 webRequest.setAttribute(JSONBODYATTRIBUTE, jsonBody, NativeWebRequest.SCOPE_REQUEST);
-} catch (IOException e) {
+\} catch (IOException e) \{
 throw new RuntimeException(e);
-}
-}
+\}
+\}
 return jsonBody;
-}
+\}
 ————————————————
 版权声明：本文为CSDN博主「好大的月亮」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/weixin_43944305/article/details/123330230
+
+:::

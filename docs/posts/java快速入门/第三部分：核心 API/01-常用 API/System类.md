@@ -3,7 +3,10 @@ title: System类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `` `java.lang.System` ``类中提供了大量的静态方法，可以获取与系统相关的信息或系统级操作，在`System`类的`API`文档中，常用的方法有：
 
 - `public static long currentTimeMillis()`
@@ -17,33 +20,33 @@ tags: [Java, 核心API, OneNote]
 
 java
 import java.util.Date;
-public class SystemDemo {
-public static void main(String[] args) {
+public class SystemDemo \{
+public static void main(String[] args) \{
  //
 `获取当前时间毫秒值`
 System.out.println(System.currentTimeMillis());
 // 1516090531144
-}
-}
+\}
+\}
 `###`
 
 **练习**
 验证`for`循环打印数字`1-9999`所需要使用的时间（毫秒）
 
 ~~~java
-public class SystemTest1 {
-public static void main(String[] args) {
+public class SystemTest1 \{
+public static void main(String[] args) \{
 long start = System.currentTimeMillis();
-for (int i = 0; i \< 10000; i++) {
+for (int i = 0; i \< 10000; i++) \{
 System.out.println(i);
-}
+\}
 long end = System.currentTimeMillis();
 System.out.println("
 共耗时毫秒：
 
 " + (end - start));
-}
-}
+\}
+\}
 ~~~
 ## 3.2 arraycopy
 **方法**
@@ -100,10 +103,10 @@ System.arraycopy方法具有5个参数，含义分别为：
 
 `[1,2,3,9,10]`java
 import java.util.Arrays;
-public class Demo11SystemArrayCopy {
-public static void main(String[] args) {
-int[] src = new int[]{1,2,3,4,5};
-int[] dest = new int[]{6,7,8,9,10};
+public class Demo11SystemArrayCopy \{
+public static void main(String[] args) \{
+int[] src = new int[]\{1,2,3,4,5\};
+int[] dest = new int[]\{6,7,8,9,10\};
 System.arraycopy( src, 0, dest, 0, 3);
 /*
 - 代码运行后：两个数组中的元素发生了变化
@@ -114,5 +117,7 @@ dest
 `数组元素`
 [1,2,3,9,10]
 */
-}
-}
+\}
+\}
+
+:::

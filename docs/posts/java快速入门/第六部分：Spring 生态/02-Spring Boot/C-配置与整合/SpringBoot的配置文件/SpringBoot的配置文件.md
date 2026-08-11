@@ -3,7 +3,10 @@ title: SpringBoot的配置文件
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 **SpringBoot****配置文件类型和作用**
 SpringBoot是基于约定的，所以很多配置都有默认值，但如果想使用自己的配置替换默认配置的话，就可以使用application.properties或者application.yml（application.yaml）进行配置。
@@ -194,3 +197,5 @@ this.age = age;
 浏览器访问地址：http://localhost:8080/quick 结果如下：
 注意：使用@ConfifigurationProperties方式可以进行配置文件与实体字段的自动映射，但需要字段必须提供set方法才可以，而使用@Value注解修饰的字段不需要提供set方法
 ```
+
+:::

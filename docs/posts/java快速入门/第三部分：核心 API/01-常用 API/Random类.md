@@ -3,7 +3,10 @@ title: Random类
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 核心API, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 此类的实例用于生成伪随机数。
 
 `Random`**使用步骤**
@@ -27,13 +30,13 @@ public int nextInt(int n)
 导包
 
 import java.util.Random;
-public class Demo01_Random {
-public static void main(String[] args) {
+public class Demo01_Random \{
+public static void main(String[] args) \{
 //2.
 创建键盘录入数据的对象
 
 Random r = new Random();
-for(int i = 0; i \< 3; i++){
+for(int i = 0; i \< 3; i++)\{
 //3.
 随机生成一个数据
 
@@ -42,9 +45,9 @@ int number = r.nextInt(10);
 输出数据
 
 System.out.println("number:"+ number);
-}
-}
-}
+\}
+\}
+\}
  备注：创建一个
 
 `Random`
@@ -59,8 +62,8 @@ System.out.println("number:"+ number);
 导包
 
 import java.util.Random;
-public class Test01Random {
-public static void main(String[] args) {
+public class Test01Random \{
+public static void main(String[] args) \{
 int n = 50;
 //
 创建对象
@@ -74,6 +77,8 @@ int number = r.nextInt(n) + 1;
 输出随机数
 
 System.out.println("number:" + number);
-}
-}
+\}
+\}
 ```
+
+:::

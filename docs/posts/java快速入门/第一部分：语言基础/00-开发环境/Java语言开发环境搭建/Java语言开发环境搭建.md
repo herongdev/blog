@@ -3,7 +3,10 @@ title: Java语言开发环境搭建
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 依次安装以下软件：
 
 - `javaSdk`
@@ -13,3 +16,5 @@ tags: [Java, Java基础, OneNote]
     ```
 
 - `idea`
+
+:::

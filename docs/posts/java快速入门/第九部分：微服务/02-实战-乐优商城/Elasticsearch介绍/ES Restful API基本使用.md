@@ -3,7 +3,10 @@ title: ES Restful API基本使用
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 ES为开发者提供了非常丰富的基于HTTP协议的Rest API，只需要向ES服务端发送简单的Rest请求，就可以实现非常强大的功能。本篇文章主要介绍ES中常用操作的Rest API的使用，同时会讲解ES的源代码工程中的API接口文档，通过了解这个API文档的接口描述结构，就基本上可以实现ES中的绝大部分功能。
 _注意：查询是__ES__的核心。作为一个先进的搜索引擎，__ES__中提供了多种查询接口。本篇仅仅会涉及查询__API__的结构，而具体如何使用__ES__所提供的各种查询__API__，会在接下来的博文中做详细介绍。_
@@ -163,3 +166,5 @@ ES的源代码托管在[Github](https://github.com/elastic/elasticsearch)上。�
 
  \<https://www.cnblogs.com/sunsky303/p/9438737.html\>
 ```
+
+:::

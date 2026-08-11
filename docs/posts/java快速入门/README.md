@@ -5,7 +5,9 @@ categories: [Java 快速入门]
 tags: [Java, 教程, 入门, 后端, OneNote]
 sidebarWeight: 0
 description: 从 Java 基础到 Spring Boot 后端项目的系统学习入口，保留 OneNote 笔记索引，并补齐学习路线、当前实践和验收清单。
+lastUpdated: false
 ---
+::: v-pre
 
 # Java 快速入门教程
 
@@ -874,3 +876,5 @@ Set-Location "$HOME\java-quickstart-course\playground"
 - [Untitled-20260703002328](./附录/杂项/Untitled-20260703002328.md)
 
 *共 538 篇*
+
+:::

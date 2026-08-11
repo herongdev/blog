@@ -3,7 +3,10 @@ title: Office转pdf
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 要在服务器端将Office文件转换为PDF，你首先需要选择一个合适的转换工具或库。其中，[LibreOffice](https://www.libreoffice.org/)和[Apache POI](https://poi.apache.org/)是两个流行的选择。
 
 对于LibreOffice，它提供了命令行工具，可以方便地将Office文件转换为PDF。Apache POI是一个Java库，专门用于读取和写入Microsoft Office文档。
@@ -134,14 +137,14 @@ package com.hawkon.aspose;
 
 import com.aspose.words.*;
 
-public class WordToPdfTest_Aspose {
+public class WordToPdfTest_Aspose \{
 
-public static void wordToPdf(String wordFile, String pdfFile) throws Exception {
+public static void wordToPdf(String wordFile, String pdfFile) throws Exception \{
 Document wordDoc = new Document(wordFile);
 PdfSaveOptions pso = new PdfSaveOptions();
 wordDoc.save(pdfFile, pso);
-}
-}
+\}
+\}
 
 1
 2
@@ -221,9 +224,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class WordToPdfTest_Docx4j {
+public class WordToPdfTest_Docx4j \{
 
-public static void wordToPdf(String docFile,String pdfFile) throws Exception {
+public static void wordToPdf(String docFile,String pdfFile) throws Exception \{
 final Logger logger = LoggerFactory.getLogger(Docx4J.class);
 
 WordprocessingMLPackage pkg = Docx4J.load(new File(docFile));
@@ -254,8 +257,8 @@ fontMapper.put("仿宋_GB2312", PhysicalFonts.get("FangSong_GB2312"));
 pkg.setFontMapper(fontMapper);
 
 Docx4J.toPDF(pkg, new FileOutputStream(pdfFile));
-}
-}
+\}
+\}
 
 1
 2
@@ -374,15 +377,15 @@ import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConv
 import java.io.File;
 import java.net.ConnectException;
 
-public class WordToPdfTest_openoffice {
-public static void wordToPdf(String docFile,String pdfFile) throws ConnectException {
+public class WordToPdfTest_openoffice \{
+public static void wordToPdf(String docFile,String pdfFile) throws ConnectException \{
 // 源文件目录
 File inputFile = new File(docFile);
 // 输出文件目录
 File outputFile = new File(pdfFile);
-if (!outputFile.getParentFile().exists()) {
+if (!outputFile.getParentFile().exists()) \{
 outputFile.getParentFile().exists();
-}
+\}
 // 连接openoffice服务
 OpenOfficeConnection connection = new SocketOpenOfficeConnection(
 "127.0.0.1", 8100);
@@ -393,8 +396,8 @@ connection);
 converter.convert(inputFile, outputFile);
 // 关闭连接
 connection.disconnect();
-}
-}
+\}
+\}
 
 1
 2
@@ -501,8 +504,8 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.*;
 
-public class WordToPdf_Poi {
-public static void wordToPdf(String docFile,String pdfFile) throws IOException {
+public class WordToPdf_Poi \{
+public static void wordToPdf(String docFile,String pdfFile) throws IOException \{
 XWPFDocument document;
 InputStream doc = new FileInputStream(docFile);
 document = new XWPFDocument(doc);
@@ -511,8 +514,8 @@ OutputStream out = new FileOutputStream(pdfFile);
 PdfConverter.getInstance().convert(document, out, options);
 doc.close();
 out.close();
-}
-}
+\}
+\}
 
 1
 2
@@ -553,8 +556,8 @@ spire
 package com.hawkon.spire;
 import com.spire.doc.*;
 
-public class WordToPdf_spire {
-public static void wordToPdf(String docFile,String pdfFile){
+public class WordToPdf_spire \{
+public static void wordToPdf(String docFile,String pdfFile)\{
 com.spire.license.LicenseProvider.setLicenseFile("D:\\Code\\PdfTest\\license.elic.xml");
 //实例化Document类的对象
 Document doc = new Document();
@@ -564,8 +567,8 @@ doc.loadFromFile(docFile);
 
 //保存为PDF格式
 doc.saveToFile(pdfFile,FileFormat.PDF);
-}
-}
+\}
+\}
 
 1
 2
@@ -625,3 +628,5 @@ spire
 ————————————————
 版权声明：本文为CSDN博主「我是老姚」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/aley/article/details/127914145
+
+:::

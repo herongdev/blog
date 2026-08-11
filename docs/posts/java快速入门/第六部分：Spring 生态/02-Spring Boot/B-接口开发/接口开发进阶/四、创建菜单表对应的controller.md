@@ -3,7 +3,10 @@ title: 四、创建菜单表对应的controller
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 包含基本的增删改查接口
 `package com.mincheng.construction.controller;`
 
@@ -23,7 +26,7 @@ import javax.annotation.Resource;
 ")
 @RestController
 @RequestMapping("/menus")
-public class MenusController{
+public class MenusController\{
 
     @Resource
     private MenusService menusService;
@@ -33,36 +36,36 @@ public class MenusController{
 列表`", notes = "`菜单表
 
 ")
-    public IPage\<Menus\> list(@RequestBody Menus menus) {
+    public IPage\<Menus\> list(@RequestBody Menus menus) \{
         return menusService.list(menus);
-    }
+    \}
 
     @PostMapping("/getOne")
     @ApiOperation(value = "
 单个查询`", notes = "`菜单表
 
 ")
-    public Menus getOne(@RequestBody Menus menus) {
+    public Menus getOne(@RequestBody Menus menus) \{
         return menusService.getOne(menus);
-    }
+    \}
 
     @PostMapping("/save")
     @ApiOperation(value = "
 新增或编辑`", notes = "`菜单表
 
 ")
-    public boolean save(@RequestBody Menus menus) {
+    public boolean save(@RequestBody Menus menus) \{
         return menusService.saveOrUpdate(menus);
-    }
+    \}
 
     @PostMapping("/delete")
     @ApiOperation(value = "
 删除`", notes = "`菜单表
 
 ")
-    public boolean delete(@RequestBody Menus menus) {
+    public boolean delete(@RequestBody Menus menus) \{
         return menusService.delete(menus);
-    }
+    \}
 
 `}`
 
@@ -85,7 +88,7 @@ import javax.annotation.Resource;
 ")
 @RestController
 @RequestMapping("/organization")
-public class OrganizationController {
+public class OrganizationController \{
     @Resource
     private OrganizationService organizationService;
 
@@ -94,35 +97,37 @@ public class OrganizationController {
 列表`",notes = "`组织机构表
 
 ")
-    public IPage\<Organization\> list(@RequestBody Organization organization){
+    public IPage\<Organization\> list(@RequestBody Organization organization)\{
         return organizationService.list(organization);
-    }
+    \}
 
     @PostMapping("/getOne")
     @ApiOperation(value = "
 单个查询`",notes = "`菜单表
 
 ")
-    public Organization getOne(@RequestBody Organization organization){
+    public Organization getOne(@RequestBody Organization organization)\{
         return organizationService.getOne(organization);
-    }
+    \}
 
     @PostMapping("/save")
     @ApiOperation(value = "
 新增或编辑`",notes = "`菜单表
 
 ")
-    public boolean save(@RequestBody Organization organization){
+    public boolean save(@RequestBody Organization organization)\{
         return organizationService.saveOrUpdate(organization);
-    }
+    \}
 
     @PostMapping("/delete")
     @ApiOperation(value = "
 删除`",notes = "`菜单表
 
 ")
-    public boolean delete(@RequestBody Organization organization){
+    public boolean delete(@RequestBody Organization organization)\{
         return organizationService.delete(organization);
-    }
-}
+    \}
+\}
 ```
+
+:::

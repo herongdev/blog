@@ -3,7 +3,10 @@ title: 九、MyBatis使用和不足思考
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Spring, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在项目的数据库开发中，不可避免地会使用到持久层框架。 当前主流的持久层框架有`Spring Data`、`Hibernate`、`MyBatis`等，这里使用`MyBatis`。
 本文，集成`MyBatis`并实现了简单的增删改查。在使用过程中，指出`MyBatis`和项目的不足，并思考解决方案。
 如果对`MyBaits`的使用很熟悉的，可以直接跳到总结。
@@ -89,7 +92,7 @@ DROPTABLEIF EXISTS`sys_user`;￼CREATETABLE`sys_user` (￼	`id` INT(11) NOTNULLA
  ==保存路径：==`classpath`==：==`resources/sqls/sys.sql`
 **实体类**
 
-@Getter@Setterpublic classUserextendsCommon{￼
+@Getter@Setterpublic classUserextendsCommon\{￼
 privateLongid;￼
 @NotNull(message = "
 ==用户账号不能为空==
@@ -116,20 +119,20 @@ privateLongid;￼
 @Phone(message = "
 ==手机号格式不正确==
 
-")￼    privateStringphone;￼}￼
+")￼    privateStringphone;￼\}￼
 Mapper
 **文件**
 
-\<?xml version="1.0"encoding="UTF-8"?\>\<!DOCTYPE mapperPUBLIC"-//mybatis.org//DTD Mapper 3.0//EN""http://mybatis.org/dtd/mybatis-3-mapper.dtd"\>\<mappernamespace="com.zhuqc.framework.dao.UserDao"\>\<selectid="getUser"resultType="com.zhuqc.framework.entity.User"\>select * from sys_user where id = #{id, jdbcType = NUMERIC}￼    \</select\>\<insertid="addUser"parameterType="com.zhuqc.framework.entity.User"\>insert into sys_user￼          (account,￼           password,￼           nickname,￼           email,￼           phone,￼           create_user,￼           create_time,￼           modify_user,￼           modify_time)￼        values￼          (#{account, jdbcType = VARCHAR},￼           #{password, jdbcType = VARCHAR},￼           #{nickname, jdbcType = VARCHAR},￼           #{email, jdbcType = VARCHAR},￼           #{phone, jdbcType = VARCHAR},￼           #{createUser, jdbcType = VARCHAR},￼           #{createTime, jdbcType = TIMESTAMP},￼           #{modifyUser, jdbcType = VARCHAR},￼           #{modifyTime, jdbcType = TIMESTAMP})￼    \</insert\>\<deleteid="deleteUser"\>delete from sys_user￼         where id = #{id, jdbcType = NUMERIC}￼    \</delete\>\<updateid="updateUser"parameterType="com.zhuqc.framework.entity.User"\>update sys_user￼           set nickname       = #{nickname, jdbcType = VARCHAR},￼               email          = #{email, jdbcType = VARCHAR},￼               phone          = #{phone, jdbcType = VARCHAR},￼               modify_user    = #{modifyUser, jdbcType = VARCHAR},￼               modify_time    = #{modifyTime, jdbcType = TIMESTAMP}￼         where id = #{id, jdbcType = NUMERIC}￼    \</update\>\</mapper\>
+\<?xml version="1.0"encoding="UTF-8"?\>\<!DOCTYPE mapperPUBLIC"-//mybatis.org//DTD Mapper 3.0//EN""http://mybatis.org/dtd/mybatis-3-mapper.dtd"\>\<mappernamespace="com.zhuqc.framework.dao.UserDao"\>\<selectid="getUser"resultType="com.zhuqc.framework.entity.User"\>select * from sys_user where id = #\{id, jdbcType = NUMERIC\}￼    \</select\>\<insertid="addUser"parameterType="com.zhuqc.framework.entity.User"\>insert into sys_user￼          (account,￼           password,￼           nickname,￼           email,￼           phone,￼           create_user,￼           create_time,￼           modify_user,￼           modify_time)￼        values￼          (#\{account, jdbcType = VARCHAR\},￼           #\{password, jdbcType = VARCHAR\},￼           #\{nickname, jdbcType = VARCHAR\},￼           #\{email, jdbcType = VARCHAR\},￼           #\{phone, jdbcType = VARCHAR\},￼           #\{createUser, jdbcType = VARCHAR\},￼           #\{createTime, jdbcType = TIMESTAMP\},￼           #\{modifyUser, jdbcType = VARCHAR\},￼           #\{modifyTime, jdbcType = TIMESTAMP\})￼    \</insert\>\<deleteid="deleteUser"\>delete from sys_user￼         where id = #\{id, jdbcType = NUMERIC\}￼    \</delete\>\<updateid="updateUser"parameterType="com.zhuqc.framework.entity.User"\>update sys_user￼           set nickname       = #\{nickname, jdbcType = VARCHAR\},￼               email          = #\{email, jdbcType = VARCHAR\},￼               phone          = #\{phone, jdbcType = VARCHAR\},￼               modify_user    = #\{modifyUser, jdbcType = VARCHAR\},￼               modify_time    = #\{modifyTime, jdbcType = TIMESTAMP\}￼         where id = #\{id, jdbcType = NUMERIC\}￼    \</update\>\</mapper\>
 ==复制代码==
 **持久层**
 
 UserDao
-@Mapperpublic interface UserDao {￼
+@Mapperpublic interface UserDao \{￼
 UsergetUser(@Param("id") Long id);￼
 intaddUser(User user);￼
 intdeleteUser(@Param("id") Long id);￼
-intupdateUser(User user);￼}￼
+intupdateUser(User user);￼\}￼
 ==复制代码==
 `Mapper`文件与`Dao`类需要一一对应
 
@@ -141,29 +144,29 @@ intupdateUser(User user);￼}￼
 **服务层**
 
  UserService
-publicinterfaceUserService{￼
+publicinterfaceUserService\{￼
 User getUser(Long id);￼
 intaddUser(User user);￼
 intdeleteUser(Long id);￼
-intupdateUser(User user);￼}￼
+intupdateUser(User user);￼\}￼
 ==复制代码==
 
-@Service@TransactionalpublicclassUserServiceImplimplementsUserService{￼
+@Service@TransactionalpublicclassUserServiceImplimplementsUserService\{￼
 @AutowiredprivateUserDaouserDao;￼
-@OverridepublicUsergetUser(Long id) {￼        returnuserDao.getUser(id);￼    }￼
-@Overridepublicint addUser(User user) {￼        returnuserDao.addUser(user);￼    }￼
-@Overridepublicint deleteUser(Long id) {￼        returnuserDao.deleteUser(id);￼    }￼
-@Overridepublicint updateUser(User user) {￼        returnuserDao.updateUser(user);￼    }￼}￼
+@OverridepublicUsergetUser(Long id) \{￼        returnuserDao.getUser(id);￼    \}￼
+@Overridepublicint addUser(User user) \{￼        returnuserDao.addUser(user);￼    \}￼
+@Overridepublicint deleteUser(Long id) \{￼        returnuserDao.deleteUser(id);￼    \}￼
+@Overridepublicint updateUser(User user) \{￼        returnuserDao.updateUser(user);￼    \}￼\}￼
 ==复制代码==
 **控制层**
 
  UserController
-@RestController@RequestMapping("/user")￼public class UserController extends BaseController {￼
+@RestController@RequestMapping("/user")￼public class UserController extends BaseController \{￼
 @Autowiredprivate UserService userService;￼
-@GetMapping("/{id}")￼    public ApiResult getUser(@PathVariable("id") Long id) {￼        returnApiResult.success(userService.getUser(id));￼    }￼
-@PostMapping("/add")￼    publicApiResultaddUser(@RequestBody@ValidUser user) {￼        setCreateInfo(user);￼        returnApiResult.success(userService.addUser(user));￼    }￼
-@DeleteMapping("/{id}")￼    publicApiResultdeleteUser(@PathVariable("id") Long id) {￼        returnApiResult.success(userService.deleteUser(id));￼    }￼
-@PutMapping("/{id}")￼    publicApiResultupdateUser(@RequestBody@ValidUser user) {￼        setModifyInfo(user);￼        returnApiResult.success(userService.updateUser(user));￼    }￼}￼
+@GetMapping("/\{id\}")￼    public ApiResult getUser(@PathVariable("id") Long id) \{￼        returnApiResult.success(userService.getUser(id));￼    \}￼
+@PostMapping("/add")￼    publicApiResultaddUser(@RequestBody@ValidUser user) \{￼        setCreateInfo(user);￼        returnApiResult.success(userService.addUser(user));￼    \}￼
+@DeleteMapping("/\{id\}")￼    publicApiResultdeleteUser(@PathVariable("id") Long id) \{￼        returnApiResult.success(userService.deleteUser(id));￼    \}￼
+@PutMapping("/\{id\}")￼    publicApiResultupdateUser(@RequestBody@ValidUser user) \{￼        setModifyInfo(user);￼        returnApiResult.success(userService.updateUser(user));￼    \}￼\}￼
 ==复制代码==
 编写完成后，访问
 
@@ -171,7 +174,7 @@ intupdateUser(User user);￼}￼
 
 地址对接口进行测试，如下：
 
-![Exported image](Exported%20image%2020260702230356-0.png)
+
 
 **总结**
 至此，成功的集成了`MyBatis`并实现了简单的增删改查。
@@ -197,3 +200,5 @@ intupdateUser(User user);￼}￼
 
  \<https://juejin.cn/post/6844904177752080397\>
 ```
+
+:::

@@ -3,7 +3,10 @@ title: java下载安装
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 1. 前往https://www.oracle.com/java/technologies/downloads
 2. 登录，账号：379925144@com 密码：Hr@#
 3. 下载：mac版本： [https://www.oracle.com/java/technologies/downloads](https://www.oracle.com/java/technologies/downloads) mac有压缩档和安装程序dmg两种，dmg要容易一些；
@@ -75,3 +78,5 @@ _（执行单个源文件程序）_
 在终端输入java和javac 分别出现如下界面，则配置成功。
  
 来自 \< [https://zhuanlan.zhihu.com/p/357903259](https://zhuanlan.zhihu.com/p/357903259)
+
+:::

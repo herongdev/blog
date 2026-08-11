@@ -1,9 +1,12 @@
 ---
-title: `int` 和 `Integer`
+title: "`int` 和 `Integer`"
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Java基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在Java中， 两者都用于表示整数值，但它们在语言中的角色和用途有重要的区别：
 
 ### int
@@ -29,3 +32,5 @@ tags: [Java, Java基础, OneNote]
 - 在需要对象特性或需要包含空值时使用 `Integer`，例如在集合框架中或与API交互时，这些场景需要使用对象而不是原始类型。
 
 总的来说，`int` 和 `Integer` 的选择取决于具体的使用场景和性能要求。在实际开发中，合理利用自动装箱和拆箱特性，可以使代码既简洁又高效。
+
+:::

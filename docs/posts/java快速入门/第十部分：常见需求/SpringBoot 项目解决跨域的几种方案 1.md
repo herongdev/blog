@@ -3,7 +3,10 @@ title: SpringBoot 项目解决跨域的几种方案 1
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 常见需求, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 对于 CORS的跨域请求，主要有以下几种方式可供选择：
 
 - 返回新的CorsFilter
@@ -22,9 +25,9 @@ CorFilter / WebMvConfigurer / @CrossOrigin 需要 SpringMVC 4.2以上版本才�
 在任意配置类，返回一个 新的 CorsFIlter Bean ，并添加映射路径和具体的CORS配置路径。
 
 @Configuration
-public class GlobalCorsConfig {
+public class GlobalCorsConfig \{
 @Bean
-public CorsFilter corsFilter() {
+public CorsFilter corsFilter() \{
 //1. 添加 CORS配置信息
 CorsConfiguration config = new CorsConfiguration();
 //放行哪些原始域
@@ -42,51 +45,51 @@ UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfig
 corsConfigurationSource.registerCorsConfiguration("/**",config);
 //3. 返回新的CorsFilter
 return new CorsFilter(corsConfigurationSource);
-}
-}
+\}
+\}
 2. 重写 WebMvcConfigurer(全局跨域)
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class CorsConfig implements WebMvcConfigurer \{
 @Override
-public void addCorsMappings(CorsRegistry registry) {
+public void addCorsMappings(CorsRegistry registry) \{
 registry.addMapping("/**")
 //是否发送Cookie
 .allowCredentials(true)
 //放行哪些原始域
 .allowedOrigins("*")
-.allowedMethods(new String[]{"GET", "POST", "PUT", "DELETE"})
+.allowedMethods(new String[]\{"GET", "POST", "PUT", "DELETE"\})
 .allowedHeaders("*")
 .exposedHeaders("*");
-}
-}
+\}
+\}
 ￼3.使用注解 (局部跨域)
 在控制器(类上)上使用注解 @CrossOrigin:，表示该类的所有方法允许跨域。
 
 @RestController
 @CrossOrigin(origins = "*")
-public class HelloController {
+public class HelloController \{
 @RequestMapping("/hello")
-public String hello() {
+public String hello() \{
 return "hello world";
-}
-}
+\}
+\}
 ￼在方法上使用注解 @CrossOrigin:
 
 @RequestMapping("/hello")
 @CrossOrigin(origins = "*")
 //@CrossOrigin(value = "[http://localhost:8081](http://localhost:8081)") //指定具体ip允许跨域
-public String hello() {
+public String hello() \{
 return "hello world";
-}
+\}
 
 4. 手动设置响应头(局部跨域)
 使用 HttpServletResponse 对象添加响应头(Access-Control-Allow-Origin)来授权原始域，这里 Origin的值也可以设置为 “*”,表示全部放行。
 
 @RequestMapping("/index")
-public String index(HttpServletResponse response) {
+public String index(HttpServletResponse response) \{
 response.addHeader("Access-Allow-Control-Origin","*");
 return "index";
-}
+\}
 ￼5. 使用自定义filter实现跨域
 ssm种的写法
 首先编写一个过滤器，可以起名字为MyCorsFilter.java
@@ -103,18 +106,18 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 @Component
-public class MyCorsFilter implements Filter {
-public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+public class MyCorsFilter implements Filter \{
+public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException \{
 HttpServletResponse response = (HttpServletResponse) res;
 response.setHeader("Access-Control-Allow-Origin", "*");
 response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 response.setHeader("Access-Control-Max-Age", "3600");
 response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
 chain.doFilter(req, res);
-}
-public void init(FilterConfig filterConfig) {}
-public void destroy() {}
-}
+\}
+public void init(FilterConfig filterConfig) \{\}
+public void destroy() \{\}
+\}
 在web.xml中配置这个过滤器，使其生效
 
 \<!-- 跨域访问 START--\>
@@ -136,9 +139,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 @WebFilter(filterName = "CorsFilter ")
 @Configuration
-public class CorsFilter implements Filter {
+public class CorsFilter implements Filter \{
 @Override
-public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException \{
 HttpServletResponse response = (HttpServletResponse) res;
 response.setHeader("Access-Control-Allow-Origin","*");
 response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -146,10 +149,12 @@ response.setHeader("Access-Control-Allow-Methods", "POST, GET, PATCH, DELETE, PU
 response.setHeader("Access-Control-Max-Age", "3600");
 response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 chain.doFilter(req, res);
-}
-}
+\}
+\}
 ￼esponse.setHeader(“Access-Control-Max-Age”, “3600”);
 response.setHeader(“Access-Control-Allow-Headers”, “Origin, X-Requested-With, Content-Type, Accept”);
 chain.doFilter(req, res);
-}
-}
+\}
+\}
+
+:::

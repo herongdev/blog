@@ -3,7 +3,10 @@ title: final
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 面向对象, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 在 Java 中，`final` 关键字用来修饰一个类有特定的含义。当一个类被声明为 `final`，它表示这个类不能被继承。换句话说，没有其他类可以扩展（extend）一个被标记为 `final` 的类。
 
 这里是使用 `final` 关键字修饰类的一些原因和场景：
@@ -17,9 +20,11 @@ tags: [Java, 面向对象, OneNote]
 例如，下面是一个 `final` 类的声明：
 
 ```java
-public final class MyFinalClass {
+public final class MyFinalClass \{
 // 类的定义
-}
+\}
 在这个例子中，`MyFinalClass` 不能被任何其他类继承。
 
 需要注意的是，虽然 `final` 类不能被继承，但它本身可以继承其他类。此外，`final` 类中的方法自动被视为 `final`，但你仍然可以在类的内部改变成员变量的值，除非这些字段也被声明为 `final`。
+
+:::

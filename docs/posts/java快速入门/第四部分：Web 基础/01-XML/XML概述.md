@@ -3,7 +3,10 @@ title: XML概述
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, Web基础, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 **概念：**`Extensible Markup Language` 可扩展标记语言。
 
 **可扩展：**标签都是自定义的。 `\<user\> \<student\>`
@@ -15,3 +18,5 @@ tags: [Java, Web基础, OneNote]
 `2. xml`的语法严格，`html`语法松散
 `3. xml`是存储数据的，`html`是展示数据
 `w3c`**：**万维网联盟
+
+:::

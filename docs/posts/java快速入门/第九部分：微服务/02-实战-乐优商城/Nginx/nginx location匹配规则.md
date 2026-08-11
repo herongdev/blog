@@ -3,7 +3,10 @@ title: nginx location匹配规则
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 `1.1 Location`**规则**
 语法规则： `location [=|~|~*|^~] /uri/ {`… `}`
 首先匹配 `=`，其次匹配`^~,`其次是按文件中顺序的正则匹配，最后是交给 `/`通用匹配。当有匹配成功时候，停止匹配，按当前匹配规则处理请求。
@@ -22,54 +25,54 @@ tags: [Java, 微服务, OneNote]
 
 匹配规则示例：
 
-location = / {
+location = / \{
 #
 规则
 
 A
-}
-location = /login {
+\}
+location = /login \{
 #
 规则
 
 B
-}
-location ^~ /static/ {
+\}
+location ^~ /static/ \{
 #
 规则
 
 C
-}
-location ~ \.(gif|jpg|png|js|css)$ {
+\}
+location ~ \.(gif|jpg|png|js|css)$ \{
 #
 规则
 
 D
-}
-location ~* \.png$ {
+\}
+location ~* \.png$ \{
 #
 规则
 
 E
-}
-location !~ \.xhtml$ {
+\}
+location !~ \.xhtml$ \{
 #
 规则
 
 F
-}
-location !~* \.xhtml$ {
+\}
+location !~* \.xhtml$ \{
 #
 规则
 
 G
-}
-location / {
+\}
+location / \{
 #
 规则
 
 H
-}
+\}
  那么产生的效果如下：
 `1.` 访问根目录`/`，比如`http://localhost/`将匹配规则
 
@@ -121,35 +124,35 @@ H
 `#`这里是直接转发给后端应用服务器了，也可以是一个静态首页
 `#` 第一个必选规则
 
-location = / {
+location = / \{
 proxy_pass
 
 http://tomcat:8080/index
-}
+\}
 #
 第二个必选规则是处理静态文件请求，这是`nginx`作为`http`服务器的强项
 `#` 有两种配置模式，目录匹配或后缀匹配`,`任选其一或搭配使用
 
-location ^~ /static/ {
+location ^~ /static/ \{
 #
 请求`/static/a.txt` 将被映射到实际目录文件
 
 :/webroot/res/static/a.txt
 root /webroot/res/;
-}
-location ~* \.(gif|jpg|jpeg|png|css|js|ico)${
+\}
+location ~* \.(gif|jpg|jpeg|png|css|js|ico)$\{
 root /webroot/res/;
  第三个规则就是通用规则，用来转发动态请求到后端应用服务器
 `#`非静态文件请求就默认是动态请求，自己根据实际把握
 `#`毕竟目前的一些框架的流行，带`.php,.jsp`后缀的情况很少了
 
-location / {
+location / \{
 proxy_pass http://tomcat:8080/
-}
+\}
 1.3
  `Location`**解析过程**
 
-![IJRlEtfi](Exported%20image%2020260702233632-0.png)
+
 
   总结：
 `1`、    先判断精准命中，如果命中，立即返回结果并结束解析过程。
@@ -160,3 +163,5 @@ proxy_pass http://tomcat:8080/
 
  \<https://blog.csdn.net/zwl18210851801/article/details/81699977\>
 ```
+
+:::

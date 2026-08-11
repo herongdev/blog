@@ -3,7 +3,10 @@ title: 浅谈服务端渲染(SSR)
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 微服务, OneNote]
+lastUpdated: false
 ---
+::: v-pre
+
 ```
 ==大家好，我是神三元，这一次，让我们来以====React====为例，把服务端渲染====(Server Side Render====，简称“====SSR====”====)====学个明明白白。==
 ==这里附上这个项目的====github====地址====:==
@@ -18,23 +21,23 @@ tags: [Java, 微服务, OneNote]
 ==app.get(===='/'====, (req, res) =\> {====￼== ==res.send(====￼== ==`====￼==   ==\<html\>====￼==     ==\<head\>====￼==       ==\<title\>hello\</title\>====￼==     ==\</head\>====￼==     ==\<body\>====￼==       ==\<h1\>hello\</h1\>====￼==       ==\<p\>world\</p\>====￼==     ==\</body\>====￼==   ==\</html\>====￼== ==`====￼== ==)====￼====})==
 ==app.listen(====3001====, () =\> {====￼== ==console====.log(===='listen:3001'====)====￼====})==
 ==启动之后打开====localhost:3001====可以看到页面显示了====hello world====。而且打开网页源代码：==
-![he ad hello hea b ody html](Exported%20image%2020260703000042-0.png)
+
 
 ==也能够完成显示。==
 ==这就是服务端渲染。其实非常好理解，就是服务器返回一堆====html====字符串，然后让浏览器显示。==
 ==与服务端渲染相对的是客户端渲染====(Client Side Render)====。那什么是客户端渲染？==
 ==现在创建一个新的====React====项目，用脚手架生成项目，然后====run====起来。==
 ==这里你可以看到====React====脚手架自动生成的首页。==
-![Edit srcApp. js and save to reload. Learn React](Exported%20image%2020260703000045-1.png)
+
 
 `==然而打开网页源代码。==`
 
-![html he ad meta link shortcl_t icon ico meta meta ...](Exported%20image%2020260703000052-2.png)
+
 
 ==body====中除了兼容处理的====noscript====标签之外，只有一个====id====为====root====的标签。那首页的内容是从哪来的呢？很明显，是下面的====script====中拉取的====JS====代码控制的。==
 ==因此，====CSR====和====SSR====最大的区别在于前者的页面渲染是====JS====负责进行的，而后者是服务器端直接返回====HTML====让浏览器直接渲染。==
 ==为什么要使用服务端渲染呢？==
-![CSR HTML HTML LOADING .JS JS LOADING SSR HTML HTML...](Exported%20image%2020260703000055-3.png)
+
 
 ==传统====CSR====的弊端：==
 
@@ -64,7 +67,7 @@ _// containers/Home.js_==￼==**import** ==React== **from** =='react'====;====�
 ==这就需要进行同构了。所谓同构，通俗的讲，就是一套====React====代码在服务器上运行一遍，到达浏览器又运行一遍。服务端渲染完成页面结构，浏览器端渲染完成事件绑定。==
 ==那如何进行浏览器端的事件绑定呢？==
 ==唯一的方式就是让浏览器去拉取====JS====文件执行，让====JS====代码来控制。于是服务端返回的代码变成了这样====:==
-![he ad hea div is index. js X script script b ody h...](Exported%20image%2020260703000111-4.png)
+
 
 ==有没有发现和之前的区别？区别就是多了一个====script====标签。而它拉取的====JS====代码就是来完成同构的。==
 ==那么这个====index.js====我们如何生产出来呢？==
@@ -82,7 +85,7 @@ _//package.json__的__script__部分_==￼==  =="scripts"====: {====￼==    =="
 ==现在前端的====script====就能拿到控制浏览器的====JS====代码啦。==
 ==绑定事件完成！==
 ==现在来初步总结一下同构代码执行的流程：==
-![React HTML HTML JS s](Exported%20image%2020260703000112-5.png)
+
 
 ==二====.====同构中的路由问题==
 ==现在写一个路由的配置文件：==
@@ -92,7 +95,7 @@ _// Routes.js_==￼==**import** ==React== **from** =='react'====;====￼==**impo
 **import** ==React== **from** =='react'====;====￼==**import** ==ReactDom== **from** =='react-dom'====;====￼==**import** =={ BrowserRouter }== **from** =='react-router-dom'====￼==**import** ==Routes== **from** =='../Routes'==
 **const** ==App = () =\> {====￼==  **return** ==(====￼==    ==\<BrowserRouter\>====￼==      =={Routes}====￼==    ==\</BrowserRouter\>====￼==  ==)====￼====}====￼====ReactDom.hydrate(====\<App /\>====, document.getElementById('root'))==
 ==这时候控制台会报错，==
-![Exported image](Exported%20image%2020260703000116-6.png)
+
 
 ==因为在====Routes.js====中，每个====Route====组件外面包裹着一层====div====，但服务端返回的代码中并没有这个====div,====所以报错。如何去解决这个问题？需要将服务端的路由逻辑执行一遍。==
 _// server/index.js_==￼==**import** ==express== **from** =='express'====;====￼==**import** =={render}== **from** =='./utils'====;==
@@ -104,7 +107,7 @@ _// server/utils.js_==￼==**import** ==Routes== **from** =='../Routes'====￼==
 ==part3:== ==同构项目中引入====Redux==
 ==这一节主要是讲述====Redux====如何被引入到同构项目中以及其中需要注意的问题。==
 ==重新回顾一下====redux====的运作流程：==
-![Action store Store newState React Component prevSt...](Exported%20image%2020260703000119-7.png)
+
 
 ==再回顾一下同构的概念，即在====React====代码客户端和服务器端各自运行一遍。==
 ==一、创建全局====store==
@@ -114,7 +117,7 @@ _// server/utils.js_==￼==**import** ==Routes== **from** =='../Routes'====￼==
 _//__导出创建的__store_==￼==**export default** ==store==
 ==二、组件内====action====和====reducer====的构建==
 ==Home====文件夹下的工程文件结构如下：==
-![Home store JS actions.js JS constants.js JS index....](Exported%20image%2020260703000123-8.png)
+
 
 ==在====Home====的====store====目录下的各个文件代码示例：==
 _//constants.js_==￼==**export const** ==CHANGE_LIST === =='HOME/CHANGE_LIST'====;==
@@ -155,11 +158,11 @@ _//actions.js_==￼==**import** =={ CHANGE_LIST }== **from** =="./constants"====
 **const** ==defaultState = {====￼==  ==name:== =='sanyuan'====,====￼==  ==list: []====￼====}==
 **export** **default** ==(state = defaultState, action) =\> {====￼==  **switch**==(action.type) {====￼==    **case** ==CHANGE_LIST:====￼==      **const** ==newState = {====￼==        ==...state,====￼==        ==list: action.list====￼==      ==}====￼==      **return** ==newState====￼==    **default**==:====￼==      **return** ==state;====￼==  ==}====￼====}==
 ==好，现在启动服务。==
-![HomeLogin 2222222 3333333 5555555 click](Exported%20image%2020260703000128-9.png)
+
 
 `==现在页面能够正常渲染，但是打开网页源代码。==`
 
-![he ad hea div index. js X script script b ody html...](Exported%20image%2020260703000130-10.png)
+
 
 ==源代码里面并没有这些列表数据啊！那这是为什么呢？==
 ==让我们来分析一下客户端和服务端的运行流程，当浏览器发送请求时，服务器接受到请求，这时候服务器和客户端的====store====都是空的，紧接着客户端执行====componentDidMount====生命周期中的函数，获取到数据并渲染到页面，然而服务器端始终不会执行====componentDidMount====，因此不会拿到数据，这也导致服务器端的====store====始终是空的。换而言之，关于异步数据的操作始终只是客户端渲染。==
@@ -181,7 +184,7 @@ _//actions.js_==￼==**export const** ==getHomeList = () =\> {====￼==  **retur
 ==根据这个思路，服务端渲染中异步数据的获取功能就完成啦。==
 ==三、数据的注水和脱水==
 ==其实目前做了这里还是存在一些细节问题的。比如当我将生命周期钩子里面的异步请求函数注释，现在页面中不会有任何的数据，但是打开网页源代码，却发现====:==
-![h_ref II II div div div di ut to cl di di di di 22...](Exported%20image%2020260703000132-11.png)
+
 
 ==数据已经挂载到了服务端返回的====HTML====代码中。那这就说明服务端和客户端的====store====不同步的问题。==
 ==其实也很好理解。当服务端拿到====store====并获取数据后，客户端的====js====代码又执行一遍，在客户端代码执行的时候又创建了一个空的====store====，两个====store====的数据不能同步。==
@@ -204,7 +207,7 @@ _//store/index.js_==￼==**import** =={createStore, applyMiddleware, combineRedu
 ==在不用中间层的前后端分离开发模式下，前端一般直接请求后端的接口。但真实场景下，后端所给的数据格式并不是前端想要的，但处于性能原因或者其他的因素接口格式不能更改，这时候需要在前端做一些额外的数据处理操作。前端来操作数据本身无可厚非，但是当数据量变得庞大起来，那么在客户端就是产生巨大的性能损耗，甚至影响到用户体验。在这个时候，====node====中间层的概念便应运而生。==
 ==它最终解决的前后端协作的问题。==
 ==一般的中间层工作流是这样的====:====前端每次发送请求都是去请求====node====层的接口，然后====node====对于相应的前端请求做转发，用====node====去请求真正的后端接口获取数据，获取后再由====node====层做对应的数据计算等处理操作，然后返回给前端。这就相当于让====node====层替前端接管了对数据的操作。==
-![Exported image](Exported%20image%2020260703000135-12.png)
+
 
 ==二、====SSR====框架中引入中间层==
 ==在之前搭建的====SSR====框架中，服务端和客户端请求利用的是同一套请求后端接口的代码，但这是不科学的。==
@@ -260,11 +263,11 @@ _//webpack.client.js_==￼==**const** ==path === ==require====(===='path'====);=
 ==module====.exports = merge(config, clientConfig);==
 _//webpack.base.js__代码，回顾一下，配置了__ES__语法相关的内容_==￼====module====.exports = {====￼==  ==module: {====￼==    ==rules: [{====￼==      ==test:== ==/\.js$/====,====￼==      ==loader:== =='babel-loader'====,====￼==      ==exclude:== ==/node_modules/====,====￼==      ==options: {====￼==        ==presets: [===='@babel/preset-react'====,  [===='@babel/preset-env'====, {====￼==          ==targets: {====￼==            ==browsers: [===='last 2 versions'====]====￼==          ==}====￼==        ==}]]====￼==      ==}====￼==    ==}]====￼==  ==}====￼====}==
 ==好，现在在客户端====CSS====已经产生了效果。==
-![2222222 3333333 5555555](Exported%20image%2020260703000137-13.png)
+
 
 `==可是打开网页源代码：==`
 
-![he ad hea div script wi_ndow. cortex t state home ...](Exported%20image%2020260703000140-14.png)
+
 
 ==咦？里面并没有出现任何有关====CSS====样式的代码啊！那这是什么原因呢？很简单，其实我们的服务端的====CSS====加载还没有做。接下来我们来完成====CSS====代码的服务端的处理。==
 ==二、服务端====CSS====的引入==
@@ -278,7 +281,7 @@ _//webpack.server.js_==￼==**const** ==path === ==require====(===='path'====);=
 ==再看看这行代码====:==
 **import** ==styles== **from** =='./style.css'====;==
 ==引入====css====文件时，这个====isomorphic-style-loader====帮我们在====styles====中挂了三个函数。输出====styles====看看：==
-![_getContent Function, _getcss insertCss Function](Exported%20image%2020260703000142-15.png)
+
 
 ==现在我们的目标是拿到====CSS====代码，直接通过====styles._getCss====即可获得。==
 ==那我们拿到====CSS====代码后放到哪里呢？其实====react-router-dom====中的====StaticRouter====中已经帮我们准备了一个钩子变量====context====。如下==
@@ -292,7 +295,7 @@ _//context__从外界传入_==￼====\<StaticRouter location={req.path} context=
 _//__拼接代码_==￼==**const** ==cssStr = context.css.length ? context.css.join(===='\n'====) :== ==''====;==
 ==现在挂载到页面：==
 _//__放到返回的__html__字符串里的__header__里面_==￼====\<style\>${cssStr}\<====/style\>==
-![Exported image](Exported%20image%2020260703000147-16.png)
+
 
 ==网页源代码中看到了====CSS====代码，效果也没有问题。====CSS====渲染完成！==
 ==三、利用高阶组件优化代码==
@@ -308,7 +311,7 @@ _//__根目录下创建__withStyle.js__文件_==￼==**import** **React**==, {==
 ==所谓====SEO(Search Engine Optimization)====，指的是利用搜索引擎的规则提高网站在有关搜索引擎内的自然排名。现在的搜索引擎爬虫一般是全文分析的模式，分析内容涵盖了一个网站主要====3====个部分的内容====:====文本、多媒体====(====主要是图片====)====和外部链接，通过这些来判断网站的类型和主题。因此，在做====SEO====优化的时候，可以围绕这三个角度来展开。==
 ==对于文本来说，尽量不要抄袭已经存在的文章，以写技术博客为例，东拼西凑抄来的文章排名一般不会高，如果需要引用别人的文章要记得声明出处，不过最好是原创，这样排名效果会比较好。多媒体包含了视频、图片等文件形式，现在比较权威的搜索引擎爬虫比如====Google====做到对图片的分析是基本没有问题的，因此高质量的图片也是加分项。另外是外部链接，也就是网站中====a====标签的指向，最好也是和当前网站相关的一些链接，更容易让爬虫分析。==
 ==当然，做好网站的门面，也就是标题和描述也是至关重要的。如：==
-![M000 M000 MOOC 0 985 MOOC 51 h s w urse163 V3](Exported%20image%2020260703000149-17.png)
+
 
 ==网站标题中不仅仅包含了关键词，而且有比较详细和靠谱的描述，这让用户一看到就觉得非常亲切和可靠，有一种想要点击的冲动，这就表明网站的====转化率====比较高。==
 ==二、引入====react-helmet==
@@ -325,7 +328,7 @@ _//server/utils.js_==￼==**import** =={ renderToString }== **from** =='react-do
 **const** ==cssStr = context.css.length ? context.css.join(===='\n'====) :== ==''====;==
 **return**  ==`====￼==    ==\<html\>====￼==      ==\<head\>====￼==        ==\<style\>====${cssStr}====\</style\>====￼==        ==${helmet.title.toString()}====￼==        ==${helmet.meta.toString()}====￼==      ==\</head\>====￼==      ==\<body\>====￼==        ==\<div id="root"\>====${content}====\</div\>====￼==        ==\<script\>====￼==          ==window.context = {====￼==            ==state:== ==${====JSON====.stringify(store.getState())}====￼==          ==}====￼==        ==\</script\>====￼==        ==\<script src="/index.js"\>\</script\>====￼==      ==\</body\>====￼==    ==\</html\>====￼==  ==`====￼====};==
 ==现在来看看效果：==
-![he ad backgrcnmd gray title meta hea description](Exported%20image%2020260703000151-18.png)
+
 
 ==网页源代码中显示出对应的====title====和====description,== ==客户端的显示也没有任何问题，大功告成！==
 ==关于====React====的服务端渲染原理，就先分享到这里，内容还是比较复杂的，对于前端的综合能力要求也比较高，但是坚持跟着学下来，一定会大有裨益的。相信你看了这一系列之后也有能力造出自己的====SSR====轮子，更加深刻地理解这一方面的技术。==
@@ -333,3 +336,5 @@ _//server/utils.js_==￼==**import** =={ renderToString }== **from** =='react-do
 
  \<https://segmentfault.com/a/1190000020029159?utm_source=tag-newest\>
 ```
+
+:::
