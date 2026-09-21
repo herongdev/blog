@@ -13,7 +13,7 @@
     "build:blog": "pnpm --filter @herong/blog build",
     "build:tools": "pnpm --filter @light-tools/web build",
     "build:worker": "pnpm --filter @light-tools/worker build",
-    "check:chat": "pnpm --filter @herong/chat check",
+    "check:chat": "pnpm --filter @herong/chat check && node infra/chat/verify.mjs",
     "build:chat": "pnpm --filter @herong/chat build",
     "test:chat:e2e": "pnpm --filter @herong/chat test:e2e",
     "deploy:chat": "bash infra/chat/deploy.sh",
@@ -21,7 +21,8 @@
     "typecheck": "pnpm --filter './apps/light-tools/**' --filter './packages/light-tools/**' typecheck",
     "blog:new": "pnpm --filter @herong/blog new",
     "blog:import:onenote": "pnpm --filter @herong/blog tutorials:import:onenote",
-    "format": "prettier --check ."
+    "format": "prettier --check .",
+    "check:chat:deploy": "node infra/chat/verify.mjs"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

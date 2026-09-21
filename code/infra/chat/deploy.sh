@@ -59,4 +59,4 @@ scp "$archive" "$stage/remote-deploy-$release.sh" \
 ssh "$host" "bash '$remote_dir/releases/remote-deploy-$release.sh' '$release'"
 curl --fail --silent --show-error --compressed --max-time 20 "$public_url/api/healthz"
 echo
-echo "发布完成：${public_url}（$release）"
+echo "发布完成：${public_url}（${release}）"
