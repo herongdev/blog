@@ -1,0 +1,49 @@
+.brand-mark {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--layout-brand-mark);
+  height: var(--layout-brand-mark);
+  justify-content: center;
+  align-items: center;
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-brand);
+  font-style: italic;
+  font-weight: var(--weight-medium);
+  font-size: var(--text-2xl);
+  letter-spacing: var(--tracking-tight);
+  padding-right: var(--space-2);
+}
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  border-radius: var(--radius-sm);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+.icon-button:hover:not(:disabled) {
+  color: var(--text-secondary);
+  background: var(--surface-muted);
+}
+.eyebrow {
+  display: block;
+  color: var(--text-placeholder);
+  letter-spacing: var(--tracking-wide);
+  font-size: var(--text-xs);
+  margin: 0;
+}
+.brand-mark.small {
+  width: var(--layout-brand-mark-small);
+  height: var(--layout-brand-mark-small);
+  border-radius: var(--radius-md);
+  font-size: var(--text-lg);
+}
+@media (max-width: 760px) {
+  .icon-button {
+    min-width: var(--space-32);
+    min-height: var(--space-32);
+  }
+}

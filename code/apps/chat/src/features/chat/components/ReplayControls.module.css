@@ -1,0 +1,42 @@
+.controls {
+  width: var(--replay-controls-width);
+  max-width: 100%;
+  display: grid;
+  gap: var(--space-12);
+}
+.controls fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.controls legend {
+  margin-bottom: var(--space-6);
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.choices label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--control-height);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.choices label:has(:checked) {
+  background: var(--surface-selected);
+  color: var(--accent-deep);
+}
+.choices label:hover {
+  background: var(--surface-hover);
+}
+.choices input {
+  accent-color: var(--accent);
+}

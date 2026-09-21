@@ -1,0 +1,23 @@
+# This same routing policy is exercised by tests/container through real Caddy.
+request_body {
+	max_size 20971520
+}
+basic_auth {
+	import /run/secrets/demo_auth
+}
+header {
+	-Server
+	X-Content-Type-Options nosniff
+	X-Frame-Options DENY
+	Referrer-Policy strict-origin-when-cross-origin
+}
+reverse_proxy app:3001 {
+	# SSE flushes immediately by Content-Type. Do not set flush_interval -1:
+	# that mode keeps upstream requests alive after client disconnects.
+	transport http {
+		dial_timeout 5s
+		response_header_timeout 15s
+	}
+	# Greater than the app's maximum configurable deadline of 10 minutes.
+	stream_timeout 11m
+}

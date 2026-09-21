@@ -1,0 +1,61 @@
+.dialog {
+  width: min(var(--layout-preferences), calc(100vw - var(--space-32)));
+  max-height: calc(100dvh - var(--space-32));
+  overflow: auto;
+  margin: auto;
+  padding: var(--space-24);
+  color: var(--text-primary);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+}
+.dialog::backdrop {
+  background: var(--modal-backdrop);
+}
+.dialog h2 {
+  margin: 0 0 var(--space-20);
+  font-size: var(--text-xl);
+}
+.dialog p {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  overflow-wrap: anywhere;
+}
+.field {
+  display: grid;
+  gap: var(--space-8);
+  font-size: var(--text-sm);
+}
+.field input {
+  width: 100%;
+  min-height: var(--control-height);
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: var(--space-8) var(--space-12);
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-8);
+  margin-top: var(--space-24);
+}
+.actions button {
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-8) var(--space-16);
+  min-height: var(--control-height);
+  font-size: var(--text-sm);
+}
+.actions .confirm {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+.actions .confirm[data-danger="true"] {
+  background: var(--status-error);
+}
+.confirm:disabled {
+  opacity: var(--opacity-disabled);
+}

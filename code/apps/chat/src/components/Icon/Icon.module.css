@@ -1,0 +1,31 @@
+.icon {
+  flex-shrink: 0;
+  width: var(--icon-dimension);
+  height: var(--icon-dimension);
+  stroke-width: var(--icon-stroke);
+}
+.xs {
+  --icon-dimension: var(--icon-xs);
+}
+.sm {
+  --icon-dimension: var(--icon-sm);
+}
+.md {
+  --icon-dimension: var(--icon-md);
+}
+.lg {
+  --icon-dimension: var(--icon-lg);
+}
+.hero {
+  --icon-dimension: var(--icon-hero);
+}
+.light {
+  stroke-width: var(--icon-stroke-light);
+}
+.strong {
+  stroke-width: var(--icon-stroke-strong);
+}
+
+.normal {
+  stroke-width: var(--icon-stroke);
+}

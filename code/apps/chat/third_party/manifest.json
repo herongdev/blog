@@ -1,0 +1,143 @@
+{
+  "recordedAt": "2026-09-03",
+  "modules": [
+    {
+      "name": "eventsource-parser",
+      "version": "4.1.0",
+      "repository": "https://github.com/rexxars/eventsource-parser",
+      "revision": "6519a0f70dfeb22f829e5c696da2cb4988d64c6a",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "npmIntegrity": "sha512-+DHvQ1wLO//MK+1OZgcuXCbZFKgu3YjKPJt7n98rxX8vezL0ni+7s3ZQiM8bJkUEOk7MsuCycrPLj0FzUNf7Og==",
+      "modified": false,
+      "files": [
+        {
+          "path": "parse.ts",
+          "upstreamPath": "src/parse.ts",
+          "sha256": "a02e324abf3b02f884ae54ea08345c14dc6f621b89e16d8c8e3e8aed6cfdc3f8"
+        },
+        {
+          "path": "errors.ts",
+          "upstreamPath": "src/errors.ts",
+          "sha256": "7311a2391053e80f0cc26d85c4027898792d44bbbea2e8935d18171dc3aac2c1"
+        },
+        {
+          "path": "stream.ts",
+          "upstreamPath": "src/stream.ts",
+          "sha256": "e1c530945d5b618cfaed196de063b91de1dd26d36299f48d02653bf6ee642f84"
+        },
+        {
+          "path": "types.ts",
+          "upstreamPath": "src/types.ts",
+          "sha256": "59287ecc282e9ea02030c59916e8c2cc6430de36a0b74aab447792f23ed0fbd6"
+        },
+        {
+          "path": "index.ts",
+          "upstreamPath": "src/index.ts",
+          "sha256": "e23a5dd24399d1aa6c54c16709880b665402f09dd930cfc510e5308f314eda05"
+        }
+      ]
+    },
+    {
+      "name": "remend",
+      "version": "1.3.1",
+      "repository": "https://github.com/vercel/streamdown",
+      "revision": "8a2ac221a878a0fc5839f2035c1e16575cfa3440",
+      "license": "Apache-2.0",
+      "licenseFile": "LICENSE",
+      "npmIntegrity": "sha512-N3DiY5qbRPoa5vkxn1oDLMyXOVTeo6Hp+XOj6SIqJAYUgLS0Q587gILPMom/qm86AQ/ZrcOdwEIzCz8V3J0nxQ==",
+      "modified": true,
+      "files": [
+        {
+          "path": "setext-heading-handler.ts",
+          "upstreamPath": "packages/remend/src/setext-heading-handler.ts",
+          "sha256": "979cfe50e1ac4ceca68c3157fc8a0128376d23d86170fd15597fed72d70cd22f"
+        },
+        {
+          "path": "code-block-utils.ts",
+          "upstreamPath": "packages/remend/src/code-block-utils.ts",
+          "sha256": "70e87fa7805adf639021b150b06517af3b10c902e822ab519037acf2b8c19e38"
+        },
+        {
+          "path": "strikethrough-handler.ts",
+          "upstreamPath": "packages/remend/src/strikethrough-handler.ts",
+          "sha256": "65a11ad538fee82dc80ba6639051cf8eeef423248bb506ce2f6712e91312e23e",
+          "upstreamSha256": "c9e2b334a8caa3a583770e27355f79d795da925af85b90b5c07789e5200b82b3"
+        },
+        {
+          "path": "utils.ts",
+          "upstreamPath": "packages/remend/src/utils.ts",
+          "sha256": "376f42fe2737e545a68c842c95ff612bbd6ec332d057f1a110bd7fc038d72023"
+        },
+        {
+          "path": "html-tag-handler.ts",
+          "upstreamPath": "packages/remend/src/html-tag-handler.ts",
+          "sha256": "425f18b96e1baace933c644ac6d343f0f5be0c6defa9127c667ab904b2eeaccc"
+        },
+        {
+          "path": "comparison-operator-handler.ts",
+          "upstreamPath": "packages/remend/src/comparison-operator-handler.ts",
+          "sha256": "b332f2652c069e6b233d163ac516c7fe571b9dcbd85b02630a71bbc0b02d5395"
+        },
+        {
+          "path": "emphasis-handlers.ts",
+          "upstreamPath": "packages/remend/src/emphasis-handlers.ts",
+          "sha256": "1fcc10ce6105890d34ccf82cff585188b1d950126b3e22032ed5d82019f13103"
+        },
+        {
+          "path": "index.ts",
+          "upstreamPath": "packages/remend/src/index.ts",
+          "sha256": "0e8ffc694bf2b0b0646d3ed00e12a1af6d6487a6de8121b6141f59ffa521879d"
+        },
+        {
+          "path": "patterns.ts",
+          "upstreamPath": "packages/remend/src/patterns.ts",
+          "sha256": "fb3550665c68aa41e6651e0a7d67e51660b662ab072e113cb907292c8e9b03d9"
+        },
+        {
+          "path": "inline-code-handler.ts",
+          "upstreamPath": "packages/remend/src/inline-code-handler.ts",
+          "sha256": "8f44a0c102244e0272b5c83d681ecdafbe1417712a138e514d0c6cc7cf9ac2ce"
+        },
+        {
+          "path": "link-image-handler.ts",
+          "upstreamPath": "packages/remend/src/link-image-handler.ts",
+          "sha256": "779e418f4b2257270f50c9e9f240d343fb89ae5aa443ca0607a5e563f4c4c1ad"
+        },
+        {
+          "path": "single-tilde-handler.ts",
+          "upstreamPath": "packages/remend/src/single-tilde-handler.ts",
+          "sha256": "fc0c86d4e1f5b20ec046a262f0d6baf024b1c397b7615895a934cf466005ef39"
+        },
+        {
+          "path": "katex-handler.ts",
+          "upstreamPath": "packages/remend/src/katex-handler.ts",
+          "sha256": "d6929b704bb701b1ec5b1aea4d345c5cf76b3e61f0d9ebb2a02173b5382d23a8"
+        }
+      ],
+      "changes": [
+        {
+          "path": "strikethrough-handler.ts",
+          "description": "Add a 0 fallback to two optional tilde match counts for strict TypeScript checking; mark the local change in the file."
+        }
+      ]
+    },
+    {
+      "name": "use-stick-to-bottom",
+      "version": "1.1.6",
+      "repository": "https://github.com/stackblitz-labs/use-stick-to-bottom",
+      "revision": "8d6a19a0ca6ab632830588073e6a29312a06a088",
+      "license": "MIT",
+      "licenseFile": "LICENSE.txt",
+      "npmIntegrity": "sha512-z3Up8jYQGTkUCsGBnwg6/wj70KgXoW5Kz1AAc1j8MtQuYMBo6ZsdhrIXoegxa7gaMMilgQYyTohTrt3p94jHog==",
+      "modified": false,
+      "files": [
+        {
+          "path": "useStickToBottom.ts",
+          "upstreamPath": "src/useStickToBottom.ts",
+          "sha256": "d54c00211a007e5ad571c165d8852f07c5dd86a312fafe8fb25072a10ace1623"
+        }
+      ]
+    }
+  ]
+}

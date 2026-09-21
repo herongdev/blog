@@ -1,0 +1,46 @@
+.dialog {
+  composes: dialog from "./ConversationDialog.module.css";
+}
+.field {
+  composes: field from "./ConversationDialog.module.css";
+}
+.actions {
+  composes: actions from "./ConversationDialog.module.css";
+}
+.confirm {
+  composes: confirm from "./ConversationDialog.module.css";
+}
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+}
+.destinations {
+  display: grid;
+  gap: var(--space-4);
+}
+.destination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+  min-height: var(--control-height);
+  padding: var(--density-inset-row) var(--space-12);
+  border-radius: var(--radius-md);
+  text-align: left;
+  font-size: var(--text-sm);
+}
+.destination span {
+  flex: 1;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.destination svg {
+  flex-shrink: 0;
+}
+.destination:hover,
+.destination:focus-visible {
+  background: var(--surface-hover);
+}
+.destination[aria-pressed="true"] {
+  background: var(--surface-selected);
+}

@@ -1,0 +1,31 @@
+{
+  "name": "herong-site",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "pnpm run dev:blog",
+    "dev:blog": "pnpm --filter @herong/blog dev",
+    "dev:tools": "pnpm --filter @light-tools/web dev",
+    "dev:worker": "pnpm --filter @light-tools/worker dev",
+    "dev:chat": "pnpm --filter @herong/chat dev",
+    "build": "pnpm run build:blog && pnpm run build:tools && pnpm run build:worker",
+    "build:blog": "pnpm --filter @herong/blog build",
+    "build:tools": "pnpm --filter @light-tools/web build",
+    "build:worker": "pnpm --filter @light-tools/worker build",
+    "check:chat": "pnpm --filter @herong/chat check",
+    "build:chat": "pnpm --filter @herong/chat build",
+    "test:chat:e2e": "pnpm --filter @herong/chat test:e2e",
+    "deploy:chat": "bash infra/chat/deploy.sh",
+    "lint": "pnpm --filter './apps/light-tools/**' --filter './packages/light-tools/**' lint",
+    "typecheck": "pnpm --filter './apps/light-tools/**' --filter './packages/light-tools/**' typecheck",
+    "blog:new": "pnpm --filter @herong/blog new",
+    "blog:import:onenote": "pnpm --filter @herong/blog tutorials:import:onenote",
+    "format": "prettier --check ."
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
+}

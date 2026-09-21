@@ -5,6 +5,10 @@ node_modules/
 .docs-temp/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+code/apps/blog/docs/.vitepress/dist*/
+code/apps/blog/docs/.vitepress/cache/
+code/apps/blog/docs/.vitepress/.temp/
+**/.vitepress/.temp/
 .vite/
 
 # Logs
@@ -36,3 +40,18 @@ tmp/
 
 # Optional package manager stores
 .pnpm-store/
+
+# Runtime data and private deployment material
+secrets/
+*.tsbuildinfo
+.next/
+test-results/
+playwright-report/
+blob-report/
+
+# Hexo 本地数据库，由本地生成
+db.json
+
+# 本地调试输出，以及误拷进博客目录的生成物
+output/
+code/apps/blog/my-blog/

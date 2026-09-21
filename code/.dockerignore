@@ -1,0 +1,24 @@
+.env
+.env.*
+!.env.example
+secrets
+
+node_modules
+**/node_modules
+
+.next
+**/.next
+dist
+**/dist
+coverage
+
+.git
+.DS_Store
+*.log
+tmp
+.tmp
+
+# Not needed when building the LightTools container
+apps/blog
+docs
+infra

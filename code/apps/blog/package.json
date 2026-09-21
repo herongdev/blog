@@ -1,0 +1,28 @@
+{
+  "name": "@herong/blog",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "node --max-old-space-size=8192 ./node_modules/vitepress/bin/vitepress.js build docs",
+    "docs:preview": "vitepress preview docs",
+    "tutorials:import:onenote": "python3 scripts/import-onenote-tutorials.py",
+    "rss": "node scripts/gen-rss.mjs",
+    "new": "node bin/create-post.js",
+    "build": "pnpm run docs:build && pnpm run rss"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "herong.info 的 VitePress 技术博客",
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  },
+  "dependencies": {
+    "@types/node": "^24.5.2",
+    "fast-glob": "^3.3.3",
+    "feed": "^5.1.0",
+    "gray-matter": "^4.0.3"
+  }
+}

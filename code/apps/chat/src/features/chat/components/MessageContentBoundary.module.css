@@ -1,0 +1,17 @@
+.notice {
+  color: var(--muted);
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--space-8) var(--space-12);
+  margin: 0 0 var(--space-12);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
+.raw {
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+}

@@ -19,20 +19,15 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Enable pnpm
         shell: bash
         run: |
-          if [ -f pnpm-lock.yaml ] || [ -f pnpm-lock.yml ]; then
-            corepack enable
-            corepack prepare pnpm@8.15.4 --activate || npm i -g pnpm
-            pnpm i --frozen-lockfile || pnpm i
-          else
-            if [ -f package-lock.json ]; then
-              npm ci --no-audit --no-fund --include=dev
-            else
-              npm i --no-audit --no-fund
-            fi
-          fi
+          corepack enable
+          corepack prepare pnpm@10.28.0 --activate
+
+      - name: Install dependencies
+        working-directory: code
+        run: pnpm install --frozen-lockfile
 
       # ---------- Build #1: VPS 版本（根路径 /） ----------
       - name: Build for VPS (base=/)
@@ -47,12 +42,8 @@ jobs:
           GA_ID: ${{ secrets.GA_ID }}
           BAIDU_TONGJI_ID: ${{ secrets.BAIDU_TONGJI_ID }}
         shell: bash
-        run: |
-          if [ -f pnpm-lock.yaml ] || [ -f pnpm-lock.yml ]; then
-            pnpm run build || (pnpm add -D vitepress && pnpm run build)
-          else
-            npm run build
-          fi
+        working-directory: code
+        run: pnpm run build:blog
 
       # ---------- 部署到 VPS ----------
       - name: Deploy to VPS (rsync over SSH)
@@ -64,7 +55,7 @@ jobs:
           REMOTE_USER: ${{ secrets.SSH_USER }} # 例如 deploy
           SSH_CMD_ARGS: "-o StrictHostKeyChecking=no" # 首次连接跳过指纹确认
           ARGS: "-avzr --delete"
-          SOURCE: "docs/.vitepress/dist-vps/" # 使用 VPS 版本产物
+          SOURCE: "code/apps/blog/docs/.vitepress/dist-vps/" # 使用 VPS 版本产物
           TARGET: "/var/www/herongsite/" # 与 Nginx root 一致
 
       # ---------- Build #2: GitHub Pages 版本（子路径 /blog/） ----------
@@ -80,17 +71,13 @@ jobs:
           GA_ID: ${{ secrets.GA_ID }}
           BAIDU_TONGJI_ID: ${{ secrets.BAIDU_TONGJI_ID }}
         shell: bash
-        run: |
-          if [ -f pnpm-lock.yaml ] || [ -f pnpm-lock.yml ]; then
-            pnpm run build || (pnpm add -D vitepress && pnpm run build)
-          else
-            npm run build
-          fi
+        working-directory: code
+        run: pnpm run build:blog
 
       # ---------- 部署到 GitHub Pages ----------
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/.vitepress/dist-gh # 使用 GH 版本产物
+          publish_dir: code/apps/blog/docs/.vitepress/dist-gh # 使用 GH 版本产物
           publish_branch: gh-pages

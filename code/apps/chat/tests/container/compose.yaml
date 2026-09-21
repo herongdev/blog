@@ -1,0 +1,57 @@
+services:
+  app:
+    environment:
+      DEEPSEEK_API_KEY: container-test-key
+      DEEPSEEK_BASE_URL: http://upstream:4010/v1
+      DEEPSEEK_MODELS: test-model
+      DASHSCOPE_API_KEY: ""
+      APP_CHAT_TIMEOUT_MS: "2500"
+      APP_MAX_ACTIVE_GENERATIONS: "1"
+    healthcheck:
+      interval: 1s
+      start_period: 1s
+      retries: 2
+    depends_on:
+      upstream:
+        condition: service_healthy
+  upstream:
+    image: ${APP_IMAGE}
+    command: [node, /fixtures/mock-upstream.mjs]
+    volumes:
+      - ./tests/container/mock-upstream.mjs:/fixtures/mock-upstream.mjs:ro
+    ports:
+      - "127.0.0.1::4010"
+    healthcheck:
+      test:
+        [
+          CMD,
+          node,
+          -e,
+          "fetch('http://127.0.0.1:4010/stats').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 1s
+      timeout: 3s
+      retries: 10
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+  gateway:
+    image: ${CADDY_IMAGE}
+    ports:
+      - "127.0.0.1:${CONTAINER_TEST_PORT}:8080"
+    volumes:
+      - ./tests/container/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./deploy/app.caddy:/etc/caddy/app.caddy:ro
+    secrets: [demo_auth]
+    depends_on:
+      app:
+        condition: service_healthy
+    read_only: true
+    tmpfs: [/tmp, /data, /config]
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: [no-new-privileges:true]
+
+secrets:
+  demo_auth:
+    file: ${DEMO_AUTH_FILE}

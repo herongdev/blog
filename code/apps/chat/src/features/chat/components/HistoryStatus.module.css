@@ -1,0 +1,28 @@
+.notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-6) var(--space-4);
+  color: var(--subtle);
+  font-size: var(--text-xs);
+}
+.notice[data-error="true"] {
+  color: var(--status-error);
+}
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--space-8);
+}
+.actions button {
+  padding: var(--space-4);
+  text-decoration: underline;
+  text-underline-offset: var(--space-2);
+}
+@media (max-width: 760px) {
+  .notice[data-error="true"] {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

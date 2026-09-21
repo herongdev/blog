@@ -1,0 +1,32 @@
+.list {
+  position: relative;
+  min-height: var(--virtual-height);
+}
+.row {
+  position: absolute;
+  top: var(--virtual-offset);
+  left: 0;
+  right: 0;
+  display: flow-root;
+}
+.probe {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+  width: 100%;
+  box-sizing: content-box;
+  padding: var(--density-inset-row) 0;
+  height: calc(var(--text-sm) * var(--leading-normal) + var(--space-4));
+}
+
+.list[data-reading="true"] > .probe {
+  height: var(--virtual-content-estimate);
+  padding: 0;
+}
+
+.list[data-static="true"] > .row {
+  position: static;
+}
+.list[data-static="true"] > .probe {
+  display: none;
+}

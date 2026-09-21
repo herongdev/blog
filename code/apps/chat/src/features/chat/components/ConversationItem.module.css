@@ -1,0 +1,54 @@
+.row {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+  color: var(--muted);
+}
+.row:hover,
+.row:focus-within {
+  background: var(--surface-hover);
+}
+.row[data-selected="true"] {
+  background: var(--surface-selected);
+  color: var(--text-secondary);
+}
+.select {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+  flex: 1;
+  min-width: 0;
+  min-height: var(--control-height);
+  padding: var(--density-inset-row) var(--space-12);
+  font-size: var(--text-xs);
+  text-align: left;
+  border-radius: var(--radius-md);
+}
+.select > svg {
+  flex-shrink: 0;
+}
+.select > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pin {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.generating {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.generating svg {
+  animation: rotate var(--duration-pulse) linear infinite;
+}
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

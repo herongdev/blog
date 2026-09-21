@@ -1,0 +1,69 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  padding: 0;
+  margin: 0 0 var(--density-gap-controls);
+  list-style: none;
+}
+.file {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  max-width: 100%;
+  padding: var(--space-4) var(--space-8);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  background: var(--surface-muted);
+  color: var(--text-secondary);
+}
+.name {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--control-height-compact);
+  height: var(--control-height-compact);
+  border-radius: var(--radius-circle);
+}
+.remove:hover {
+  background: var(--surface-hover);
+}
+
+.file[data-image="true"] {
+  position: relative;
+  flex-direction: column;
+  align-items: stretch;
+  width: var(--attachment-thumbnail-size);
+  padding: var(--space-4);
+}
+.thumbnail {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  width: 100%;
+  height: var(--attachment-thumbnail-size);
+  cursor: zoom-in;
+}
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.file[data-image="true"] .name {
+  padding: 0 var(--space-4);
+}
+.file[data-image="true"] .remove {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: var(--surface);
+  box-shadow: var(--shadow-subtle);
+}

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+output/
+.playwright-cli/
+*.log
+.secrets/
+.DS_Store
+
+# 本地课程和学习记录，不纳入项目仓库
+/local-docs/
+docs/开源学习/
+docs/代码导读.md
+docs/实施过程.md

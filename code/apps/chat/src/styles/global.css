@@ -1,0 +1,65 @@
+:root {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--surface);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+button,
+select {
+  cursor: pointer;
+}
+button {
+  color: inherit;
+  border: 0;
+  background: transparent;
+}
+button:disabled,
+button[aria-disabled="true"],
+select:disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+button,
+a,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+::selection {
+  background: var(--accent-selection);
+}
+button,
+a {
+  touch-action: manipulation;
+}
+select {
+  color: inherit;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

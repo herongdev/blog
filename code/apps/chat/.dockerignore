@@ -1,0 +1,22 @@
+# Only inputs needed by npm run build (including its type checks).
+**
+!Dockerfile
+!package.json
+!package-lock.json
+!tsconfig*.json
+!index.html
+!vite.config.ts
+!vitest.config.ts
+!playwright.config.ts
+!scripts/**
+!src/**
+!shared/**
+!server/**
+!public/**
+!tests/**
+!third_party/**
+**/.env*
+**/.secrets/**
+**/*.log
+**/node_modules/**
+**/.DS_Store

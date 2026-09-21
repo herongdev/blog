@@ -1,0 +1,39 @@
+name: Chat CI
+
+on:
+  push:
+    paths:
+      - "code/apps/chat/**"
+      - "code/infra/chat/**"
+      - "code/package.json"
+      - "code/pnpm-lock.yaml"
+      - "code/pnpm-workspace.yaml"
+      - ".github/workflows/chat-ci.yml"
+  pull_request:
+    paths:
+      - "code/apps/chat/**"
+      - "code/infra/chat/**"
+      - "code/package.json"
+      - "code/pnpm-lock.yaml"
+      - "code/pnpm-workspace.yaml"
+      - ".github/workflows/chat-ci.yml"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: code
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: code/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:chat
+      - run: pnpm build:chat

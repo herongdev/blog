@@ -1,0 +1,8 @@
+.message-list {
+  padding: var(--density-gap-section) 0 var(--density-gap-heading-before);
+}
+@media (max-width: 760px) {
+  .message-list {
+    padding-top: var(--density-gap-content);
+  }
+}

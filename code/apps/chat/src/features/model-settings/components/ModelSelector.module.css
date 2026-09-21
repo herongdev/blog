@@ -1,0 +1,4 @@
+.model-select {
+  max-width: min(100%, var(--layout-model-label));
+  border-radius: var(--radius-pill);
+}

@@ -1,0 +1,8 @@
+{
+	admin off
+	email {$ACME_EMAIL}
+}
+
+{$SITE_HOST} {
+	import /etc/caddy/app.caddy
+}
