@@ -39,7 +39,13 @@ if [[ "$mode" == "--build-only" ]]; then
 fi
 
 stage=$(mktemp -d "${TMPDIR:-/tmp}/zhixu-chat-release.XXXXXX")
-trap 'rm -r -- "$stage"' EXIT
+cleanup() {
+  status=$?
+  rm -r -- "$stage" || true
+  trap - EXIT
+  exit "$status"
+}
+trap cleanup EXIT
 archive="$stage/zhixu-chat-$release.tar.gz"
 cp "$infra_dir/remote-deploy.sh" "$stage/remote-deploy-$release.sh"
 cp "$app_dir/compose.yaml" "$stage/compose-$release.yaml"

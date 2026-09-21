@@ -18,8 +18,11 @@ install -d -m 700 "$base/output/deploy"
 lock="$base/output/deploy/lock"
 mkdir "$lock" || { echo "已有聊天应用发布正在运行。" >&2; exit 1; }
 cleanup() {
-  rm -f -- "$candidate_compose" "$candidate_local"
-  rmdir "$lock"
+  status=$?
+  rm -f -- "$candidate_compose" "$candidate_local" || true
+  rmdir "$lock" || true
+  trap - EXIT
+  exit "$status"
 }
 trap cleanup EXIT
 
@@ -49,6 +52,7 @@ APP_IMAGE="$next" docker compose --project-name zhixu-chat \
   -f "$candidate_compose" -f "$candidate_local" config --quiet
 cp -p "$compose_file" "$releases/compose-before-$release.yaml"
 cp -p "$local_file" "$releases/compose-local-before-$release.yaml"
+cp -p "$env_file" "$releases/env-before-$release"
 cp "$candidate_compose" "$compose_file"
 cp "$candidate_local" "$local_file"
 
@@ -59,8 +63,7 @@ start() {
     --wait-timeout 60 app
 }
 
-if start "$next" && curl --fail --silent --max-time 10 \
-  http://127.0.0.1:24301/api/healthz >/dev/null; then
+record_release() {
   python3 - "$next" "$previous" "$release" "$env_file" "$base" <<'PY'
 from pathlib import Path
 import datetime, json, re, sys
@@ -81,10 +84,17 @@ out = Path(base) / "output" / "deploy" / f"release-{release}.json"
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n")
 PY
+}
+
+if start "$next" && curl --fail --silent --max-time 10 \
+  http://127.0.0.1:24301/api/healthz >/dev/null && record_release; then
+  :
 else
   echo "发布失败，恢复上一版。" >&2
   cp "$releases/compose-before-$release.yaml" "$compose_file"
   cp "$releases/compose-local-before-$release.yaml" "$local_file"
+  cp "$releases/env-before-$release" "$env_file"
+  rm -f -- "$base/output/deploy/release-$release.json"
   if [[ -n "$previous" ]]; then start "$previous"; fi
   exit 1
 fi
