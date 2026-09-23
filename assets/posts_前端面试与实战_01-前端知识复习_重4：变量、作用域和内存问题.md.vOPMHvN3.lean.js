@@ -1,0 +1,53 @@
+import{_ as a,o as e,c as p,j as n,a as s}from"./chunks/framework.DJo0M80U.js";const h=JSON.parse('{"title":"重4：变量、作用域和内存问题","description":"ECMAScript变量可能包含两种不同数据类型的值：基本类型值和引用类型值。 基本类型值指的是简单的数据段，而引用类型值指那些可能由多个值构成的对象。 在将一个值赋给变量时，解析器必须确定这个值是基本类型值还是引用类型值。 基本数据是按值访问的，因为可以操作保存在变量中的实际的。","frontmatter":{"title":"重4：变量、作用域和内存问题","date":"2026-08-11T00:00:00.000Z","categories":["前端面试与实战"],"tags":["前端面试","算法","求职","教程","OneNote","前端知识复习"],"description":"ECMAScript变量可能包含两种不同数据类型的值：基本类型值和引用类型值。 基本类型值指的是简单的数据段，而引用类型值指那些可能由多个值构成的对象。 在将一个值赋给变量时，解析器必须确定这个值是基本类型值还是引用类型值。 基本数据是按值访问的，因为可以操作保存在变量中的实际的。","sidebarWeight":39,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/a-吊打面试官/考点难点/重4：变量、作用域和内存问题.md"},"headers":[],"relativePath":"posts/前端面试与实战/01-前端知识复习/重4：变量、作用域和内存问题.md","filePath":"posts/前端面试与实战/01-前端知识复习/重4：变量、作用域和内存问题.md"}'),i={name:"posts/前端面试与实战/01-前端知识复习/重4：变量、作用域和内存问题.md"};function c(t,l,u,o,r,m){return e(),p("div",null,[...l[0]||(l[0]=[n("div",null,[n("h1",{id:"重4-变量、作用域和内存问题",tabindex:"-1"},[s("重4：变量、作用域和内存问题 "),n("a",{class:"header-anchor",href:"#重4-变量、作用域和内存问题","aria-label":'Permalink to "重4：变量、作用域和内存问题"'},"​")]),n("blockquote",null,[n("p",null,"本节目标：理解“重4：变量、作用域和内存问题”的核心思路，并能把它用于实际开发或面试表达。")]),n("blockquote",null,[n("p",null,"说明：原 OneNote 中有图片引用，但图片未包含在导出目录中；本页保留了可用的文字与代码内容。 ECMAScript变量可能包含两种不同数据类型的值：基本类型值和引用类型值。 基本类型值指的是简单的数据段，而引用类型值指那些可能由多个值构成的对象。 在将一个值赋给变量时，解析器必须确定这个值是基本类型值还是引用类型值。 基本数据是按值访问的，因为可以操作保存在变量中的实际的值。 引用类型的值是保存在内存中的对象。JavaScript不允许直接访何内存中的位置，也就是说不能直接操作对象的内存空间。在操作对象时，实际上是在操作对象的引用而不是实际的对象。为此，引用类型的值是按引用访何的。")]),n("p",null,"在很多语言中，字符串是以对象的形式来表示，因此被认为是引用类型的。ECMAScript放弃 了这一传统。"),n("p",null,[n("strong",null,"动态的属性"),s(" 定义基本类型值和引用类型值的方式是类似的：创建一个变量并为该变量赋值。但是，当这个值保存到变量中以后，对不同类型值可以执行的操作则大相径庭。对于引用类型的值，我们可以为其添加属性和方法，也可以改变和删除其属性和方法。请看下面的例子：")]),n("div",{class:"language- vp-adaptive-theme"},[n("button",{title:"Copy Code",class:"copy"}),n("span",{class:"lang"}),n("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[n("code",null,[n("span",{class:"line"},[n("span",null,"①这种说法不严密，当复制保存着对象的某个变量时，操作的是对象的引用。但在为对象添加属性时，操作的是实际的对象。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var person = new Object();")]),s(`
+`),n("span",{class:"line"},[n("span",null,'person.name = "Nicholas";')]),s(`
+`),n("span",{class:"line"},[n("span",null,'alert(person.name); //"Nicholas"')]),s(`
+`),n("span",{class:"line"},[n("span",null,"以上代码创建了一个对象并将其保存在了变量person中。然后，我们为该对象添加一个名为")]),s(`
+`),n("span",{class:"line"},[n("span",null,'name的属性，并将字符串值"Nicholas"赋给了这个属性。紧接着，又通过alert()函数访问了这个新厲性。如果对象不被销毁或者这个属性不被删除，则这个属性将一直存在。')])])])]),n("p",null,"不能给基本类型的值添加属性，尽管这样做不会导致任何错误。比如："),n("div",{class:"language- vp-adaptive-theme"},[n("button",{title:"Copy Code",class:"copy"}),n("span",{class:"lang"}),n("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[n("code",null,[n("span",{class:"line"},[n("span",null,"复制变量值")]),s(`
+`),n("span",{class:"line"},[n("span",null,"除了保存的方式不同之外，在从一个变量向另一个变量复制基本类型值和引用类型值时，也存在不同。如果从一个变量向另一个变量复制基本类型的值，会在变量对象上创建一个新值，然后把该值复制到为新变量分配的位置上。来看一个例子：")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var num1 = 5;")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var num2 = num1;")]),s(`
+`),n("span",{class:"line"},[n("span",null,"在此，num1中保存的值是5。当使用num1的值来初始化num2时，num2中也保存了值5。但num2")]),s(`
+`),n("span",{class:"line"},[n("span",null,"中的5与num1中的5是完全独立的，该值只是num1中5的一个副本。此后，这两个变量可以多与任何操作而不会相互影响。如下图所示：")])])])]),n("div",{class:"language- vp-adaptive-theme"},[n("button",{title:"Copy Code",class:"copy"}),n("span",{class:"lang"}),n("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[n("code",null,[n("span",{class:"line"},[n("span",null,"当从一个变量向另一个变量复制引用类型的值时，同样也会将存储在变量对象中的值复制一份放到为新变量分配的空间中。不同的是，这个值的副本实际上是一个指针，而这个指针指向存储在堆中的一个对象。复制操作结束后，两个变量实际上将引用同一个对象。因此，改变其中一个变量，就会影响另一个变量，如下：")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var obj1 = new Object();")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var obj2 = obj1;")]),s(`
+`),n("span",{class:"line"},[n("span",null,'obj1.name = "Nicholas";')]),s(`
+`),n("span",{class:"line"},[n("span",null,'alert(obj2.name); //"Nicholas"')])])])]),n("p",null,[n("strong",null,"传递参数"),s(" ECMAScript中所有函数的参数都是按值传递的，也就是说，把函数外部的值复制给函数内部的参数，就和把值从一个变量复制到另一个变量一样。访问变量有按值和按引用两种方式，而参数只能按值传递。")]),n("div",{class:"language- vp-adaptive-theme"},[n("button",{title:"Copy Code",class:"copy"}),n("span",{class:"lang"}),n("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[n("code",null,[n("span",{class:"line"},[n("span",null,"在向参数传递基本类型的值时，被传递的值会被复制给一个局部变量(即命名参数，或者用")]),s(`
+`),n("span",{class:"line"},[n("span",null,"ECMAScript的概念来说，就是arguments对象中的一个元素，在向参数传递引用类型的值时，会把这个值在内存中的地址复制给一个局部变量，因此这个局部变量的变化会反映在函数的外部。比如：")]),s(`
+`),n("span",{class:"line"},[n("span",null,"function addTen(num) {")]),s(`
+`),n("span",{class:"line"},[n("span",null,"    num += 10;")]),s(`
+`),n("span",{class:"line"},[n("span",null,"    return num;")]),s(`
+`),n("span",{class:"line"},[n("span",null,"}")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var count = 20;")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var result = addTen(count);")]),s(`
+`),n("span",{class:"line"},[n("span",null,"alert(count); //20，没有变化")]),s(`
+`),n("span",{class:"line"},[n("span",null,"alert(result); //30")]),s(`
+`),n("span",{class:"line"},[n("span",null,"这里的函数addTen有一个参数num，而参数实际上是函数的局部变量。在调用这个函数时，变")]),s(`
+`),n("span",{class:"line"},[n("span",null,"量count作为参数被传递给函数，这个变量的值是20。于是数值20被复制给参数num以便在addTen()中使用。在函数内部，参数num的值被加上了10,但这一变化不会影响函数外部的count变量。参数num与变量count互不相识，它们仅仅是具有相同的值。假如num是按引用传递的话，那么变量count的值也将变成30，从而反映函数内部的修改。当然，使用数值等基本类型值来说明按值传递参数比较简单，但如果使用对象，难理解一些，如：")]),s(`
+`),n("span",{class:"line"},[n("span",null,"function setName(obj) {")]),s(`
+`),n("span",{class:"line"},[n("span",null,'    obj.name = "Nicholas";')]),s(`
+`),n("span",{class:"line"},[n("span",null,"}")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var person = new Object();")]),s(`
+`),n("span",{class:"line"},[n("span",null,"setName(person);")]),s(`
+`),n("span",{class:"line"},[n("span",null,'alert(person.name); //"Nicholas"')]),s(`
+`),n("span",{class:"line"},[n("span",null,"以上代码中创建一个对象，并将其保存在了变量person中。然后，这个变量被传递到setName()函数中之后就被复制给了。bj°在这个函数内部，obj和person引用的是同一个对象°换句话说，即")]),s(`
+`),n("span",{class:"line"},[n("span",null,"使这个变量是按值传递的，。圮也会按引用来访冋同一个对象°于是，当在函数内部为。bj添加name")]),s(`
+`),n("span",{class:"line"},[n("span",null,"屈性后，函数外部的person也将有所反映；因为person指向的对象在堆内存中只有一个，而且是全")]),s(`
+`),n("span",{class:"line"},[n("span",null,"局对象。有很多开发人员错误地认为：在局部作用域中修改的对象会在全局作用域中反映出来，就说明")]),s(`
+`),n("span",{class:"line"},[n("span",null,"参数是按引用传递的。为了证明对象是按值传递的，我们再看一看下面这个经过修改的例子：")]),s(`
+`),n("span",{class:"line"},[n("span",null,"function seWarne(obj)(")]),s(`
+`),n("span",{class:"line"},[n("span",null,'obj.name = • Nicholas";')]),s(`
+`),n("span",{class:"line"},[n("span",null,"obj . new")]),s(`
+`),n("span",{class:"line"},[n("span",null,"cbj.naM ■ -OMg-;")]),s(`
+`),n("span",{class:"line"},[n("span",null,"»")]),s(`
+`),n("span",{class:"line"},[n("span",null,"var person = new Ctoject O;")]),s(`
+`),n("span",{class:"line"},[n("span",null,"setName(person)；")]),s(`
+`),n("span",{class:"line"},[n("span",null,'alerttperaon.name) ? //"Nicholas*')]),s(`
+`),n("span",{class:"line"},[n("span",null,"这个例子与前一个例子的唯一区别，就是在setNameU函数中添加了两行代码：一行代码为。bj")]),s(`
+`),n("span",{class:"line"},[n("span",null,"車新定义了一个对象，另一行代码为该对象定义了一个带有不同值的name属性°在把person传递给")]),s(`
+`),n("span",{class:"line"},[n("span",null,"setName()后，其name属性被设置为・Nichol«,然后，又将赋给变量obj,同时将其name")]),s(`
+`),n("span",{class:"line"},[n("span",null,"屈性设置为・Greg・°如果person是按弓|用传递的，那么person就会自动被修改为指向其name属性值")]),s(`
+`),n("span",{class:"line"},[n("span",null,"为・Greg■的新对象。但是，当接下来再访何person.name时，显示的值仍然是-Nicholas-o这说明")]),s(`
+`),n("span",{class:"line"},[n("span",null,"即使在函数内部修改了参数的值，但原始的引用仍然保持未变。实际上，当在函数内部重写。bj时，这")]),s(`
+`),n("span",{class:"line"},[n("span",null,"个变最引用的就是一个局部对象了。而这个局部对象会在函数执行完毕后立即被销毁。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"图蜓区鈿1 sularxx(sularxx@163xom)专■尊咬权")])])])])],-1)])])}const b=a(i,[["render",c]]);export{h as __pageData,b as default};

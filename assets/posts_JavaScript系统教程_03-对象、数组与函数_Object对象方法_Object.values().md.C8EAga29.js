@@ -1,0 +1,16 @@
+import{_ as l,o as n,c as t,j as e,a}from"./chunks/framework.DJo0M80U.js";const v=JSON.parse('{"title":"Object.values()","description":"围绕“Object.values()”整理的概念、示例与实践笔记。","frontmatter":{"title":"Object.values()","date":"2026-08-11T00:00:00.000Z","categories":["JavaScript 系统教程"],"tags":["JavaScript","前端","教程","OneNote","对象、数组与函数"],"description":"围绕“Object.values()”整理的概念、示例与实践笔记。","sidebarWeight":46,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/b-原生js/引用数据类型-对象/Object对象方法/Object.values().md"},"headers":[],"relativePath":"posts/JavaScript系统教程/03-对象、数组与函数/Object对象方法/Object.values().md","filePath":"posts/JavaScript系统教程/03-对象、数组与函数/Object对象方法/Object.values().md"}'),c={name:"posts/JavaScript系统教程/03-对象、数组与函数/Object对象方法/Object.values().md"};function u(b,s,p,o,i,r){return n(),t("div",null,[...s[0]||(s[0]=[e("div",null,[e("h1",{id:"object-values",tabindex:"-1"},[a("Object.values() "),e("a",{class:"header-anchor",href:"#object-values","aria-label":'Permalink to "Object.values()"'},"​")]),e("blockquote",null,[e("p",null,"本节目标：理解“Object.values()”的核心思路，并能把它用于实际开发或面试表达。")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"Object.values方法返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键值。")]),a(`
+`),e("span",{class:"line"},[e("span",null,`const obj = { foo: 'bar', baz: 42 };Object.values(obj)// ["bar", 42]`)]),a(`
+`),e("span",{class:"line"},[e("span",null,"返回数组的成员顺序，与本章的《属性的遍历》部分介绍的排列规则一致。")]),a(`
+`),e("span",{class:"line"},[e("span",null,`const obj = { 100: 'a', 2: 'b', 7: 'c' };Object.values(obj)// ["b", "c", "a"]`)]),a(`
+`),e("span",{class:"line"},[e("span",null,"上面代码中，属性名为数值的属性，是按照数值大小，从小到大遍历的，因此返回的顺序是b、c、a。")]),a(`
+`),e("span",{class:"line"},[e("span",null,"Object.values只返回对象自身的可遍历属性。")]),a(`
+`),e("span",{class:"line"},[e("span",null,"const obj = Object.create({}, {p: {value: 42}});Object.values(obj) // []")]),a(`
+`),e("span",{class:"line"},[e("span",null,"上面代码中，Object.create方法的第二个参数添加的对象属性（属性p），如果不显式声明，默认是不可遍历的，因为p的属性描述对象的enumerable默认是false，Object.values不会返回这个属性。只要把enumerable改成true，Object.values就会返回属性p的值。")]),a(`
+`),e("span",{class:"line"},[e("span",null,"const obj = Object.create({}, {p:  {    value: 42,    enumerable: true  }});Object.values(obj) // [42]")]),a(`
+`),e("span",{class:"line"},[e("span",null,"Object.values会过滤属性名为 Symbol 值的属性。")]),a(`
+`),e("span",{class:"line"},[e("span",null,"Object.values({ [Symbol()]: 123, foo: 'abc' });// ['abc']")]),a(`
+`),e("span",{class:"line"},[e("span",null,"如果Object.values方法的参数是一个字符串，会返回各个字符组成的一个数组。")]),a(`
+`),e("span",{class:"line"},[e("span",null,"Object.values('foo')// ['f', 'o', 'o']")]),a(`
+`),e("span",{class:"line"},[e("span",null,"上面代码中，字符串会先转成一个类似数组的对象。字符串的每个字符，就是该对象的一个属性。因此，Object.values返回每个属性的键值，就是各个字符组成的一个数组。")]),a(`
+`),e("span",{class:"line"},[e("span",null,"如果参数不是对象，Object.values会先将其转为对象。由于数值和布尔值的包装对象，都不会为实例添加非继承的属性。所以，Object.values会返回空数组。")]),a(`
+`),e("span",{class:"line"},[e("span",null,"Object.values(42) // []Object.values(true) // []")])])])])],-1)])])}const O=l(c,[["render",u]]);export{v as __pageData,O as default};

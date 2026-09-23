@@ -1,0 +1,52 @@
+import{_ as s,o as n,c as e,a5 as p}from"./chunks/framework.DJo0M80U.js";const u=JSON.parse('{"title":"91. 设计小型 C 库","description":"The Little Book of C 中文版 — 91. 设计小型 C 库","frontmatter":{"title":"91. 设计小型 C 库","date":"2026-07-04","lang":"zh-CN","categories":["C 教程"],"tags":["C","Little Book of C","10-真实项目","中文"],"description":"The Little Book of C 中文版 — 91. 设计小型 C 库","source":"https://little-book-of.github.io/c/books/en-US/book.html","license":"CC BY-NC-SA 4.0","originalAuthor":"Duc-Tam Nguyen","translator":"机器辅助翻译（Google Translate）","section":91,"sidebarWeight":91,"alternateZh":"/posts/c教程/zh-CN/10-真实项目/091-Designing Small C Libraries","alternateEn":"/posts/c教程/en-US/10-Building Real Projects/091-Designing Small C Libraries"},"headers":[],"relativePath":"posts/c教程/zh-CN/10-真实项目/091-Designing Small C Libraries.md","filePath":"posts/c教程/zh-CN/10-真实项目/091-Designing Small C Libraries.md","lastUpdated":1790163617000}'),l={name:"posts/c教程/zh-CN/10-真实项目/091-Designing Small C Libraries.md"};function i(t,a,o,d,c,r){return n(),e("div",null,[...a[0]||(a[0]=[p(`<p>[English version](/posts/c教程/en-US/10-Building Real Projects/091-Designing Small C Libraries)</p><p>编写库可以让您的 C 代码可重用、模块化且易于维护。在本节中，您将学习如何设计和构建一个小型、可移植且文档齐全的 C 库，这种库已在实际系统中使用了数十年。</p><h4 id="步骤-1-什么是-c-语言库" tabindex="-1">步骤 1. 什么是 C 语言库？ <a class="header-anchor" href="#步骤-1-什么是-c-语言库" aria-label="Permalink to &quot;步骤 1. 什么是 C 语言库？&quot;">​</a></h4><p>C 中的库是可由多个程序使用的函数和数据类型的集合。</p><p>有两种类型的库：</p><ul><li>静态库（<code>.a</code>或者<code>.lib</code>) – 在构建时编译成最终程序。</li><li>共享库（<code>.so</code>或者<code>.dll</code>) – 在运行时动态加载。</li></ul><p>您将首先构建一个提供可重用数学实用程序的小型静态库。</p><h4 id="步骤-2-规划图书馆" tabindex="-1">步骤 2. 规划图书馆 <a class="header-anchor" href="#步骤-2-规划图书馆" aria-label="Permalink to &quot;步骤 2. 规划图书馆&quot;">​</a></h4><p>让我们设计一个名为 simplemath 的库，它提供：</p><p>-<code>add</code>,<code>subtract</code>,<code>multiply</code>,<code>divide</code></p><ul><li>除零的错误处理</li><li>干净、一致的命名</li></ul><p>结构：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>simplemath/</span></span>
+<span class="line"><span> ├── include/</span></span>
+<span class="line"><span> │    └── simplemath.h</span></span>
+<span class="line"><span> ├── src/</span></span>
+<span class="line"><span> │    └── simplemath.c</span></span>
+<span class="line"><span> └── Makefile</span></span></code></pre></div><h4 id="步骤-3-头文件-simplemath-h" tabindex="-1">步骤 3. 头文件 (simplemath.h) <a class="header-anchor" href="#步骤-3-头文件-simplemath-h" aria-label="Permalink to &quot;步骤 3. 头文件 (simplemath.h)&quot;">​</a></h4><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>#ifndef SIMPLEMATH_H</span></span>
+<span class="line"><span>#define SIMPLEMATH_H</span></span>
+<span class="line"><span>#ifdef __cplusplus</span></span>
+<span class="line"><span>extern &quot;C&quot; {</span></span>
+<span class="line"><span>#endif</span></span>
+<span class="line"><span>double sm_add(double a, double b);</span></span>
+<span class="line"><span>double sm_sub(double a, double b);</span></span>
+<span class="line"><span>double sm_mul(double a, double b);</span></span>
+<span class="line"><span>double sm_div(double a, double b, int *error);</span></span>
+<span class="line"><span>#ifdef __cplusplus</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>#endif</span></span>
+<span class="line"><span>#endif</span></span></code></pre></div><p>笔记：</p><ul><li>包括防护装置以防止双重包含。 -<code>extern &quot;C&quot;</code>允许在 C++ 项目中使用。</li><li>前缀 (<code>sm_</code>) 防止命名冲突。</li></ul><h4 id="步骤-4-实现文件-simplemath-c" tabindex="-1">步骤 4. 实现文件 (simplemath.c) <a class="header-anchor" href="#步骤-4-实现文件-simplemath-c" aria-label="Permalink to &quot;步骤 4. 实现文件 (simplemath.c)&quot;">​</a></h4><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>#include &quot;simplemath.h&quot;</span></span>
+<span class="line"><span>#include &lt;stdio.h&gt;</span></span>
+<span class="line"><span>double sm_add(double a, double b) { return a + b; }</span></span>
+<span class="line"><span>double sm_sub(double a, double b) { return a - b; }</span></span>
+<span class="line"><span>double sm_mul(double a, double b) { return a * b; }</span></span>
+<span class="line"><span>double sm_div(double a, double b, int *error) {</span></span>
+<span class="line"><span>    if (b == 0) {</span></span>
+<span class="line"><span>        if (error) *error = 1;</span></span>
+<span class="line"><span>        fprintf(stderr, &quot;Division by zero\\n&quot;);</span></span>
+<span class="line"><span>        return 0.0;</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    if (error) *error = 0;</span></span>
+<span class="line"><span>    return a / b;</span></span>
+<span class="line"><span>}</span></span></code></pre></div><h4 id="步骤-5-小代码-使用库的示例程序" tabindex="-1">步骤 5. 小代码：使用库的示例程序 <a class="header-anchor" href="#步骤-5-小代码-使用库的示例程序" aria-label="Permalink to &quot;步骤 5. 小代码：使用库的示例程序&quot;">​</a></h4><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>#include &lt;stdio.h&gt;</span></span>
+<span class="line"><span>#include &quot;simplemath.h&quot;</span></span>
+<span class="line"><span>int main(void) {</span></span>
+<span class="line"><span>    int err;</span></span>
+<span class="line"><span>    double x = sm_div(10, 2, &amp;err);</span></span>
+<span class="line"><span>    printf(&quot;10 / 2 = %.2f\\n&quot;, x);</span></span>
+<span class="line"><span>    x = sm_div(10, 0, &amp;err);</span></span>
+<span class="line"><span>    if (err) printf(&quot;Error detected during division.\\n&quot;);</span></span>
+<span class="line"><span>    return 0;</span></span>
+<span class="line"><span>}</span></span></code></pre></div><h4 id="步骤-6-用于构建库的-makefile" tabindex="-1">步骤 6. 用于构建库的 Makefile <a class="header-anchor" href="#步骤-6-用于构建库的-makefile" aria-label="Permalink to &quot;步骤 6. 用于构建库的 Makefile&quot;">​</a></h4><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>CC = gcc</span></span>
+<span class="line"><span>CFLAGS = -std=c23 -O2 -Wall -Wextra -Iinclude</span></span>
+<span class="line"><span>all: libsimplemath.a test</span></span>
+<span class="line"><span>libsimplemath.a: src/simplemath.o</span></span>
+<span class="line"><span>    ar rcs libsimplemath.a src/simplemath.o</span></span>
+<span class="line"><span>src/simplemath.o: src/simplemath.c include/simplemath.h</span></span>
+<span class="line"><span>    $(CC) $(CFLAGS) -c src/simplemath.c -o src/simplemath.o</span></span>
+<span class="line"><span>test: test.c libsimplemath.a</span></span>
+<span class="line"><span>    $(CC) $(CFLAGS) test.c -L. -lsimplemath -o test</span></span>
+<span class="line"><span>clean:</span></span>
+<span class="line"><span>    rm -f src/*.o *.a test</span></span></code></pre></div><p>构建它：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>make</span></span></code></pre></div><p>跑步：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>./test</span></span></code></pre></div><p>输出：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>10 / 2 = 5.00</span></span>
+<span class="line"><span>Division by zero</span></span>
+<span class="line"><span>Error detected during division.</span></span></code></pre></div><h4 id="步骤-7-clean-c-库的设计指南" tabindex="-1">步骤 7. Clean C 库的设计指南 <a class="header-anchor" href="#步骤-7-clean-c-库的设计指南" aria-label="Permalink to &quot;步骤 7. Clean C 库的设计指南&quot;">​</a></h4><table tabindex="0"><thead><tr><th>原理</th><th>描述</th></tr></thead><tbody><tr><td>所有符号</td><td>前缀避免全局名称冲突（例如，<code>sm_add</code>)</td></tr><tr><td>单一责任</td><td>每个功能应该做一件明确的事情</td></tr><tr><td>最小的依赖性</td><td>不要依赖非标准标头</td></tr><tr><td>使用标题保护</td><td>防止重复包含</td></tr><tr><td>提供错误处理</td><td>返回代码，<code>errno</code>，或输出参数</td></tr><tr><td>编写文档</td><td>使用 Doxygen 或简单的注释块</td></tr><tr><td>版本化您的 API</td><td>彻底改变轨道</td></tr></tbody></table><h4 id="步骤-8-添加版本控制和元数据" tabindex="-1">步骤 8. 添加版本控制和元数据 <a class="header-anchor" href="#步骤-8-添加版本控制和元数据" aria-label="Permalink to &quot;步骤 8. 添加版本控制和元数据&quot;">​</a></h4><p>将其添加到您的标题中：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>#define SIMPLEMATH_VERSION &quot;1.0.0&quot;</span></span></code></pre></div><p>在您的 CMake 或 Makefile 构建脚本中，您可以将此版本传播到您的打包系统或文档中。</p><h4 id="第-9-步-为什么它很重要" tabindex="-1">第 9 步：为什么它很重要 <a class="header-anchor" href="#第-9-步-为什么它很重要" aria-label="Permalink to &quot;第 9 步：为什么它很重要&quot;">​</a></h4><p>编写库可以将您从脚本作者转变为系统构建者。它教授 API 设计、接口和实现的分离以及长期维护，与 glibc、SQLite 和curl 等现实软件中使用的原理相同。</p><h4 id="第-10-步-亲自尝试一下" tabindex="-1">第 10 步：亲自尝试一下 <a class="header-anchor" href="#第-10-步-亲自尝试一下" aria-label="Permalink to &quot;第 10 步：亲自尝试一下&quot;">​</a></h4><p>1.添加新功能（<code>sm_pow</code>,<code>sm_mod</code>,<code>sm_avg</code>). 2. 创建库的共享版本（<code>libsimplemath.so</code>). 3. 使用 Doxygen 风格的注释来记录您的 API。 4. 编写一个只有标头的版本（<code>static inline</code>功能）。 5. 使用版本控制和示例打包您的库。</p><p>接下来，您将学习如何用 C (92) 构建完整的命令行工具，将可重用库连接到实用的、面向用户的应用程序。</p>`,40)])])}const b=s(l,[["render",i]]);export{u as __pageData,b as default};

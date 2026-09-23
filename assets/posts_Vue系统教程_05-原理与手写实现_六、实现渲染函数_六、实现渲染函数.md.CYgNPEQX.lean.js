@@ -1,0 +1,23 @@
+import{_ as l,o as a,c as t,j as e,a as s}from"./chunks/framework.DJo0M80U.js";const m=JSON.parse('{"title":"六、实现渲染函数","description":"PatchPhase：数据模型一旦变化渲染函数将再次被调用生成新的虚拟Dom，然后做Dom Diff更新视图Html。","frontmatter":{"title":"六、实现渲染函数","date":"2026-08-11T00:00:00.000Z","categories":["Vue 系统教程"],"tags":["Vue","Vue3","前端","教程","OneNote","原理与手写实现"],"description":"PatchPhase：数据模型一旦变化渲染函数将再次被调用生成新的虚拟Dom，然后做Dom Diff更新视图Html。","sidebarWeight":9,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/f-vue/min-vue/六、实现渲染函数/六、实现渲染函数.md"},"headers":[],"relativePath":"posts/Vue系统教程/05-原理与手写实现/六、实现渲染函数/六、实现渲染函数.md","filePath":"posts/Vue系统教程/05-原理与手写实现/六、实现渲染函数/六、实现渲染函数.md"}'),p={name:"posts/Vue系统教程/05-原理与手写实现/六、实现渲染函数/六、实现渲染函数.md"};function i(u,n,o,c,r,d){return a(),t("div",null,[...n[0]||(n[0]=[e("div",null,[e("h1",{id:"六、实现渲染函数",tabindex:"-1"},[s("六、实现渲染函数 "),e("a",{class:"header-anchor",href:"#六、实现渲染函数","aria-label":'Permalink to "六、实现渲染函数"'},"​")]),e("blockquote",null,[e("p",null,"本节目标：理解“六、实现渲染函数”的核心思路，并能把它用于实际开发或面试表达。")]),e("blockquote",null,[e("p",null,"说明：原 OneNote 中有图片引用，但图片未包含在导出目录中；本页保留了可用的文字与代码内容。")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"在Vue中我们通过将视图模板(template)编译为渲染函数(render function)再转化为虚拟Dom")])])])]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"渲染流程通常会分为三各部分:")]),s(`
+`),e("span",{class:"line"},[e("span",null,"[vue-next-template-explorer.netlify.app/](https://vue-next-template-explorer.netlify.app/)")])])])]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"RenderPhase ： 渲染模块使用渲染函数根据初始化数据生成虚拟Dom")])])])]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"MountPhase ： 利用虚拟Dom创建视图页面Html")])])])]),e("p",null,"PatchPhase：数据模型一旦变化渲染函数将再次被调用生成新的虚拟Dom，然后做Dom Diff更新视图Html"),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"mount: function (container) {")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  const dom = document.querySelector(container);")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  const setupResult = config.setup();")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  const render = config.render(setupResult);")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  let isMounted = false;")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  let prevSubTree;")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  watchEffect(() => {")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    if (!isMounted) {")]),s(`
+`),e("span",{class:"line"},[e("span",null,'      dom.innerHTML = "";')]),s(`
+`),e("span",{class:"line"},[e("span",null,"      // mount")]),s(`
+`),e("span",{class:"line"},[e("span",null,"      isMounted = true;")]),s(`
+`),e("span",{class:"line"},[e("span",null,"      const subTree = config.render(setupResult);")]),s(`
+`),e("span",{class:"line"},[e("span",null,"      prevSubTree = subTree;")]),s(`
+`),e("span",{class:"line"},[e("span",null,"      mountElement(subTree, dom);")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    } else {")]),s(`
+`),e("span",{class:"line"},[e("span",null,"      // update")]),s(`
+`),e("span",{class:"line"},[e("span",null,"      const subTree = config.render(setupResult);")]),s(`
+`),e("span",{class:"line"},[e("span",null,"      diff(prevSubTree, subTree);")]),s(`
+`),e("span",{class:"line"},[e("span",null,"      prevSubTree = subTree;")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    }")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  });")]),s(`
+`),e("span",{class:"line"},[e("span",null,"},")])])])])],-1)])])}const g=l(p,[["render",i]]);export{m as __pageData,g as default};

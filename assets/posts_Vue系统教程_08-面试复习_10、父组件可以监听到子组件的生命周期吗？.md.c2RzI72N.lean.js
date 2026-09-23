@@ -1,0 +1,16 @@
+import{_ as l,o as a,c as t,j as e,a as n}from"./chunks/framework.DJo0M80U.js";const m=JSON.parse('{"title":"10、父组件可以监听到子组件的生命周期吗？","description":"以上需要手动通过 $emit 触发父组件的事件，更简单的方式可以在父组件引用子组件时通过 @hook 来监听即可，如下所示： // Parent.vue \\\\<Child @hook:mounted \\"doSomething\\" \\\\ \\\\</Child\\\\。","frontmatter":{"title":"10、父组件可以监听到子组件的生命周期吗？","date":"2026-08-11T00:00:00.000Z","categories":["Vue 系统教程"],"tags":["Vue","Vue3","前端","教程","OneNote","面试复习"],"description":"以上需要手动通过 $emit 触发父组件的事件，更简单的方式可以在父组件引用子组件时通过 @hook 来监听即可，如下所示： // Parent.vue \\\\<Child @hook:mounted \\"doSomething\\" \\\\ \\\\</Child\\\\。","sidebarWeight":1,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/f-vue/面试/10、父组件可以监听到子组件的生命周期吗？.md"},"headers":[],"relativePath":"posts/Vue系统教程/08-面试复习/10、父组件可以监听到子组件的生命周期吗？.md","filePath":"posts/Vue系统教程/08-面试复习/10、父组件可以监听到子组件的生命周期吗？.md"}'),o={name:"posts/Vue系统教程/08-面试复习/10、父组件可以监听到子组件的生命周期吗？.md"};function i(p,s,d,u,c,h){return a(),t("div",null,[...s[0]||(s[0]=[e("div",null,[e("h1",{id:"_10、父组件可以监听到子组件的生命周期吗",tabindex:"-1"},[n("10、父组件可以监听到子组件的生命周期吗？ "),e("a",{class:"header-anchor",href:"#_10、父组件可以监听到子组件的生命周期吗","aria-label":'Permalink to "10、父组件可以监听到子组件的生命周期吗？"'},"​")]),e("blockquote",null,[e("p",null,"本节目标：理解“10、父组件可以监听到子组件的生命周期吗？”的核心思路，并能把它用于实际开发或面试表达。")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"比如有父组件 Parent 和子组件 Child，如果父组件监听到子组件挂载 mounted 就做一些逻辑处理，可以通过以下写法实现：")]),n(`
+`),e("span",{class:"line"},[e("span",null,"// Parent.vue")]),n(`
+`),e("span",{class:"line"},[e("span",null,'<Child @mounted="doSomething"/>')]),n(`
+`),e("span",{class:"line"},[e("span")]),n(`
+`),e("span",{class:"line"},[e("span",null,"// Child.vue")]),n(`
+`),e("span",{class:"line"},[e("span",null,"mounted() {·")]),n(`
+`),e("span",{class:"line"},[e("span",null,'    this.$emit("mounted");')]),n(`
+`),e("span",{class:"line"},[e("span",null,"}")])])])]),e("p",null,'以上需要手动通过 $emit 触发父组件的事件，更简单的方式可以在父组件引用子组件时通过 @hook 来监听即可，如下所示： // Parent.vue <Child @hook:mounted="doSomething" ></Child>'),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"doSomething() {")]),n(`
+`),e("span",{class:"line"},[e("span",null,"    console.log('父组件监听到 mounted 钩子函数 ...');")]),n(`
+`),e("span",{class:"line"},[e("span",null,"},")]),n(`
+`),e("span",{class:"line"},[e("span",null,"//  Child.vue")]),n(`
+`),e("span",{class:"line"},[e("span",null,"mounted() {")]),n(`
+`),e("span",{class:"line"},[e("span",null,"    console.log('子组件触发 mounted 钩子函数 ...');")]),n(`
+`),e("span",{class:"line"},[e("span",null,"},")]),n(`
+`),e("span",{class:"line"},[e("span",null,"       // 以上输出顺序为：// 子组件触发 mounted 钩子函数 ...// 父组件监听到 mounted 钩子函数 ...")]),n(`
+`),e("span",{class:"line"},[e("span",null,"当然 @hook 方法不仅仅是可以监听 mounted，其它的生命周期事件，例如：created，updated 等都可以监听。")])])])])],-1)])])}const _=l(o,[["render",i]]);export{m as __pageData,_ as default};

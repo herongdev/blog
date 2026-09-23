@@ -1,0 +1,35 @@
+import{_ as a,o as e,c as t,j as s,a as l}from"./chunks/framework.DJo0M80U.js";const g=JSON.parse('{"title":"js浅拷贝","description":"浅拷贝是指，一个新的对象对原始对象的属性值进行精确地拷贝，如果拷贝的是基本数据类型，拷贝的就是基本数据类型的值，如果是引用数据类型，拷贝的就是内存地址。如果其中一个对象的引用内存地址发生改变，另一个对象也会发生变化。 （1）Object.assign() Object.assig。","frontmatter":{"title":"js浅拷贝","date":"2026-08-11T00:00:00.000Z","categories":["JavaScript 系统教程"],"tags":["JavaScript","前端","教程","OneNote","面试与手写"],"description":"浅拷贝是指，一个新的对象对原始对象的属性值进行精确地拷贝，如果拷贝的是基本数据类型，拷贝的就是基本数据类型的值，如果是引用数据类型，拷贝的就是内存地址。如果其中一个对象的引用内存地址发生改变，另一个对象也会发生变化。 （1）Object.assign() Object.assig。","sidebarWeight":13,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/b-原生js/面试/手写/js浅拷贝.md"},"headers":[],"relativePath":"posts/JavaScript系统教程/09-面试与手写/手写/js浅拷贝.md","filePath":"posts/JavaScript系统教程/09-面试与手写/手写/js浅拷贝.md"}'),c={name:"posts/JavaScript系统教程/09-面试与手写/手写/js浅拷贝.md"};function p(i,n,o,u,r,d){return e(),t("div",null,[...n[0]||(n[0]=[s("div",null,[s("h1",{id:"js浅拷贝",tabindex:"-1"},[l("js浅拷贝 "),s("a",{class:"header-anchor",href:"#js浅拷贝","aria-label":'Permalink to "js浅拷贝"'},"​")]),s("blockquote",null,[s("p",null,[l("本节目标：理解“js浅拷贝”的核心思路，并能把它用于实际开发或面试表达。 浅拷贝是指，一个新的对象对原始对象的属性值进行精确地拷贝，如果拷贝的是基本数据类型，拷贝的就是基本数据类型的值，如果是引用数据类型，拷贝的就是内存地址。如果其中一个对象的引用内存地址发生改变，另一个对象也会发生变化。 "),s("strong",null,"（1）Object.assign()"),l(" ==Object.assign()==是ES6中对象的拷贝方法，接受的第一个参数是目标对象，其余参数是源对象，用法：==Object.assign(target, source_1, ···)==，该方法可以实现浅拷贝，也可以实现一维对象的深拷贝。 "),s("strong",null,"注意：")])]),s("p",null,"如果目标对象和源对象有同名属性，或者多个源对象有同名属性，则后面的属性会覆盖前面的属性。"),s("p",null,"如果该函数只有一个参数，当参数为对象时，直接返回该对象；当参数不是对象时，会先将参数转为对象然后返回。"),s("p",null,"因为==null== 和 ==undefined== 不能转化为对象，所以第一个参数不能为==null==或 ==undefined==，会报错。"),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"let target = { a: 1 };")]),l(`
+`),s("span",{class:"line"},[s("span",null,"let object2 = { b: 2 };")]),l(`
+`),s("span",{class:"line"},[s("span",null,"let object3 = { c: 3 };")]),l(`
+`),s("span",{class:"line"},[s("span",null,"Object.assign(target, object2, object3);")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(target); // {a: 1, b: 2, c: 3}")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**（2）扩展运算符**")]),l(`
+`),s("span",{class:"line"},[s("span",null,"使用扩展运算符可以在构造字面量对象的时候，进行属性的拷贝。语法：==let cloneObj = { ...obj };==")]),l(`
+`),s("span",{class:"line"},[s("span",null,"let obj1 = { a: 1, b: { c: 1 } };")]),l(`
+`),s("span",{class:"line"},[s("span",null,"let obj2 = { ...obj1 };")]),l(`
+`),s("span",{class:"line"},[s("span",null,"obj1.a = 2;")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(obj1); //{a:2,b:{c:1}}")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(obj2); //{a:1,b:{c:1}}")]),l(`
+`),s("span",{class:"line"},[s("span",null,"obj1.b.c = 2;")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(obj1); //{a:2,b:{c:2}}")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(obj2); //{a:1,b:{c:2}}")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**（3）数组方法实现数组浅拷贝**")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**Array.prototype.slice**")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"==slice()==方法是JavaScript数组的一个方法，这个方法可以从已有数组中返回选定的元素：用法：==array.slice(start, end)==，该方法不会改变原始数组。")]),l(`
+`),s("span",{class:"line"},[s("span",null,"该方法有两个参数，两个参数都可选，如果两个参数都不写，就可以实现一个数组的浅拷贝。")]),l(`
+`),s("span",{class:"line"},[s("span",null,"let arr = [1, 2, 3, 4];")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(arr.slice()); // [1,2,3,4]")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(arr.slice() === arr); //false")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**Array.prototype.concat**")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"==concat()== 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。")]),l(`
+`),s("span",{class:"line"},[s("span",null,"该方法有两个参数，两个参数都可选，如果两个参数都不写，就可以实现一个数组的浅拷贝。")]),l(`
+`),s("span",{class:"line"},[s("span",null,"let arr = [1, 2, 3, 4];")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(arr.concat()); // [1,2,3,4]")]),l(`
+`),s("span",{class:"line"},[s("span",null,"console.log(arr.concat() === arr); //false")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**实现浅拷贝**")]),l(`
+`),s("span",{class:"line"},[s("span",null,"function shallowCopy(object) {")]),l(`
+`),s("span",{class:"line"},[s("span",null,"  // 只拷贝对象")]),l(`
+`),s("span",{class:"line"},[s("span",null,"  if (!object || typeof object !== 'object') return;")]),l(`
+`),s("span",{class:"line"},[s("span",null,"  // 根据 object 的类型判断是新建一个数组还是对象")]),l(`
+`),s("span",{class:"line"},[s("span",null,"  let newObject = Array.isArray(object) ? [] : {};")]),l(`
+`),s("span",{class:"line"},[s("span",null,"  // 遍历 object，并且判断是 object 的属性才拷贝")]),l(`
+`),s("span",{class:"line"},[s("span",null,"  for (let key in object) {")]),l(`
+`),s("span",{class:"line"},[s("span",null,"    if (object.hasOwnProperty(key)) {")]),l(`
+`),s("span",{class:"line"},[s("span",null,"      newObject[key] = object[key];")]),l(`
+`),s("span",{class:"line"},[s("span",null,"    }")]),l(`
+`),s("span",{class:"line"},[s("span",null,"  }")]),l(`
+`),s("span",{class:"line"},[s("span",null,"  return newObject;")]),l(`
+`),s("span",{class:"line"},[s("span",null,"}")])])])])],-1)])])}const h=a(c,[["render",p]]);export{g as __pageData,h as default};

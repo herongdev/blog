@@ -1,0 +1,10 @@
+import{_ as e,o as l,c as t,j as s,a as n}from"./chunks/framework.DJo0M80U.js";const _=JSON.parse('{"title":"js函数柯里化的实现","description":"围绕“js函数柯里化的实现”整理的概念、示例与实践笔记。","frontmatter":{"title":"js函数柯里化的实现","date":"2026-08-11T00:00:00.000Z","categories":["JavaScript 系统教程"],"tags":["JavaScript","前端","教程","OneNote","面试与手写"],"description":"围绕“js函数柯里化的实现”整理的概念、示例与实践笔记。","sidebarWeight":9,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/b-原生js/面试/手写/js函数柯里化的实现.md"},"headers":[],"relativePath":"posts/JavaScript系统教程/09-面试与手写/手写/js函数柯里化的实现.md","filePath":"posts/JavaScript系统教程/09-面试与手写/手写/js函数柯里化的实现.md"}'),r={name:"posts/JavaScript系统教程/09-面试与手写/手写/js函数柯里化的实现.md"};function i(p,a,c,o,u,d){return l(),t("div",null,[...a[0]||(a[0]=[s("div",null,[s("h1",{id:"js函数柯里化的实现",tabindex:"-1"},[n("js函数柯里化的实现 "),s("a",{class:"header-anchor",href:"#js函数柯里化的实现","aria-label":'Permalink to "js函数柯里化的实现"'},"​")]),s("blockquote",null,[s("p",null,"本节目标：理解“js函数柯里化的实现”的核心思路，并能把它用于实际开发或面试表达。")]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"function curring(fn) {")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  // 存储每次调用的时候传入的变量")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  // 存储每次调用时传入的参数")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  const inner = (args = []) => {")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    return args.length >= fn.length")]),n(`
+`),s("span",{class:"line"},[s("span",null,"      ? fn(...args)")]),n(`
+`),s("span",{class:"line"},[s("span",null,"      : (...userArgs) => inner([...args, ...userArgs]);")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  };")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  return inner();")]),n(`
+`),s("span",{class:"line"},[s("span",null,"}")])])])])],-1)])])}const f=e(r,[["render",i]]);export{_ as __pageData,f as default};

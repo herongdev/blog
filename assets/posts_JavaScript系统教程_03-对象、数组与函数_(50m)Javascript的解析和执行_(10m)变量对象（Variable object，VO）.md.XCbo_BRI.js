@@ -1,0 +1,21 @@
+import{_ as s,o as e,c as i,j as a,a as n}from"./chunks/framework.DJo0M80U.js";const v=JSON.parse('{"title":"变量对象（Variable object，VO）","description":"不同执行上下文中的变量对象是不同的，根据执行上下文分为两种： 变量对象存储了当前执行上下文中定义的所有变量和函数声明，保证了对变量和函数的正确访问。 具体如下： 1. 变量声明 ○ 由名称和对应值（undefined）组成，作为变量对象的属性被创建。 ○ 如果变量名称跟已经声明的。","frontmatter":{"title":"变量对象（Variable object，VO）","date":"2026-08-11T00:00:00.000Z","categories":["JavaScript 系统教程"],"tags":["JavaScript","前端","教程","OneNote","对象、数组与函数"],"description":"不同执行上下文中的变量对象是不同的，根据执行上下文分为两种： 变量对象存储了当前执行上下文中定义的所有变量和函数声明，保证了对变量和函数的正确访问。 具体如下： 1. 变量声明 ○ 由名称和对应值（undefined）组成，作为变量对象的属性被创建。 ○ 如果变量名称跟已经声明的。","sidebarWeight":16,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/b-原生js/引用数据类型-函数/(50m)Javascript的解析和执行/(10m)变量对象（Variable object，VO）.md"},"headers":[],"relativePath":"posts/JavaScript系统教程/03-对象、数组与函数/(50m)Javascript的解析和执行/(10m)变量对象（Variable object，VO）.md","filePath":"posts/JavaScript系统教程/03-对象、数组与函数/(50m)Javascript的解析和执行/(10m)变量对象（Variable object，VO）.md"}'),t={name:"posts/JavaScript系统教程/03-对象、数组与函数/(50m)Javascript的解析和执行/(10m)变量对象（Variable object，VO）.md"};function p(c,l,o,u,r,d){return e(),i("div",null,[...l[0]||(l[0]=[a("div",null,[a("h1",{id:"变量对象-variable-object-vo",tabindex:"-1"},[n("变量对象（Variable object，VO） "),a("a",{class:"header-anchor",href:"#变量对象-variable-object-vo","aria-label":'Permalink to "变量对象（Variable object，VO）"'},"​")]),a("blockquote",null,[a("p",null,"本节目标：理解“变量对象（Variable object，VO）”的核心思路，并能把它用于实际开发或面试表达。 不同执行上下文中的变量对象是不同的，根据执行上下文分为两种：")]),a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"一种是全局执行上下文，对应着全局上下文变量对象")])])])]),a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"一种是函数执行上下文，对应着函数上下文变量对象。")])])])]),a("p",null,"变量对象存储了当前执行上下文中定义的所有变量和函数声明，保证了对变量和函数的正确访问。"),a("p",null,"具体如下："),a("ol",null,[a("li",null,"变量声明 ○ 由名称和对应值（undefined）组成，作为变量对象的属性被创建。 ○ 如果变量名称跟已经声明的形式参数或函数相同，则声明无效。"),a("li",null,"函数声明 ○ 由名称和对应值（函数对象(function-object)，指向对函数的引用）组成，作为变量对象的属性被创建。 ○ 如果变量对象已经存在相同名称的属性，则完全替换这个属性"),a("li",null,"函数的所有形参(如果是函数执行上下文) ○ 由名称和对应值组成，作为变量对象的属性被创建 ○ 没有实参，属性值设为 undefined")]),a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"举例")]),n(`
+`),a("span",{class:"line"},[a("span",null,"我们用一个例子来理解一下：")]),n(`
+`),a("span",{class:"line"},[a("span",null,"function foo(a) {")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    var b = 2;")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    function c() { }")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    var d = function () { };")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    b = 3;")]),n(`
+`),a("span",{class:"line"},[a("span",null,"}")]),n(`
+`),a("span",{class:"line"},[a("span",null,"foo(1);")]),n(`
+`),a("span",{class:"line"},[a("span",null,"==foo(1)== ==函数执行上下文对应的== ==VO== ==（其实是====AO====，后边会介绍到）为：==")]),n(`
+`),a("span",{class:"line"},[a("span",null,"AO = {")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    arguments: {")]),n(`
+`),a("span",{class:"line"},[a("span",null,"        0: 1,")]),n(`
+`),a("span",{class:"line"},[a("span",null,"        length: 1")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    },")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    a: 1,")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    b: undefined,")]),n(`
+`),a("span",{class:"line"},[a("span",null,"    c: reference to function c(){ },")]),n(`
+`),a("span",{class:"line"},[a("span",null,"  d: undefined")]),n(`
+`),a("span",{class:"line"},[a("span",null,"}")]),n(`
+`),a("span",{class:"line"},[a("span",null,"==注意，只有全局上下文的变量对象允许通过== ==VO== ==的属性名称来间接访问====(====因为在全局上下文里，全局对象自身就是变量对象，稍后会详细介绍====)====，在其它上下文中是不能直接访问== ==VO== ==对象的，因为它只是内部机制的一个实现。==")])])])])],-1)])])}const h=s(t,[["render",p]]);export{v as __pageData,h as default};

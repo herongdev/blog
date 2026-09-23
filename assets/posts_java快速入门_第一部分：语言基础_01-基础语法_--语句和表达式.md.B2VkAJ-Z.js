@@ -1,0 +1,18 @@
+import{_ as l,o as e,c as p,j as a,a as s}from"./chunks/framework.DJo0M80U.js";const _=JSON.parse('{"title":"语句和表达式","description":"","frontmatter":{"title":"语句和表达式","date":"2026-07-03T00:00:00.000Z","categories":["Java 快速入门"],"tags":["Java","Java基础","OneNote"],"lastUpdated":false},"headers":[],"relativePath":"posts/java快速入门/第一部分：语言基础/01-基础语法/--语句和表达式.md","filePath":"posts/java快速入门/第一部分：语言基础/01-基础语法/--语句和表达式.md"}'),t={name:"posts/java快速入门/第一部分：语言基础/01-基础语法/--语句和表达式.md"};function i(c,n,o,r,u,d){return e(),p("div",null,[...n[0]||(n[0]=[a("div",null,[a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"在Java程序中要完成的所有任务都可分解为一系列的语句。在编程语言中，语句是简单的命令，它导致计算机执行某种操作。")]),s(`
+`),a("span",{class:"line"},[a("span")]),s(`
+`),a("span",{class:"line"},[a("span",null,"语句表示程序中发生的单个操作。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"下面是3条简单的Java语句：")]),s(`
+`),a("span",{class:"line"},[a("span",null,"int weight =225;")]),s(`
+`),a("span",{class:"line"},[a("span",null,'System.out.println("Free");')]),s(`
+`),a("span",{class:"line"},[a("span",null,"song.duration = 230;")]),s(`
+`),a("span",{class:"line"},[a("span")]),s(`
+`),a("span",{class:"line"},[a("span",null,"有些语句能够提供一个值，如在将两个数相加或比较两个变量是否相等时。")]),s(`
+`),a("span",{class:"line"},[a("span")]),s(`
+`),a("span",{class:"line"},[a("span",null,"生成一个值的语句被称为表达式。这个值可以存储下来，供程序后面使用，也可以立即用于另一条语句中或被丢弃。语句生成的值称为返回值。")]),s(`
+`),a("span",{class:"line"},[a("span")]),s(`
+`),a("span",{class:"line"},[a("span",null,"虽然在很多Java程序中，每条语句占一行，但这只是一种格式，并不能决定语句到哪里结束。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"Java语句都以分号；结尾。程序员可以在一行放置多条语句，且它们都能够通过编译。")]),s(`
+`),a("span",{class:"line"},[a("span")]),s(`
+`),a("span",{class:"line"},[a("span",null,"为了让程序更容易理解，应遵循每条语句占据一行的约定。")]),s(`
+`),a("span",{class:"line"},[a("span")]),s(`
+`),a("span",{class:"line"},[a("span",null,"在Java中，使用左大括号{和右大括号}将语句编组。位于这两个字符之间的语句称为块block或块语句block statement。")])])])])],-1)])])}const m=l(t,[["render",i]]);export{_ as __pageData,m as default};

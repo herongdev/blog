@@ -1,0 +1,35 @@
+import{_ as l,o as e,c as p,j as n,a as s}from"./chunks/framework.DJo0M80U.js";const f=JSON.parse('{"title":"使用流","description":"","frontmatter":{"title":"使用流","date":"2026-07-03T00:00:00.000Z","categories":["Java 快速入门"],"tags":["Java","核心API","OneNote"],"lastUpdated":false},"headers":[],"relativePath":"posts/java快速入门/第三部分：核心 API/06-输入和输出/使用流.md","filePath":"posts/java快速入门/第三部分：核心 API/06-输入和输出/使用流.md"}'),i={name:"posts/java快速入门/第三部分：核心 API/06-输入和输出/使用流.md"};function t(c,a,o,r,u,d){return e(),p("div",null,[...a[0]||(a[0]=[n("div",null,[n("div",{class:"language- vp-adaptive-theme"},[n("button",{title:"Copy Code",class:"copy"}),n("span",{class:"lang"}),n("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[n("code",null,[n("span",{class:"line"},[n("span",null,"在Java中，使用字节流和字符流的步骤基本相同。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"对于输入流，第一步是创建一个与数据源相关联的对象。例如，如果数据源是硬盘上的文件，可以将一个FileInputStream对象与之关联起来。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"有了流对象后，可以使用该对象的方法来从流中读取信息。FileInputStream有一个read()方法，它从文件中读取字节。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"从流中读取守信息后，调用方法close()来指出已完成对流的使用。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"对于输出流，首先要创建一个与数据目的地相关联的对象。这样的对象是从类BufferedWriter派生而来的，后者是一种创建文件文件的有效方式。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"要将信息发送给输出流的目的地，最简单的方式是使用方法write()。例如，BufferWriter的write()方法将单个字符发送给输出流。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"和输入流一样，没有其他信息需要发送时，应调用输出流的close()方法。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"**过滤流**")]),s(`
+`),n("span",{class:"line"},[n("span",null,"很多类，如果在读写数据之前将过滤器与流关联起来，都将获得更精致的结果。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"过滤器是一种流，它修改了现有流的处理方式。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"对流使用过滤器的步骤如下所述。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"1。创建一个与数据源或数据目的地相关联的流。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"2。将一个过滤器与流关联起来。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"3。通过过滤器（而不是流）来读写数据。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"对于过滤器，可调用的方法与流相同：有read()和write()方法，就像没有被过滤的流一样。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"甚至可以将过滤器与另一个过滤器关联起来，从而实现这样的信息路径：输入流与文本文件丰关联，它被一个西班牙到英语的翻译过滤器过滤，而后者被一个脏字过滤器过滤，信息最后被发送到目的地——要阅读它的人。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"**处理异常**")]),s(`
+`),n("span",{class:"line"},[n("span",null,"java.io包中有一些异常，这些异常在您使用文件和流时可能发生，其中两个最觉的是FileNotFoundException和EOFException。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"当试图使用一个不存在的文件来创建流或文件对象时，将发生FileNotFoundException异常。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"通过输入流来读取文件时，如果过早地到达文件尾，将发生EOFException异常。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"这些异常都是IOExceiption的子类。为了处理所有这些异常，一种方式是将所有的输入和输出流放在一个捕获IOException异常的try-catch块中。然后，在catch块中调用异常的toString()或getMessage()方法，以了解有关异常的更详细的信息。")])])])])],-1)])])}const m=l(i,[["render",t]]);export{f as __pageData,m as default};

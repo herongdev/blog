@@ -1,0 +1,30 @@
+import{_ as l,o as e,c as p,j as a,a as n}from"./chunks/framework.DJo0M80U.js";const J=JSON.parse('{"title":"Java数据结构","description":"","frontmatter":{"title":"Java数据结构","date":"2026-07-03T00:00:00.000Z","categories":["Java 快速入门"],"tags":["Java","核心API","OneNote"],"lastUpdated":false},"headers":[],"relativePath":"posts/java快速入门/第三部分：核心 API/02-数据结构/Java数据结构.md","filePath":"posts/java快速入门/第三部分：核心 API/02-数据结构/Java数据结构.md"}'),t={name:"posts/java快速入门/第三部分：核心 API/02-数据结构/Java数据结构.md"};function i(c,s,r,o,u,v){return e(),p("div",null,[...s[0]||(s[0]=[a("div",null,[a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"在Java类库的java.util包中有一组数据结构，它们让您能够更灵活地组织和操纵数据。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"与java.util提供的数据结构不同，数组是Java的核心元素，是使用Java实现的。因此，在Java中使用数组时，无须使用任何对象来存储其数据。数组最大的缺点在于，不能改变其大小以存储更多或更少的元素，而链表没有这种限制。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"**Java数据结构**")]),n(`
+`),a("span",{class:"line"},[a("span",null,"java.util包提供的数据结构的功能非常强大，包括接口Iterator和Map以及下述类：")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"BitSet")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"ArrayList")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"Stack；")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"HashMap")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"这些数据结构都提供了一种以明确的方式存储和检索信息的方式。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"接口Iterator本身并非数据结构，但它定义了一种连续地检索数据结构中元素的方式。例如，Iterator定义了一个next()方法，该方法获取包含多个元素的数据结构中的下一个元素。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"注意：Iterator是Enumeration接口的扩展和改进版本。虽然Enumeration仍被支持，但应使用Iterator，因为其方法名更简单，且支持删除元素。Iterator还能检测到一种容易出现问题的多线程使用方式：一个线程修改元素时，如果有其他线程在遍历元素，Iterator将引发ConcurrentModificationException异常。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"BitSet类实现了一组位或标记（flag)，这些位可被分别设置或清除。当需要跟踪一组布尔值时，这种类很有有。您只需让每一位对应一个值，并根据需要设置或清除即可。标记（flag)是一个布尔值，表示程序中的一组开/关状态之一。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"ArrayList类似于数组，只是它可以根据需要增大（以存储新元素）和缩小，也可通过索引访问。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"Stack类实现了一个后进先出的元素堆栈。可以将Stack看作一个垂直的对象堆栈，新元素被加入到栈顶。从栈中弹出元素时，弹出的是栈顶元素。被弹出的元素将从堆栈中删除，不像数组，数组中的元素总是可用的。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"HashMap实现了Dictionary，后者是一个抽象类，它定义了一种用于将键值与数值关联的数据结构。当需要通过键值而不是整数索引来访问数据时，这个类很有用。由于Dictionary类是抽象的，所以它只提供了键映射数据结构的框架，而没有给出具体的实现。键值（key)是个标识符，用于引用或查找数据结构中的值。")]),n(`
+`),a("span",{class:"line"},[a("span")]),n(`
+`),a("span",{class:"line"},[a("span",null,"HashMap提供了键映射数据结构的一种实现，它根据用户定义的键值结构来组织数据。例如，在存储在散列映射中的邮政编码列表中，可以将编码作为键值来存储数据。在散列映射中，键值的具体含义取决于散列映射的用法及其包含的数据。")])])])])],-1)])])}const m=l(t,[["render",i]]);export{J as __pageData,m as default};

@@ -1,0 +1,35 @@
+import{_ as l,o as e,c as t,j as s,a as n}from"./chunks/framework.DJo0M80U.js";const v=JSON.parse(`{"title":"深入 JSX","description":"以小写字母开头的元素代表一个 HTML 内置组件，比如 \\\\<div\\\\ 或者 \\\\<span\\\\ 会生成相应的字符串 'div' 或者 'span' 传递给 React.createElement（作为参数）。 大写字母开头的元素则对应着在 JavaScript 引入或自定义的组件，如。","frontmatter":{"title":"深入 JSX","date":"2026-08-11T00:00:00.000Z","categories":["React 系统教程"],"tags":["React","Redux","前端","教程","OneNote","核心概念与组件"],"description":"以小写字母开头的元素代表一个 HTML 内置组件，比如 \\\\<div\\\\ 或者 \\\\<span\\\\ 会生成相应的字符串 'div' 或者 'span' 传递给 React.createElement（作为参数）。 大写字母开头的元素则对应着在 JavaScript 引入或自定义的组件，如。","sidebarWeight":25,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/f-vue/概念/JSX深入/深入 JSX.md"},"headers":[],"relativePath":"posts/React系统教程/01-核心概念与组件/JSX深入/深入 JSX.md","filePath":"posts/React系统教程/01-核心概念与组件/JSX深入/深入 JSX.md"}`),p={name:"posts/React系统教程/01-核心概念与组件/JSX深入/深入 JSX.md"};function i(c,a,o,r,u,d){return e(),t("div",null,[...a[0]||(a[0]=[s("div",null,[s("h1",{id:"深入-jsx",tabindex:"-1"},[n("深入 JSX "),s("a",{class:"header-anchor",href:"#深入-jsx","aria-label":'Permalink to "深入 JSX"'},"​")]),s("blockquote",null,[s("p",null,"本节目标：理解“深入 JSX”的核心思路，并能把它用于实际开发或面试表达。")]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**指定** **React** **元素类型**")]),n(`
+`),s("span",{class:"line"},[s("span",null,"JSX 标签的第一部分指定了 React 元素的类型。")])])])]),s("p",null,"以小写字母开头的元素代表一个 HTML 内置组件，比如 <div> 或者 <span> 会生成相应的字符串 'div' 或者 'span' 传递给 React.createElement（作为参数）。"),s("p",null,"大写字母开头的元素则对应着在 JavaScript 引入或自定义的组件，如 <Foo /> 会编译为 React.createElement(Foo)。"),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"注意：")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"建议使用大写字母开头命名自定义组件。")])])])]),s("p",null,"如果你确实需要一个以小写字母开头的组件，则在 JSX 中使用它之前，必须将它赋值给一个大写字母开头的变量。"),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**React** **必须在作用域内**")]),n(`
+`),s("span",{class:"line"},[s("span",null,"由于 JSX 会编译为 React.createElement 调用形式，所以：")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"只要使用jsx语法，就必须引入 React 库。")])])])]),s("p",null,"如果你不使用 JavaScript 打包工具而是直接通过 <script> 标签加载 React，则必须将 React挂载到全局变量中。"),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**在** **JSX** **类型中使用点语法**")]),n(`
+`),s("span",{class:"line"},[s("span",null,"可以使用点语法来引用一个React组件。例如")]),n(`
+`),s("span",{class:"line"},[s("span",null,"import React from 'react';")]),n(`
+`),s("span",{class:"line"},[s("span",null,"const MyComponents = {")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    DatePicker: function DatePicker(props) {")]),n(`
+`),s("span",{class:"line"},[s("span",null,"        return <div>Imagine a {props.color} datepicker here.</div>;")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    }")]),n(`
+`),s("span",{class:"line"},[s("span",null,"}")]),n(`
+`),s("span",{class:"line"},[s("span",null,"function BlueDatePicker() {")]),n(`
+`),s("span",{class:"line"},[s("span",null,'    return <MyComponents.DatePicker color="blue" />;')]),n(`
+`),s("span",{class:"line"},[s("span",null,"}")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"**在运行时选择元素类型**")]),n(`
+`),s("span",{class:"line"},[s("span",null,"这通常用于根据 prop 来渲染不同组件的情况下。")])])])]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"不能将通用表达式作为 React 元素类型。")])])])]),s("p",null,"如果你想通过通用表达式来（动态）决定元素类型，你需要首先将它赋值给大写字母开头的变量。"),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"import React from 'react';")]),n(`
+`),s("span",{class:"line"},[s("span",null,"import { PhotoStory, VideoStory } from './stories';")]),n(`
+`),s("span",{class:"line"},[s("span",null,"const components = {")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    photo: PhotoStory,")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    video: VideoStory")]),n(`
+`),s("span",{class:"line"},[s("span",null,"};")]),n(`
+`),s("span",{class:"line"},[s("span",null,"function Story(props) {")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    // 错误！JSX 类型不能是一个表达式。")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    return <components[props.storyType] story = { props.story } />;")]),n(`
+`),s("span",{class:"line"},[s("span",null,"}")]),n(`
+`),s("span",{class:"line"},[s("span",null,"// 要解决这个问题, 需要首先将类型赋值给一个大写字母开头的变量：")]),n(`
+`),s("span",{class:"line"},[s("span",null,"import React from 'react';")]),n(`
+`),s("span",{class:"line"},[s("span",null,"import { PhotoStory, VideoStory } from './stories';")]),n(`
+`),s("span",{class:"line"},[s("span",null,"const components = {")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    photo: PhotoStory,")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    video: VideoStory")]),n(`
+`),s("span",{class:"line"},[s("span",null,"};")]),n(`
+`),s("span",{class:"line"},[s("span",null,"function Story(props) {")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    // 正确！JSX 类型可以是大写字母开头的变量。")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    const SpecificStory = components[props.storyType];")]),n(`
+`),s("span",{class:"line"},[s("span",null,"    return <SpecificStory story={props.story} />;")]),n(`
+`),s("span",{class:"line"},[s("span",null,"}")])])])])],-1)])])}const g=l(p,[["render",i]]);export{v as __pageData,g as default};

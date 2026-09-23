@@ -1,0 +1,27 @@
+import{_ as l,o as p,c as i,j as n,a as s}from"./chunks/framework.DJo0M80U.js";const d=JSON.parse('{"title":"SpringBoot简介","description":"","frontmatter":{"title":"SpringBoot简介","date":"2026-07-03T00:00:00.000Z","categories":["Java 快速入门"],"tags":["Java","Spring","OneNote"],"lastUpdated":false},"headers":[],"relativePath":"posts/java快速入门/第六部分：Spring 生态/02-Spring Boot/A-入门/SpringBoot简介.md","filePath":"posts/java快速入门/第六部分：Spring 生态/02-Spring Boot/A-入门/SpringBoot简介.md"}'),e={name:"posts/java快速入门/第六部分：Spring 生态/02-Spring Boot/A-入门/SpringBoot简介.md"};function t(r,a,o,c,g,S){return p(),i("div",null,[...a[0]||(a[0]=[n("div",null,[n("div",{class:"language- vp-adaptive-theme"},[n("button",{title:"Copy Code",class:"copy"}),n("span",{class:"lang"}),n("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[n("code",null,[n("span",{class:"line"},[n("span",null,"**Spring****的优点分析**")]),s(`
+`),n("span",{class:"line"},[n("span",null,"Spring是Java企业版（Java Enterprise Edition，JEE，也称J2EE）的轻量级代替品。无需开发重量级的Enterprise JavaBean（EJB），Spring为企业级Java开发提供了一种相对简单的方法，通过依赖注入和面向切面编程，用简单的Java对象（Plain Old Java Object，POJO）实现了EJB的功能。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"**Spring****的缺点分析**")]),s(`
+`),n("span",{class:"line"},[n("span",null,"虽然Spring的组件代码是轻量级的，但它的配置却是重量级的。一开始，Spring用XML配置，而且是很多XML配置。Spring 2.5引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式XML配置。Spring 3.0引入了基于Java的配置，这是一种类型安全的可重构配置方式，可以代替XML。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"所有这些配置都代表了开发时的损耗。因为在思考Spring特性配置和解决业务问题之间需要进行思维切换，所以编写配置挤占了编写应用程序逻辑的时间。和所有框架一样，Spring实用，但与此同时它要求的回报也不少。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"除此之外，项目的依赖管理也是一件耗时耗力的事情。在环境搭建时，需要分析要导入哪些库的坐标，而且还需要分析导入与之有依赖关系的其他库的坐标，一旦选错了依赖的版本，随之而来的不兼容问题就会严重阻碍项目的开发进度。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"**SpringBoot****的概述**")]),s(`
+`),n("span",{class:"line"},[n("span",null,"**SpringBoot****解决上述****Spring****的缺点**")]),s(`
+`),n("span",{class:"line"},[n("span",null,"SpringBoot对上述Spring的缺点进行的改善和优化，基于约定优于配置的思想，可以让开发人员不必在配置与逻辑业务之间进行思维的切换，全身心的投入到逻辑业务的代码编写中，从而大大提高了开发的效率，一定程度上缩短了项目周期。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"SpringBoot的特点")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"为基于Spring的开发提供更快的入门体验。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"开箱即用，没有代码生成，也无需XML配置。同时也可以修改默认值来满足特定的需求。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"提供了一些大型项目中常见的非功能性特性，如嵌入式服务器、安全、指标，健康检测、外部配置等。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"SpringBoot不是对Spring功能上的增强，而是提供了一种快速使用Spring的方式")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"**SpringBoot****的核心功能**")]),s(`
+`),n("span",{class:"line"},[n("span",null,"**起步依赖：**起步依赖本质上是一个Maven项目对象模型（Project Object Model，POM），定义了对其他库的传递依赖，这些东西加在一起即支持某项功能。")]),s(`
+`),n("span",{class:"line"},[n("span",null,"简单的说，起步依赖就是将具备某种功能的坐标打包到一起，并提供一些默认的功能。")]),s(`
+`),n("span",{class:"line"},[n("span")]),s(`
+`),n("span",{class:"line"},[n("span",null,"**自动配置 ：**Spring Boot的自动配置是一个运行时（更准确地说，是应用程序启动时）的过程，考虑了众多因素，才决定Spring配置应该用哪个，不该用哪个。该过程是Spring自动完成的。")])])])])],-1)])])}const B=l(e,[["render",t]]);export{d as __pageData,B as default};

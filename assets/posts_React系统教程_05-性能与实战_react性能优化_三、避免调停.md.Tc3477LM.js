@@ -1,0 +1,46 @@
+import{_ as n,o as a,c as l,j as e,a as s}from"./chunks/framework.DJo0M80U.js";const g=JSON.parse('{"title":"三、避免调停","description":"当一个组件的 props 或 state 变更，React 会将最新返回的元素与之前渲染的元素进行对比，以此决定是否有必要更新真实的 DOM。当它们不相同时，React 会更新该 DOM。 方法二：可以继承 React.PureComponent 以代替手写 它用当前与之前 pr。","frontmatter":{"title":"三、避免调停","date":"2026-08-11T00:00:00.000Z","categories":["React 系统教程"],"tags":["React","Redux","前端","教程","OneNote","性能与实战"],"description":"当一个组件的 props 或 state 变更，React 会将最新返回的元素与之前渲染的元素进行对比，以此决定是否有必要更新真实的 DOM。当它们不相同时，React 会更新该 DOM。 方法二：可以继承 React.PureComponent 以代替手写 它用当前与之前 pr。","sidebarWeight":9,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/f-vue/应用/react性能优化/三、避免调停.md"},"headers":[],"relativePath":"posts/React系统教程/05-性能与实战/react性能优化/三、避免调停.md","filePath":"posts/React系统教程/05-性能与实战/react性能优化/三、避免调停.md"}'),o={name:"posts/React系统教程/05-性能与实战/react性能优化/三、避免调停.md"};function p(r,t,c,i,d,u){return a(),l("div",null,[...t[0]||(t[0]=[e("div",null,[e("h1",{id:"三、避免调停",tabindex:"-1"},[s("三、避免调停 "),e("a",{class:"header-anchor",href:"#三、避免调停","aria-label":'Permalink to "三、避免调停"'},"​")]),e("blockquote",null,[e("p",null,"本节目标：理解“三、避免调停”的核心思路，并能把它用于实际开发或面试表达。")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"DOM 操作相对于 JavaScript 对象操作更慢。")])])])]),e("p",null,"当一个组件的 props 或 state 变更，React 会将最新返回的元素与之前渲染的元素进行对比，以此决定是否有必要更新真实的 DOM。当它们不相同时，React 会更新该 DOM。"),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"**指示****react****是否重新渲染**")]),s(`
+`),e("span",{class:"line"},[e("span",null,"方法一、覆盖生命周期方法 shouldComponentUpdate")]),s(`
+`),e("span",{class:"line"},[e("span",null,"该方法会在重新渲染前被触发。其默认实现总是返回 true，让 React 执行更新：")]),s(`
+`),e("span",{class:"line"},[e("span",null,"shouldComponentUpdate(nextProps, nextState) {  return true;}")]),s(`
+`),e("span",{class:"line"},[e("span",null,"如果你知道在什么情况下你的组件不需要更新，你可以在 shouldComponentUpdate 中返回 false 来跳过整个渲染过程。其包括该组件的 render 调用以及之后的操作。")])])])]),e("p",null,[s("方法二：可以继承 "),e("a",{href:"https://react.docschina.org/docs/react-api.html#reactpurecomponent",target:"_blank",rel:"noreferrer"},"React.PureComponent"),s(" 以代替手写 它用当前与之前 props 和 state 的浅比较覆写了 shouldComponentUpdate() 的实现。浅比较有局限性，在使用时需要注意。如下例： 当数据结构很复杂时，情况会变得麻烦。例如，你想要一个 ListOfWords 组件来渲染一组用逗号分开的单词。它有一个叫做 WordAdder 的父组件，该组件允许你点击一个按钮来添加一个单词到列表中。以下代码_并不_正确： class WordAdder extends React.Component { constructor(props) { super(props); this.state = { words: ['marklar'] }; this.handleClick = this.handleClick.bind(this); } handleClick() { //")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span")]),s(`
+`),e("span",{class:"line"},[e("span",null,"这部分代码有 `bug`，应返回一个新数组，作为words的值")])])])]),e("pre",null,[e("code",null,`    const words = this.state.words;
+    words.push('marklar');
+    this.setState(\\{ words: words \\});
+\\}
+render() \\{
+    return (
+        \\<div\\>
+            \\<button onClick=\\{this.handleClick\\} /\\>
+            \\<ListOfWords words=\\{this.state.words\\} /\\>
+        \\</div\\>
+    );
+\\}
+`)]),e("p",null,"} 问题在于 PureComponent 仅仅会对新老 this.props.words 的值进行简单的对比。由于代码中 WordAdder 的 handleClick 方法改变了同一个 words 数组，使得新老 this.props.words 比较的其实还是同一个数组。即便实际上数组中的单词已经变了，但是比较结果是相同的。可以看到，即便多了新的单词需要被渲染，ListOfWords 却并没有被更新。"),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"所以上面 handleClick 方法可以用 concat 重写：")]),s(`
+`),e("span",{class:"line"},[e("span",null,"handleClick() {")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  this.setState(state => ({")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    words: state.words.concat(['marklar'])")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  }));")]),s(`
+`),e("span",{class:"line"},[e("span",null,"}")]),s(`
+`),e("span",{class:"line"},[e("span",null,"ES6 数组支持[扩展运算符](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator)，这让代码写起来更方便了。如果你在使用 Create React App，该语法已经默认支持了。")]),s(`
+`),e("span",{class:"line"},[e("span",null,"handleClick() {")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  this.setState(state => ({")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    words: [...state.words, 'marklar'],")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  }));")]),s(`
+`),e("span",{class:"line"},[e("span",null,"};")])])])]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"**方法三：使用****useMemo****和****useCallback****对渲染进行优化**")])])])]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"**方法四：对****context****使用进行优化**")])])])]),e("p",null,[e("strong",null,"示例"),s(" 如果你的组件只有当 props.color 或者 state.count 的值改变才需要更新时，你可以使用 shouldComponentUpdate 来进行检查： class CounterButton extends React.Component { constructor(props) { super(props); this.state = { count: 1 }; } shouldComponentUpdate(nextProps, nextState) { if (this.props.color !== nextProps.color) { return true; } if (this.state.count !== nextState.count) { return true; } return false; } render() { return ( <button color={this.props.color} onClick={() => this.setState(state => ({ count: state.count + 1 }))}> Count: {this.state.count} </button> ); } }")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span")])])])]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"也可以使用 React.PureComponent：")]),s(`
+`),e("span",{class:"line"},[e("span",null,"class CounterButton extends React.PureComponent {")])])])]),e("pre",null,[e("code",null,`constructor(props) \\{
+    super(props);
+    this.state = \\{ count: 1 \\};
+\\}
+render() \\{
+    return (
+        \\<button
+            color=\\{this.props.color\\}
+            onClick=\\{() =\\>
+                this.setState(state =\\> (\\{
+                    count: state.count + 1
+                \\}))\\}\\>
+            Count: \\{this.state.count\\}
+        \\</button\\>
+    );
+\\}
+`)]),e("p",null,"} 大部分情况下，你可以使用 React.PureComponent 来代替手写 shouldComponentUpdate。但它只进行浅比较，所以当 props 或者 state 某种程度是可变的话，浅比较会有遗漏，那你就不能使用它了。")],-1)])])}const m=n(o,[["render",p]]);export{g as __pageData,m as default};

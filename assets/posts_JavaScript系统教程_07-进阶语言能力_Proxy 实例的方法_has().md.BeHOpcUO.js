@@ -1,0 +1,19 @@
+import{_ as e,o as l,c as r,j as a,a as s}from"./chunks/framework.DJo0M80U.js";const y=JSON.parse('{"title":"has()","description":"围绕“has()”整理的概念、示例与实践笔记。","frontmatter":{"title":"has()","date":"2026-08-11T00:00:00.000Z","categories":["JavaScript 系统教程"],"tags":["JavaScript","前端","教程","OneNote","进阶语言能力"],"description":"围绕“has()”整理的概念、示例与实践笔记。","sidebarWeight":12,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/b-原生js/Proxy/Proxy 实例的方法/has().md"},"headers":[],"relativePath":"posts/JavaScript系统教程/07-进阶语言能力/Proxy 实例的方法/has().md","filePath":"posts/JavaScript系统教程/07-进阶语言能力/Proxy 实例的方法/has().md"}'),o={name:"posts/JavaScript系统教程/07-进阶语言能力/Proxy 实例的方法/has().md"};function t(p,n,i,c,h,u){return l(),r("div",null,[...n[0]||(n[0]=[a("div",null,[a("h1",{id:"has",tabindex:"-1"},[s("has() "),a("a",{class:"header-anchor",href:"#has","aria-label":'Permalink to "has()"'},"​")]),a("blockquote",null,[a("p",null,"本节目标：理解“has()”的核心思路，并能把它用于实际开发或面试表达。")]),a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"has方法用来拦截HasProperty操作，即判断对象是否具有某个属性时，这个方法会生效。典型的操作就是in运算符。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"has方法可以接受两个参数，分别是目标对象、需查询的属性名。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"下面的例子使用has方法隐藏某些属性，不被in运算符发现。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"var handler = {  has (target, key) {    if (key[0] === '_') {      return false;    }    return key in target;  }};var target = { _prop: 'foo', prop: 'foo' };var proxy = new Proxy(target, handler);'_prop' in proxy // false")]),s(`
+`),a("span",{class:"line"},[a("span",null,"上面代码中，如果原对象的属性名的第一个字符是下划线，proxy.has就会返回false，从而不会被in运算符发现。")])])])]),a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"如果原对象不可配置或者禁止扩展，这时has拦截会报错。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"var obj = { a: 10 };Object.preventExtensions(obj);")]),s(`
+`),a("span",{class:"line"},[a("span",null,"var p = new Proxy(obj, {  has: function(target, prop) {    return false;  }});")]),s(`
+`),a("span",{class:"line"},[a("span",null,"'a' in p"),a("span",null," // TypeError is thrown")]),s(`
+`),a("span",{class:"line"},[a("span",null,"上面代码中，obj对象禁止扩展，结果使用has拦截就会报错。也就是说，如果某个属性不可配置（或者目标对象不可扩展），则has方法就不得“隐藏”（即返回false）目标对象的该属性。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"值得注意的是，has方法拦截的是HasProperty操作，而不是HasOwnProperty操作，即has方法不判断一个属性是对象自身的属性，还是继承的属性。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"另外，虽然for...in循环也用到了in运算符，但是has拦截对for...in循环不生效。")]),s(`
+`),a("span",{class:"line"},[a("span",null,"let stu1 = {name: '张三', score: 59};let stu2 = {name: '李四', score: 99};")]),s(`
+`),a("span",{class:"line"},[a("span",null,"let handler = {  has(target, prop) {    if (prop === 'score' && target[prop] < 60) {      console.log(`${target.name} 不及格`);      return false;    }    return prop in target;  }}")]),s(`
+`),a("span",{class:"line"},[a("span",null,"let oproxy1 = new Proxy(stu1, handler);let oproxy2 = new Proxy(stu2, handler);")]),s(`
+`),a("span",{class:"line"},[a("span",null,"'score' in oproxy1// 张三 不及格// false")]),s(`
+`),a("span",{class:"line"},[a("span",null,"'score' in oproxy2// true")]),s(`
+`),a("span",{class:"line"},[a("span",null,"for (let a in oproxy1) {  console.log(oproxy1[a]);}// 张三// 59")]),s(`
+`),a("span",{class:"line"},[a("span",null,"for (let b in oproxy2) {  console.log(oproxy2[b]);}// 李四// 99")]),s(`
+`),a("span",{class:"line"},[a("span",null,"上面代码中，has拦截只对in运算符生效，对for...in循环不生效，导致不符合要求的属性没有被for...in循环所排除。")])])])])],-1)])])}const f=e(o,[["render",t]]);export{y as __pageData,f as default};

@@ -1,0 +1,10 @@
+import{_ as n,o as t,c as l,j as s,a as e}from"./chunks/framework.DJo0M80U.js";const C=JSON.parse('{"title":"ReactBaseClasses","description":"围绕“ReactBaseClasses”整理的概念、示例与实践笔记。","frontmatter":{"title":"ReactBaseClasses","date":"2026-08-11T00:00:00.000Z","categories":["React 系统教程"],"tags":["React","Redux","前端","教程","OneNote","核心概念与组件"],"description":"围绕“ReactBaseClasses”整理的概念、示例与实践笔记。","sidebarWeight":21,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/f-vue/概念/JSX深入/ReactBaseClasses.md"},"headers":[],"relativePath":"posts/React系统教程/01-核心概念与组件/JSX深入/ReactBaseClasses.md","filePath":"posts/React系统教程/01-核心概念与组件/JSX深入/ReactBaseClasses.md"}'),c={name:"posts/React系统教程/01-核心概念与组件/JSX深入/ReactBaseClasses.md"};function p(o,a,i,r,d,u){return t(),l("div",null,[...a[0]||(a[0]=[s("div",null,[s("h1",{id:"reactbaseclasses",tabindex:"-1"},[e("ReactBaseClasses "),s("a",{class:"header-anchor",href:"#reactbaseclasses","aria-label":'Permalink to "ReactBaseClasses"'},"​")]),s("blockquote",null,[s("p",null,"本节目标：理解“ReactBaseClasses”的核心思路，并能把它用于实际开发或面试表达。")]),s("div",{class:"language- vp-adaptive-theme"},[s("button",{title:"Copy Code",class:"copy"}),s("span",{class:"lang"}),s("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[s("code",null,[s("span",{class:"line"},[s("span",null,"export function Component(props) {")]),e(`
+`),s("span",{class:"line"},[s("span",null,"    this.props = props;")]),e(`
+`),s("span",{class:"line"},[s("span",null,"}")]),e(`
+`),s("span",{class:"line"},[s("span",null,"Component.prototype.isReactComponent = {};")]),e(`
+`),s("span",{class:"line"},[s("span",null,"/* class Component{")]),e(`
+`),s("span",{class:"line"},[s("span",null,"    static isReactComponent=true;")]),e(`
+`),s("span",{class:"line"},[s("span",null,"    constructor(props){")]),e(`
+`),s("span",{class:"line"},[s("span",null,"        this.props = props;")]),e(`
+`),s("span",{class:"line"},[s("span",null,"    }")]),e(`
+`),s("span",{class:"line"},[s("span",null,"} */")])])])])],-1)])])}const m=n(c,[["render",p]]);export{C as __pageData,m as default};

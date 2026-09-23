@@ -1,0 +1,34 @@
+import{_ as n,o as a,c as t,j as e,a as s}from"./chunks/framework.DJo0M80U.js";const h=JSON.parse('{"title":"redux和store创建和引入","description":"本项目开发的一大核心理念就是用 Redux 这一成熟的状态管理库实现单一数据源。因此，在后面的具体功能开发之前，有必要准备一些关于 Redux 的工作。 安装相应依赖 其中 redux immutable 大家可能比较陌生，因为项目中需要用到 immutable.js 中的数据结。","frontmatter":{"title":"redux和store创建和引入","date":"2026-08-11T00:00:00.000Z","categories":["Vue 系统教程"],"tags":["Vue","Vue3","前端","教程","OneNote","项目实战"],"description":"本项目开发的一大核心理念就是用 Redux 这一成熟的状态管理库实现单一数据源。因此，在后面的具体功能开发之前，有必要准备一些关于 Redux 的工作。 安装相应依赖 其中 redux immutable 大家可能比较陌生，因为项目中需要用到 immutable.js 中的数据结。","sidebarWeight":21,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/f-vue/云音乐实例/redux和store创建和引入.md"},"headers":[],"relativePath":"posts/Vue系统教程/07-项目实战/redux和store创建和引入.md","filePath":"posts/Vue系统教程/07-项目实战/redux和store创建和引入.md"}'),o={name:"posts/Vue系统教程/07-项目实战/redux和store创建和引入.md"};function u(p,l,r,i,c,d){return a(),t("div",null,[...l[0]||(l[0]=[e("div",null,[e("h1",{id:"redux和store创建和引入",tabindex:"-1"},[s("redux和store创建和引入 "),e("a",{class:"header-anchor",href:"#redux和store创建和引入","aria-label":'Permalink to "redux和store创建和引入"'},"​")]),e("blockquote",null,[e("p",null,"本节目标：理解“redux和store创建和引入”的核心思路，并能把它用于实际开发或面试表达。")]),e("blockquote",null,[e("p",null,[s("说明：原 OneNote 中有图片引用，但图片未包含在导出目录中；本页保留了可用的文字与代码内容。 ==本项目开发的一大核心理念就是用== "),e("code",null,"Redux"),s(" ==这一成熟的状态管理库实现单一数据源。因此，在后面的具体功能开发之前，有必要准备一些关于== "),e("code",null,"Redux"),s(" ==的工作。== "),e("strong",null,"安装相应依赖")])]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"npm install redux redux-thunk immutable redux-immutable react-redux  --save")])])])]),e("p",null,[s("==其中== "),e("code",null,"redux-immutable"),s(" ==大家可能比较陌生，因为项目中需要用到== "),e("code",null,"immutable.js"),s(" ==中的数据结构，所以合并不同模块== "),e("code",null,"reducer"),s(" ==的时候需要用到== "),e("code",null,"redux-immutable"),s(" ==中的方法。== "),e("strong",null,"创建"),s(),e("code",null,"store"),s(" ==在== "),e("code",null,"store"),s(" ==文件夹下面新建== "),e("code",null,"index.js"),s(" ==和== "),e("code",null,"reducer.js"),s(" ==文件==")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,":")]),s(`
+`),e("span",{class:"line"},[e("span",null,"//reducer.js")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import { combineReducers } from 'redux-immutable';")]),s(`
+`),e("span",{class:"line"},[e("span",null,"export default combineReducers({")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    //")])])])]),e("p",null,"之后开发具体功能模块的时候添加"),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null," reducer")]),s(`
+`),e("span",{class:"line"},[e("span",null,"});")])])])]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"//index.js")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import { createStore, compose, applyMiddleware } from 'redux'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import thunk from 'redux-thunk'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import reducer from './reducer'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;")]),s(`
+`),e("span",{class:"line"},[e("span",null,"const store = createStore(reducer, composeEnhancers(")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    applyMiddleware(thunk)")]),s(`
+`),e("span",{class:"line"},[e("span",null,"));")]),s(`
+`),e("span",{class:"line"},[e("span",null,"export default store;")])])])]),e("p",null,[e("strong",null,"项目中注入"),s(),e("code",null,"store"),s(" ==现在== "),e("code",null,"App.js"),s(" ==中代码如下==")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,":")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import React from 'react'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import { Provider } from 'react-redux'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import { GlobalStyle } from './style'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import { renderRoutes } from 'react-router-config'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import { IconStyle } from './assets/iconfont/iconfont'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import store from './store/index'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import routes from './routes/index.js'")]),s(`
+`),e("span",{class:"line"},[e("span",null,"import { HashRouter } from 'react-router-dom';")]),s(`
+`),e("span",{class:"line"},[e("span",null,"function App() {")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    return (")]),s(`
+`),e("span",{class:"line"},[e("span",null,"        <Provider store={store}>")]),s(`
+`),e("span",{class:"line"},[e("span",null,"            <HashRouter>")]),s(`
+`),e("span",{class:"line"},[e("span",null,"                <GlobalStyle></GlobalStyle>")]),s(`
+`),e("span",{class:"line"},[e("span",null,"                <IconStyle></IconStyle>")]),s(`
+`),e("span",{class:"line"},[e("span",null,"                {renderRoutes(routes)}")]),s(`
+`),e("span",{class:"line"},[e("span",null,"            </HashRouter>")]),s(`
+`),e("span",{class:"line"},[e("span",null,"        </Provider>")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    )")]),s(`
+`),e("span",{class:"line"},[e("span",null,"}")]),s(`
+`),e("span",{class:"line"},[e("span",null,"export default App;")])])])]),e("p",null,[s("==现在功能依旧能用，但是打开控制台会有这样一段报错=="),e("code",null,":")]),e("p",null,[s("==因为现在没有开发出具体的== "),e("code",null,"reducer"),s(" ==函数，没关系，随着之后的开发，这个错误会自动消失。== > 来自")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null," <https://juejin.im/book/5da96626e51d4524ba0fd237/section/5da971e851882562207e87ca>")])])])])],-1)])])}const x=n(o,[["render",u]]);export{h as __pageData,x as default};

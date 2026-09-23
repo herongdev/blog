@@ -1,0 +1,9 @@
+import{_ as n,o as t,c as l,j as e,a as s}from"./chunks/framework.DJo0M80U.js";const m=JSON.parse('{"title":"元素重复数组中搜索","description":"围绕“元素重复数组中搜索”整理的概念、示例与实践笔记。","frontmatter":{"title":"元素重复数组中搜索","date":"2026-08-11T00:00:00.000Z","categories":["JavaScript 系统教程"],"tags":["JavaScript","前端","教程","OneNote","实战与性能"],"description":"围绕“元素重复数组中搜索”整理的概念、示例与实践笔记。","sidebarWeight":24,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/b-原生js/经典方法/元素重复数组中搜索.md"},"headers":[],"relativePath":"posts/JavaScript系统教程/08-实战与性能/元素重复数组中搜索.md","filePath":"posts/JavaScript系统教程/08-实战与性能/元素重复数组中搜索.md"}'),i={name:"posts/JavaScript系统教程/08-实战与性能/元素重复数组中搜索.md"};function p(r,a,c,o,d,u){return t(),l("div",null,[...a[0]||(a[0]=[e("div",null,[e("h1",{id:"元素重复数组中搜索",tabindex:"-1"},[s("元素重复数组中搜索 "),e("a",{class:"header-anchor",href:"#元素重复数组中搜索","aria-label":'Permalink to "元素重复数组中搜索"'},"​")]),e("blockquote",null,[e("p",null,"本节目标：理解“元素重复数组中搜索”的核心思路，并能把它用于实际开发或面试表达。")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"const uniqueByKey = (list: any[]) => {")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  const seen = new Set<string>()")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  return list.filter((item) => {")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    const k = String(item.key ?? item.value)")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    if (seen.has(k)) return false")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    seen.add(k)")]),s(`
+`),e("span",{class:"line"},[e("span",null,"    return true")]),s(`
+`),e("span",{class:"line"},[e("span",null,"  })")]),s(`
+`),e("span",{class:"line"},[e("span",null,"}")])])])])],-1)])])}const f=n(i,[["render",p]]);export{m as __pageData,f as default};

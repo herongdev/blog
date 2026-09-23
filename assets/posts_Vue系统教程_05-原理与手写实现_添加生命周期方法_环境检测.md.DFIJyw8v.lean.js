@@ -1,0 +1,13 @@
+import{_ as t,o as a,c as o,j as e,a as n}from"./chunks/framework.DJo0M80U.js";const m=JSON.parse('{"title":"环境检测","description":"围绕“环境检测”整理的概念、示例与实践笔记。","frontmatter":{"title":"环境检测","date":"2026-08-11T00:00:00.000Z","categories":["Vue 系统教程"],"tags":["Vue","Vue3","前端","教程","OneNote","原理与手写实现"],"description":"围绕“环境检测”整理的概念、示例与实践笔记。","sidebarWeight":78,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/f-vue/手写/添加生命周期方法/环境检测.md"},"headers":[],"relativePath":"posts/Vue系统教程/05-原理与手写实现/添加生命周期方法/环境检测.md","filePath":"posts/Vue系统教程/05-原理与手写实现/添加生命周期方法/环境检测.md"}'),l={name:"posts/Vue系统教程/05-原理与手写实现/添加生命周期方法/环境检测.md"};function i(p,s,r,c,d,u){return a(),o("div",null,[...s[0]||(s[0]=[e("div",null,[e("h1",{id:"环境检测",tabindex:"-1"},[n("环境检测 "),e("a",{class:"header-anchor",href:"#环境检测","aria-label":'Permalink to "环境检测"'},"​")]),e("blockquote",null,[e("p",null,"本节目标：理解“环境检测”的核心思路，并能把它用于实际开发或面试表达。")]),e("div",{class:"language- vp-adaptive-theme"},[e("button",{title:"Copy Code",class:"copy"}),e("span",{class:"lang"}),e("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[e("code",null,[e("span",{class:"line"},[e("span",null,"// Browser environment sniffing")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const inBrowser = typeof window !== 'undefined'")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const inWeex = typeof WXEnvironment !== 'undefined' && !!WXEnvironment.platform")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const weexPlatform = inWeex && WXEnvironment.platform.toLowerCase()")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const UA = inBrowser && window.navigator.userAgent.toLowerCase()")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const isIE = UA && /msie|trident/.test(UA)")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const isIE9 = UA && UA.indexOf('msie 9.0') > 0")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const isEdge = UA && UA.indexOf('edge/') > 0")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const isAndroid = (UA && UA.indexOf('android') > 0) || (weexPlatform === 'android')")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const isIOS = (UA && /iphone|ipad|ipod|ios/.test(UA)) || (weexPlatform === 'ios')")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const isChrome = UA && /chrome\\/\\d+/.test(UA) && !isEdge")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const isPhantomJS = UA && /phantomjs/.test(UA)")]),n(`
+`),e("span",{class:"line"},[e("span",null,"export const isFF = UA && UA.match(/firefox\\/(\\d+)/)")])])])])],-1)])])}const x=t(l,[["render",i]]);export{m as __pageData,x as default};

@@ -1,0 +1,11 @@
+import{_ as n,o as l,c as t,j as a,a as e}from"./chunks/framework.DJo0M80U.js";const d=JSON.parse('{"title":"base64转化","description":"围绕“base64转化”整理的概念、示例与实践笔记。","frontmatter":{"title":"base64转化","date":"2026-08-11T00:00:00.000Z","categories":["JavaScript 系统教程"],"tags":["JavaScript","前端","教程","OneNote","浏览器与 Web API"],"description":"围绕“base64转化”整理的概念、示例与实践笔记。","sidebarWeight":21,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/b-原生js/Buffer/Buffer/base64转化.md"},"headers":[],"relativePath":"posts/JavaScript系统教程/04-浏览器与 Web API/Buffer/base64转化.md","filePath":"posts/JavaScript系统教程/04-浏览器与 Web API/Buffer/base64转化.md"}'),r={name:"posts/JavaScript系统教程/04-浏览器与 Web API/Buffer/base64转化.md"};function p(i,s,o,c,u,f){return l(),t("div",null,[...s[0]||(s[0]=[a("div",null,[a("h1",{id:"base64转化",tabindex:"-1"},[e("base64转化 "),a("a",{class:"header-anchor",href:"#base64转化","aria-label":'Permalink to "base64转化"'},"​")]),a("blockquote",null,[a("p",null,"本节目标：理解“base64转化”的核心思路，并能把它用于实际开发或面试表达。")]),a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"const CHARTS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';")]),e(`
+`),a("span",{class:"line"},[a("span",null,"function transfer(str) {")]),e(`
+`),a("span",{class:"line"},[a("span",null,"    let buf = Buffer.from(str);")]),e(`
+`),a("span",{class:"line"},[a("span",null,"    let result = '';")]),e(`
+`),a("span",{class:"line"},[a("span",null,"    for (let b of buf) {")]),e(`
+`),a("span",{class:"line"},[a("span",null,"        result += b.toString(2);")]),e(`
+`),a("span",{class:"line"},[a("span",null,"    }")]),e(`
+`),a("span",{class:"line"},[a("span",null,"    return result.match(/(\\d{6})/g).map(val => parseInt(val, 2)).map(val => CHARTS[val]).join('');")]),e(`
+`),a("span",{class:"line"},[a("span",null,"}")]),e(`
+`),a("span",{class:"line"},[a("span",null,"let r = transfer('a');")]),e(`
+`),a("span",{class:"line"},[a("span",null,"console.log(r);")])])])])],-1)])])}const m=n(r,[["render",p]]);export{d as __pageData,m as default};

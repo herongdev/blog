@@ -1,0 +1,9 @@
+import{_ as n,o as l,c as t,j as a,a as e}from"./chunks/framework.DJo0M80U.js";const _=JSON.parse('{"title":"创建对象：字面量","description":"围绕“创建对象：字面量”整理的概念、示例与实践笔记。","frontmatter":{"title":"创建对象：字面量","date":"2026-08-11T00:00:00.000Z","categories":["JavaScript 系统教程"],"tags":["JavaScript","前端","教程","OneNote","对象、数组与函数"],"description":"围绕“创建对象：字面量”整理的概念、示例与实践笔记。","sidebarWeight":168,"lastUpdated":false,"feed":false,"source":"onenote","sourceNote":"OneNote/b-原生js/面向对象程序设计/(90M)创建对象/(1m)创建对象：字面量.md"},"headers":[],"relativePath":"posts/JavaScript系统教程/03-对象、数组与函数/(90M)创建对象/(1m)创建对象：字面量.md","filePath":"posts/JavaScript系统教程/03-对象、数组与函数/(90M)创建对象/(1m)创建对象：字面量.md"}'),i={name:"posts/JavaScript系统教程/03-对象、数组与函数/(90M)创建对象/(1m)创建对象：字面量.md"};function p(o,s,c,r,d,u){return l(),t("div",null,[...s[0]||(s[0]=[a("div",null,[a("h1",{id:"创建对象-字面量",tabindex:"-1"},[e("创建对象：字面量 "),a("a",{class:"header-anchor",href:"#创建对象-字面量","aria-label":'Permalink to "创建对象：字面量"'},"​")]),a("blockquote",null,[a("p",null,"本节目标：理解“创建对象：字面量”的核心思路，并能把它用于实际开发或面试表达。")]),a("div",{class:"language- vp-adaptive-theme"},[a("button",{title:"Copy Code",class:"copy"}),a("span",{class:"lang"}),a("pre",{class:"shiki shiki-themes github-light github-dark vp-code",tabindex:"0","v-pre":""},[a("code",null,[a("span",{class:"line"},[a("span",null,"对象字面量语法：")]),e(`
+`),a("span",{class:"line"},[a("span",null,"var person = {")]),e(`
+`),a("span",{class:"line"},[a("span",null,'name: "Nicholas",')]),e(`
+`),a("span",{class:"line"},[a("span",null,"age: 29,")]),e(`
+`),a("span",{class:"line"},[a("span",null,'job: "Software Engineer",')]),e(`
+`),a("span",{class:"line"},[a("span",null,"sayName: function () {")]),e(`
+`),a("span",{class:"line"},[a("span",null,"alert(this.name);")]),e(`
+`),a("span",{class:"line"},[a("span",null,"}")]),e(`
+`),a("span",{class:"line"},[a("span",null,"}")])])])])],-1)])])}const h=n(i,[["render",p]]);export{_ as __pageData,h as default};
