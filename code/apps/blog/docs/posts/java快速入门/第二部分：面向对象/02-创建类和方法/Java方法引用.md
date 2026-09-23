@@ -1,5 +1,5 @@
 ---
-title: 在 Java 中，`` 符号用作方法引用（Method Reference）。这是 Java 8 引入的一个功能，它允许你直接引用类或对象的方法而不是执行它。方法引用提供了一种更简洁的方式来传递方法作为参数，通常用在 Lambda 表达式的场景中。
+title: Java 方法引用
 date: 2026-07-03
 categories: [Java 快速入门]
 tags: [Java, 面向对象, OneNote]

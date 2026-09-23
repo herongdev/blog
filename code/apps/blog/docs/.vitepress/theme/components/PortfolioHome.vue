@@ -66,3 +66,49 @@ homeCards.push({ id: 'learning', number: '06', title: '文章与教程', descrip
   .works-site--compact .project-grid-home .field-grid .project-grid-card h2 { margin-top:12px; }
 }
 </style>
+
+<style>
+/* The homepage owns the viewport; other pages retain normal document flow. */
+.works-site.works-site--compact { height:100dvh; min-height:0; }
+.works-site.works-site--compact .works-main { flex:1 1 0; min-height:0; }
+.works-site.works-site--compact .project-grid-home { min-height:0; padding-block:16px; gap:16px; }
+.works-site.works-site--compact .project-grid-home .field-grid { min-height:0; grid-auto-rows:minmax(0,1fr); gap:clamp(12px,2.5vh,30px); }
+.works-site.works-site--compact .project-grid-home .field-grid .project-grid-card { min-height:0; padding:10px; justify-content:flex-start; }
+.works-site.works-site--compact .field-preview { height:auto; min-height:0; flex:1 1 0; }
+.works-site.works-site--compact .project-grid-home .field-grid .project-grid-card h2 { margin:10px 6px 0; font-size:clamp(16px,2.3vh,21px); line-height:1.25; }
+.works-site.works-site--compact .project-grid-home .field-grid .project-grid-card p { margin:6px 6px 0; line-height:1.4; }
+.works-site.works-site--compact .field-card__footer { margin:8px 6px 0; padding:0; }
+.works-site.works-site--compact .works-footer { padding-block:4px; }
+.works-site.works-site--compact .works-footer__inner { flex-direction:row; gap:8px; }
+@media(max-width:1000px) {
+  .works-site.works-site--compact .project-grid-home .field-grid { grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:repeat(3,minmax(0,1fr)); }
+  .works-site.works-site--compact .project-grid-home__intro h1 { font-size:clamp(22px,4.5vw,34px); line-height:1.15; }
+  .works-site.works-site--compact .works-footer__brand { display:none; }
+  .works-site.works-site--compact .works-footer nav { gap:0 12px; justify-content:center; width:100%; }
+}
+@media(max-width:600px) {
+  .works-site.works-site--compact .project-grid-home { padding-block:8px; gap:8px; }
+  .works-site.works-site--compact .project-grid-home .field-grid { gap:8px; }
+  .works-site.works-site--compact .project-grid-home .field-grid .project-grid-card { padding:6px; }
+  .works-site.works-site--compact .project-grid-home .field-grid .project-grid-card h2 { font-size:14px; margin:6px 2px 0; }
+  .works-site.works-site--compact .project-grid-home .field-grid .project-grid-card p { font-size:10px; margin:4px 2px 0; }
+  .works-site.works-site--compact .field-card__footer { margin:4px 2px 0; }
+  .works-site.works-site--compact .field-card__kind { display:none; }
+  .works-site.works-site--compact .field-card__link { font-size:11px; }
+  .works-site.works-site--compact .editorial-caption { display:none; }
+  .works-site.works-site--compact .editorial-drawing { padding:4px; }
+  .works-site.works-site--compact .works-footer nav { gap:0 10px; font-size:10px; }
+}
+@media(orientation:landscape) and (max-height:500px) {
+  .works-site.works-site--compact { --works-header:48px; }
+  .works-site.works-site--compact .project-grid-home { padding-block:4px; gap:4px; }
+  .works-site.works-site--compact .project-grid-home__intro h1 { font-size:22px; }
+  .works-site.works-site--compact .project-grid-home .field-grid { grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:repeat(2,minmax(0,1fr)); gap:6px; }
+  .works-site.works-site--compact .project-grid-home .field-grid .project-grid-card { padding:6px; }
+  .works-site.works-site--compact .project-grid-home .field-grid .project-grid-card h2 { font-size:14px; margin-top:4px; }
+  .works-site.works-site--compact .project-grid-home .field-grid .project-grid-card p { font-size:10px; margin-top:2px; }
+  .works-site.works-site--compact .field-card__footer { margin-top:2px; }
+  .works-site.works-site--compact .editorial-caption { display:none; }
+  .works-site.works-site--compact .editorial-drawing { padding:0; }
+}
+</style>
