@@ -1,0 +1,77 @@
+/* Shared responsive rules for the portfolio and VitePress reading pages. */
+:root { --site-gutter: clamp(16px, 2.5vw, 40px); }
+.works-site { min-height: 100svh; overflow: visible; }
+.works-site :is(main, article, section, header, nav, footer, dl, dd, li),
+.works-site :is(h1, h2, h3, p, a, strong) { min-width: 0; overflow-wrap: anywhere; }
+.works-site .works-container,
+.works-site .works-header__inner,
+.works-site.works-site--compact .works-header__inner,
+.works-site.works-site--compact .project-grid-home {
+  width: min(calc(100% - var(--site-gutter) * 2), 1440px);
+  margin-inline: auto;
+}
+.works-site .works-header { padding-top: env(safe-area-inset-top, 0px); height: calc(var(--works-header) + env(safe-area-inset-top, 0px)); }
+.works-site .works-brand { min-width: 0; flex-shrink: 0; }
+.works-site .works-nav { gap: clamp(16px, 2.4vw, 34px); }
+.works-site .works-nav a { display: flex; align-items: center; min-height: 44px; white-space: nowrap; }
+.works-site .works-theme,
+.works-site .works-menu { width: 44px; height: 44px; flex-shrink: 0; }
+.works-site .works-footer { padding-bottom: max(20px, env(safe-area-inset-bottom, 0px)); }
+.works-site .works-footer nav { flex-wrap: wrap; column-gap: 20px; row-gap: 4px; }
+.works-site .works-footer nav a { display: inline-flex; align-items: center; min-height: 44px; }
+.works-site .works-page-intro { min-height: auto; padding-block: clamp(32px, 5vw, 72px); }
+.works-site .works-page-intro h1 { margin-top: 32px; font-size: clamp(36px, 6vw, 88px); line-height: 1.15; letter-spacing: -.04em; }
+.works-site .works-page-intro > p { margin-top: 24px; }
+.works-site .works-page-intro > nav { margin-top: 36px; }
+.works-site .case-page__title h1 { font-size: clamp(34px, 6vw, 88px); line-height: 1.15; }
+.works-site .case-page__status { flex-wrap: wrap; }
+.works-site .journal-index > a { grid-template-columns: 40px 110px minmax(0, 1fr) 24px; }
+.works-site .journal-index { padding-block: 32px 48px; }
+.works-site .tutorial-links a { min-height: 44px; }
+.works-site .site-icon { flex-shrink: 0; }
+.vp-doc :is(img, video, iframe) { max-width: 100%; }
+.vp-doc :is(p, li, a, h1, h2, h3, td, th) { overflow-wrap: anywhere; }
+.vp-doc table { max-width: 100%; overflow-x: auto; }
+.vp-doc div[class*='language-'] pre { overflow-x: auto; overscroll-behavior-inline: contain; }
+
+@media (max-width: 1100px) {
+  .works-site .works-brand__edition { display: none; }
+}
+@media (max-width: 800px) {
+  .works-site .works-case-grid { grid-template-columns: minmax(0, 1fr); }
+  .works-site .works-header__controls,
+  .works-site.works-site--compact .works-header__controls { margin-left: auto; }
+  .works-site .works-mobile-nav { max-height: calc(100dvh - var(--works-header) - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain; padding-bottom: max(18px, env(safe-area-inset-bottom, 0px)); }
+  .works-site .works-mobile-nav a { min-height: 48px; }
+  .works-site .works-footer__inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .works-site .journal-index > a { grid-template-columns: 28px minmax(0, 1fr) 22px; gap: 12px; }
+  .works-site .journal-index > a > i { display: none; }
+  .works-site .journal-index h2 { font-size: 20px; line-height: 1.45; }
+  .works-site .journal-archive { grid-template-columns: 1fr; gap: 16px; }
+  .works-site .journal-archive > a { justify-self: start; min-height: 44px; }
+  .works-site .works-category { padding-block: 40px; }
+  .works-site .works-category__header h2 { font-size: clamp(26px, 4vw, 36px); }
+  .works-site .case-page__overview,
+  .works-site .about-index { padding-block: 40px; gap: 28px; }
+  .works-site .about-canvas__title { padding-block: 32px; gap: 24px; }
+  .works-site .about-canvas__title h1 { font-size: clamp(48px, 10vw, 80px); }
+}
+@media (max-width: 600px) {
+  .works-site .works-brand__logo { width: 38px; height: 38px; }
+  .works-site .works-brand__name { margin-left: 10px; }
+  .works-site .case-page__title { padding-block: 28px; }
+  .works-site .case-page__hero > .case-visual,
+  .works-site .case-page__next .case-visual,
+  .works-site .works-case-grid .case-visual,
+  .works-site .about-canvas__visuals .case-visual { min-height: 280px; }
+  .works-site .works-case-grid { gap: 32px; }
+  .works-site .case-tile__caption h3 { font-size: 24px; }
+  .works-site .about-links { margin-bottom: 40px; }
+  .works-site .about-links a { min-height: 120px; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .works-site .works-header { position: relative; }
+}
+@supports (padding: max(0px)) {
+  .works-site { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+}

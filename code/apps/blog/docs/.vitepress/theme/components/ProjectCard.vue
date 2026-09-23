@@ -1,46 +1,26 @@
 <script setup lang="ts">
+import { ArrowUpRight } from 'lucide-vue-next'
 import { withBase } from 'vitepress'
 import type { PortfolioProject } from '../data/portfolio'
+import ProjectVisual from './ProjectVisual.vue'
 
-defineProps<{
-  project: PortfolioProject
-  featured?: boolean
-}>()
+defineProps<{ project: PortfolioProject; index?: number }>()
 </script>
 
 <template>
-  <article class="portfolio-project-card" :class="{ 'portfolio-project-card--featured': featured }">
-    <div class="portfolio-project-card__topline">
-      <span>{{ project.number }}</span>
-      <span>{{ project.status }}</span>
-    </div>
-    <p class="portfolio-eyebrow">{{ project.eyebrow }}</p>
-    <h3>{{ project.title }}</h3>
-    <p class="portfolio-project-card__summary">{{ project.summary }}</p>
-    <dl class="portfolio-project-card__meta">
-      <div>
-        <dt>我的角色</dt>
-        <dd>{{ project.role }}</dd>
+  <article class="case-tile" :class="`case-tile--${project.area}`">
+    <a class="case-tile__link" :href="withBase(project.detail)" :aria-label="`查看 ${project.title} 项目案例`">
+      <ProjectVisual :project-id="project.id" />
+      <div class="case-tile__caption">
+        <div>
+          <span>{{ project.number }} / {{ project.eyebrow }}</span>
+          <h3>{{ project.title }}</h3>
+        </div>
+        <span class="case-tile__arrow" aria-hidden="true"><ArrowUpRight class="site-icon" aria-hidden="true" /></span>
       </div>
-      <div v-if="project.period">
-        <dt>时间</dt>
-        <dd>{{ project.period }}</dd>
+      <div class="case-tile__tags">
+        <span v-for="tag in project.tags.slice(0, 4)" :key="tag">{{ tag }}</span>
       </div>
-    </dl>
-    <ul class="portfolio-tag-list" aria-label="技术与能力标签">
-      <li v-for="tag in project.tags" :key="tag">{{ tag }}</li>
-    </ul>
-    <div class="portfolio-project-card__actions">
-      <a class="portfolio-text-link" :href="withBase(project.detail)">查看项目说明 <span aria-hidden="true">→</span></a>
-      <a
-        v-if="project.external"
-        class="portfolio-text-link portfolio-text-link--muted"
-        :href="project.external.href"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {{ project.external.label }} <span aria-hidden="true">↗</span>
-      </a>
-    </div>
+    </a>
   </article>
 </template>

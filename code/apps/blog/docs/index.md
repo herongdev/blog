@@ -1,11 +1,11 @@
 ---
 layout: portfolio-home
-title: 何荣｜高级全栈开发工程师
+title: 何荣｜项目档案
 titleTemplate: false
-description: 何荣的工程作品集：AI 应用与 Agent 编程、政企数字孪生、金融交易图表与商业平台全栈交付。
+description: AI 产品、空间系统、金融图表与商业平台的项目案例。
 keywords:
   - 何荣
-  - 高级全栈开发工程师
+  - 项目案例
   - AI Agent
   - 前端架构
   - 数字孪生

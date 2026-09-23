@@ -83,6 +83,14 @@ export const capabilities: Capability[] = [
     focus: ['商品与订单', '小程序业务闭环', '前后端与部署维护'],
     projectIds: ['shopthrive'],
   },
+  {
+    id: 'video-live',
+    number: '05',
+    title: '短视频与直播',
+    description: '围绕短视频内容与直播互动的产品场景。',
+    focus: ['短视频', '直播互动', '内容平台'],
+    projectIds: [],
+  },
 ]
 
 export const projects: PortfolioProject[] = [
@@ -210,7 +218,7 @@ export const projects: PortfolioProject[] = [
     evidence: [
       {
         title: '角色边界记录',
-        description: '当前作品说明来自履历中的项目职责；因企业项目限制，以职责、方法和技术范围为证据。',
+        description: '受企业项目公开范围限制，案例以系统构成、技术方法和负责模块为记录。',
       },
     ],
   },

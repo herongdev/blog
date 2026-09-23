@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 const BASE = process.env.BASE || "/";
-const SITE_HOSTNAME = process.env.SITE_URL || "https://example.com";
+const SITE_HOSTNAME = process.env.SITE_URL || "https://herong.info";
 const BAIDU_TONGJI_ID = process.env.BAIDU_TONGJI_ID || "";
 const UMAMI_SRC = process.env.UMAMI_SRC || "";
 const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || "";
@@ -62,7 +62,7 @@ function pageDescription(pageData: {
   const fromFm = pageData.frontmatter.description;
   if (typeof fromFm === "string" && fromFm.trim()) return fromFm.trim();
   if (pageData.description?.trim()) return pageData.description.trim();
-  return `${pageData.title} | 何荣的工程作品集`;
+  return `${pageData.title} | 何荣的项目档案`;
 }
 
 function pageKeywords(pageData: { frontmatter: Record<string, unknown> }): string {
@@ -205,8 +205,8 @@ if (process.env.CI) {
 
 export default {
   lang: "zh-CN",
-  title: "何荣｜高级全栈开发工程师",
-  description: "AI 应用与 Agent 编程，复杂业务系统与全栈交付。",
+  title: "何荣｜项目档案",
+  description: "AI 产品、空间系统、金融图表与商业平台的项目案例。",
   lastUpdated: true,
   cleanUrls: true,
   outDir: OUT_DIR,
@@ -232,8 +232,9 @@ export default {
     return pageData;
   },
   transformHead({ pageData, siteData }) {
-    const siteTitle = siteData.title || "何荣｜高级全栈开发工程师";
+    const siteTitle = siteData.title || "何荣｜项目档案";
     const title = String(pageData.frontmatter.title || pageData.title || siteTitle);
+    const socialTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
     const desc = pageDescription({
       title,
       description: pageData.description,
@@ -253,11 +254,11 @@ export default {
       ["meta", { name: "description", content: desc }],
       ["meta", { property: "og:locale", content: ogLocale }],
       ["meta", { property: "og:site_name", content: siteTitle }],
-      ["meta", { property: "og:title", content: `${title} | ${siteTitle}` }],
+      ["meta", { property: "og:title", content: socialTitle }],
       ["meta", { property: "og:description", content: desc }],
       ["meta", { property: "og:url", content: url }],
       ["meta", { name: "twitter:card", content: "summary" }],
-      ["meta", { name: "twitter:title", content: `${title} | ${siteTitle}` }],
+      ["meta", { name: "twitter:title", content: socialTitle }],
       ["meta", { name: "twitter:description", content: desc }],
       ["link", { rel: "canonical", href: url }],
     ];
@@ -317,15 +318,13 @@ export default {
       src: "/logo.png",
       alt: "Harbor & Route",
     },
-    siteTitle: "何荣 / 工程作品集",
+    siteTitle: "何荣 / 项目档案",
     nav: [
-      { text: "首页", link: "/" },
-      { text: "工程项目", link: "/projects/" },
-      { text: "精选文章", link: "/articles/" },
-      { text: "文章归档", link: "/posts/" },
-      { text: "关于我", link: "/about/" },
-      COURSES_NAV,
-      LIGHT_TOOLS_NAV,
+      { text: "主页", link: "/" },
+      { text: "文章", link: "/articles/" },
+      { ...LIGHT_TOOLS_NAV, text: "工具" },
+      { text: "自营产品", link: "/products/" },
+      { text: "关于", link: "/about/" },
     ],
     socialLinks: [],
     search: { provider: "local" },

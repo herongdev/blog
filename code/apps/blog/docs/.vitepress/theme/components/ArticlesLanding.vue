@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowUpRight } from 'lucide-vue-next'
 import { withBase } from 'vitepress'
 import PortfolioShell from './PortfolioShell.vue'
 import { selectedArticles } from '../data/portfolio'
@@ -6,42 +7,37 @@ import { selectedArticles } from '../data/portfolio'
 
 <template>
   <PortfolioShell>
-    <header class="portfolio-page-hero">
-      <div class="portfolio-container portfolio-page-hero__grid">
-        <div>
-          <p class="portfolio-kicker"><span /> 技术写作</p>
-          <h1>把复杂问题，<br>写成可复用的判断。</h1>
-        </div>
-        <p>精选内容集中在 AI 与 Agent、实时系统、图表调试和工程交付。原有技术博客与全部文章地址继续保留，并可通过本地搜索和分类侧栏查找。</p>
-      </div>
+    <header class="works-page-intro works-container">
+      <div class="works-page-intro__meta"><span>JOURNAL / SELECTED</span><span>{{ selectedArticles.length }} ENTRIES</span></div>
+      <h1>文章与教程</h1>
+      <p>AI、实时系统、图表与交付过程中的技术记录。</p>
     </header>
 
-    <section class="portfolio-articles-page">
-      <div class="portfolio-container">
-        <div class="portfolio-articles-page__heading">
-          <h2>精选文章</h2>
-          <span>{{ selectedArticles.length }} 篇</span>
-        </div>
-        <div class="portfolio-article-list portfolio-article-list--large">
-          <a v-for="(article, index) in selectedArticles" :key="article.href" :href="withBase(article.href)">
-            <span class="portfolio-article-list__index">{{ String(index + 1).padStart(2, '0') }}</span>
-            <span>
-              <small>{{ article.category }}</small>
-              <strong>{{ article.title }}</strong>
-              <em>{{ article.description }}</em>
-            </span>
-            <span aria-hidden="true">→</span>
-          </a>
-        </div>
-        <div class="portfolio-archive-callout">
-          <div>
-            <p class="portfolio-eyebrow">完整归档</p>
-            <h2>继续浏览原技术博客</h2>
-            <p>JavaScript、Vue、React、Java、工程实践等历史内容均保留原路径。</p>
-          </div>
-          <a class="portfolio-button portfolio-button--primary" :href="withBase('/posts/')">进入全部文章 <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
+    <section class="journal-index works-container">
+      <a v-for="(article, index) in selectedArticles" :key="article.href" :href="withBase(article.href)">
+        <span class="journal-index__number">{{ String(index + 1).padStart(2, '0') }}</span>
+        <i>{{ article.category }}</i>
+        <div><h2>{{ article.title }}</h2><p>{{ article.description }}</p></div>
+        <b><ArrowUpRight class="site-icon" aria-hidden="true" /></b>
+      </a>
     </section>
+
+    <section class="works-container tutorial-links" aria-labelledby="tutorial-title">
+      <h2 id="tutorial-title">专题教程</h2>
+      <a :href="withBase('/posts/JavaScript系统教程/README')">JavaScript 系统教程 <ArrowUpRight class="site-icon" aria-hidden="true" /></a>
+      <a :href="withBase('/posts/React系统教程/README')">React 系统教程 <ArrowUpRight class="site-icon" aria-hidden="true" /></a>
+      <a :href="withBase('/posts/Vue系统教程/README')">Vue 系统教程 <ArrowUpRight class="site-icon" aria-hidden="true" /></a>
+    </section>
+    <aside class="journal-archive works-container">
+      <span>FULL ARCHIVE</span>
+      <div><strong>全部技术文章</strong><p>保留原有分类、搜索与文章地址。</p></div>
+      <a :href="withBase('/posts/')">打开归档 <ArrowUpRight class="site-icon" aria-hidden="true" /></a>
+    </aside>
   </PortfolioShell>
 </template>
+
+<style scoped>
+.tutorial-links { padding-block:32px; display:grid; gap:16px; }
+.tutorial-links h2 { font-size:24px; }
+.tutorial-links a { display:flex; align-items:center; gap:8px; width:fit-content; }
+</style>

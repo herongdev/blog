@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Sun, Moon, Menu, X } from 'lucide-vue-next'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData, useRoute, withBase } from 'vitepress'
+
+withDefaults(defineProps<{
+  compact?: boolean
+}>(), {
+  compact: false,
+})
 
 const menuOpen = ref(false)
 const route = useRoute()
-const { isDark } = useData()
+const { isDark, theme } = useData()
 
-const navItems = [
-  { label: 'AI 与 Agent', href: '/#ai-agent' },
-  { label: '政企与数字孪生', href: '/#enterprise' },
-  { label: '金融与图表', href: '/#finance' },
-  { label: '商通与全栈', href: '/#fullstack' },
-  { label: '技术文章', href: '/articles/' },
-  { label: '关于我', href: '/about/' },
-]
+const navItems = computed(() => theme.value.nav.map((item: { text: string; link: string }) => ({ label: item.text, href: item.link })))
 
 function closeMenu() {
   menuOpen.value = false
@@ -23,84 +23,57 @@ function handleKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') closeMenu()
 }
 
-function toggleTheme() {
-  isDark.value = !isDark.value
-}
-
 watch(() => route.path, closeMenu)
 onMounted(() => window.addEventListener('keydown', handleKeydown))
 onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
 </script>
 
 <template>
-  <div class="portfolio-site">
-    <a class="portfolio-skip-link" href="#portfolio-main">跳到主要内容</a>
-
-    <header class="portfolio-header">
-      <div class="portfolio-header__inner">
-        <a class="portfolio-brand" :href="withBase('/')" aria-label="何荣工程作品集首页">
-          <span class="portfolio-brand__mark" aria-hidden="true">HR</span>
-          <span>
-            <strong>何荣</strong>
-            <small>工程作品集</small>
-          </span>
+  <div class="works-site" :class="{ 'works-site--compact': compact }">
+    <a class="works-skip" href="#works-main">跳到主要内容</a>
+    <header class="works-header">
+      <div class="works-header__inner">
+        <a class="works-brand" :href="withBase('/')" aria-label="何荣项目档案首页">
+          <img class="works-brand__logo" :src="withBase('/logo.png')" alt="Harbor & Route" width="46" height="46" />
+          <span class="works-brand__name">何荣</span>
+          <span class="works-brand__edition">PROJECT ARCHIVE · 26</span>
         </a>
 
-        <nav class="portfolio-nav" aria-label="主导航">
+        <nav class="works-nav" aria-label="主导航">
           <a v-for="item in navItems" :key="item.href" :href="withBase(item.href)">{{ item.label }}</a>
         </nav>
 
-        <div class="portfolio-header__actions">
-          <button
-            class="portfolio-icon-button"
-            type="button"
-            :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
-            :title="isDark ? '切换到浅色模式' : '切换到深色模式'"
-            @click="toggleTheme"
-          >
-            <svg v-if="isDark" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
-            </svg>
-            <svg v-else viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5 8.5 8.5 0 1 0 20.5 15.2Z" />
-            </svg>
+        <div class="works-header__controls">
+          <button class="works-theme" type="button" aria-label="切换深浅色模式" @click="isDark = !isDark">
+            <Sun class="works-theme__sun" aria-hidden="true" />
+            <Moon class="works-theme__moon" aria-hidden="true" />
           </button>
           <button
-            class="portfolio-menu-button"
+            class="works-menu"
             type="button"
-            aria-label="打开导航"
+            :aria-label="menuOpen ? '关闭导航' : '打开导航'"
             :aria-expanded="menuOpen"
-            aria-controls="portfolio-mobile-nav"
+            aria-controls="works-mobile-nav"
             @click="menuOpen = !menuOpen"
           >
-            <span />
-            <span />
+            <X v-if="menuOpen" class="site-icon" aria-hidden="true" />
+            <Menu v-else class="site-icon" aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <nav
-        v-show="menuOpen"
-        id="portfolio-mobile-nav"
-        class="portfolio-mobile-nav"
-        aria-label="移动端导航"
-      >
-        <a v-for="item in navItems" :key="item.href" :href="withBase(item.href)" @click="closeMenu">
-          {{ item.label }}
-        </a>
+      <nav v-show="menuOpen" id="works-mobile-nav" class="works-mobile-nav" aria-label="移动端导航">
+        <a v-for="item in navItems" :key="item.href" :href="withBase(item.href)" @click="closeMenu">{{ item.label }}</a>
       </nav>
     </header>
 
-    <main id="portfolio-main">
-      <slot />
-    </main>
+    <main id="works-main" class="works-main"><slot /></main>
 
-    <footer class="portfolio-footer">
-      <div class="portfolio-container portfolio-footer__inner">
-        <div>
-          <strong>何荣 · 高级全栈开发工程师</strong>
-          <p>AI 应用与 Agent 编程，复杂业务系统与全栈交付。</p>
+    <footer class="works-footer">
+      <div class="works-container works-footer__inner">
+        <div class="works-footer__brand">
+          <img class="works-brand__logo" :src="withBase('/logo.png')" alt="Harbor & Route" width="32" height="32" />
+          <strong>项目、产品与工程记录。</strong>
         </div>
         <nav aria-label="页脚导航">
           <a :href="withBase('/projects/')">项目</a>
