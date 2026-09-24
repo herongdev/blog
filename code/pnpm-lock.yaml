@@ -12,8 +12,8 @@ importers:
         specifier: ^20.19.0
         version: 20.19.43
       prettier:
-        specifier: ^3.5.3
-        version: 3.8.4
+        specifier: ^3.9.8
+        version: 3.9.8
       typescript:
         specifier: ^5.8.3
         version: 5.9.3
@@ -137,7 +137,7 @@ importers:
         specifier: ^17.12.0
         version: 17.12.0
       prettier:
-        specifier: ^3.9.6
+        specifier: ^3.9.8
         version: 3.9.8
       remark-parse:
         specifier: ^11.0.0
@@ -2699,6 +2699,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -3888,11 +3889,6 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
-
-  prettier@3.8.4:
-    resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
-    engines: {node: '>=14'}
-    hasBin: true
 
   prettier@3.9.8:
     resolution: {integrity: sha512-WRFq3Wn3WId7LLROfMLdH7xaFr2jR62wU8nLO6rQUOLOxNZUviyJQs1M0iIhLexSFy+L+w0ch66wtoO2jRjG0A==}
@@ -8522,8 +8518,6 @@ snapshots:
   preact@10.29.8: {}
 
   prelude-ls@1.2.1: {}
-
-  prettier@3.8.4: {}
 
   prettier@3.9.8: {}
 
