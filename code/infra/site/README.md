@@ -12,7 +12,7 @@
     remote-deploy.sh
     image.sha256
   current -> releases/<release-id>
-  previous -> releases/<previous-release-id>
+  previous -> releases/<previous-release-id>  # 仅在已有可用回滚版本时存在
 ```
 
 从 `code/` 构建生产产物：
@@ -63,7 +63,7 @@ bash /path/to/reviewed/infra/site/rollback.sh
 bash /opt/herong-site/releases/<release-id>/remote-deploy.sh <release-id>
 ```
 
-保留当前版与上一版的镜像和 release；不自动清理。镜像切换会重新创建这个容器，可能短暂中断主站，边缘 Nginx 和其他应用不会重启。上版懒加载资源兼容性仍须检查，不能上线时立即删除上版镜像。回滚不会改变 DNS 或覆盖主机 Nginx，需要分别恢复切换前的边缘配置与 DNS。
+常规发布保留当前版与上一版的镜像和 release；不自动清理。首次 GitHub 主站自动发布现已实际激活：`current=68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f-40080671767-1`，`buildId=20b94abbb5239f48`；`previous=887b34c4a7c944a2e04fc666aae815a43a75be0b-2026102401-3` 及其镜像保留，旧机 legacy 静态站 / DNS 也仍为跨机回滚基线。镜像切换会重新创建这个容器，可能短暂中断主站，边缘 Nginx 和其他应用不会重启。上版懒加载资源兼容性仍须检查，不能上线时立即删除上版镜像。回滚不会改变 DNS 或覆盖主机 Nginx，需要分别恢复切换前的边缘配置与 DNS；工具继续由新机单写，不能同时重启旧工具和旧卷。
 
 ## 现有 HTTPS 入口的局部配置
 
@@ -80,7 +80,11 @@ bash /opt/herong-site/releases/<release-id>/remote-deploy.sh <release-id>
 
 ## 自动发布切换
 
-`.github/workflows/deploy.yml` 保留 master 提交自动发布及 GitHub Pages `/blog/`。2026-10-24 已记录迁移目标 `production-target=101.96.210.172`，源码默认改为 `SITE_DEPLOY_TARGET=container-production`。显式选择 `legacy` 时仍限制旧 rsync 主机为 `115.190.214.176`，防止把旧 `--delete` 目录意外指向新服务器。当前源码尚未提交、尚未推送；新机受限发布器已实际验收，但本次 GitHub Actions runner 尚未运行。
+`.github/workflows/deploy.yml` 保留 master 提交自动发布及 GitHub Pages `/blog/`。2026-10-24 已记录迁移目标 `production-target=101.96.210.172`，默认目标为 `SITE_DEPLOY_TARGET=container-production`。显式选择 `legacy` 时仍限制旧 rsync 主机为 `115.190.214.176`，防止把旧 `--delete` 目录意外指向新服务器。首次服务器 smoke 发布使用 dirty 工作区；迁移实现现已独立提交为 [68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f](https://github.com/herongdev/blog/commit/68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f) 并推送 master，其他无关改动保留。
+
+首次真实 [主站 run 40080671767](https://github.com/herongdev/blog/actions/runs/40080671767)（job `120833369708`）已通过 GitHub API 核实为 `completed / success`：checkout、Node 24、生产边界、frozen install、完整 `build:site`、artifact、SCP 上传、服务器健康激活、`Build for GitHub Pages` 与 `Deploy to gh-pages` 全部通过，**主站和 GitHub Pages 的完整自动发布成功**。发布回执为 `code/output/site-migration/github-ci-publish-receipt.json`，公共 `public-after-ci.json` 再验 38 项全部通过，主站与工具健康。本地 `clean-ci-build-receipt.json` 已另外记录干净源码的主站 / GH Pages 构建、9 项 Node + 8 项发布器测试及严格归档往返通过，与真实 runner 成功记录分别保留。
+
+新机磁盘曾降到约 538MB / 99%，本项目已按准确 ID 清理自己的约 251MB builder context。随后用户明确授权只清 `xian` 的单项 pnpm 缓存；核实其可回收、非共享、类型为 `exec.cachemount` 后，以准确 ID `zt757rwr3bkfdte3vwd81gkac` 清理，实际回收 938.9MB，未删除镜像、容器或卷。当前 `df` 为约 40G 总量、36G 已用、1.4G 可用 / 97%，current / previous 主站镜像均保留。授权不包含其他缓存的批量清理；1.4G 仍需后续容量规划，不能据此宣称长期发布空间充裕。
 
 新目标通过仓库 Actions 变量 `SITE_DEPLOY_TARGET` 或 `workflow_dispatch.deploy_target` 明确选择：
 
@@ -92,7 +96,7 @@ bash /opt/herong-site/releases/<release-id>/remote-deploy.sh <release-id>
 
 正式容器 CI 使用受限的 `site-ci` 账号，只传静态归档，由 root-owned 固定发布器构建和激活；不上传 image/compose/script。已有专用 CI 密钥已独立核实，可通过 `SITE_SSH_KEY || SSH_KEY` 复用；公开主机指纹从 Secret/变量或已核实的仓库文件读取。完整身份、安装与启用说明见 [受限自动发布](CI.md)。`PUBLIC_GUIDES_URL`、`PUBLIC_TOOLS_URL` 可用仓库变量覆盖。它们是公开入口，不能放密钥。旧 `SSH_*` 的主机等配置继续用于旧回滚流程，不能改向新服务器。所有构建继续安装 frozen lockfile，使用 Node 24 和 pnpm 10.28.0。
 
-迁移完成标记表示执行者已完成本次入口、独立政企/API/SSE、工具单写和回滚核验；不要求另配 `SITE_PRODUCTION_READY`，显式 `false` 仍可阻止正式发布。CI 只更新主站容器，不修改 Nginx、DNS、工具数据、教程内容或其他产品。源码推送后核验首次 master 自动触发或一次 `workflow_dispatch`；服务器受限发布验收不能代替 GitHub Actions 的真实运行记录。
+迁移完成标记表示执行者已完成本次入口、独立政企/API/SSE、工具单写和回滚核验；不要求另配 `SITE_PRODUCTION_READY`，显式 `false` 仍可阻止正式发布。CI 只更新主站容器，不修改 Nginx、DNS、工具数据、教程内容或其他产品。首次 master 自动触发已实际完成主站激活及 GitHub Pages 构建部署，整条 workflow 成功；该真实运行结果与服务器 smoke、本地干净树验证分别记录。
 
 ## 验收
 

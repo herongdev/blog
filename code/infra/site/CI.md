@@ -42,10 +42,14 @@ CI 只生成、验证并上传 `apps/site/dist-bundle/` 的静态归档。新机
 
 ## 当前默认与验收
 
-2026-10-24 已完成新主站受限发布、工具单写迁移及完整入口预检，正式域名的两条 A 记录已提交为 `101.96.210.172`，权威 DNS 同步仍可能短暂返回旧地址。仓库 `infra/site/production-target` 已记录该目标，工作流默认改为 **`container-production`**；`legacy` 保留为显式选项，GitHub Pages `/blog/` 自动发布保留。仓库变量 `SITE_DEPLOY_TARGET` 可显式覆盖；不要求配置 `SITE_PRODUCTION_READY`，缺省使用迁移完成标记，显式 `false` 可阻止正式发布。
+2026-10-24 已完成新主站受限发布、工具单写迁移和正式公共入口验收；`herong.info` / `www.herong.info` 的权威及本地 DNS 均已核对为 `101.96.210.172`，新 LE 证书与续期 dry-run 均通过。仓库 `infra/site/production-target` 已记录该目标，工作流默认改为 **`container-production`**；`legacy` 保留为显式选项，GitHub Pages `/blog/` 自动发布保留。仓库变量 `SITE_DEPLOY_TARGET` 可显式覆盖；不要求配置 `SITE_PRODUCTION_READY`，缺省使用迁移完成标记，显式 `false` 可阻止正式发布。
 
-当前这些源码变更尚未提交、尚未推送。新机已经实际执行受限发布器并验收，但**尚无本次 GitHub Actions runner 的真实运行记录**。源码推送后，master 提交才会按新的默认目标触发；不能把服务器受限发布验收等同于工作流已运行。
+首次服务器 smoke 发布时使用的是 dirty 工作区，旧 release 的 commit 前缀不代表实现当时已提交。迁移实现现已通过独立提交 [68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f](https://github.com/herongdev/blog/commit/68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f) 推送 `master`，其他无关本地改动保留。已通过 GitHub API 核实 [主站 run 40080671767](https://github.com/herongdev/blog/actions/runs/40080671767)（job `120833369708`）为 `completed / success`：checkout、Node 24、production boundary、frozen install、完整 `build:site`、artifact、SCP、服务器健康激活、`Build for GitHub Pages` 与 `Deploy to gh-pages` 全部通过，**本次主站和 GitHub Pages 的完整自动发布已成功**。
 
-源码推送后运行一次 `workflow_dispatch` 的 `container-production` 或核验首次 master 自动触发，检查新容器镜像标签、本次 buildId、历史 RSS/文章、真实 404、工具和演示未被改动；GH Pages `/blog/` 继续独立构建并推送 `gh-pages`。新生产 CI 不承担 IP 预览部署，预览可本地构建并由已授权运维入口单独发布，避免把 `/site-preview/` 产物替换正式容器。
+真实激活版本为 `68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f-40080671767-1`，`buildId=20b94abbb5239f48`；`previous` 已实际指向首次 smoke release `887b34c4a7c944a2e04fc666aae815a43a75be0b-2026102401-3`，对应镜像仍保留。`code/output/site-migration/github-ci-publish-receipt.json` 保存发布器回执，`public-after-ci.json` 再验公共入口 38 项全部通过，主站与工具健康。
+
+磁盘一度降到约 538MB / 99%，本项目已精确清理自己的约 251MB builder context。随后经用户明确授权，核实 `reclaimable=true`、`shared=false`、`type=exec.cachemount` 后，只清理 `xian` 的 pnpm 缓存 `zt757rwr3bkfdte3vwd81gkac`，实际回收 938.9MB；未删除镜像、容器或卷。最新 `df` 为约 40G 总量、36G 已用、1.4G 可用 / 97%，current 与 previous 镜像保留。此次授权仅限该单项缓存，不能扩展为批量清理；后续仍需容量规划，不能把 1.4G 视为长期发布容量充裕。
+
+本地干净树回执 `code/output/site-migration/clean-ci-build-receipt.json` 已确认 frozen install、完整主站构建、9 项 Node 测试、8 项发布器测试、39MB 严格归档往返与 GitHub Pages `/blog/` 完整构建均通过。这是干净源码和打包验证，与真实 runner 成功记录分别保留；本次 runner 的上传、主站激活、GH Pages 构建部署及整条 workflow 均已核验成功。新生产 CI 不承担 IP 预览部署，预览可本地构建并由已授权运维入口单独发布，避免把 `/site-preview/` 产物替换正式容器。
 
 验证权限边界：site-ci 可上传 archive，但不可写 publisher/releases、不可操作 Docker；额外 sudo 参数、路径穿越 release 和恶意 tar 均被拒绝，当前容器不受影响。运行 `python3 infra/site/test-ci-publish.py -v` 覆盖归档边界、权限重置、大小上限、真实产物与坏 manifest。生产端至少实际完成一次受限身份发布；仅有本地测试不表示 GitHub Actions 已执行。

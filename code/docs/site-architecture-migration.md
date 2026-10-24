@@ -1,6 +1,6 @@
 # 官网架构调整与服务器迁移
 
-日期：2026-10-24。状态：主站与工具已迁移到 `101.96.210.172`，正式域名 DNS、HTTPS 新证书、续期演练和公共入口验收均已完成。服务器受限发布链路已实际通过，但新 GitHub Actions 流程尚未提交、推送或由 GitHub runner 运行。教程独立域名尚未启用，旧服务器仍有独立演示、媒体及其他产品依赖；各阶段证据和真实限制见文末实际部署记录。
+日期：2026-10-24。状态：主站与工具已迁移到 `101.96.210.172`，正式域名 DNS、HTTPS 新证书、续期演练和公共入口验收均已完成。迁移实现已独立提交并推送 `master`，真实 GitHub Actions 的主站构建、受限发布、健康激活，以及 GitHub Pages 构建和部署均成功，整条 workflow 已完成。用户授权的单项 pnpm 缓存已清理，新机剩余约 1.4G、使用率约 97%，仍需后续容量规划；教程独立域名与旧机依赖保持文末所述现状。
 
 ## 已确认的方向
 
@@ -77,7 +77,7 @@ flowchart TD
 
 每个应用独立构建、版本和发布。主站及工具分别有独立 Compose 配置、镜像标签及回滚版本；构建优先在本机或 CI 完成，避免服务器承担整仓构建。
 
-原 `.github/workflows/deploy.yml` 的 `master` 提交后发布及 GitHub Pages `/blog/` 能力保留。当前工作区已将默认目标改为 `container-production`，并记录 `production-target=101.96.210.172`；`legacy` 与 `build-only` 仍可显式选择，新生产 CI 不承担 IP 预览部署。旧 rsync 限制为旧主机与 `/var/www/herongsite/`，正式容器目标通过 `site-ci` 受限身份上传静态归档，由服务器固定发布器激活。当前源码尚未提交或推送，不能据此宣称 GitHub Actions 已完成切换或验收。说明见 [主站发布文档](../infra/site/README.md#自动发布切换) 与 [受限发布说明](../infra/site/CI.md)。不能把独立服务的数据或产物塞入旧 rsync 目录。
+原 `.github/workflows/deploy.yml` 的 `master` 提交后发布及 GitHub Pages `/blog/` 能力保留。默认目标已改为 `container-production`，并记录 `production-target=101.96.210.172`；`legacy` 与 `build-only` 仍可显式选择，新生产 CI 不承担 IP 预览部署。旧 rsync 限制为旧主机与 `/var/www/herongsite/`，正式容器目标通过 `site-ci` 受限身份上传静态归档，由服务器固定发布器激活。这些实现已随独立提交 `68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f` 推送 `master`，首次真实 workflow `40080671767` 的主站构建 / 发布与 GitHub Pages 构建 / 部署全部成功。说明见 [主站发布文档](../infra/site/README.md#自动发布切换) 与 [受限发布说明](../infra/site/CI.md)。不能把独立服务的数据或产物塞入旧 rsync 目录。
 
 工具当前生产 Compose 只有 `web` 服务，镜像已包含 FFmpeg，不需凭旧规划文档额外引入 PostgreSQL、Redis 或 worker。迁移应备份并恢复真实数据卷、会话配置和必要的私有配置；从 `/file-tools` 改为独立域名根路径时，必须重新构建 Next.js 的 basePath，并验证旧地址、下载、登录及已启用的支付回调。不能只改反向代理地址。
 
@@ -106,9 +106,16 @@ flowchart TD
 ### 主站版本与受限发布
 
 - 新服务器：`101.96.210.172`；主站容器与 Compose 项目均为 `herong-site`，仅通过回环 `127.0.0.1:24380` 提供入口，容器内 Nginx 为 `8080`。
-- 当前受限发布 release：`887b34c4a7c944a2e04fc666aae815a43a75be0b-2026102401-3`；本地记录为 `code/output/site-migration/ci-release.txt`。对应版本镜像名为 `herong-site:<release-id>`，服务目录按 `/opt/herong-site/releases/<release-id>/` 组织，`current` 指向当前版本。本次为释放磁盘清理了未实际接流量的旧候选镜像，现场不存在可用的主站 `previous`，不能照一般模板直接宣称有上一容器版本可切回。
-- 当前已核验的主站 `buildId` 为 `cb50d8cea8b82b70`，容器健康。新版本已实际通过服务器 `site-ci` 受限身份的上传、固定发布器构建和健康激活链路；发布器只接收静态归档，不接受上传的脚本、Compose 或任意 Docker 命令。权限和归档限制见 [受限发布说明](../infra/site/CI.md)。
-- 本地工作流默认已改为 `container-production`，目标标记为 `101.96.210.172`，但这次受限链路验收不代表 GitHub runner 已执行：当前本地实现仍有未提交改动，新 GitHub Actions 流程尚未推送或运行。release 名中的 commit 前缀只是本次发布标识，不能证明所有当前实现已包含在该 commit 中。启用后的真实 workflow run 及 `master` 自动发布结果须另行记录。
+- 首次服务器受限 smoke 发布 release 为 `887b34c4a7c944a2e04fc666aae815a43a75be0b-2026102401-3`，`buildId=cb50d8cea8b82b70`；本地记录为 `code/output/site-migration/ci-release.txt`。首次 GitHub 自动发布激活后，它已成为真实可用的主站 `previous`，不再是仅存在于模板里的回滚位。
+- 当前 GitHub 自动发布 release 为 `68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f-40080671767-1`，`buildId=20b94abbb5239f48`，容器健康；镜像名为 `herong-site:<release-id>`，`/opt/herong-site/current` 指向该 release，`previous` 指向上述 smoke release。发布回执为 `code/output/site-migration/github-ci-publish-receipt.json`，归档 SHA256 为 `bf788686a74b2d74ee68f225d971ff9ef91aa054fb4028661b670cb6be7a775a`。
+- 两次版本都实际通过 `site-ci` 受限身份上传、固定发布器构建和健康激活链路，最新一次来自真实 GitHub runner。发布器只接收静态归档，不接受上传的脚本、Compose 或任意 Docker 命令。权限和归档限制见 [受限发布说明](../infra/site/CI.md)。
+- 首次 smoke 发布时实现仍在 dirty 工作区，release 名中的 `887b34...` 前缀只是当时的发布标识，不能证明实现已包含在该旧 commit 中。随后迁移实现以独立提交 [68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f](https://github.com/herongdev/blog/commit/68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f) 推送 `master`，保留了其他无关的本地改动；两种来源状态不能混为一谈。
+
+### 干净树验证与首次真实 GitHub Actions
+
+`code/output/site-migration/clean-ci-build-receipt.json` 记录最小源码集合的本地干净树验证通过：Node `22.22.3`、pnpm `10.28.0`、frozen install、完整 `build:site`、`9` 项 Node 测试、`8` 项发布器测试，以及 `39339140` 字节静态归档的严格打包 / 解包往返。该独立本地构建的 `buildId` 为 `92a9b7ce69f84493`，应与首次 smoke 和真实 GitHub 构建分别记录。干净树的 GitHub Pages `/blog/` 完整构建也已通过，含 `5` 个领域索引，canonical 与 feed base 检查通过。
+
+推送 `68b567ff...` 后已真实触发 [GitHub Actions run 40080671767](https://github.com/herongdev/blog/actions/runs/40080671767)（job `120833369708`）。已通过 GitHub API 核实该 run / job 均为 `completed / success`：checkout、Node `24`、production boundary、frozen install、完整 `build:site`、artifact、SCP 上传、服务器受限健康激活、`Build for GitHub Pages` 和 `Deploy to gh-pages` 全部成功。`code/output/site-migration/public-after-ci.json` 再次通过无定向 IP 的公共入口 `38` 项检查，新主站与工具均健康。因此本次既有服务器受限发布证据，也有完整 GitHub 自动发布成功记录；同提交的聊天应用 CI 亦已成功。
 
 ### 历史地址、定向预检与公共入口验收
 
@@ -135,7 +142,7 @@ flowchart TD
 
 入口配置依据 `infra/site/nginx/` 的独立 snippet 和现有主机 Nginx 增补；新机正式 server 使用 `/etc/nginx/conf.d/herong.info.conf`，工具、主站、政企与 SSE 分流保持各自边界。最新 LE 证书配置安装前的入口备份为 `/var/backups/herong-site/20261024T083555Z-edge.OYE7GZ`。
 
-当前主站回滚基线是旧 `115.190.214.176` 的 legacy 静态站及切换前 DNS 目标，旧站目录 `/var/www/herongsite/` 保留；需要回退时分别处理主站 A 记录和入口配置，不能调用不存在的主站 `previous`。主站回退不改变工具单写归属：旧机 `/file-tools` 仍应转发新机。若确需把工具执行端迁回旧机，须先对新主数据做最新一致性备份，并按独立恢复方案写入合适的空卷，不能直接启动旧工具和旧卷。
+当前主站已有可用容器回滚目标 `previous=887b34c4a7c944a2e04fc666aae815a43a75be0b-2026102401-3`，对应镜像和 release 保留；旧 `115.190.214.176` 的 legacy 静态站及切换前 DNS 目标仍为另一回滚基线，旧站目录 `/var/www/herongsite/` 保留。容器回滚不自动改变 DNS 或主机 Nginx，跨机回退仍须分别处理。两种主站回退都不改变工具单写归属：旧机 `/file-tools` 仍应转发新机。若确需把工具执行端迁回旧机，须先对新主数据做最新一致性备份，并按独立恢复方案写入合适的空卷，不能直接启动旧工具和旧卷。
 
 ### 新证书与续期
 
@@ -145,7 +152,8 @@ flowchart TD
 
 ### 容量与剩余限制
 
-- 本次新服务器剩余磁盘约 `1.2GB`、使用率约 `97%`，不足以视为长期发布容量充裕。后续发布按固定发布器的磁盘门槛拒绝低空间操作，不自动清理其他项目；当前没有新机主站 `previous`，运维回滚基线是上述旧站 / DNS，不能因此宣称常规双版本容量已经满足。
+- 新机磁盘曾降到约 `538MB / 99%`；本项目已按准确 cache ID 清理约 `251MB` 的 builder context，current / previous 两个主站镜像保留。随后用户明确授权只清 `xian` 的单项 pnpm 缓存，执行者核实 `reclaimable=true`、`shared=false`、`type=exec.cachemount` 后，仅以 `docker buildx prune --force --filter id=zt757rwr3bkfdte3vwd81gkac` 清理该项，实际回收 `938.9MB`。
+- 清理后 `df` 为总量约 `40G`、已用约 `36G`、剩余约 `1.4G`、使用率约 `97%`。这次单项缓存清理未删除镜像、容器或卷，也未获得其他项目缓存的批量清理授权。当前余量改善不代表长期双版本发布容量充裕，后续仍需容量规划和发布前实际核对；固定发布器继续按磁盘门槛安全拒绝低空间操作。
 - 旧 `115.190.214.176` 仍承担政企 / 采样站 3D 服务、`media.herong.info` 的证书续期以及其他产品依赖，本次不得退役。旧工具的停机和数据主副关系以最终工具回执为准。
-- 新 GitHub Actions 流程尚未提交或推送，尚无本次 GitHub runner 运行记录；源码推送后仍须核验一次真实生产 workflow 和 `master` 自动发布。已完成的是服务器 `site-ci` 受限发布，不把它写成 GitHub Actions 成功。
+- 迁移实现已独立提交并推送，首次完整 GitHub workflow 已成功，主站与 GitHub Pages 的自动构建发布都已实际验证；其他无关本地改动仍保留。
 - `dev.herong.info`、`test-dev.herong.info` 尚未启用，教程继续使用真实 IP `/dev/` 入口；本次未重验所有教程写作、工具账号 / 会员或支付回调，不虚报这些业务验收。
