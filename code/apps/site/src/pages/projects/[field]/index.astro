@@ -1,0 +1,25 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import ProjectCard from '../../../components/ProjectCard.astro';
+import FieldPreview from '../../../../../blog/docs/.vitepress/theme/components/FieldPreview.vue';
+import { capabilities, projectMap } from '../../../config/portfolio';
+import { canonicalUrl, localUrl } from '../../../config/site.mjs';
+import { ArrowLeft, ArrowUpRight } from '@lucide/astro';
+export function getStaticPaths() { return capabilities.map((field) => ({ params: { field: field.id }, props: { field } })); }
+const { field } = Astro.props;
+const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: field.title, description: field.description, url: canonicalUrl(`/projects/${field.id}/`), mainEntity: { '@type': 'ItemList', itemListElement: field.projectIds.map((id, index) => ({ '@type': 'ListItem', position: index + 1, name: projectMap[id].title, url: canonicalUrl(projectMap[id].detail) })) } };
+---
+<SiteLayout title={field.title} description={field.description} schema={schema}>
+  <header class="page-intro works-container">
+    <a class="text-link" href={localUrl('/')}><ArrowLeft size={16} aria-hidden="true" />返回首页</a>
+    <div class="field-intro">
+      <div><span class="eyebrow">FIELD / {field.number}</span><h1>{field.title}</h1><p>{field.description}</p><ul class="field-focus">{field.focus.map((focus) => <li>{focus}</li>)}</ul></div>
+      <FieldPreview field={field.id} />
+    </div>
+  </header>
+  <section class="category works-container" aria-labelledby="field-projects">
+    <header class="category__header"><h2 id="field-projects">{field.projectIds.length ? '项目案例' : '领域方向'}</h2><a class="text-link" href={localUrl('/projects/')}>全部作品<ArrowUpRight size={17} aria-hidden="true" /></a></header>
+    {field.projectIds.length ? <div class="works-case-grid">{field.projectIds.map((id) => <ProjectCard project={projectMap[id]} />)}</div> : <div class="empty-state"><p>暂无公开案例。</p><p>目前关注短视频内容与直播互动的产品场景，具体案例在具备可公开的项目资料后补充。</p></div>}
+    {field.id === 'enterprise' && <aside class="case-section"><h2>汽车采样站交互演示</h2><p>独立运行的三维场站模拟演示，展示采样流程、设备状态与实时数据。</p><a class="text-link" href="https://herong.info/projects/enterprise/sampling-station/">打开汽车采样站<ArrowUpRight size={17} aria-hidden="true" /></a></aside>}
+  </section>
+</SiteLayout>

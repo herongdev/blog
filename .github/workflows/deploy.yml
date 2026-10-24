@@ -3,6 +3,21 @@ name: build-and-deploy
 on:
   push:
     branches: [master]
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: 'Explicit deployment target (configured uses repository SITE_DEPLOY_TARGET)'
+        type: choice
+        default: configured
+        options: [configured, legacy, container-production, build-only]
+
+concurrency:
+  group: website-deploy
+  cancel-in-progress: false
+
+env:
+  # Migration is recorded in code/infra/site/production-target. Legacy remains explicit.
+  SITE_DEPLOY_TARGET: ${{ (inputs.deploy_target != '' && inputs.deploy_target != 'configured' && inputs.deploy_target) || vars.SITE_DEPLOY_TARGET || 'container-production' }}
 
 permissions:
   contents: write
@@ -17,7 +32,26 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
+
+      - name: Validate deployment boundary
+        env:
+          LEGACY_SSH_HOST: ${{ secrets.SSH_HOST }}
+          SITE_PRODUCTION_READY: ${{ vars.SITE_PRODUCTION_READY }}
+        shell: bash
+        run: |
+          case "$SITE_DEPLOY_TARGET" in
+            legacy)
+              test "$LEGACY_SSH_HOST" = 115.190.214.176 || { echo 'Legacy rsync is restricted to the old host; configure container deployment separately.' >&2; exit 1; }
+              ;;
+            build-only) ;;
+            container-production)
+              if [ "$SITE_PRODUCTION_READY" != true ]; then
+                test "$SITE_PRODUCTION_READY" != false && test "$(cat code/infra/site/production-target 2>/dev/null)" = 101.96.210.172 || { echo 'Complete migration and record production-target before enabling production CI.' >&2; exit 1; }
+              fi
+              ;;
+            *) echo 'Unknown SITE_DEPLOY_TARGET' >&2; exit 1 ;;
+          esac
 
       - name: Enable pnpm
         shell: bash
@@ -31,10 +65,11 @@ jobs:
 
       # ---------- Build #1: VPS 版本（根路径 /） ----------
       - name: Build for VPS (base=/)
+        if: env.SITE_DEPLOY_TARGET == 'legacy'
         env:
           BASE: /
           OUT_DIR: .vitepress/dist-vps
-          SITE_URL: http://herong.info
+          SITE_URL: https://herong.info
           LIGHT_TOOLS_URL: https://herong.info/file-tools
           UMAMI_SRC: ${{ secrets.UMAMI_SRC }}
           UMAMI_WEBSITE_ID: ${{ secrets.UMAMI_WEBSITE_ID }}
@@ -47,6 +82,7 @@ jobs:
 
       # ---------- 部署到 VPS ----------
       - name: Deploy to VPS (rsync over SSH)
+        if: env.SITE_DEPLOY_TARGET == 'legacy'
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }} # CI 专用私钥（与服务器 deploy 用户的公钥配对）
@@ -57,6 +93,76 @@ jobs:
           ARGS: "-avzr --delete"
           SOURCE: "code/apps/blog/docs/.vitepress/dist-vps/" # 使用 VPS 版本产物
           TARGET: "/var/www/herongsite/" # 与 Nginx root 一致
+
+      - name: Configure site build
+        if: env.SITE_DEPLOY_TARGET != 'legacy'
+        env:
+          GUIDES_URL: ${{ vars.PUBLIC_GUIDES_URL }}
+          TOOLS_URL: ${{ vars.PUBLIC_TOOLS_URL }}
+        shell: bash
+        run: |
+          printf '%s\n' 'PUBLIC_SITE_URL=https://herong.info' 'PUBLIC_BASE_PATH=/' 'PUBLIC_DEPLOY_ENV=production' 'PUBLIC_NOINDEX=false' >> "$GITHUB_ENV"
+          printf '%s\n' "PUBLIC_TOOLS_URL=${TOOLS_URL:-https://herong.info/file-tools}" >> "$GITHUB_ENV"
+          printf '%s\n' "PUBLIC_GUIDES_URL=${GUIDES_URL:-https://101.96.210.172/dev/}" >> "$GITHUB_ENV"
+
+      - name: Build portfolio and legacy bundle
+        if: env.SITE_DEPLOY_TARGET != 'legacy'
+        env:
+          UMAMI_SRC: ${{ secrets.UMAMI_SRC }}
+          UMAMI_WEBSITE_ID: ${{ secrets.UMAMI_WEBSITE_ID }}
+          PLAUSIBLE_DOMAIN: ${{ secrets.PLAUSIBLE_DOMAIN }}
+          GA_ID: ${{ secrets.GA_ID }}
+          BAIDU_TONGJI_ID: ${{ secrets.BAIDU_TONGJI_ID }}
+        working-directory: code
+        run: pnpm run build:site
+
+      - name: Preserve reviewable site artifact
+        if: env.SITE_DEPLOY_TARGET != 'legacy'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-${{ github.run_id }}
+          path: code/apps/site/dist-bundle/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Set up verified site SSH identity
+        if: startsWith(env.SITE_DEPLOY_TARGET, 'container-')
+        env:
+          # SSH_KEY was independently identified as the existing dedicated CI key.
+          SITE_SSH_KEY: ${{ secrets.SITE_SSH_KEY || secrets.SSH_KEY }}
+          SITE_SSH_KNOWN_HOSTS: ${{ secrets.SITE_SSH_KNOWN_HOSTS || vars.SITE_SSH_KNOWN_HOSTS }}
+        shell: bash
+        run: |
+          test -n "$SITE_SSH_KEY"
+          install -d -m 700 ~/.ssh
+          umask 077
+          printf '%s\n' "$SITE_SSH_KEY" > ~/.ssh/id_ed25519
+          if [ -n "$SITE_SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SITE_SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+          else
+            test -s code/infra/site/ssh_known_hosts
+            cat code/infra/site/ssh_known_hosts >> ~/.ssh/known_hosts
+          fi
+
+      - name: Upload static bundle to restricted site publisher
+        if: startsWith(env.SITE_DEPLOY_TARGET, 'container-')
+        env:
+          SITE_SSH_HOST: ${{ vars.SITE_SSH_HOST || '101.96.210.172' }}
+          SITE_SSH_USER: ${{ secrets.SITE_SSH_USER || 'site-ci' }}
+          SITE_SSH_PORT: ${{ vars.SITE_SSH_PORT }}
+          SITE_RELEASE: ${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+        working-directory: code
+        run: bash infra/site/ci-upload.sh
+
+      - name: Build site image without deploying
+        if: env.SITE_DEPLOY_TARGET == 'build-only'
+        working-directory: code
+        run: bash infra/site/deploy.sh --build-only
+
+      - name: Remove ephemeral site SSH identity
+        if: always() && startsWith(env.SITE_DEPLOY_TARGET, 'container-')
+        shell: bash
+        run: rm -f ~/.ssh/id_ed25519
 
       # ---------- Build #2: GitHub Pages 版本（子路径 /blog/） ----------
       - name: Build for GitHub Pages (base=/blog/)

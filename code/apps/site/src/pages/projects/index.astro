@@ -1,0 +1,15 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { capabilities, projectMap } from '../../config/portfolio';
+import { ArrowUpRight } from '@lucide/astro';
+import { localUrl, canonicalUrl } from '../../config/site.mjs';
+const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: '作品目录', url: canonicalUrl('/projects/'), mainEntity: { '@type': 'ItemList', itemListElement: capabilities.map((field, index) => ({ '@type': 'ListItem', position: index + 1, name: field.title, url: canonicalUrl(`/projects/${field.id}/`) })) } };
+---
+<SiteLayout title="作品目录" description="按领域浏览何荣的真实项目：AI 应用、编码 Agent、政企与数字孪生、实时交易与图表、商业平台与全栈交付。" schema={schema}>
+  <header class="page-intro works-container"><span class="eyebrow">PROJECT ARCHIVE</span><h1>作品目录</h1><p>从产品场景、关键实现到工程边界，按领域查看项目。</p></header>
+  {capabilities.map((field) => <section class="category works-container" id={field.id}>
+    <header class="category__header"><h2>{field.title}</h2><a class="text-link" href={localUrl(`/projects/${field.id}/`)}>进入领域<ArrowUpRight size={17} aria-hidden="true" /></a></header>
+    {field.projectIds.length ? <div class="works-case-grid">{field.projectIds.map((id) => <ProjectCard project={projectMap[id]} />)}</div> : <p class="empty-state">暂无公开案例。</p>}
+  </section>)}
+</SiteLayout>

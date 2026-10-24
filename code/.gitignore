@@ -8,3 +8,5 @@ secrets/
 .DS_Store
 *.log
 *.tsbuildinfo
+.astro/
+apps/site/dist-bundle/

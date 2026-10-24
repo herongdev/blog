@@ -1,0 +1,123 @@
+---
+import { Menu, X, Moon, Sun } from '@lucide/astro';
+import { canonicalUrl, localUrl, navigation, NOINDEX } from '../config/site.mjs';
+import '../styles/site.css';
+import '../styles/project-visuals.css';
+interface Props {
+  title: string;
+  description: string;
+  compact?: boolean;
+  noindex?: boolean;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+const { title, description, compact = false, noindex = false, schema } = Astro.props;
+const canonical = canonicalUrl(Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/');
+const website = { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${canonicalUrl('/')}#website`, name: '何荣 · 项目与产品', url: canonicalUrl('/'), inLanguage: 'zh-CN', author: { '@type': 'Person', name: '何荣', url: canonicalUrl('/about/') } };
+const structured = [website, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      try {
+        const saved = localStorage.getItem('vitepress-theme-appearance') || localStorage.getItem('herong-theme');
+        document.documentElement.classList.toggle('dark', saved && saved !== 'auto' ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
+      } catch { document.documentElement.classList.toggle('dark', matchMedia('(prefers-color-scheme: dark)').matches); }
+    </script>
+    <title>{title === '何荣 · 技术落地的不同现场' ? title : `${title} · 何荣`}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={NOINDEX || noindex ? 'noindex, nofollow' : 'index, follow'} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href={localUrl('/logo.png')} />
+    <link rel="alternate" type="application/rss+xml" title="何荣 · 历史文章 RSS" href={localUrl('/rss.xml')} />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="何荣 · 项目与产品" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={canonicalUrl('/logo.png')} />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json" set:html={JSON.stringify(structured).replace(/</g, '\\u003c')} />
+  </head>
+  <body>
+    <div class:list={['works-site', { 'works-site--compact': compact }]}>
+      <a class="works-skip" href="#works-main">跳到主要内容</a>
+      <header class="works-header">
+        <div class="works-header__inner">
+          <a class="works-brand" href={localUrl('/')} aria-label="何荣项目档案首页">
+            <img class="works-brand__logo" src={localUrl('/logo.png')} alt="Harbor & Route" width="46" height="46" />
+            <span class="works-brand__name">何荣</span>
+            <span class="works-brand__edition">PROJECT ARCHIVE · 26</span>
+          </a>
+          <nav class="works-nav" aria-label="主导航">
+            {navigation.map((item) => <a href={item.href} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
+          </nav>
+          <div class="works-header__controls">
+            <button class="works-theme" type="button" aria-label="切换深浅色模式" aria-pressed="false">
+              <Sun class="works-theme__sun" size={18} aria-hidden="true" />
+              <Moon class="works-theme__moon" size={18} aria-hidden="true" />
+            </button>
+            <details class="works-mobile-menu">
+              <summary aria-label="打开或关闭导航"><Menu class="menu-open" size={20} aria-hidden="true" /><X class="menu-close" size={20} aria-hidden="true" /></summary>
+              <nav class="works-mobile-nav" aria-label="移动端导航">
+                {navigation.map((item) => <a href={item.href} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
+              </nav>
+            </details>
+          </div>
+        </div>
+      </header>
+      <main id="works-main" class="works-main"><slot /></main>
+      <footer class="works-footer">
+        <div class="works-container works-footer__inner">
+          <div class="works-footer__brand"><img class="works-brand__logo" src={localUrl('/logo.png')} alt="" width="32" height="32" /><strong>项目、产品与工程记录。</strong></div>
+          <nav aria-label="页脚导航">
+            <a href={localUrl('/projects/')}>项目</a>
+            <a href={localUrl('/posts/')}>文章归档</a>
+            <a href={localUrl('/rss.xml')}>RSS</a>
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">湘ICP备2024071383号-6</a>
+          </nav>
+        </div>
+      </footer>
+    </div>
+    <script>
+      const button = document.querySelector<HTMLButtonElement>('.works-theme');
+      const media = matchMedia('(prefers-color-scheme: dark)');
+      const updateThemeLabel = () => {
+        const dark = document.documentElement.classList.contains('dark');
+        button?.setAttribute('aria-label', dark ? '切换为浅色模式' : '切换为深色模式');
+        button?.setAttribute('aria-pressed', String(dark));
+      };
+      button?.addEventListener('click', () => {
+        const dark = document.documentElement.classList.toggle('dark');
+        try {
+          const value = dark ? 'dark' : 'light';
+          localStorage.setItem('vitepress-theme-appearance', value);
+          localStorage.setItem('herong-theme', value);
+        } catch {}
+        updateThemeLabel();
+      });
+      media.addEventListener('change', () => {
+        let saved = null;
+        try { saved = localStorage.getItem('vitepress-theme-appearance') || localStorage.getItem('herong-theme'); } catch {}
+        if (!saved || saved === 'auto') document.documentElement.classList.toggle('dark', media.matches);
+        updateThemeLabel();
+      });
+      updateThemeLabel();
+      const menu = document.querySelector<HTMLDetailsElement>('.works-mobile-menu');
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && menu?.open) {
+          menu.open = false;
+          menu.querySelector('summary')?.focus();
+        }
+      });
+      document.addEventListener('click', (event) => {
+        if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+      });
+    </script>
+  </body>
+</html>

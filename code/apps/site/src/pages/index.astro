@@ -1,0 +1,34 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import FieldPreview from '../../../blog/docs/.vitepress/theme/components/FieldPreview.vue';
+import InteractiveBackdrop from '../components/InteractiveBackdrop.vue';
+import { capabilities } from '../config/portfolio';
+import { GUIDES_URL, localUrl, canonicalUrl } from '../config/site.mjs';
+const homeFocus: Record<string, string[]> = {
+  'ai-agent': ['流式交互', '工具权限', '追踪评估'],
+  enterprise: ['多端架构', 'GIS', '业务流程'],
+  finance: ['实时行情', '交易系统', '图表 SDK'],
+  fullstack: ['商品订单', '小程序', '全栈交付'],
+  'video-live': ['短视频', '直播互动', '内容平台'],
+};
+const homeCards = [
+  ...capabilities.map((field) => ({ ...field, focus: homeFocus[field.id] || field.focus, href: localUrl(`/projects/${field.id}/`), action: field.projectIds.length ? '查看项目' : '了解领域', kind: field.projectIds.length ? '项目案例' : '领域方向' })),
+  { id: 'learning', title: '开发工具教程', focus: ['功能演示', '完整教程', '工程实践'], href: GUIDES_URL, action: '阅读与学习', kind: '个人教程' },
+];
+const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: '技术落地的不同现场', url: canonicalUrl('/'), description: '何荣的项目、产品与开发工具教程。', mainEntity: { '@type': 'ItemList', itemListElement: homeCards.map((field, index) => ({ '@type': 'ListItem', position: index + 1, name: field.title, url: new URL(field.href, canonicalUrl('/')).href })) } };
+---
+<SiteLayout title="何荣 · 技术落地的不同现场" description="何荣的项目与产品：AI 应用与 Agent 编程、政企系统与数字孪生、金融交易图表、商业平台与全栈交付，以及开发工具教程。" compact schema={schema}>
+  <InteractiveBackdrop client:idle />
+  <section class="project-grid-home" aria-labelledby="project-grid-title">
+    <header class="project-grid-home__intro"><h1 id="project-grid-title">技术落地的<span class="home-title-accent">不同现场</span></h1></header>
+    <div class="field-grid">
+      {homeCards.map((field) => <a class="project-grid-card" href={field.href} aria-label={`${field.title}：${field.action}`}>
+        <FieldPreview field={field.id} />
+        <h2>{field.title}</h2>
+        <p>{field.focus.join(' · ')}</p>
+        <div class="field-card__footer"><span class="field-card__kind">{field.kind}</span><span class="field-card__link">{field.action}<ArrowUpRight size={17} aria-hidden="true" /></span></div>
+      </a>)}
+    </div>
+  </section>
+</SiteLayout>

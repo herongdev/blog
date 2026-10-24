@@ -1,0 +1,38 @@
+services:
+  web:
+    image: ${TOOLS_IMAGE:?Set the versioned image or verified original digest}
+    container_name: light-tools-web
+    env_file:
+      - path: ${TOOLS_RUNTIME_ENV:-/opt/herong-light-tools/runtime.env}
+        format: raw
+    environment:
+      LIGHT_TOOLS_DATA_DIR: /data
+      LIGHT_TOOLS_FFMPEG_PATH: /usr/bin/ffmpeg
+    init: true
+    ports:
+      - "127.0.0.1:${TOOLS_PORT:-3001}:3000"
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=512m,mode=1777
+    volumes:
+      - data:/data
+      - ${TOOLS_SECRETS_DIR:-/opt/herong-light-tools/secrets}:/run/secrets/light-tools:ro
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/file-tools/api/health').then(r=>{if(!r.ok)process.exit(1);return r.json()}).then(d=>{if(d.ok!==true)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "3"
+
+volumes:
+  data:
+    external: true
+    name: ${TOOLS_DATA_VOLUME:-herong-light-tools-data}

@@ -3,8 +3,9 @@ import fg from 'fast-glob'
 import fs from 'node:fs/promises'
 import matter from 'gray-matter'
 import path from 'node:path'
+import { pageUrl, siteRoot } from './site-urls.mjs'
 
-const SITE_URL = process.env.SITE_URL || 'https://example.com'
+const SITE_URL = siteRoot(process.env.SITE_URL || 'https://herong.info', process.env.BASE || '/')
 // 与 VitePress 使用同一 OUT_DIR，兼容默认、VPS 和 GitHub Pages 构建。
 const OUT_DIR = path.resolve(
   process.cwd(),
@@ -13,8 +14,7 @@ const OUT_DIR = path.resolve(
 )
 
 function toArticleUrl(file) {
-  const rel = file.replace(/^docs\//, '').replace(/index\.md$/, '').replace(/\.md$/, '')
-  return `${SITE_URL}/${rel}`
+  return pageUrl(file.replace(/^docs\//, ''), SITE_URL, '/')
 }
 
 async function main() {
@@ -24,16 +24,16 @@ async function main() {
     id: SITE_URL,
     link: SITE_URL,
     language: 'zh-CN',
-    favicon: `${SITE_URL}/favicon.ico`,
+    favicon: `${SITE_URL}logo.png`,
     updated: new Date(),
     feedLinks: {
-      atom: `${SITE_URL}/atom.xml`,
-      rss: `${SITE_URL}/rss.xml`,
-      json: `${SITE_URL}/feed.json`,
+      atom: `${SITE_URL}atom.xml`,
+      rss: `${SITE_URL}rss.xml`,
+      json: `${SITE_URL}feed.json`,
     },
   })
 
-  const files = await fg(['docs/**/*.md', '!docs/**/index.md', '!docs/**/_*.md'])
+  const files = (await fg(['docs/posts/**/*.md', 'docs/vue-progress-scroll-tutorial.md', '!docs/**/index.md', '!docs/**/_*.md'])).sort()
   for (const file of files) {
     const raw = await fs.readFile(file, 'utf8')
     const { data, content } = matter(raw)

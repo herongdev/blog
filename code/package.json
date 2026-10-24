@@ -4,12 +4,12 @@
   "private": true,
   "packageManager": "pnpm@10.28.0",
   "scripts": {
-    "dev": "pnpm run dev:blog",
+    "dev": "pnpm run dev:site",
     "dev:blog": "pnpm --filter @herong/blog dev",
     "dev:tools": "pnpm --filter @light-tools/web dev",
     "dev:worker": "pnpm --filter @light-tools/worker dev",
     "dev:chat": "pnpm --filter @herong/chat dev",
-    "build": "pnpm run build:blog && pnpm run build:tools && pnpm run build:worker",
+    "build": "pnpm run build:site && pnpm run build:tools && pnpm run build:worker",
     "build:blog": "pnpm --filter @herong/blog build",
     "build:tools": "pnpm --filter @light-tools/web build",
     "build:worker": "pnpm --filter @light-tools/worker build",
@@ -22,7 +22,12 @@
     "blog:new": "pnpm --filter @herong/blog new",
     "blog:import:onenote": "pnpm --filter @herong/blog tutorials:import:onenote",
     "format": "prettier --check .",
-    "check:chat:deploy": "node infra/chat/verify.mjs"
+    "check:chat:deploy": "node infra/chat/verify.mjs",
+    "dev:site": "pnpm --filter @herong/site dev",
+    "build:site": "node scripts/build-site.mjs",
+    "check:site": "pnpm --filter @herong/site check",
+    "preview:site": "pnpm --filter @herong/site preview",
+    "test:site": "node --test apps/site/scripts/*.test.mjs"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

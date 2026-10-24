@@ -1,0 +1,10 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { products, canonicalUrl, localUrl } from '../config/site.mjs';
+import { ArrowUpRight } from '@lucide/astro';
+const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: '自营产品', url: canonicalUrl('/products/'), mainEntity: { '@type': 'ItemList', itemListElement: products.map((product, index) => ({ '@type': 'ListItem', position: index + 1, name: product.title, url: product.href })) } };
+---
+<SiteLayout title="自营产品" description="何荣持续构建的技术产品：AurumChart 跨端交易图表 SDK 与 ShopThrive 商通微信小程序经营系统。" schema={schema}>
+  <header class="page-intro works-container"><span class="eyebrow">INDEPENDENT PRODUCTS</span><h1>自营产品</h1><p>持续构建和维护的技术产品。</p></header>
+  <div class="product-grid works-container">{products.map((product) => <article class="product-item"><span class="eyebrow">{product.status}</span><h2>{product.title}</h2><p>{product.description}</p><div class="product-actions"><a class="text-link" href={product.href} target="_blank" rel="noopener noreferrer">访问产品官网<ArrowUpRight size={17} aria-hidden="true" /></a><a class="text-link" href={localUrl(product.projectPath)}>查看项目介绍<ArrowUpRight size={17} aria-hidden="true" /></a></div></article>)}</div>
+</SiteLayout>

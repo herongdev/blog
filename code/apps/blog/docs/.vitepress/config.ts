@@ -1,8 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-const BASE = process.env.BASE || "/";
+import { articlePath, normalizeBase, pathUrl, siteRoot } from "../../scripts/site-urls.mjs";
+const BASE = normalizeBase(process.env.BASE || "/");
 const SITE_HOSTNAME = process.env.SITE_URL || "https://herong.info";
+const SITE_ROOT = siteRoot(SITE_HOSTNAME, BASE);
 const BAIDU_TONGJI_ID = process.env.BAIDU_TONGJI_ID || "";
 const UMAMI_SRC = process.env.UMAMI_SRC || "";
 const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || "";
@@ -11,6 +13,8 @@ const GA_ID = process.env.GA_ID || "";
 const OUT_DIR = process.env.OUT_DIR || "./.vitepress/dist";
 const ENABLE_PAGE_VIEWS = process.env.ENABLE_PAGE_VIEWS !== "0";
 const LIGHT_TOOLS_URL = process.env.LIGHT_TOOLS_URL || "http://127.0.0.1:3000";
+const GUIDES_URL = process.env.GUIDES_URL || process.env.PUBLIC_GUIDES_URL || "https://101.96.210.172/dev/";
+const ARCHIVE_BUILD = process.env.ARCHIVE_BUILD === "1";
 const COURSES_URL = `${LIGHT_TOOLS_URL.replace(/\/$/, "")}/courses`;
 const LIGHT_TOOLS_NAV =
   /^https?:\/\//i.test(LIGHT_TOOLS_URL)
@@ -35,23 +39,8 @@ const CN_PART_ORDER: Record<string, number> = {
   附录: 99,
 };
 
-const ROOT_SIDEBAR_EXCLUDED = new Set([
-  "JavaScript系统教程",
-  "Vue系统教程",
-  "React系统教程",
-  "前端面试与实战",
-  "java快速入门",
-  "c教程",
-]);
-
-function siteOrigin(): string {
-  return SITE_HOSTNAME.replace(/\/$/, "");
-}
-
 function canonicalUrl(pagePath = "/"): string {
-  const base = BASE === "/" ? "" : BASE.replace(/\/$/, "");
-  const path = pagePath.startsWith("/") ? pagePath : `/${pagePath}`;
-  return `${siteOrigin()}${base}${path}`.replace(/([^:]\/)\/+/g, "$1");
+  return pathUrl(pagePath, SITE_HOSTNAME, BASE);
 }
 
 function pageDescription(pageData: {
@@ -209,9 +198,23 @@ export default {
   description: "AI 产品、空间系统、金融图表与商业平台的项目案例。",
   lastUpdated: true,
   cleanUrls: true,
+  // VitePress otherwise repeats the full route/sidebar JSON in all 3,000 HTML
+  // pages. Keep it in one hashed, cacheable asset without removing any content.
+  metaChunk: true,
   outDir: OUT_DIR,
   base: BASE.endsWith("/") ? BASE : `${BASE}/`,
-  sitemap: { hostname: SITE_HOSTNAME },
+  sitemap: { hostname: SITE_ROOT },
+  // The archive build shares a container with Astro, which owns these exact routes.
+  // Default/GitHub Pages builds still include the complete standalone VitePress site.
+  srcExclude: ARCHIVE_BUILD ? [
+    "index.md", "about/index.md", "products/index.md", "projects/index.md",
+    "projects/ai-agent/index.md", "projects/enterprise/index.md", "projects/finance/index.md",
+    "projects/fullstack/index.md", "projects/video-live/index.md",
+    "projects/ai-chat.md", "projects/minicodex.md", "projects/enterprise-platform.md",
+    "projects/aurumchart.md", "projects/trading-system.md", "projects/shopthrive.md",
+    "projects/fields/ai-agent/index.md", "projects/fields/enterprise/index.md",
+    "projects/fields/finance/index.md", "projects/fields/fullstack/index.md", "projects/fields/video-live/index.md",
+  ] : [],
   ignoreDeadLinks: true,
   markdown: {
     // 避免原始 HTML 导致 Vue SFC 解析错误
@@ -219,6 +222,7 @@ export default {
   },
   vite: {
     define: {
+      "import.meta.env.VITE_ARCHIVE_BUILD": JSON.stringify(ARCHIVE_BUILD ? "true" : "false"),
       "import.meta.env.VITE_ENABLE_PAGE_VIEWS": JSON.stringify(
         ENABLE_PAGE_VIEWS ? "true" : "false"
       ),
@@ -240,7 +244,7 @@ export default {
       description: pageData.description,
       frontmatter: pageData.frontmatter,
     });
-    const pagePath = pageData.path || "/";
+    const pagePath = articlePath(pageData.relativePath || "404.md");
     const url = canonicalUrl(pagePath);
     const keywords = pageKeywords(pageData);
     const isArticle = pagePath.startsWith("/posts/");
@@ -262,6 +266,9 @@ export default {
       ["meta", { name: "twitter:description", content: desc }],
       ["link", { rel: "canonical", href: url }],
     ];
+    if (pageData.isNotFound || BASE === "/site-preview/" || process.env.SITE_NOINDEX === "1") {
+      head.push(["meta", { name: "robots", content: "noindex, nofollow" }]);
+    }
 
     const alternateZh = pageData.frontmatter.alternateZh;
     const alternateEn = pageData.frontmatter.alternateEn;
@@ -321,7 +328,7 @@ export default {
     siteTitle: "何荣 / 项目档案",
     nav: [
       { text: "主页", link: "/" },
-      { text: "文章", link: "/articles/" },
+      { text: "教程", link: GUIDES_URL, target: "_self", rel: "" },
       { ...LIGHT_TOOLS_NAV, text: "工具" },
       { text: "自营产品", link: "/products/" },
       { text: "关于", link: "/about/" },
@@ -333,45 +340,9 @@ export default {
       copyright:
         '<a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">湘ICP备2024071383号-6</a>',
     },
-    // 基于 docs/posts 目录结构自动生成多级侧边栏
-    sidebar: {
-      "/posts/JavaScript系统教程/": generateTutorialIndexSidebar(
-        path.resolve(__dirname, "../posts/JavaScript系统教程"),
-        "/posts/JavaScript系统教程/"
-      ),
-      "/posts/Vue系统教程/": generateTutorialIndexSidebar(
-        path.resolve(__dirname, "../posts/Vue系统教程"),
-        "/posts/Vue系统教程/"
-      ),
-      "/posts/React系统教程/": generateTutorialIndexSidebar(
-        path.resolve(__dirname, "../posts/React系统教程"),
-        "/posts/React系统教程/"
-      ),
-      "/posts/前端面试与实战/": generateTutorialIndexSidebar(
-        path.resolve(__dirname, "../posts/前端面试与实战"),
-        "/posts/前端面试与实战/"
-      ),
-      "/posts/java快速入门/": generateSidebarFromDir(
-        path.resolve(__dirname, "../posts/java快速入门"),
-        "/posts/java快速入门/"
-      ),
-      "/posts/c教程/": generateSidebarFromDir(
-        path.resolve(__dirname, "../posts/c教程"),
-        "/posts/c教程/"
-      ),
-      "/posts/c教程/en-US/": generateSidebarFromDir(
-        path.resolve(__dirname, "../posts/c教程/en-US"),
-        "/posts/c教程/en-US/"
-      ),
-      "/posts/c教程/zh-CN/": generateSidebarFromDir(
-        path.resolve(__dirname, "../posts/c教程/zh-CN"),
-        "/posts/c教程/zh-CN/"
-      ),
-      "/posts/": generateSidebarFromDir(
-        path.resolve(__dirname, "../posts"),
-        "/posts/"
-      ),
-    },
+    // Each article renders only its folder/chapter, rather than thousands of
+    // unrelated links in every HTML file. All chapters remain reachable.
+    sidebar: generateLocalSidebars(path.resolve(__dirname, "../posts"), "/posts/"),
   },
   head: HEAD_LINKS,
 };
@@ -458,75 +429,37 @@ function sortDirectories(a: SidebarItem, b: SidebarItem): number {
   return directorySortKey(na).localeCompare(directorySortKey(nb), "zh");
 }
 
-function generateSidebarFromDir(
-  absDir: string,
-  baseLink: string
-): SidebarItem[] {
-  if (!fs.existsSync(absDir)) return [];
-  const entries = fs.readdirSync(absDir, { withFileTypes: true });
-
-  const files: SidebarItem[] = [];
-  const groups: SidebarItem[] = [];
-
-  for (const e of entries) {
-    if (e.name.startsWith("_")) continue;
-    if (baseLink === "/posts/" && ROOT_SIDEBAR_EXCLUDED.has(e.name)) {
-      continue;
+function generateLocalSidebars(absRoot: string, rootLink: string): Record<string, SidebarItem[]> {
+  const sidebars: Record<string, SidebarItem[]> = {};
+  const visit = (absDir: string, baseLink: string, parentLink?: string): string | undefined => {
+    const entries = fs.readdirSync(absDir, { withFileTypes: true })
+      .filter((entry) => !entry.name.startsWith("_"));
+    const files = entries.filter((entry) => entry.isFile() && entry.name.endsWith(".md"));
+    const fileItems: SidebarItem[] = files.map((entry) => ({
+      text: readTitleFromMd(path.join(absDir, entry.name)) || filenameToTitle(entry.name),
+      link: entry.name === "index.md" ? baseLink : `${baseLink}${encodeURIComponent(entry.name.replace(/\.md$/, ""))}`,
+    })).sort(sortByWeightThenText);
+    const landing = files.find((entry) => entry.name === "index.md")
+      || files.find((entry) => entry.name === "README.md") || files[0];
+    const ownLink = landing ? (landing.name === "index.md" ? baseLink
+      : `${baseLink}${encodeURIComponent(landing.name.replace(/\.md$/, ""))}`) : undefined;
+    const children: SidebarItem[] = [];
+    for (const entry of entries.filter((entry) => entry.isDirectory())
+      .sort((a, b) => directorySortKey(a.name).localeCompare(directorySortKey(b.name), "zh"))) {
+      const link = visit(path.join(absDir, entry.name), `${baseLink}${encodeURIComponent(entry.name)}/`, ownLink || parentLink);
+      if (link) children.push({ text: filenameToTitle(entry.name), link });
     }
-    const full = path.join(absDir, e.name);
-    if (e.isDirectory()) {
-      const items = generateSidebarFromDir(
-        full,
-        baseLink + encodeURIComponent(e.name) + "/"
-      );
-      if (items.length > 0) {
-        groups.push({ text: filenameToTitle(e.name), items, collapsed: true });
-      }
-      continue;
-    }
-    if (e.isFile() && e.name.endsWith(".md")) {
-      if (e.name.toLowerCase() === "index.md") continue;
-      const title = readTitleFromMd(full) || filenameToTitle(e.name);
-      const relNoExt = e.name.replace(/\.md$/, "");
-      const link = baseLink + encodeURIComponent(relNoExt);
-      files.push({ text: title, link });
-    }
-  }
-
-  files.sort(sortByWeightThenText);
-  groups.sort((a, b) => sortDirectories(a, b) || sortByWeightThenText(a, b));
-  return [...files, ...groups];
-}
-
-function generateTutorialIndexSidebar(
-  absDir: string,
-  baseLink: string
-): SidebarItem[] {
-  if (!fs.existsSync(absDir)) return [];
-  const items: SidebarItem[] = [];
-  const rootReadme = path.join(absDir, "README.md");
-  if (fs.existsSync(rootReadme)) {
-    items.push({
-      text: readTitleFromMd(rootReadme) || "教程总览",
-      link: `${baseLink}README`,
-    });
-  }
-
-  const directories = fs
-    .readdirSync(absDir, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("_"))
-    .sort((a, b) =>
-      directorySortKey(a.name).localeCompare(directorySortKey(b.name), "zh")
-    );
-
-  for (const directory of directories) {
-    const readme = path.join(absDir, directory.name, "README.md");
-    if (!fs.existsSync(readme)) continue;
-    items.push({
-      text: readTitleFromMd(readme) || filenameToTitle(directory.name),
-      link: `${baseLink}${encodeURIComponent(directory.name)}/README`,
-    });
-  }
-
-  return items;
+    const navigation: SidebarItem[] = [{ text: "历史文章归档", link: rootLink }];
+    if (parentLink && parentLink !== rootLink) navigation.push({ text: "返回上级章节", link: parentLink });
+    // VitePress matches sidebar keys against raw PageData.relativePath, while
+    // individual hrefs must stay URL encoded for spaces and Chinese filenames.
+    sidebars[decodeURIComponent(baseLink)] = [
+      ...navigation,
+      ...(fileItems.length ? [{ text: "本节文章", items: fileItems }] : []),
+      ...(children.length ? [{ text: "章节", items: children }] : []),
+    ];
+    return ownLink || (children[0] && "link" in children[0] ? children[0].link : undefined);
+  };
+  if (fs.existsSync(absRoot)) visit(absRoot, rootLink);
+  return sidebars;
 }

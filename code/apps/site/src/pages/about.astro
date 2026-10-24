@@ -1,0 +1,12 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { capabilities } from '../config/portfolio';
+import { canonicalUrl, localUrl, GUIDES_URL, TOOLS_URL } from '../config/site.mjs';
+import { ArrowUpRight } from '@lucide/astro';
+const schema = { '@context': 'https://schema.org', '@type': 'ProfilePage', url: canonicalUrl('/about/'), mainEntity: { '@type': 'Person', name: '何荣', url: canonicalUrl('/'), sameAs: ['https://aurumchart.com/', 'https://shopthrive.cn/'] } };
+---
+<SiteLayout title="关于何荣" description="从界面、数据到完整系统。这里收录何荣持续构建和维护的项目、产品与工程实践。" schema={schema}>
+  <header class="page-intro works-container"><span class="eyebrow">ABOUT / HERONG</span><h1>何荣</h1><p>从界面、数据到完整系统。这里收录我持续构建和维护的项目。</p></header>
+  <section class="case-section works-container" aria-labelledby="about-domains"><h2 id="about-domains">项目方向</h2><ol class="about-domains">{capabilities.map((field) => <li><span>{field.number}</span><strong><a href={localUrl(`/projects/${field.id}/`)}>{field.title}</a></strong><p>{field.focus.join(' · ')}</p></li>)}</ol></section>
+  <nav class="about-links works-container" aria-label="进一步了解"><a class="text-link" href={localUrl('/projects/')}>作品目录<ArrowUpRight size={17} aria-hidden="true" /></a><a class="text-link" href={GUIDES_URL}>开发工具教程<ArrowUpRight size={17} aria-hidden="true" /></a><a class="text-link" href={TOOLS_URL}>工具<ArrowUpRight size={17} aria-hidden="true" /></a><a class="text-link" href={localUrl('/products/')}>自营产品<ArrowUpRight size={17} aria-hidden="true" /></a></nav>
+</SiteLayout>

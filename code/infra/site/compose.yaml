@@ -1,0 +1,26 @@
+services:
+  site:
+    image: ${SITE_IMAGE:?Set the versioned SITE_IMAGE}
+    container_name: herong-site
+    user: "101:101"
+    ports:
+      - "127.0.0.1:${SITE_PORT:-24380}:8080"
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD-SHELL, "wget -q -O - http://127.0.0.1:8080/__site-health.json | grep -q '\"app\":\"herong-site\"'"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "3"

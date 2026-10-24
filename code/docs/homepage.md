@@ -2,26 +2,32 @@
 
 本文件记录用户确认的首页方向。后续 AI 修改首页前，先阅读本文件及 [UI 规范](ui-guidelines.md)，不要根据旧组件或个人偏好重新推断产品定位。
 
+## 2026-10-24 迁移与入口调整（本地实现已完成）
+
+用户最新要求：主站与工具迁往 `101.96.210.172`，各自一个容器；其他产品独立部署，主站入口跳转各产品域名。主站继续以“领域能力 → 作品列表 → 作品详情或交互展示”为浏览路径。“文章”导航和第六张内容卡片调整为已有个人教程 IP 入口，沿用 `apps/dev-guides/`，历史文章 URL、RSS 和自动发布能力保留。
+
+用户已批准 Astro + TypeScript 静态主站，实现位于 `apps/site/`；首页、五个领域、六个作品详情、作品目录、自营产品与关于共 15 个正式页面，另有 404 页面。主站在构建时与 VitePress 历史产物合并，保留 3022 篇历史文章及原 URL、归档、RSS 和搜索资产。本地构建与合并产物验证已通过；本节不代表线上迁移或 CI 切换已完成。完整边界、迁移顺序与实际部署记录见 [官网架构调整与服务器迁移](site-architecture-migration.md)。
+
 ## 首页要表达什么
 
 这是何荣的个人官网，不只是技术博客，也不是求职简历。访客应通过领域卡片、场景视觉和实际案例，感受到技术与设计水平，并了解在哪些领域有经验和积累。不要用自夸、招聘求职文案或“我擅长的领域”等直白标题代替展示。首页标题确定为“技术落地的不同现场”，强调技术在真实场景中的应用与项目积累，不再使用偏学习、尝试的“探索与实践”。不添加额外自我介绍段落，让卡片和项目本身说话。
 
-首页展示领域与内容入口，而非逐个项目。项目浏览路径为：首页领域卡片 → 该领域的案例列表 → 具体项目。文章与教程属于内容入口，不算项目或行业。
+首页展示领域与内容入口，而非逐个项目。项目浏览路径为：首页领域卡片 → 领域首页的项目列表 → 具体项目演示，不强制经过项目介绍页。项目简介与技术标签放在领域页卡片上；演示提供返回领域首页入口。文章与教程属于内容入口，不算项目或行业。政企演示路径和部署边界见 [部署交接文档](enterprise-demo-deployment.md)。
 
 ## 固定导航与六张卡片
 
-顶部导航依次为：主页、文章、工具、自营产品、关于。工具链接沿用 `LIGHT_TOOLS_URL` 配置。知序只是演示项目，不是顶层导航或自营产品入口。
+顶部导航依次为：主页、教程、工具、自营产品、关于。入口统一配置在 `apps/site/src/config/site.mjs`：教程使用 `PUBLIC_GUIDES_URL`，当前真实入口为 `https://101.96.210.172/dev/`；正式主站构建使用 `PUBLIC_TOOLS_URL=https://herong.info/file-tools`，保留工具现有编译时路径。工具应用仍独立容器部署，独立域名根路径需另外重构建和验收，不能仅改菜单或代理。知序只是演示项目，不是顶层导航或自营产品入口。
 
 | 首页顺序 | 卡片 | 内容关键词 | 入口 |
 | --- | --- | --- | --- |
-| 1 | AI 应用与 Agent 编程 | 流式交互、工具权限、追踪评估 | `/projects/fields/ai-agent/` |
-| 2 | 政企系统与数字孪生 | 多端架构、GIS、业务流程 | `/projects/fields/enterprise/` |
-| 3 | 金融交易与原生图表 | 行情、交易系统、图表 SDK | `/projects/fields/finance/` |
-| 4 | 商业平台与全栈交付 | 商品订单、小程序、全栈交付 | `/projects/fields/fullstack/` |
-| 5 | 短视频与直播 | 抖音类内容场景、短视频、直播互动 | `/projects/fields/video-live/` |
-| 6 | 文章与教程 | 技术文章、专题教程、工程实践 | `/articles/` |
+| 1 | AI 应用与 Agent 编程 | 流式交互、工具权限、追踪评估 | `/projects/ai-agent/` |
+| 2 | 政企系统与数字孪生 | 多端架构、GIS、业务流程 | `/projects/enterprise/` |
+| 3 | 金融交易与原生图表 | 行情、交易系统、图表 SDK | `/projects/finance/` |
+| 4 | 商业平台与全栈交付 | 商品订单、小程序、全栈交付 | `/projects/fullstack/` |
+| 5 | 短视频与直播 | 抖音类内容场景、短视频、直播互动 | `/projects/video-live/` |
+| 6 | 开发工具教程 | 功能演示、完整教程、工程实践 | `PUBLIC_GUIDES_URL`，当前 `https://101.96.210.172/dev/` |
 
-“抖音类”仅用于说明行业和功能方向，不代表曾参与抖音项目，不使用抖音品牌背书。目前未提供短视频与直播的具体公开案例，分类页保留真实空状态；不得虚构客户、项目、履历、指标或案例数量。文章页保留精选文章、专题教程和完整归档入口，教程链接使用仓库中已有内容。
+“抖音类”仅用于说明行业和功能方向，不代表曾参与抖音项目，不使用抖音品牌背书。目前未提供短视频与直播的具体公开案例，分类页保留真实空状态；不得虚构客户、项目、履历、指标或案例数量。第六张卡片复用已有个人教程 IP，不另起内容系统。旧 `/articles/`、`/posts/`、文章 URL 和 RSS 继续由 VitePress 兼容产物提供，不再占用顶部主导航。
 
 ## 视觉与交互边界
 
@@ -29,7 +35,7 @@
 - 首页遵循最新的一屏要求：导航、标题、六张领域卡片和备案页脚共同占满 `100dvh`，不出现页面滚动条。桌面三列两行，平板与竖屏手机两列三行，矮屏横向三列两行。封面高度随剩余空间伸缩，不用页面 `overflow:hidden` 裁切内容；手机省略重复的卡片类型和装饰性封面标语，保留领域标题、内容要点和入口。内页仍自然滚动。
 - 卡片尺寸、排版和交互统一；各领域用不同配色及有业务含义的场景图形区分，不做六套互不相关的组件风格。
 - 配色采用统一中性卡片底色和边框，深浅色模式均不将整张卡片染成领域色。领域色集中于预览图的主体图形，保留清晰、鲜活的原始颜色，仅大面积衬底保持克制；禁止对整张预览图统一降饱和或降亮度，避免褪色、蒙灰感。文字入口保持统一；交互背景弱化为辅助层。
-- 卡片区分“项目案例”“领域方向”“技术内容”。没有公开案例的领域入口用“了解领域”，不暗示已存在案例；文章教程入口用“阅读与学习”。
+- 卡片区分“项目案例”“领域方向”“个人教程”。没有公开案例的领域入口用“了解领域”，不暗示已存在案例；开发工具教程入口用“阅读与学习”。
 - 首页使用代码原生的二维编辑式概念封面，统一线宽、留白、构图和色彩层次。不再使用三维玻璃道具、粗略仿产品界面或图标堆砌；封面不是产品截图或履历证据。
 - 六个主题分别表达：AI 编排的分支与汇合、现实与数字模型的映射、金融信号的不同尺度、订单连接各环节的闭环、视频帧与实时信号、零散经验形成知识体系。以关系表达领域，而不是仅靠材质装饰。
 - 封面在 `FieldPreview.vue` 中绘制，使用独立明暗主题色彩变量，跟随 `.dark` 同步切换底色、线条与填充，不使用整体压暗滤镜。旧版明暗 JPEG 保留作为历史素材，不再用于首页；历史制作过程见 [封面制作记录](homepage-covers.md)。
@@ -43,10 +49,13 @@
 
 ## 代码位置与维护
 
-- 首页：`apps/blog/docs/.vitepress/theme/components/PortfolioHome.vue`
-- 领域数据：`apps/blog/docs/.vitepress/theme/data/portfolio.ts` 中的 `capabilities`
-- 场景视觉：`apps/blog/docs/.vitepress/theme/components/FieldPreview.vue`
-- 分类页面：`apps/blog/docs/projects/fields/` 与 `ProjectsIndex.vue`
-- 文章入口：`ArticlesLanding.vue`；导航配置：`apps/blog/docs/.vitepress/config.ts`
+- Astro 主站：首页 `apps/site/src/pages/index.astro`；共享布局、导航和页脚 `apps/site/src/layouts/SiteLayout.astro`；样式 `apps/site/src/styles/site.css`。
+- URL、导航及产品域名配置：`apps/site/src/config/site.mjs`。`PUBLIC_SITE_URL` 为站点 origin，`PUBLIC_BASE_PATH` 用于内部链接与资源；预览使用 `PUBLIC_DEPLOY_ENV=staging` 或 `PUBLIC_NOINDEX=true`，IP / HTTP / localhost 也会自动禁止索引。
+- 领域与作品事实：`apps/blog/docs/.vitepress/theme/data/portfolio.ts`。主站通过 `apps/site/src/config/portfolio.ts` 共享导入，仅将作品地址映射为 `/projects/<领域标识>/<项目标识>/`，不重复维护履历。
+- 共享概念图：`apps/blog/docs/.vitepress/theme/components/FieldPreview.vue`、`ProjectVisual.vue`，由 Astro 在构建时渲染；首页交互背景位于 `apps/site/src/components/InteractiveBackdrop.vue`，按需加载 Vue 交互岛，不能把整页改为 `client:only`。
+- 领域列表：`apps/site/src/pages/projects/[field]/index.astro`；作品详情：`apps/site/src/pages/projects/[field]/[project].astro`；目录 `projects/index.astro`，产品 `products.astro`，关于 `about.astro`。
+- 政企领域正式入口仍由 `apps/enterprise-showcase/` 的独立视觉目录接管，汽车采样站由 `apps/3d-showcase/` 及独立 Java API 承接。Astro 政企页只是静态目录降级；`/projects/enterprise/enterprise-platform/` 作品详情由主站承接，不能被领域应用代理吞掉。
+- VitePress 兼容站：`apps/blog/`，包括历史文章、`ArticlesLanding.vue`、归档、RSS 与搜索。`PortfolioHome.vue` 等旧作品组件仍供完整 VitePress / GitHub Pages 构建使用，不是 Astro 主站的首页入口。
+- 合并与校验：`scripts/build-site.mjs`、`apps/site/scripts/route-policy.mjs`、`merge-static.mjs`、`verify-static.mjs`。新增页面须同步路由归属；旧扁平作品与 `projects/fields/` 地址由入口逐条永久重定向，不作为新入口。
 
-修改时同步本文件与实现，检查六张卡片的标题、顺序、链接、桌面和手机布局。保留已有文章 URL、博客提交后自动发布流程，以及根目录资料与 `code/` 代码工作区的分离。未获明确要求不要部署、重做详情页或删除旧内容。
+修改时同步本文件与实现，检查六张卡片的标题、顺序、链接、桌面和手机布局。保留已有文章 URL、提交后自动发布能力、GitHub Pages `/blog/` 备份发布，以及根目录资料与 `code/` 代码工作区的分离。构建和部署命令见 [代码工作区说明](../README.md)；实际线上状态以部署记录为准。

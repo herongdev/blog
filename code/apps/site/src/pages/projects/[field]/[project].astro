@@ -1,0 +1,37 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import ProjectVisual from '../../../../../blog/docs/.vitepress/theme/components/ProjectVisual.vue';
+import { projects } from '../../../config/portfolio';
+import { canonicalUrl, localUrl, contentUrl } from '../../../config/site.mjs';
+import { ArrowLeft, ArrowUpRight, ChevronRight } from '@lucide/astro';
+export function getStaticPaths() { return projects.map((project) => ({ params: { field: project.fieldId, project: project.id }, props: { project } })); }
+const { project } = Astro.props;
+const nextProject = projects[(projects.findIndex((item) => item.id === project.id) + 1) % projects.length];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'CreativeWork', name: project.title, description: project.summary, url: canonicalUrl(project.detail), creator: { '@type': 'Person', name: '何荣', url: canonicalUrl('/about/') }, about: project.tags, ...(project.external ? { sameAs: project.external.href } : {}) },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [ { '@type': 'ListItem', position: 1, name: '作品目录', item: canonicalUrl('/projects/') }, { '@type': 'ListItem', position: 2, name: project.fieldTitle, item: canonicalUrl(`/projects/${project.fieldId}/`) }, { '@type': 'ListItem', position: 3, name: project.title, item: canonicalUrl(project.detail) } ] },
+];
+---
+<SiteLayout title={project.title} description={project.summary} schema={schema}>
+  <article>
+    <header class="page-intro works-container">
+      <nav class="breadcrumb" aria-label="面包屑"><a href={localUrl('/projects/')}>作品目录</a><ChevronRight size={14} aria-hidden="true" /><a href={localUrl(`/projects/${project.fieldId}/`)}>{project.fieldTitle}</a><ChevronRight size={14} aria-hidden="true" /><span aria-current="page">{project.title}</span></nav>
+      <span class="eyebrow">{project.eyebrow}</span><h1>{project.title}</h1><p>{project.summary}</p>
+      <ul class="field-focus"><li>{project.status}</li><li>{project.role}</li>{project.period && <li>{project.period}</li>}</ul>
+      {project.external && <a class="text-link" href={project.external.href} target="_blank" rel="noopener noreferrer">{project.external.label}<ArrowUpRight size={17} aria-hidden="true" /></a>}
+    </header>
+    <div class="case-hero works-container"><ProjectVisual projectId={project.id} /><p class="visual-note">场景概念示意，非产品截图。</p></div>
+    <section class="case-overview works-container">
+      <div><span class="eyebrow">项目场景</span><h2>{project.lead}</h2><ul class="tags">{project.tags.map((tag) => <li>{tag}</li>)}</ul></div>
+      <dl><div><dt>场景</dt><dd>{project.context}</dd></div><div><dt>核心问题</dt><dd>{project.challenge}</dd></div></dl>
+    </section>
+    <section class="case-section works-container"><h2>关键实现</h2><ol class="case-steps">{project.approach.map((item) => <li>{item}</li>)}</ol></section>
+    {project.flow && <section class="case-section works-container"><h2>工作链路</h2><ol class="case-flow">{project.flow.map((item) => <li>{item}</li>)}</ol></section>}
+    <section class="case-section works-container"><h2>相关入口与记录</h2><div class="evidence-list">
+      {project.evidence.map((item) => <div><h3>{item.title}</h3><p>{item.description}</p>{item.link && <a class="text-link" href={contentUrl(item.link.href)} target={item.link.external ? '_blank' : undefined} rel={item.link.external ? 'noopener noreferrer' : undefined}>{item.link.label}<ArrowUpRight size={16} aria-hidden="true" /></a>}</div>)}
+      {project.relatedArticles?.length && <div><h3>技术记录</h3>{project.relatedArticles.map((article) => <div><a class="text-link" href={contentUrl(article.href)}>{article.label}<ArrowUpRight size={16} aria-hidden="true" /></a></div>)}</div>}
+    </div></section>
+    <section class="case-section works-container"><h2>公开范围</h2><ul class="case-boundaries">{project.boundaries.map((item) => <li>{item}</li>)}</ul></section>
+    <nav class="case-next works-container" aria-label="继续浏览"><a class="text-link" href={localUrl(`/projects/${project.fieldId}/`)}><ArrowLeft size={17} aria-hidden="true" />返回{project.fieldTitle}</a><a class="text-link" href={localUrl(nextProject.detail)}>下一项目：{nextProject.title}<ArrowUpRight size={17} aria-hidden="true" /></a></nav>
+  </article>
+</SiteLayout>

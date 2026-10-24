@@ -5,7 +5,7 @@ import InteractiveBackdrop from './InteractiveBackdrop.vue'
 import FieldPreview from './FieldPreview.vue'
 import { capabilities } from '../data/portfolio'
 import { ArrowUpRight } from 'lucide-vue-next'
-const homeCards = capabilities.map(field => ({ ...field, href: `/projects/fields/${field.id}/`, action: field.projectIds.length ? '查看项目' : '了解领域', kind: field.projectIds.length ? '项目案例' : '领域方向' }))
+const homeCards = capabilities.map(field => ({ ...field, href: `/projects/${field.id}/`, action: field.projectIds.length ? '查看项目' : '了解领域', kind: field.projectIds.length ? '项目案例' : '领域方向' }))
 homeCards.push({ id: 'learning', number: '06', title: '文章与教程', description: '', focus: ['技术文章', '专题教程', '工程实践'], projectIds: [], href: '/articles/', action: '阅读与学习', kind: '技术内容' })
 </script>
 

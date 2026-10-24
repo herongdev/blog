@@ -1,0 +1,21 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import ProjectVisual from '../../../blog/docs/.vitepress/theme/components/ProjectVisual.vue';
+import { localUrl } from '../config/site.mjs';
+import type { SiteProject } from '../config/portfolio';
+interface Props { project: SiteProject }
+const { project } = Astro.props;
+---
+<article class="case-tile">
+  <a class="case-tile__link" href={localUrl(project.detail)} aria-label={`查看 ${project.title} 项目案例`}>
+    <ProjectVisual projectId={project.id} compact />
+    <div class="case-tile__caption">
+      <div><span class="eyebrow">{project.eyebrow}</span><h3>{project.title}</h3></div>
+      <ArrowUpRight size={22} aria-hidden="true" />
+    </div>
+    <p>{project.summary}</p>
+    <div class="case-tile__meta"><span>{project.status}</span><span>{project.role}</span></div>
+    <ul class="tags" aria-label="技术与场景">{project.tags.map((tag) => <li>{tag}</li>)}</ul>
+  </a>
+  {project.external && <a class="case-tile__external text-link" href={project.external.href} target="_blank" rel="noopener noreferrer">{project.external.label}<ArrowUpRight size={16} aria-hidden="true" /></a>}
+</article>

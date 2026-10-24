@@ -1,0 +1,5 @@
+# Install root:root 0440 at /etc/sudoers.d/herong-site-ci; validate with visudo -cf.
+# This executable is root-owned, accepts exactly one strict release ID, and reads
+# only static archives from its fixed incoming directory. Never allow uploaded
+# shell scripts, arbitrary docker commands, or arbitrary Compose paths here.
+site-ci ALL=(root) NOPASSWD: /usr/local/sbin/herong-site-publish *
