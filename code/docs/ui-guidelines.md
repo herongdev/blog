@@ -5,17 +5,36 @@
 ## 图标
 
 - **禁止使用字符充当图标。** 不得用 Unicode 箭头、数学符号、字母、Emoji 等替代操作、导航或状态图标，例如用 `↗` 表示外链、`×` 表示关闭、`☰` 表示菜单。
-- **必须使用成熟图标库或 UI 组件库提供的图标。** 优先复用子项目已引入的图标库；没有现成依赖时，选择适配当前框架的图标库，如 Lucide、Material Symbols 或对应 UI 库的官方图标组件。
+- **项目统一采用 Lucide。** 公开教程站与 Astro 主站使用 `@lucide/astro`，React 写作台、聊天及工具应用使用 `lucide-react`，Vue / VitePress 使用 `lucide-vue-next`。这些是同一套图标的框架组件，按名称按需导入，不通过字体字符、远程图标字体或整库动态查找渲染。
 - 同一界面统一图标体系，保持线条粗细、尺寸和视觉风格一致。按需引入，避免仅为单个图标引入整套 UI 库。
 - 不得用手写 SVG 路径、CSS 拼图或伪元素中的字符绕过上述规则；库提供的 SVG 图标可以正常使用。
 - 纯图标按钮必须提供可访问名称（例如 `aria-label="关闭"`）；仅作装饰的图标使用 `aria-hidden="true"`，动作含义由文字或按钮名称表达。
 - 正常正文标点、代码示例及文字品牌标识不属于图标替代；不得借此将操作图标继续写成字符。
+- 本约定覆盖整个项目的公开页面、写作后台、目录树、弹窗、工具栏、空状态、移动端和明暗主题，也适用于后续新增页面。不能把 Emoji、首字母或特殊符号放在图标容器里充当临时实现。
+- 图标继承 `currentColor`，使用统一的尺寸、描边与语义颜色 tokens；图标大小与按钮触控区域分别控制，不能为了图标紧凑而缩小触控目标。状态同时保留可读文字，不仅靠图标或颜色区分。
+- Radix Primitives 负责无样式交互行为，Lucide 负责图标，两者搭配使用。ByteMD 等已有编辑组件自身提供的库图标可保留；新增或可配置的业务图标使用 Lucide，不修改 `node_modules`，不以 CSS 字符覆盖第三方工具栏。
+
+### 常用语义与组件
+
+| 界面用途 | Lucide 组件 |
+| --- | --- |
+| 新建目录、目录展开状态 | `FolderPlus`、`Folder`、`FolderOpen` |
+| 文章、搜索 | `FileText`、`Search` |
+| 展开、折叠、返回 | `ChevronRight`、`ChevronDown`、`ArrowLeft` |
+| 新增、关闭、更多 | `Plus`、`X`、`MoreHorizontal` |
+| 编辑、保存、删除 | `Pencil`、`Save`、`Trash2` |
+| 外链、视频 | `ExternalLink`、`Play` |
+| 加载、成功、提醒 | `LoaderCircle`、`Check`、`CircleAlert` |
+| 明暗主题 | `Sun`、`Moon` |
+
+例如 React 中使用 `import { X } from 'lucide-react'`，在有 `aria-label="关闭"` 的按钮内渲染 `<X aria-hidden="true" />`；Astro 使用 `import { X } from '@lucide/astro'`。图标表达的含义相同时复用相同组件，不用相似字符或另一套图标临时替代。
 
 ### 验收
 
 - 检查模板、JSX 和 CSS `content`，确保没有字符式操作、导航、状态图标。
 - 检查图标是否来自选定库，尺寸、对齐和深浅色表现是否一致。
 - 检查纯图标按钮的可访问名称和键盘焦点。
+- 检查动态生成的 DOM、空状态、第三方组件扩展项及移动端；正文中的 Markdown 语法、步骤编号、命令和标点不做机械替换。
 
 ## 响应式与 H5
 

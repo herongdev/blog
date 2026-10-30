@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import { ChevronRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import type { Tutorial } from '../lib/catalog';
 import { toolBySlug } from '../data/tools';
@@ -27,7 +28,7 @@ const jsonLd = isLead ? undefined : {
 <BaseLayout title={entry.data.title} description={entry.data.summary} type="article" noindex={isLead} jsonLd={jsonLd}>
   <div class="container article-shell">
     <nav class="breadcrumbs" aria-label="当前位置">
-      <a href={withBase('/')}>首页</a><span aria-hidden="true">/</span>
+      <a href={withBase('/')}>首页</a><ChevronRight class="breadcrumb-separator" aria-hidden="true" />
       <span>{tool.name}</span>
     </nav>
     <article class="article-panel">

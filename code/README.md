@@ -37,7 +37,7 @@ code/
 
 开发者工具教程与短视频 IP 的资料统一从 [项目文档入口](docs/dev-guides/README.md) 查看；写作、图片上传和内容发布见 [教程站使用说明](apps/dev-guides/README.md)。
 
-界面开发遵循 [UI 规范](docs/ui-guidelines.md)，图标统一使用图标库或 UI 库组件，禁止以字符代替图标。修改官网首页前，先阅读 [首页定位与内容约定](docs/homepage.md)，保留五个领域、开发工具教程入口及已确认的设计边界。
+界面开发遵循 [UI 规范](docs/ui-guidelines.md)，业务图标统一使用 **Lucide**：Astro 用 `@lucide/astro`，React 用 `lucide-react`，Vue 用 `lucide-vue-next`；禁止以文本符号、Emoji、CSS 拼图或手写 SVG 代替库图标。规则覆盖公开站、后台和移动端。修改官网首页前，先阅读 [首页定位与内容约定](docs/homepage.md)，保留五个领域、开发工具教程入口及已确认的设计边界。
 
 需要 Node.js **22.22.0+**（当前 Astro 的引擎要求；CI 配置使用 Node 24）和 pnpm 10.28.0。在仓库根目录执行：
 

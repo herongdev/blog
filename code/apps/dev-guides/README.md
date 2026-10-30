@@ -4,6 +4,8 @@
 
 策划、来源库、候选选题和研究资料见 [项目文档入口](../../docs/dev-guides/README.md)；环境配置、发布与回滚以 [部署说明](../../infra/dev-guides/DEPLOYMENT.md)为准。
 
+公开站与写作台共同遵循 [UI 规范](../../docs/ui-guidelines.md)。图标统一使用 Lucide：Astro 模板按需导入 `@lucide/astro`，React 写作台按需导入 `lucide-react`，两者均已安装使用。不得使用文本符号、Emoji、首字母或 CSS 拼图替代界面图标；Radix 继续提供 headless 交互行为。
+
 ## 本地运行
 
 在 `blog/code` 下运行：
