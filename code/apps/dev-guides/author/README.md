@@ -10,4 +10,19 @@
 
 保存文章时使用文件内容版本校验，若另一个窗口已经修改同一篇文章，将提示刷新而不会覆盖。图片插入会立即写入本地文件，即使正文尚未保存；未引用的图片应在发布前检查清理。
 
+## 已有选题导入写作台
+
+`editorial-plan.mjs` 从仓库 `code/docs/dev-guides/editorial/2026-10-27/` 的两个 JSON 生成私有导入清单：78 个主计划、52 个备选、8 个近期精选。DG004、DG006、DG125 复用既有文章，其余 135 个选题生成 `draft`；不会把预期结果填为已实测，不生成视频地址。主计划分 26 周，备选按工具分组，近期候选分两批。
+
+从完整仓库生成清单（输出文件必须不存在），再在目标数据的副本上预演：
+
+```bash
+node code/apps/dev-guides/author/editorial-plan.mjs /tmp/editorial-payload.json
+node code/apps/dev-guides/author/editorial-import.mjs --project /path/to/copied-project --payload /tmp/editorial-payload.json
+```
+
+默认仅预检。线上写入前运行私有备份服务、确认无发布任务并停止写作服务，然后以写作服务账号执行 `editorial-import.mjs`，增加 `--apply --offline`。必须在 `finally` 中恢复服务。不要在仍可同时保存文章的服务上运行离线导入。清单不属于公开网站产物，也不要导入到 `src/content/tutorials` 来代替草稿。
+
+导入以来源 ID 和文章地址识别已有稿件，不覆盖正文、标题或作者后来调整的归档位置，不重复生成作者已删除的稿件。复用的既有文章只归档，内容和发布状态不变。事务备份与新建清单位于数据项目的 `.editorial-imports/`（私有权限），普通失败只回滚本次新建内容及目录元数据；进程中断后应先核对事务记录和私有备份再处理锁文件，不能直接重跑或清理数据。导入不触发网站发布。
+
 运行 `pnpm --filter @herong/dev-guides-author test` 测试接口，`pnpm --filter @herong/dev-guides-author build` 验证前端构建。`dist/` 独立部署到受认证保护的写作服务，不能混入公开教程站的静态产物；线上代码升级不覆盖文章、目录与身份数据。
