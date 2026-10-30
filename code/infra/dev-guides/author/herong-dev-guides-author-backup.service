@@ -1,0 +1,13 @@
+[Unit]
+Description=Back up private tutorial author content
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/herong-dev-guides-author/current/code/infra/dev-guides/author/backup.py
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadOnlyPaths=/var/lib/herong-dev-guides-author
+ReadWritePaths=/var/backups/herong-dev-guides-author

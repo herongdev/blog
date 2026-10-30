@@ -1,0 +1,34 @@
+[Unit]
+Description=Herong tutorial author and publishing service
+After=network.target
+
+[Service]
+Type=simple
+User=dev-guides-author
+Group=dev-guides-author
+WorkingDirectory=/var/lib/herong-dev-guides-author
+Environment=PATH=/opt/herong-dev-guides-author/runtime/bin:/usr/bin:/bin
+Environment=HOME=/var/lib/herong-dev-guides-author
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/herong-dev-guides-author/service.env
+EnvironmentFile=/etc/herong-dev-guides-author/media.env
+EnvironmentFile=-/etc/herong-dev-guides-author/wechat.env
+ExecStart=/opt/herong-dev-guides-author/runtime/bin/node /opt/herong-dev-guides-author/current/code/apps/dev-guides/author/server-production.mjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+ReadWritePaths=/var/lib/herong-dev-guides-author /var/www/herong-dev-guides /var/www/herong-dev-guides-staging
+MemoryMax=2G
+TasksMax=128
+
+[Install]
+WantedBy=multi-user.target

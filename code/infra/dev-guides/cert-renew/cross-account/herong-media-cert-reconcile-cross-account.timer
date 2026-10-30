@@ -1,0 +1,11 @@
+[Unit]
+Description=Retry original-account media certificate synchronization daily
+
+[Timer]
+OnCalendar=*-*-* 04:20:00
+Persistent=true
+RandomizedDelaySec=15m
+Unit=herong-media-cert-reconcile-cross-account.service
+
+[Install]
+WantedBy=timers.target

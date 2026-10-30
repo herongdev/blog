@@ -1,0 +1,65 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { Tutorial } from '../lib/catalog';
+import { toolBySlug } from '../data/tools';
+import { AUTHOR_NAME, DEFAULT_SITE_URL } from '../config/site.mjs';
+import { withBase } from '../lib/urls';
+
+interface Props { entry: Tutorial }
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const isLead = entry.data.status === 'lead';
+const tool = toolBySlug[entry.data.tool];
+const canonical = new URL(Astro.url.pathname, Astro.site ?? DEFAULT_SITE_URL).href;
+const jsonLd = isLead ? undefined : {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: entry.data.title,
+  description: entry.data.summary,
+  url: canonical,
+  dateModified: entry.data.updatedAt.toISOString().slice(0, 10),
+  author: { '@type': 'Person', name: AUTHOR_NAME },
+  citation: entry.data.officialSources.map((source) => source.url),
+};
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.summary} type="article" noindex={isLead} jsonLd={jsonLd}>
+  <div class="container article-shell">
+    <nav class="breadcrumbs" aria-label="当前位置">
+      <a href={withBase('/')}>首页</a><span aria-hidden="true">/</span>
+      <span>{tool.name}</span>
+    </nav>
+    <article class="article-panel">
+      <header class="article-header">
+        <div class="article-kicker"><span class="tool-pill">{tool.name}</span><span class:list={['status-pill', isLead ? 'status-pill--lead' : 'status-pill--published']}>{isLead ? '尚未实测' : '已亲测教程'}</span></div>
+        <h1>{entry.data.title}</h1>
+        <p class="article-summary">{entry.data.summary}</p>
+        {entry.data.videoUrl && <p class="article-video-action"><a href={entry.data.videoUrl} target="_blank" rel="noopener noreferrer">观看视频</a></p>}
+        {isLead && <div class="lead-notice" role="note"><strong>官方资料已核，尚非教程</strong><p>本站尚未完成亲测。此页仅供了解功能和查看出处，暂不提供操作步骤。</p></div>}
+        <dl class="article-facts">
+          <div><dt>内容状态</dt><dd>{isLead ? '待实测' : '已亲测'}</dd></div>
+          {entry.data.version && <div><dt>资料版本</dt><dd>{entry.data.version}</dd></div>}
+          {entry.data.platform && <div><dt>适用条件</dt><dd>{entry.data.platform}</dd></div>}
+          <div><dt>最后核对</dt><dd><time datetime={entry.data.updatedAt.toISOString()}>{entry.data.updatedAt.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' })}</time></dd></div>
+          {entry.data.verification && <>
+            <div><dt>实测日期</dt><dd><time datetime={entry.data.verification.testedAt.toISOString()}>{entry.data.verification.testedAt.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' })}</time></dd></div>
+            <div><dt>实测环境</dt><dd>{entry.data.verification.environment}</dd></div>
+            <div><dt>实测结果</dt><dd>{entry.data.verification.result}</dd></div>
+          </>}
+        </dl>
+      </header>
+      <div class="article-content prose"><Content /></div>
+      <section class="source-box" aria-labelledby="source-heading">
+        <h2 id="source-heading">资料来源</h2>
+        <p>{isLead ? '功能说明依据以下官方资料；本站尚未完成实际操作验证。' : '功能说明来自官方资料；上面的步骤和结果来自本站实测。'}</p>
+        <ul>{entry.data.officialSources.map((source) => <li><a href={source.url} rel="noopener noreferrer">{source.title}</a></li>)}</ul>
+        {entry.data.discoverySources.length > 0 && <>
+          <h3>延伸参考</h3>
+          <ul>{entry.data.discoverySources.map((source) => <li><a href={source.url} rel="noopener noreferrer">{source.title}</a></li>)}</ul>
+        </>}
+      </section>
+    </article>
+    <aside class="article-after"><p>继续查找其他功能</p><a href={withBase('/#search')}>返回搜索</a></aside>
+  </div>
+</BaseLayout>

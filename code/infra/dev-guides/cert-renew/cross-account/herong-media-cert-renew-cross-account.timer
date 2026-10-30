@@ -1,0 +1,11 @@
+[Unit]
+Description=Check media.herong.info renewal twice daily
+
+[Timer]
+OnCalendar=*-*-* 03,15:40:00
+Persistent=true
+RandomizedDelaySec=15m
+Unit=herong-media-cert-renew-cross-account.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily retry and drift check for media.herong.info TLS deployment
+
+[Timer]
+OnCalendar=*-*-* 04:20:00
+Persistent=true
+RandomizedDelaySec=15m
+Unit=herong-media-cert-reconcile.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,19 @@
+[Unit]
+Description=Reconcile original-account media certificate from isolated lineage
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/herong-media-cert/cloud.env
+ConditionPathExists=/etc/herong-media-acme/live/media.herong.info/fullchain.pem
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+ExecStart=/opt/herong-media-cert/venv/bin/python /opt/herong-media-cert/media_cert.py reconcile --env-file /etc/herong-media-cert/cloud.env --lineage /etc/herong-media-acme/live/media.herong.info --state-file /var/lib/herong-media-cert/state.json
+TimeoutStartSec=300
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/herong-media-cert

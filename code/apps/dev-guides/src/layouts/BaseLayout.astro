@@ -1,0 +1,130 @@
+---
+import '../styles/global.css';
+import { Moon, Sun } from '@lucide/astro';
+import { AUTHOR_NAME, BLOCK_INDEXING, DEFAULT_SITE_URL, SITE_DESCRIPTION, SITE_NAME } from '../config/site.mjs';
+import { withBase } from '../lib/urls';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  omitCanonical?: boolean;
+  type?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  noindex = false,
+  omitCanonical = false,
+  type = 'website',
+  jsonLd,
+} = Astro.props;
+const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? DEFAULT_SITE_URL).href;
+const safeJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : '';
+const analyticsSrc = import.meta.env.PUBLIC_UMAMI_SRC;
+const analyticsId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        try {
+          const saved = localStorage.getItem('dev-guides-theme');
+          if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+        } catch {
+          // Storage can be unavailable; CSS still follows the system preference.
+        }
+        root.dataset.themeJs = 'true';
+      })();
+    </script>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={AUTHOR_NAME} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <meta name="robots" content={BLOCK_INDEXING ? 'noindex, nofollow, noarchive' : noindex ? 'noindex, follow' : 'index, follow'} />
+    {!omitCanonical && <link rel="canonical" href={canonical} />}
+    <link rel="sitemap" type="application/xml" href={withBase('/sitemap.xml')} />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    {jsonLd && <script type="application/ld+json" set:html={safeJsonLd} />}
+    {analyticsSrc && analyticsId && <script async defer src={analyticsSrc} data-website-id={analyticsId} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href={withBase('/')} aria-label={`${SITE_NAME} 首页`}>
+            <span class="brand-mark" aria-hidden="true">HR</span>
+            <span class="brand-text"><strong>何荣</strong><span>开发工具库</span></span>
+          </a>
+          <button class="theme-toggle" type="button" role="switch" aria-label="切换深色模式" aria-checked="false" data-theme-toggle>
+            <span class="theme-toggle-track" aria-hidden="true">
+              <span class="theme-toggle-thumb">
+                <Sun class="theme-toggle-icon theme-toggle-icon--sun" />
+                <Moon class="theme-toggle-icon theme-toggle-icon--moon" />
+              </span>
+            </span>
+          </button>
+        </div>
+      </header>
+      <main id="main"><slot /></main>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div>
+            <strong>{SITE_NAME}</strong>
+          </div>
+          <div class="footer-links">
+            <a href={withBase('/tools/')}>工具目录</a>
+            <a href="https://herong.info/">何荣官网</a>
+            <a href="https://beian.miit.gov.cn/" rel="noopener noreferrer">湘ICP备2024071383号-6</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const button = document.querySelector('[data-theme-toggle]');
+        if (!(button instanceof HTMLButtonElement)) return;
+        const systemDark = matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = () => root.dataset.theme || (systemDark.matches ? 'dark' : 'light');
+        const sync = () => button.setAttribute('aria-checked', String(currentTheme() === 'dark'));
+
+        sync();
+
+        button.addEventListener('click', () => {
+          const next = currentTheme() === 'dark' ? 'light' : 'dark';
+          const systemTheme = systemDark.matches ? 'dark' : 'light';
+          const saved = next === systemTheme ? 'auto' : next;
+          if (saved === 'auto') delete root.dataset.theme;
+          else root.dataset.theme = saved;
+          sync();
+          try { localStorage.setItem('dev-guides-theme', saved); } catch { /* Theme still applies for this visit. */ }
+        });
+
+        systemDark.addEventListener('change', sync);
+        window.addEventListener('storage', (event) => {
+          if (event.key !== 'dev-guides-theme') return;
+          if (event.newValue === 'light' || event.newValue === 'dark') root.dataset.theme = event.newValue;
+          else delete root.dataset.theme;
+          sync();
+        });
+      })();
+    </script>
+  </body>
+</html>

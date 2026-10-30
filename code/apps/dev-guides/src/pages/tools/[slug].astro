@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentCard from '../../components/ContentCard.astro';
+import { tools, toolBySlug, type ToolSlug } from '../../data/tools';
+import { publishedForTool } from '../../lib/catalog';
+import { withBase } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('tutorials');
+  return tools.filter((tool) => publishedForTool(entries, tool.slug).length > 0).map((tool) => ({ params: { slug: tool.slug } }));
+}
+
+const slug = Astro.params.slug as ToolSlug;
+const tool = toolBySlug[slug];
+const entries = publishedForTool(await getCollection('tutorials'), slug);
+---
+
+<BaseLayout title={`${tool.name} 教程`} description={`查找 ${tool.name} 已亲测的开发工具教程：适用条件、步骤、结果和官方出处。`}>
+  <div class="container page-heading">
+    <nav class="breadcrumbs" aria-label="当前位置"><a href={withBase('/')}>首页</a><span aria-hidden="true">/</span><a href={withBase('/tools/')}>工具目录</a></nav>
+    <p class="eyebrow">{tool.category}</p>
+    <h1>{tool.name} 教程</h1>
+    <p>{tool.description} 下列内容均已标注实测环境与官方来源。</p>
+  </div>
+  <section class="container section" aria-label={`${tool.name} 教程列表`}><div class="card-grid">{entries.map((entry) => <ContentCard entry={entry} />)}</div></section>
+</BaseLayout>

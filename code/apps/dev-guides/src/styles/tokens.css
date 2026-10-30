@@ -1,0 +1,200 @@
+/* Single source of truth for the dev-guides visual system. */
+:root {
+  color-scheme: light dark;
+
+  /* Typography */
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-size-2xs: 11px;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-md: 14px;
+  --font-size-base: 15px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-prose-h3: 19px;
+  --font-size-2xl-compact: 21px;
+  --font-size-2xl: 22px;
+  --font-size-3xl: 23px;
+  --font-size-page-title: clamp(32px, 4.5vw, 50px);
+  --font-size-article-title: clamp(29px, 4vw, 45px);
+  --font-size-section-title: clamp(23px, 2.7vw, 30px);
+  --font-size-search-title: clamp(22px, 3vw, 32px);
+  --font-size-not-found: clamp(32px, 5vw, 52px);
+  --font-weight-medium: 650;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 750;
+  --font-weight-heavy: 800;
+  --leading-brand: 1.15;
+  --leading-badge: 1.2;
+  --leading-display: 1.22;
+  --leading-page-title: 1.23;
+  --leading-article-title: 1.3;
+  --leading-control: 1.3;
+  --leading-card: 1.5;
+  --leading-compact: 1.6;
+  --leading-body: 1.7;
+  --leading-body-relaxed: 1.75;
+  --leading-description: 1.8;
+  --leading-reading: 1.9;
+  --tracking-brand-mark: -.1em;
+  --tracking-brand: .08em;
+  --tracking-display: -.05em;
+  --tracking-article-title: -.045em;
+  --tracking-section-title: -.035em;
+  --tracking-prose-heading: -.025em;
+  --tracking-card-title: -.018em;
+
+  /* Spacing and sizing */
+  --space-pixel: 1px;
+  --space-half: 2px;
+  --space-three-quarter: 3px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-18: 72px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --size-touch: 44px;
+  --size-control: 48px;
+  --size-search-control: 54px;
+  --size-header: 76px;
+  --size-header-mobile: 66px;
+  --size-brand-mark: 42px;
+  --size-pill: 26px;
+  --size-theme-switch-track: 40px;
+  --size-theme-switch-height: 22px;
+  --size-theme-switch-thumb: 18px;
+  --size-theme-switch-icon: 13px;
+  --theme-switch-icon-stroke: 2;
+  --theme-switch-thumb-inset: 1px;
+  --theme-switch-thumb-travel: 18px;
+  --size-tool-card: 215px;
+  --size-tool-card-mobile: 190px;
+  --size-search-submit-min: 106px;
+  --size-mobile-button-min: 130px;
+  --size-min-viewport: 320px;
+  --width-container: 1180px;
+  --width-search: 800px;
+  --width-article: 900px;
+  --width-copy: 650px;
+  --width-not-found: 760px;
+
+  /* Shape, elevation, and motion */
+  --radius-xs: 4px;
+  --radius-sm: 7px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --border-width: 1px;
+  --border-width-accent: 4px;
+  --underline-offset: 3px;
+  --shadow-panel: 0 12px 34px rgb(27 55 101 / .045);
+  --shadow-card-hover: 0 14px 30px rgb(29 51 91 / .055);
+  --shadow-accent: 0 10px 24px rgb(37 89 232 / .17);
+  --focus-ring: light-dark(#6e91ff, #a5beff);
+  --focus-halo: light-dark(#dce6ff, #334c83);
+  --focus-width: 3px;
+  --focus-offset: 3px;
+  --motion-fast: 180ms;
+  --motion-theme-switch: 250ms;
+  --lift-subtle: -2px;
+  --lift-card: -3px;
+
+  /* Semantic light palette */
+  --color-canvas: light-dark(#f7f9fc, #0f1725);
+  --color-hero-glow: light-dark(#e8efff, #1a2c4b);
+  --color-header: light-dark(rgb(255 255 255 / .94), rgb(18 28 44 / .96));
+  --color-surface: light-dark(#fff, #172235);
+  --color-surface-control: light-dark(#fbfcff, #1d2a3d);
+  --color-surface-hover: light-dark(#f8faff, #21314a);
+  --color-surface-subtle: light-dark(#f4f7fc, #1b2940);
+  --color-surface-footer: light-dark(#f1f4f9, #111b2b);
+  --color-accent-subtle: light-dark(#eaf0ff, #233d75);
+  --color-code-inline: light-dark(#edf1f7, #273750);
+  --color-code-block: light-dark(#182238, #0b1220);
+  /* Private authoring editor syntax colors. */
+  --author-code-keyword: light-dark(#a34dce, #d5aaff);
+  --author-code-string: light-dark(#24845d, #91d9ac);
+  --author-code-number: light-dark(#ae681c, #f4c487);
+  --author-code-comment: light-dark(#718096, #9caeca);
+  --color-warning-surface: light-dark(#fff9eb, #352918);
+  --color-warning-badge: light-dark(#fff3dc, #3b2b16);
+  --color-success-badge: light-dark(#e5f6ec, #143528);
+  --color-neutral-badge: light-dark(#eef2f8, #283a55);
+  --color-text-primary: light-dark(#172238, #edf3ff);
+  --color-text-secondary: light-dark(#53627a, #c0cde0);
+  --color-text-muted: light-dark(#5f6b80, #a8b9d1);
+  --color-text-prose: light-dark(#334159, #d4deee);
+  --color-text-placeholder: light-dark(#617087, #a8b9d1);
+  --color-text-on-action: light-dark(#fff, #fff);
+  --color-text-on-brand: light-dark(#fff, #fff);
+  --color-text-code: light-dark(#f1f5ff, #e9f0ff);
+  --color-text-warning: light-dark(#705d3d, #eed4a6);
+  --color-text-warning-strong: light-dark(#7c530a, #ffe1a0);
+  --color-text-warning-badge: light-dark(#8d5e06, #ffd680);
+  --color-text-success-badge: light-dark(#177448, #71d0a3);
+  --color-text-neutral-badge: light-dark(#34455f, #dbe6f9);
+  --color-text-disabled: light-dark(#8b97a8, #a8b9d1);
+  --color-accent: light-dark(#2559e8, #a5beff);
+  --color-accent-strong: light-dark(#2559e8, #3966c9);
+  --color-accent-hover: light-dark(#1948c2, #446cce);
+  --color-action: light-dark(#172238, #3966c9);
+  --color-action-hover: light-dark(#2e4061, #446cce);
+  --color-brand-mark: light-dark(#172b52, #284672);
+  --color-border: light-dark(#dfe5ee, #344258);
+  --color-border-control: light-dark(#cbd5e5, #52637c);
+  --color-border-panel: light-dark(#dae3f2, #344a69);
+  --color-border-subtle: light-dark(#eef1f5, #2b3b53);
+  --color-border-hover: light-dark(#b7c9ed, #718ab6);
+  --color-border-result-hover: light-dark(#9bb2f7, #718ab6);
+  --color-border-warning: light-dark(#f0d99e, #775c30);
+  --color-selection: light-dark(#d6e2ff, #304c8b);
+  --color-theme-switch-track: light-dark(#f1f1f1, #2f2f2f);
+  --color-theme-switch-border: light-dark(rgb(60 60 60 / .29), #8e8e8e);
+  --color-theme-switch-border-hover: light-dark(#8e8e8e, #b5b5b5);
+  --color-theme-switch-thumb: light-dark(#fff, #1a1a1a);
+  --color-theme-switch-icon: light-dark(#50596a, #d4dce8);
+  --shadow-theme-switch-thumb: 0 1px 2px rgb(0 0 0 / .06), 0 1px 2px rgb(0 0 0 / .04);
+  --color-tool-default: light-dark(#7386a2, #9db1ce);
+  --color-tool-blue: light-dark(#4172e6, #86aaff);
+  --color-tool-purple: light-dark(#8260d6, #b69af4);
+  --color-tool-coral: light-dark(#e76f64, #f09b90);
+  --color-tool-cyan: light-dark(#37a6d4, #70c5e8);
+  --color-tool-slate: light-dark(#56647b, #a4b5cf);
+  --color-tool-orange: light-dark(#e99b39, #f0b86f);
+  --color-tool-green: light-dark(#55a871, #8bd5a5);
+  --color-tool-teal: light-dark(#49a7a3, #81d0c9);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --shadow-panel: 0 12px 34px rgb(0 0 0 / .15);
+  --shadow-card-hover: 0 14px 30px rgb(0 0 0 / .2);
+  --shadow-accent: 0 10px 24px rgb(28 53 111 / .25);
+
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --shadow-panel: 0 12px 34px rgb(0 0 0 / .15);
+    --shadow-card-hover: 0 14px 30px rgb(0 0 0 / .2);
+    --shadow-accent: 0 10px 24px rgb(28 53 111 / .25);
+  }
+}

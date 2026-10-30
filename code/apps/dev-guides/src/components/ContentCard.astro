@@ -1,0 +1,25 @@
+---
+import type { Tutorial } from '../lib/catalog';
+import { tutorialUrl } from '../lib/catalog';
+import { toolBySlug } from '../data/tools';
+
+interface Props { entry: Tutorial }
+const { entry } = Astro.props;
+const tool = toolBySlug[entry.data.tool];
+const isLead = entry.data.status === 'lead';
+---
+
+<article class="content-card">
+  <div class="content-card-top">
+    <span class="tool-pill">{tool.name}</span>
+    <span class:list={['status-pill', isLead ? 'status-pill--lead' : 'status-pill--published']}>
+      {isLead ? '尚未实测' : '已亲测教程'}
+    </span>
+  </div>
+  <h3><a href={tutorialUrl(entry)}>{entry.data.title}</a></h3>
+  <p>{entry.data.summary}</p>
+  <div class="content-card-bottom">
+    <time datetime={entry.data.updatedAt.toISOString()}>{entry.data.updatedAt.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' })}</time>
+    <a href={tutorialUrl(entry)} aria-label={`查看${entry.data.title}`}>查看详情</a>
+  </div>
+</article>

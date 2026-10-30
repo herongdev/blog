@@ -1,0 +1,18 @@
+# Tutorial screenshots are local staging files. Run `pnpm media:publish` to
+# upload them and replace Markdown paths with owned media URLs before commit.
+/src/content/tutorials/**/*.png
+/src/content/tutorials/**/*.jpg
+/src/content/tutorials/**/*.jpeg
+/src/content/tutorials/**/*.webp
+/src/content/tutorials/**/*.PNG
+/src/content/tutorials/**/*.JPG
+/src/content/tutorials/**/*.JPEG
+/src/content/tutorials/**/*.WEBP
+
+# Drafts may contain unpublished copy and unredacted screenshots.
+/drafts/
+
+# Previous article revisions can contain unpublished copy.
+/.history/
+/.library.json
+/.library.json.*.tmp

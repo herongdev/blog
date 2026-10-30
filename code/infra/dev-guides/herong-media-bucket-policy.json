@@ -1,0 +1,25 @@
+{
+  "Statement": [
+    {
+      "Sid": "EnterpriseMediaPublicGet",
+      "Effect": "Allow",
+      "Principal": ["*"],
+      "Action": ["tos:GetObject"],
+      "Resource": ["trn:tos:::herong-media/projects/enterprise/v1/assets/*"]
+    },
+    {
+      "Sid": "DevGuidesPublicGet",
+      "Effect": "Allow",
+      "Principal": ["*"],
+      "Action": ["tos:GetObject"],
+      "Resource": ["trn:tos:::herong-media/dev-guides/tutorials/*"]
+    },
+    {
+      "Sid": "AcmeChallengePublicGet",
+      "Effect": "Allow",
+      "Principal": ["*"],
+      "Action": ["tos:GetObject"],
+      "Resource": ["trn:tos:::herong-media/.well-known/acme-challenge/*"]
+    }
+  ]
+}

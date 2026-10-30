@@ -27,7 +27,8 @@
     "build:site": "node scripts/build-site.mjs",
     "check:site": "pnpm --filter @herong/site check",
     "preview:site": "pnpm --filter @herong/site preview",
-    "test:site": "node --test apps/site/scripts/*.test.mjs"
+    "test:site": "node --test apps/site/scripts/*.test.mjs",
+    "dev:guides:author": "pnpm --filter @herong/dev-guides-author dev"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

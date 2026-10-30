@@ -1,0 +1,919 @@
+{
+  "checkedAt": "2026-10-27",
+  "officialSources": [
+    {
+      "url": "https://learn.chatgpt.com/docs/environments/git-worktrees",
+      "title": "Worktrees",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "独立工作树、Handoff、忽略文件复制及归档恢复的正文已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/code-review",
+      "title": "Code review",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "本地 review、差异范围、逐行反馈和按块暂存的正文已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "title": "Custom instructions with AGENTS.md",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "项目及目录层级指令、override 优先级的正文已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/environments/local-environment",
+      "title": "Local environments",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "工作树 setup 和项目 actions 的正文已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/image-inputs",
+      "title": "Image inputs",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "桌面和 CLI 图片输入、前后图比较的正文已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/skills-and-plugins",
+      "title": "Skills & Plugins",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "可复用工作流和 Codex 的 $ 显式调用已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/automations",
+      "title": "Scheduled tasks",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "本地项目定时任务、电脑与应用须运行的正文已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/projects",
+      "title": "Projects and chats",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "多文件夹主目录和聊天搜索/归档的正文已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/developer-commands",
+      "title": "Developer commands",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "CLI resume、fork、compact、status、plan 对应正文已核。"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/non-interactive-mode",
+      "title": "Non-interactive mode",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "exec 最终输出保存和 output-schema 的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/rules",
+      "title": "Rules",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "规则文件 .mdc、frontmatter 和按文件匹配行为的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/agent/prompting",
+      "title": "Prompting agents",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "@ 引用、上下文占用分类和 Custom Modes 的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/agent/plan-mode",
+      "title": "Plan Mode",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "计划先行和 Save to workspace 的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/agent/debug-mode",
+      "title": "Debug Mode",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "加日志、用户复现、再依据运行结果修复的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/agent/design-mode",
+      "title": "Design Mode",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "选择真实页面元素附带视觉和代码信息的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/agent/tools/browser",
+      "title": "Browser",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "浏览器验证和按 workspace 隔离 cookie/storage 的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/reference/ignore-file",
+      "title": "Ignore file",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "忽略文件匹配及 terminal/MCP 不受该文件阻拦的正文已核。"
+    },
+    {
+      "url": "https://prod.cursor.com/help/ai-features/tab",
+      "title": "Tab completion",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "部分接受、跨文件跳转、暂时停用的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/skills",
+      "title": "Agent Skills",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "技能目录、显式调用、Custom Mode 与 /cursor-blame 的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/configuration/worktrees",
+      "title": "Worktrees",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "Agents Window 工作树及 .cursor/worktrees.json setup 的正文已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/cloud-agent/mobile",
+      "title": "Cursor for iOS",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "Remote Control 的 Agents Window、账号及在线电脑条件已核。"
+    },
+    {
+      "url": "https://cursor.com/docs/agent/agent-review",
+      "title": "Agent Review",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "/agent-review 手动检查本地修改的正文已核；自动触发描述有任务/提交措辞差异，不采用。"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/sessions",
+      "title": "Manage sessions",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "CLI 按名称恢复历史会话的正文已核。"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/checkpointing",
+      "title": "Checkpointing",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "选择仅恢复代码及文件跟踪范围的正文已核。"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/memory",
+      "title": "How Claude remembers your project",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "/memory 可查看并编辑自动记忆的正文已核。"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/context-window",
+      "title": "Explore the context window",
+      "status": "已打开官方正文并核对相关段落",
+      "checkedAt": "2026-10-27",
+      "note": "/compact 带重点说明的正文已核。"
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/getting-started/userinterface#timeline-view",
+      "title": "User interface",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX001"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/codebasics#search-editor",
+      "title": "Basic editing",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX002"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/codebasics#case-changing-in-regex-replace",
+      "title": "Basic editing",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX003"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/codebasics#column-box-selection",
+      "title": "Basic editing",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX004"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/refactoring#rename-symbol",
+      "title": "Refactoring",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX005"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/configure/profiles#what-is-a-temporary-profile",
+      "title": "Profiles in Visual Studio Code",
+      "status": "官方 Markdown 正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "HTML 经 web 工具多次超时；随后直连官方同路径 .md 成功读取 Temporary Profile 小节。未进行本机操作实测。",
+      "topicIds": [
+        "DX006"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/configure/keybindings#troubleshooting-keyboard-shortcuts",
+      "title": "Keyboard shortcuts",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX007"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/userdefinedsnippets#tabstops",
+      "title": "Snippets in Visual Studio Code",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX008"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/debugtest/tasks",
+      "title": "Integrate with External Tools via Tasks",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX009"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/debugtest/debugging#logpoints",
+      "title": "Debug code with Visual Studio Code",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX010"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/debugtest/debugging#conditional-breakpoints",
+      "title": "Debug code with Visual Studio Code",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX011"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/terminal/shell-integration#run-recent-command",
+      "title": "Terminal Shell Integration",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX012"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/sourcecontrol/staging-commits#stage-specific-lines-or-code-blocks",
+      "title": "Staging and committing changes",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX013"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/sourcecontrol/merge-conflicts#use-the-3-way-merge-editor",
+      "title": "Resolve merge conflicts",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX014"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/codebasics#compare-files",
+      "title": "Basic editing",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX015"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/editingevolved#peek",
+      "title": "Code Navigation",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX016"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/editing/workspaces/multi-root-workspaces",
+      "title": "Multi-root Workspaces",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX017"
+      ]
+    },
+    {
+      "url": "https://code.visualstudio.com/docs/configure/settings",
+      "title": "User and workspace settings",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX018"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-restore",
+      "title": "git-restore",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX019"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-reflog",
+      "title": "git-reflog",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX020"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-branch",
+      "title": "git-branch",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX020"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-stash",
+      "title": "git-stash",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX021"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-log",
+      "title": "git-log",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX022"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-bisect",
+      "title": "git-bisect",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX023"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-check-ignore",
+      "title": "git-check-ignore",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX024"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-revert",
+      "title": "git-revert",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX025"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-diff",
+      "title": "git-diff",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX026"
+      ]
+    },
+    {
+      "url": "https://git-scm.com/docs/git-commit",
+      "title": "git-commit",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX027"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/repositories/working-with-files/using-files/getting-permanent-links-to-files",
+      "title": "Getting permanent links to files",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX028"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax",
+      "title": "Understanding GitHub Code Search syntax",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX029"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/codespaces/the-githubdev-web-based-editor",
+      "title": "Using VS Code for the Web from GitHub",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX030"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/pull-requests/how-tos/review-pull-requests/incorporating-feedback-in-your-pull-request",
+      "title": "Incorporating feedback in your pull request",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX031"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/changing-the-stage-of-a-pull-request",
+      "title": "Changing the stage of a pull request",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX032"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/subscriptions-and-notifications/get-started/configuring-notifications",
+      "title": "Configuring notifications",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX033"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs",
+      "title": "Re-running workflows and jobs",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX034"
+      ]
+    },
+    {
+      "url": "https://docs.github.com/en/pull-requests/how-tos/commit-changes/comparing-commits",
+      "title": "Comparing commits",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX035"
+      ]
+    },
+    {
+      "url": "https://cli.github.com/manual/gh_pr_checkout",
+      "title": "gh_pr_checkout",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX036"
+      ]
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/network/reference#copy-a-request-a-filtered-set-of-requests-or-all-of-them-to-the-clipboard",
+      "title": "Network features reference",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX037"
+      ]
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/request-conditions",
+      "title": "Request conditions",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "原 network-request-blocking 官方地址重定向至此；当前面板名为 Request conditions。",
+      "topicIds": [
+        "DX038"
+      ]
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/overrides#override-xhr-or-fetch-requests-to-mock-remote-resources",
+      "title": "Override web content and HTTP response headers locally",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX039"
+      ]
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/css/reference#toggle-a-pseudo-class",
+      "title": "CSS features reference",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX040"
+      ]
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/device-mode#capture-a-screenshot",
+      "title": "Simulate mobile devices with device mode",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX041"
+      ]
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/network/reference#save-requests-across-page-loads",
+      "title": "Network features reference",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX042"
+      ]
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/rendering/emulate-css#emulate-css-media-feature-prefers-color-scheme",
+      "title": "Emulate CSS media features",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX043"
+      ]
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/network/reference#emulate-slow-network-connections",
+      "title": "Network features reference",
+      "status": "官方页面相关正文已核",
+      "checkedAt": "2026-10-27",
+      "note": "已打开官方页面并定位对应功能段落；来源为文档功能依据，不是操作效果验证。",
+      "topicIds": [
+        "DX044"
+      ]
+    },
+    {
+      "url": "https://docs.trae.cn/ide_chat",
+      "title": "TRAE 对话",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "行内编辑、图片输入、会话副本和回退章节已读取。"
+    },
+    {
+      "url": "https://docs.trae.cn/ide_changelog",
+      "title": "TRAE 更新日志",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 2026-10-15 v3.4.1–3.4.4 的统一引用菜单及 10-08 v3.4.0 的多路径说明。"
+    },
+    {
+      "url": "https://docs.trae.cn/ide_rules",
+      "title": "TRAE 规则",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读项目规则、globs 和规则引用章节。"
+    },
+    {
+      "url": "https://docs.trae.cn/ide_slash-commands",
+      "title": "TRAE 命令",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读项目命令创建和 / 调用步骤。"
+    },
+    {
+      "url": "https://docs.trae.cn/ide_built-in-workflows",
+      "title": "TRAE 内置工作流",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 Plan 确认后执行说明及 Chat 智能体不可用限制。"
+    },
+    {
+      "url": "https://docs.trae.cn/ide_agent-powered-code-review",
+      "title": "TRAE 智能体审查",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读审查范围、模式及问题到 diff 的查看方式。"
+    },
+    {
+      "url": "https://docs.trae.cn/ide_cue",
+      "title": "TRAE CUE",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读修改点预测和跳转；未依赖 Beta 智能重命名。"
+    },
+    {
+      "url": "https://docs.trae.cn/ide_memories",
+      "title": "TRAE 记忆",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读本地保存、手动修改删除及不能跨电脑共享说明。"
+    },
+    {
+      "url": "https://docs.trae.cn/ide_get-started-with-the-agent-window",
+      "title": "TRAE Agent 窗口",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读任务摘要上下文、全局搜索和工具面板。"
+    },
+    {
+      "url": "https://www.codebuddy.cn/docs/cli/memory",
+      "title": "CodeBuddy Code CLI 记忆",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 CODEBUDDY.md 的 @path 导入、/memory 和层级；适用 CLI。"
+    },
+    {
+      "url": "https://www.codebuddy.cn/docs/cli/slash-commands",
+      "title": "CodeBuddy Code CLI 斜杠命令",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 /resume、/export 的当前支持表。"
+    },
+    {
+      "url": "https://www.codebuddy.cn/docs/cli/checkpointing",
+      "title": "CodeBuddy Code CLI 检查点",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读仅代码回退及 Bash/外部编辑不保证回退的限制。"
+    },
+    {
+      "url": "https://www.codebuddy.cn/docs/cli/interactive-mode",
+      "title": "CodeBuddy Code CLI 交互模式",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 Ctrl+O 展开工具调用信息。"
+    },
+    {
+      "url": "https://www.codebuddy.cn/docs/cli/permission-modes",
+      "title": "CodeBuddy Code CLI 权限模式",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 acceptEdits 对编辑与 Bash 的区别；规则可覆盖基线。"
+    },
+    {
+      "url": "https://www.codebuddy.cn/docs/cli/worktree",
+      "title": "CodeBuddy Code CLI Worktree",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 --worktree 示例及工作树不是安全沙箱说明。"
+    },
+    {
+      "url": "https://docs.qoder.cn/user-guide/rules",
+      "title": "Qoder CN IDE 规则",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读手动引用与目录规则；页面仍兼列历史插件，题目只用 IDE。"
+    },
+    {
+      "url": "https://docs.qoder.cn/user-guide/codebase-indexing",
+      "title": "Qoder CN IDE 代码库索引",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 .qoderignore 与索引设置；不把索引排除描述为全面文件权限。"
+    },
+    {
+      "url": "https://docs.qoder.cn/user-guide/inline-chat",
+      "title": "Qoder CN IDE 行间会话",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读行间会话 @文件/规则上下文。"
+    },
+    {
+      "url": "https://docs.qoder.cn/user-guide/custom-commands",
+      "title": "Qoder CN IDE 自定义指令",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读项目级命令创建与 / 调用；此页限定 IDE。"
+    },
+    {
+      "url": "https://docs.qoder.cn/user-guide/repo-wiki",
+      "title": "Qoder CN IDE Repo Wiki",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 Wiki 更新和 Git 仓库至少一次提交要求。"
+    },
+    {
+      "url": "https://docs.apifox.com/actual-request",
+      "title": "Apifox 实际请求",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读实际 URL、头、体与控制台章节。"
+    },
+    {
+      "url": "https://docs.apifox.com/import-curl",
+      "title": "Apifox 导入 cURL",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 Chrome Copy as cURL 和导入流程。"
+    },
+    {
+      "url": "https://docs.apifox.com/environments-and-services",
+      "title": "Apifox 环境管理",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读前置 URL、切换环境及本地/远程值说明。"
+    },
+    {
+      "url": "https://docs.apifox.com/8875297m0",
+      "title": "Apifox 变量有值却取不到",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读高优先级空值覆盖与排查步骤。"
+    },
+    {
+      "url": "https://docs.apifox.com/5793498m0",
+      "title": "Apifox 接口间传递数据",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读后置提取与下游变量引用。"
+    },
+    {
+      "url": "https://docs.apifox.com/add-assertions",
+      "title": "Apifox 添加断言",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读可视化断言表单与结果查看。"
+    },
+    {
+      "url": "https://docs.apifox.com/validate-response",
+      "title": "Apifox 校验响应",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读响应结构/类型与必需字段校验。"
+    },
+    {
+      "url": "https://docs.apifox.com/dynamic-values",
+      "title": "Apifox 动态值",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读发送时生成值的说明。"
+    },
+    {
+      "url": "https://docs.apifox.com/api-test-cases",
+      "title": "Apifox 接口调试用例",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读保存为用例与可保存响应。"
+    },
+    {
+      "url": "https://docs.apifox.com/generate-code",
+      "title": "Apifox 生成代码",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读请求、模型和服务端代码三种不同生成目标。"
+    },
+    {
+      "url": "https://docs.apifox.com/sse",
+      "title": "Apifox SSE 调试",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读 Content-Type 解析及时间线；版本大于 2.3.10。"
+    },
+    {
+      "url": "https://docs.apifox.com/websocket",
+      "title": "Apifox WebSocket 调试",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读连接/发送/查看消息，客户端功能较完整。"
+    },
+    {
+      "url": "https://docs.apifox.com/import-openapi-swagger",
+      "title": "Apifox 导入 OpenAPI",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读可视化导入与 Beta spec 模式区别。"
+    },
+    {
+      "url": "https://docs.apifox.com/custom-mock",
+      "title": "Apifox 自定义 Mock",
+      "status": "已打开官方正文并核对相关章节",
+      "checkedAt": "2026-10-27",
+      "note": "已读带条件的 Mock 期望、匹配顺序及状态码设置。"
+    },
+    {
+      "url": "https://www.doubao.com/download/desktop",
+      "title": "豆包桌面官方下载页",
+      "status": "已打开但未取得可读功能正文",
+      "checkedAt": "2026-10-27",
+      "note": "未据此生成开发功能事实；原计划两条豆包题改为 Apifox 的具体实操题。"
+    }
+  ],
+  "discoverySources": [
+    {
+      "creator": "Matt Pocock",
+      "title": "AI Skills for Real Engineers",
+      "url": "https://www.aihero.dev/skills",
+      "checkedAt": "2026-10-27",
+      "use": "从重复检查和计划中找一个单点，自己写最小示例；不照搬整套流程。"
+    },
+    {
+      "creator": "Matt Pocock",
+      "title": "The handoff Skill",
+      "url": "https://www.aihero.dev/skills-handoff",
+      "checkedAt": "2026-10-27",
+      "use": "找跨工具交接的具体问题；与产品内置 resume、fork、handoff 分清，不混用名称。"
+    },
+    {
+      "creator": "Simon Willison",
+      "title": "Using Git with coding agents",
+      "url": "https://simonwillison.net/guides/agentic-engineering-patterns/using-git-with-coding-agents/",
+      "checkedAt": "2026-10-27",
+      "use": "将版本恢复与定位错误拆成一个操作，实际命令仍以 Git 官方文档和演示仓库为准。"
+    },
+    {
+      "creator": "宝玉",
+      "title": "我的 AI 原生开发流程 一个真实案例的完整复盘",
+      "url": "https://baoyu.io/blog/2026-08-24/ai-native-dev-workflow",
+      "checkedAt": "2026-10-27",
+      "use": "借鉴先明确需求再验收的场景，用自己的项目演示计划与验证。"
+    },
+    {
+      "creator": "Cole Medin",
+      "title": "AI coding 视频资料索引",
+      "url": "https://github.com/coleam00/cole-medin-ai-coding/blob/main/index.md",
+      "checkedAt": "2026-10-27",
+      "use": "后续按问题找具体视频和时间点；本轮不把资料索引冒充某条视频的逐项证据。"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "Statement": [
+    {
+      "Sid": "WriteAcmeChallengeOnly",
+      "Effect": "Allow",
+      "Action": ["tos:PutObject", "tos:DeleteObject"],
+      "Resource": ["trn:tos:::herong-media/.well-known/acme-challenge/*"]
+    },
+    {
+      "Sid": "BindMediaDomainCertificate",
+      "Effect": "Allow",
+      "Action": ["tos:GetBucketCustomDomain", "tos:PutBucketCustomDomain"],
+      "Resource": ["trn:tos:::herong-media"]
+    },
+    {
+      "Sid": "ImportRenewedCertificate",
+      "Effect": "Allow",
+      "Action": ["certificate_service:ImportCertificate"],
+      "Resource": ["*"]
+    }
+  ]
+}

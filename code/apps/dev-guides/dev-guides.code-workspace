@@ -1,0 +1,30 @@
+{
+  "folders": [
+    { "path": "." }
+  ],
+  "settings": {
+    "markdown.copyFiles.destination": {
+      "/src/content/tutorials/*": "${documentBaseName}/",
+      "/drafts/*": "${documentBaseName}/"
+    }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "教程：上传图片并替换链接",
+        "type": "shell",
+        "command": "pnpm media:publish",
+        "options": { "cwd": "${workspaceFolder}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "教程：检查图片是否已上传",
+        "type": "shell",
+        "command": "pnpm media:check",
+        "options": { "cwd": "${workspaceFolder}" },
+        "problemMatcher": []
+      }
+    ]
+  }
+}

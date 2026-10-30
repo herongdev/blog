@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content';
+import GuideArticle from '../../components/GuideArticle.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('tutorials');
+  for (const entry of entries) {
+    if (entry.data.status !== 'published') continue;
+    const { headings } = await render(entry);
+    const headingText = headings.map((heading) => heading.text);
+    const body = entry.body ?? '';
+    if (/这是一条\*\*待实测的功能线索\*\*|本站尚未|准备验证的问题|TODO[:：]|REPLACE_WITH_/i.test(body) || !headingText.some((heading) => heading.includes('操作步骤')) || !headingText.some((heading) => heading.includes('实测结果'))) {
+      throw new Error(`${entry.id}: 已发布教程必须替换模板占位内容，并包含“操作步骤”和“实测结果”章节`);
+    }
+  }
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+
+<GuideArticle entry={entry} />

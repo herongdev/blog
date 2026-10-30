@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { tools } from '../../data/tools';
+import { publishedForTool } from '../../lib/catalog';
+import { withBase } from '../../lib/urls';
+
+const entries = await getCollection('tutorials');
+const hasPublished = entries.some((entry) => entry.data.status === 'published');
+const activeTools = tools.filter((tool) => entries.some((entry) => entry.data.tool === tool.slug));
+---
+
+<BaseLayout title="工具目录" description="按开发工具查找已亲测教程和功能资料。" noindex={!hasPublished}>
+  <div class="container page-heading">
+    <p class="eyebrow">工具目录</p>
+    <h1>按工具查找。</h1>
+    <p>只列出已有内容的工具。每条结果都会标明是否亲测。</p>
+    <a class="text-link" href={withBase('/#search')}>按问题搜索</a>
+  </div>
+  <section class="container tool-directory" aria-label="工具列表">
+    {activeTools.map((tool) => {
+      const published = publishedForTool(entries, tool.slug);
+      const leads = entries.filter((entry) => entry.data.status === 'lead' && entry.data.tool === tool.slug);
+      return <article id={tool.slug} class={`tool-directory-card tone-${tool.tone}`}>
+        <div class="tool-directory-top"><span class="tool-type">{tool.category}</span><span class="tool-count">{published.length} 篇教程 · {leads.length} 条功能资料</span></div>
+        <h2>{tool.name}</h2>
+        <p>{tool.description}</p>
+        <div class="tool-directory-bottom">{published.length ? <a href={withBase(`/tools/${tool.slug}/`)}>查看教程</a> : <a href={withBase(`/?q=${encodeURIComponent(tool.name)}#search`)}>查看功能资料</a>}</div>
+      </article>;
+    })}
+  </section>
+</BaseLayout>

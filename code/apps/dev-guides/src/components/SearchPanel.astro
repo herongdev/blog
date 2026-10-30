@@ -1,0 +1,170 @@
+---
+import '../styles/filters.css';
+import { withBase } from '../lib/urls';
+
+interface Props {
+  compact?: boolean;
+  toolOptions?: Array<{ slug: string; name: string }>;
+}
+const { compact = false, toolOptions = [] } = Astro.props;
+---
+
+<section class:list={['search-panel', compact && 'search-panel--compact']} id="search" data-search-root data-index-url={withBase('/search-index.json')} aria-label="搜索开发工具教程">
+  {!compact && <div class="search-heading"><h2>查找教程</h2></div>}
+  <form class="search-form" action={withBase('/')} method="get" role="search">
+    <label for="site-search">搜索工具、功能或问题</label>
+    <div class="search-field">
+      <input id="site-search" name="q" type="search" autocomplete="off" placeholder="例如：两个任务改代码" />
+      <button type="submit">查找</button>
+    </div>
+    {toolOptions.length > 0 && <fieldset class="tool-chip-filter tool-chip-filter--search">
+      <legend>按工具筛选</legend>
+      <div class="tool-chip-list">
+        <label class="tool-chip"><input type="radio" name="tool" value="" checked /><span>全部工具</span></label>
+        {toolOptions.map((tool) => <label class="tool-chip"><input type="radio" name="tool" value={tool.slug} /><span>{tool.name}</span></label>)}
+      </div>
+    </fieldset>}
+  </form>
+  <noscript><p class="search-no-script">搜索需要启用浏览器脚本。你仍可从<a href={withBase('/tools/')}>工具目录</a>浏览已有内容。</p></noscript>
+  <div class="search-results" data-search-results hidden>
+    <div class="search-results-heading"><h3>查找结果</h3><p role="status" aria-live="polite" data-search-status></p></div>
+    <ul data-search-list></ul>
+  </div>
+</section>
+
+<script>
+  import { rankResults, type SearchItem } from '../lib/search';
+  import { withBase } from '../lib/urls';
+
+  const root = document.querySelector<HTMLElement>('[data-search-root]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('form');
+    const input = root.querySelector<HTMLInputElement>('input[name="q"]');
+    const toolRadios = [...root.querySelectorAll<HTMLInputElement>('input[name="tool"]')];
+    const results = root.querySelector<HTMLElement>('[data-search-results]');
+    const list = root.querySelector<HTMLUListElement>('[data-search-list]');
+    const status = root.querySelector<HTMLElement>('[data-search-status]');
+    const indexPromise = fetch(root.dataset.indexUrl || withBase('/search-index.json')).then(async (response) => {
+      if (!response.ok) throw new Error('搜索索引暂时不可用');
+      return (await response.json()) as SearchItem[];
+    });
+    let requestSerial = 0;
+
+    function selectedTool(): string {
+      return toolRadios.find((radio) => radio.checked)?.value || '';
+    }
+
+    function syncUrl(query: string, toolSlug: string, submitted = false) {
+      const next = new URLSearchParams();
+      if (query) next.set('q', query);
+      if (toolSlug) next.set('tool', toolSlug);
+      const hash = submitted ? '#search' : window.location.hash;
+      window.history.replaceState({}, '', `${withBase('/')}${next.size ? `?${next.toString()}` : ''}${hash}`);
+    }
+
+    function track(event: string, data: Record<string, string | number>) {
+      const umami = (window as Window & { umami?: { track: (event: string, data: Record<string, string | number>) => void } }).umami;
+      umami?.track(event, data);
+    }
+
+    function addGroup(label: string, entries: SearchItem[]) {
+      if (!list || !entries.length) return;
+      const group = document.createElement('li');
+      group.className = 'result-group-label';
+      group.textContent = label;
+      list.append(group);
+      for (const entry of entries) {
+        const item = document.createElement('li');
+        item.className = 'search-result-item';
+        const heading = document.createElement('strong');
+        heading.textContent = entry.title;
+        const meta = document.createElement('span');
+        meta.textContent = `${entry.toolName} · ${entry.status === 'published' ? '已亲测教程' : '尚未实测，暂无操作教程'}`;
+        const summary = document.createElement('p');
+        summary.textContent = entry.summary;
+        const actions = document.createElement('div');
+        actions.className = 'search-result-actions';
+        const textLink = document.createElement('a');
+        textLink.href = entry.url;
+        textLink.textContent = entry.status === 'published' ? '查看教程' : '查看功能资料';
+        const contentSlug = entry.url.split('/').filter(Boolean).at(-1) ?? 'none';
+        textLink.addEventListener('click', () => track('search_result_open', {
+          tool: entry.toolSlug, contentSlug, status: entry.status, format: 'text', queryLength: input?.value.trim().length ?? 0,
+        }));
+        actions.append(textLink);
+        if (entry.videoUrl) {
+          const videoLink = document.createElement('a');
+          videoLink.href = entry.videoUrl;
+          videoLink.target = '_blank';
+          videoLink.rel = 'noopener noreferrer';
+          videoLink.textContent = '观看视频';
+          videoLink.addEventListener('click', () => track('search_result_open', {
+            tool: entry.toolSlug, contentSlug, status: entry.status, format: 'video', queryLength: input?.value.trim().length ?? 0,
+          }));
+          actions.append(videoLink);
+        }
+        item.append(heading, meta, summary, actions);
+        list.append(item);
+      }
+    }
+
+    async function runSearch(query: string, toolSlug: string): Promise<SearchItem[] | null> {
+      if (!results || !list || !status) return null;
+      const serial = ++requestSerial;
+      const shouldSearch = Boolean(query.trim() || toolSlug);
+      results.hidden = !shouldSearch;
+      list.replaceChildren();
+      if (!shouldSearch) return [];
+      try {
+        const entries = await indexPromise;
+        if (serial !== requestSerial) return null;
+        const ranked = rankResults(entries, query, toolSlug).slice(0, 12);
+        const published = ranked.filter((entry) => entry.status === 'published');
+        const leads = ranked.filter((entry) => entry.status === 'lead');
+        status.textContent = ranked.length ? `找到 ${published.length} 篇教程、${leads.length} 条功能资料` : '暂无匹配内容，试试更短的功能词。';
+        addGroup('已亲测教程', published);
+        addGroup('功能资料 · 尚未实测', leads);
+        return ranked;
+      } catch {
+        if (serial === requestSerial) status.textContent = '搜索暂时不可用，请稍后重试。';
+        return null;
+      }
+    }
+
+    if (form && input) {
+      const parameters = new URLSearchParams(window.location.search);
+      const initialQuery = parameters.get('q') || '';
+      const initialTool = parameters.get('tool') || '';
+      input.value = initialQuery;
+      const initialRadio = toolRadios.find((radio) => radio.value === initialTool);
+      if (initialRadio) initialRadio.checked = true;
+      if (initialQuery || selectedTool()) void runSearch(initialQuery, selectedTool());
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const query = input.value.trim();
+        const toolSlug = selectedTool();
+        syncUrl(query, toolSlug, true);
+        void runSearch(query, toolSlug).then((matches) => {
+          if (!matches || (!query && !toolSlug)) return;
+          const first = matches[0];
+          track('site_search', {
+            tool: first?.toolSlug || toolSlug || 'other',
+            contentSlug: first?.url.split('/').filter(Boolean).at(-1) ?? 'none',
+            resultCount: matches.length,
+            queryLength: query.length,
+          });
+        });
+      });
+      input.addEventListener('input', () => {
+        syncUrl(input.value.trim(), selectedTool());
+        void runSearch(input.value, selectedTool());
+      });
+      for (const radio of toolRadios) radio.addEventListener('change', () => {
+        if (!radio.checked) return;
+        syncUrl(input.value.trim(), selectedTool());
+        void runSearch(input.value, selectedTool());
+      });
+    }
+  }
+</script>

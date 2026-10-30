@@ -1,0 +1,107 @@
+.tool-chip-filter {
+  min-width: 0;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.tool-chip-filter legend {
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.tool-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.search-form .tool-chip,
+.library-filters .tool-chip {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.tool-chip input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tool-chip span,
+.library-filters .theme-filter button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--size-touch);
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--color-border-control);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-control);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-control);
+  white-space: nowrap;
+  transition: background-color var(--motion-fast) ease, border-color var(--motion-fast) ease, color var(--motion-fast) ease;
+}
+
+.tool-chip:hover span,
+.library-filters .theme-filter button:hover {
+  border-color: var(--color-border-hover);
+  background: var(--color-surface-hover);
+}
+
+.tool-chip input:checked + span,
+.library-filters .theme-filter button[aria-pressed="true"] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+}
+
+.tool-chip input:focus-visible + span,
+.library-filters .theme-filter button:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.library-filters[hidden] {
+  display: none;
+}
+
+.tool-chip-filter--library {
+  margin-top: 0;
+}
+
+.search-no-script {
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-compact);
+}
+
+.search-no-script a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-chip span,
+  .library-filters .theme-filter button {
+    transition: none;
+  }
+}

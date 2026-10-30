@@ -1,0 +1,9 @@
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["tos:GetObject", "tos:PutObject"],
+      "Resource": ["trn:tos:::herong-media/dev-guides/tutorials/*"]
+    }
+  ]
+}

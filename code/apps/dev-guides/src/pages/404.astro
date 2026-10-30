@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/urls';
+---
+
+<BaseLayout title="页面不存在" description="这个地址找不到内容。返回首页按工具或问题关键词搜索。" noindex omitCanonical>
+  <div class="container not-found">
+    <p class="eyebrow">404 · 页面不存在</p>
+    <h1>这里暂时没有这篇内容。</h1>
+    <p>地址可能写错，或内容调整了位置。你可以回到首页，按工具名或遇到的问题重新查找。</p>
+    <div class="hero-actions"><a class="button button--primary" href={withBase('/#search')}>返回搜索</a><a class="button button--secondary" href={withBase('/tools/')}>浏览工具目录</a></div>
+  </div>
+</BaseLayout>
