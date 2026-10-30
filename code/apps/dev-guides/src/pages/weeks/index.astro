@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import { ChevronRight } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BrowseHeader from '../../components/BrowseHeader.astro';
+import BrowseNav from '../../components/BrowseNav.astro';
+import GuideList from '../../components/GuideList.astro';
+import { groupByPublicationWeek, publicationWeek, sortNewest } from '../../lib/catalog';
+import { tools } from '../../data/tools';
+import { withBase } from '../../lib/urls';
+const entries = await getCollection('tutorials');
+const weeks = groupByPublicationWeek(entries);
+const years = [...new Set(weeks.map((week) => week.start.slice(0, 4)))];
+const undated = sortNewest(entries.filter((entry) => entry.data.status === 'published' && !publicationWeek(entry)));
+const activeTools = tools.filter((tool) => entries.some((entry) => entry.data.tool === tool.slug));
+---
+<BaseLayout title="每周教程" description="按发布日期回看每周开发工具教程，查找文字步骤与原视频。" noindex={weeks.length === 0 && undated.length === 0}>
+  <BrowseHeader title="每周教程" toolOptions={activeTools} />
+  <div class="container browse-body"><BrowseNav active="weeks" /><div data-browse-content>
+    {weeks.length === 0 && <section class="browse-empty"><h2>暂无按周归档的教程</h2><p>可先按主题或工具查看已有内容。</p><a class="browse-inline-link" href={withBase('/themes/')}>浏览主题<ChevronRight aria-hidden="true" /></a></section>}
+    {years.map((year) => <section class="browse-group" aria-labelledby={`year-${year}`}><div class="browse-group-heading"><h2 id={`year-${year}`}>{year} 年</h2></div><ul class="week-directory">{weeks.filter((week) => week.start.startsWith(year)).map((week) => <li><a href={withBase(`/weeks/${week.start}/`)}><div><strong>{week.label}</strong><p>{week.entries.slice(0, 2).map((entry) => entry.data.title).join('；')}</p></div><span class="browse-count">{week.entries.length} 篇</span><ChevronRight aria-hidden="true" /></a></li>)}</ul></section>)}
+    {undated.length > 0 && <section class="browse-group" aria-labelledby="undated-heading"><div class="browse-group-heading"><h2 id="undated-heading">往期教程</h2></div><GuideList entries={undated} /></section>}
+  </div></div>
+</BaseLayout>

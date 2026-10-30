@@ -1,0 +1,10 @@
+---
+import SearchPanel from './SearchPanel.astro';
+import '../styles/browse.css';
+interface Props { title: string; hideTitle?: boolean; toolOptions: Array<{ slug: string; name: string }> }
+const { title, hideTitle = false, toolOptions } = Astro.props;
+---
+<div class="container browse-header">
+  <h1 class:list={[hideTitle && 'browse-sr-only']}>{title}</h1>
+  <SearchPanel compact toolOptions={toolOptions} />
+</div>

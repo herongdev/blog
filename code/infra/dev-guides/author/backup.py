@@ -12,7 +12,7 @@ destination.mkdir(parents=True, exist_ok=True, mode=0o700)
 name = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 target = destination / (name + '.tar.gz')
 with tarfile.open(target, 'x:gz') as archive:
-    for relative in ['project', 'auth', 'publish/state.json']:
+    for relative in ['project', 'auth', 'publish/state.json', 'publish/publication-history.json']:
         item = source / relative
         if item.exists():
             archive.add(item, arcname=relative, recursive=True)

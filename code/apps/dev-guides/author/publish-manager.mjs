@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process';
 import { isIP } from 'node:net';
 import { chmod, copyFile, lstat, mkdir, readFile, readdir, readlink, realpath, rename, rm, symlink, unlink, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
+import { createPublicationDates } from './publication-dates.mjs';
 
 const INPUTS = ['src', 'public', 'scripts', 'templates', 'astro.config.mjs', 'package.json', 'tsconfig.json'];
 const REQUIRED = ['index.html', '404.html', 'robots.txt', 'sitemap.xml', 'search-index.json'];
@@ -199,7 +200,7 @@ async function switchLink(root, name, target) {
   finally { await unlink(path).catch((error) => { if (error.code !== 'ENOENT') throw error; }); }
 }
 
-async function install(snapshotRoot, environment, profile, manifest, fingerprint, job) {
+async function install(snapshotRoot, environment, profile, manifest, fingerprint, job, publicationMetadata, beforeActivation) {
   await publicDirectory(profile.root, profile.root);
   await publicDirectory(join(profile.root, 'releases'), profile.root);
   await publicDirectory(join(profile.root, 'shared'), profile.root);
@@ -209,7 +210,7 @@ async function install(snapshotRoot, environment, profile, manifest, fingerprint
   await mkdir(releasePath, { mode: 0o755 });
   await chmod(releasePath, 0o755);
   const manifestBytes = `${JSON.stringify(manifest, null, 2)}\n`;
-  const metadata = { release, environment, site: profile.site, base_path: profile.basePath, public_url: profile.site + profile.basePath, preview: profile.preview, manifest_sha256: hash(manifestBytes), built_at_utc: now(), source_fingerprint: fingerprint, author_job: job.id };
+  const metadata = { release, environment, site: profile.site, base_path: profile.basePath, public_url: profile.site + profile.basePath, preview: profile.preview, manifest_sha256: hash(manifestBytes), built_at_utc: now(), source_fingerprint: fingerprint, author_job: job.id, ...publicationMetadata };
   for (const item of manifest.files) {
     const source = join(snapshotRoot, 'dist', item.path), target = join(releasePath, 'web', item.path);
     await publicDirectory(dirname(target), profile.root);
@@ -226,6 +227,7 @@ async function install(snapshotRoot, environment, profile, manifest, fingerprint
   }
   await writeFile(join(releasePath, 'manifest.json'), manifestBytes, { mode: 0o644, flag: 'wx' });
   await writeFile(join(releasePath, 'release.json'), `${JSON.stringify(metadata, null, 2)}\n`, { mode: 0o644, flag: 'wx' });
+  beforeActivation();
   const previous = await currentRelease(profile.root);
   if (previous) await switchLink(profile.root, 'previous', previous);
   await switchLink(profile.root, 'current', releasePath);
@@ -235,12 +237,14 @@ async function install(snapshotRoot, environment, profile, manifest, fingerprint
 }
 
 /** Fixed-environment publisher. Never pass request-controlled paths, commands or env here. */
-export async function createPublishManager({ projectRoot, contentRoot = join(projectRoot, 'src/content/tutorials'), stateRoot, profiles, pnpmCommand = 'pnpm', buildEnv = {}, runBuild = defaultBuild }) {
+export async function createPublishManager({ projectRoot, contentRoot = join(projectRoot, 'src/content/tutorials'), stateRoot, profiles, pnpmCommand = 'pnpm', buildEnv = {}, runBuild = defaultBuild, clock = () => new Date() }) {
   if (!stateRoot) throw new Error('A private publisher state directory is required');
   projectRoot = resolve(projectRoot); contentRoot = resolve(contentRoot); stateRoot = resolve(stateRoot);
   const trustedProfiles = Object.fromEntries(['staging', 'production'].map((key) => [key, profileOf(key, profiles?.[key])]));
   if (trustedProfiles.staging.root === trustedProfiles.production.root) throw new Error('Release directories must be isolated');
   await directory(stateRoot);
+  const publicationDates = createPublicationDates({ stateRoot, getProductionRelease: () => currentRelease(trustedProfiles.production.root), clock });
+  await publicationDates.recover();
   const statePath = join(stateRoot, 'state.json');
   let persisted;
   try {
@@ -261,6 +265,7 @@ export async function createPublishManager({ projectRoot, contentRoot = join(pro
       if (job.environment === 'production' && (stagingReceipt?.sourceFingerprint !== fingerprint || stagingReceipt?.url !== stagingUrl)) {
         throw failure('内容或发布地址已更新，请先发布测试环境并检查效果，再发布正式环境');
       }
+      const publicationPlan = await publicationDates.prepare(snapshotRoot);
       const nodeModules = join(projectRoot, 'node_modules');
       if (!await info(nodeModules)) throw failure('发布依赖尚未准备好', 503);
       // Astro and Vite put caches under node_modules. Keep that directory local
@@ -278,9 +283,15 @@ export async function createPublishManager({ projectRoot, contentRoot = join(pro
       const manifest = await artifactManifest(join(snapshotRoot, 'dist'), profile);
       if (await sourceSnapshot(projectRoot, contentRoot) !== fingerprint) throw failure('内容在发布期间被修改，请保存后重新发布测试环境');
       await onPhase('activating');
-      const release = await install(snapshotRoot, job.environment, profile, manifest, fingerprint, job);
+      const release = await install(snapshotRoot, job.environment, profile, manifest, fingerprint, job,
+        publicationDates.metadata(publicationPlan, job.environment),
+        () => { if (job.environment === 'production') publicationDates.assertActivationDate(publicationPlan); });
       state.environments[job.environment] = release;
       Object.assign(job, { status: 'succeeded', finishedAt: now(), release: release.release, url: release.url });
+      if (job.environment === 'production') {
+        try { await publicationDates.commit(publicationPlan); }
+        catch { job.warning = '网站已发布；发布日期已保存在当前版本，私有历史备份将在下次发布前恢复。'; }
+      }
     } catch (error) {
       Object.assign(job, { status: 'failed', finishedAt: now(), error: error.status ? error.message : '发布失败，现有线上版本保持可用，请联系维护者' });
     } finally {

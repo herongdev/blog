@@ -15,6 +15,7 @@ const tutorials = defineCollection({
     tool: z.enum(toolSlugs),
     status: z.enum(['lead', 'published']),
     updatedAt: z.coerce.date(),
+    publishedAt: z.coerce.date().optional(),
     version: z.string().optional(),
     platform: z.string().optional(),
     keywords: z.array(z.string()).default([]),

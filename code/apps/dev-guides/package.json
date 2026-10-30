@@ -10,7 +10,8 @@
     "check": "astro check",
     "media:publish": "node scripts/media-cli.mjs publish",
     "media:check": "node scripts/media-cli.mjs check",
-    "test:media": "node --test scripts/media.test.mjs"
+    "test:media": "node --test scripts/media.test.mjs",
+    "test:browse": "node --experimental-strip-types --test scripts/browse.test.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.7",

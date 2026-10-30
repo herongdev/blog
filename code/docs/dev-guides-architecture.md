@@ -20,7 +20,7 @@
 
 ## 界面与设计系统
 
-首页以搜索为首要任务：用“开发工具怎么用？”这个简短标题表明内容是工具使用方法，搜索框通过“搜索工具、功能或问题”的标签和具体示例直接说明用法；工具只是筛选条件。达到足够真实教程数量后才展示精选、主题与列表筛选。站内搜索从教程标题、功能别名、按钮原文、常见问题和回忆片段中匹配。已亲测教程提供文字步骤，并在有实际视频 URL 时提供视频入口。尚未实测的功能资料明确标示，不充作完整教程。
+首页以搜索为首要任务，搜索框通过“搜索工具、功能或问题”的标签和示例说明用法。下方提供“按周 / 按主题 / 按工具”三个浏览入口：首页按首次正式发布周展示近期教程，完整周目录为 `/weeks/`，主题目录为 `/themes/`，工具目录为 `/tools/`；它们均链接到稳定的 `/topics/<slug>/` 正文。搜索匹配标题、工具别名、关键词、主题、回忆线索、摘要和正文，并可组合工具、主题和发布周筛选；URL 保留条件，结果提供总数和逐批加载。已亲测教程在有实际视频 URL 时提供视频入口，尚未实测的功能资料单独标明，不充作完整教程。
 
 界面采用 **Astro 静态页面 + 按需 React 交互岛 + Radix Primitives + 本站 CSS 设计 tokens**。当前已运行的是 Astro、TypeScript、语义化 HTML 和少量原生 JavaScript；React 与 Radix 是后续复杂交互组件的指定组合，尚未安装或用于现有页面。简单工具筛选继续使用 HTML 单选组。出现弹层、菜单或组合选择时，通过 `@astrojs/react` 接入 React 19，再使用无样式的 Radix Primitives；不引入 Radix Themes。具体约束见 [UI 规范](ui-guidelines.md#开发工具教程子站headless-ui-约定)。颜色使用语义 tokens，另集中管理字体、间距、圆角、阴影及焦点样式；支持系统明暗偏好，并允许访客手动切换，手动选择保存在本机。
 
@@ -33,6 +33,14 @@
 - 正式公开页面使用唯一标题、描述、H1、规范 HTTPS URL、清晰的工具与问题分类、移动端可复制的步骤和命令。本站通过 `src/pages/sitemap.xml.ts` 只列出真实已发布教程和符合开放索引条件的页面；缺失教程和静态资源必须返回真正的 404，不配置把任意 URL 返回首页的 SPA fallback。
 - 构建时通过 `PUBLIC_DEPLOY_ENV=production|staging` 区分环境，`PUBLIC_SITE_URL` 指定实际访问地址。测试环境或任何 IP 地址构建均强制输出 `noindex, nofollow, noarchive`，robots 禁止抓取，sitemap 为空；即使生产环境暂用 IP 访问也适用。正式生产域名启用后才沿用内容自身的索引规则。
 - canonical 与 Open Graph 使用本次构建的实际地址；正式上线后使用对应的 HTTPS 子域名。Google [支持子域名级站点名称](https://developers.google.com/search/docs/appearance/site-names)，可在子站首页放一致的 `WebSite` 结构化数据。
+
+### 首次发布与周归档
+
+公开周目录只使用 `published` 教程的 `publishedAt`，按 Asia/Shanghai 的周一至周日分组；`updatedAt` 继续表示内容复核/更新时间。后台 `.schedule.json` 与 `.library.json` 不参与公开归档，调整拍摄顺序或文章目录不会移动公开文章所属周。主题和工具页可以分区展示教程与功能资料；只有存在正式教程的相应目录页进入 sitemap，纯线索目录保持 noindex。
+
+`author/publication-dates.mjs` 管理累计首发账本 `publish/publication-history.json`，并把同一账本写入正式 release 的非公开 `release.json`。发布器只在隔离构建快照中注入可信首发日期，不改源 Markdown；手工编辑的 `publishedAt` 不作为上线事实。测试发布只产生预览日期，正式发布激活后才确认新文章日期；首次发布跨上海日期时拒绝激活并要求重试，避免归错周。后续更新、撤回、恢复和正常版本回滚保留累计首发日期，未激活的 release 不参与恢复。
+
+旧版已公开但缺少可靠首发日期的教程记录为 `legacyUndatedSlugs`，展示为“往期教程”，不拿最后更新日期或迁移日期补造历史。`lead` 与私有草稿不产生首发记录。账本备份及发布成功但私有历史保存失败时的处理顺序见 [线上写作台说明](../infra/dev-guides/author/README.md#首发日期账本与回滚顺序)。实际部署状态仍以部署记录为准。
 
 ## 发文流程与管理后台
 

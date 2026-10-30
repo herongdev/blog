@@ -2,7 +2,8 @@
 import { render } from 'astro:content';
 import { ChevronRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import type { Tutorial } from '../lib/catalog';
+import { publicationWeek, formatWeekRange, type Tutorial } from '../lib/catalog';
+import { themes } from '../data/themes';
 import { toolBySlug } from '../data/tools';
 import { AUTHOR_NAME, DEFAULT_SITE_URL } from '../config/site.mjs';
 import { withBase } from '../lib/urls';
@@ -12,6 +13,8 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const isLead = entry.data.status === 'lead';
 const tool = toolBySlug[entry.data.tool];
+const week = publicationWeek(entry);
+const articleThemes = themes.filter((theme) => entry.data.themes.includes(theme.slug));
 const canonical = new URL(Astro.url.pathname, Astro.site ?? DEFAULT_SITE_URL).href;
 const jsonLd = isLead ? undefined : {
   '@context': 'https://schema.org',
@@ -19,7 +22,8 @@ const jsonLd = isLead ? undefined : {
   headline: entry.data.title,
   description: entry.data.summary,
   url: canonical,
-  dateModified: entry.data.updatedAt.toISOString().slice(0, 10),
+  dateModified: new Date(Math.max(entry.data.updatedAt.getTime(), entry.data.publishedAt?.getTime() ?? 0)).toISOString(),
+  ...(entry.data.publishedAt ? { datePublished: entry.data.publishedAt.toISOString() } : {}),
   author: { '@type': 'Person', name: AUTHOR_NAME },
   citation: entry.data.officialSources.map((source) => source.url),
 };
@@ -29,13 +33,17 @@ const jsonLd = isLead ? undefined : {
   <div class="container article-shell">
     <nav class="breadcrumbs" aria-label="当前位置">
       <a href={withBase('/')}>首页</a><ChevronRight class="breadcrumb-separator" aria-hidden="true" />
-      <span>{tool.name}</span>
+      <a href={withBase(`/tools/${tool.slug}/`)}>{tool.name}</a>
     </nav>
     <article class="article-panel">
       <header class="article-header">
         <div class="article-kicker"><span class="tool-pill">{tool.name}</span><span class:list={['status-pill', isLead ? 'status-pill--lead' : 'status-pill--published']}>{isLead ? '尚未实测' : '已亲测教程'}</span></div>
         <h1>{entry.data.title}</h1>
         <p class="article-summary">{entry.data.summary}</p>
+        {(week || articleThemes.length > 0) && <nav class="article-browse-links" aria-label="相关分类">
+          {week && <a href={withBase(`/weeks/${week}/`)}>{formatWeekRange(week)}</a>}
+          {articleThemes.map((theme) => <a href={withBase(`/themes/${theme.slug}/`)}>{theme.name}</a>)}
+        </nav>}
         {entry.data.videoUrl && <p class="article-video-action"><a href={entry.data.videoUrl} target="_blank" rel="noopener noreferrer">观看视频</a></p>}
         {isLead && <div class="lead-notice" role="note"><strong>官方资料已核，尚非教程</strong><p>本站尚未完成亲测。此页仅供了解功能和查看出处，暂不提供操作步骤。</p></div>}
         <dl class="article-facts">

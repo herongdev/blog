@@ -1,0 +1,31 @@
+---
+import { Play } from '@lucide/astro';
+import { tutorialUrl, type Tutorial } from '../lib/catalog';
+import { toolBySlug } from '../data/tools';
+import { withBase } from '../lib/urls';
+import '../styles/browse.css';
+interface Props { entries: Tutorial[]; dateMode?: 'published' | 'updated'; headingLevel?: 2 | 3 }
+const { entries, dateMode = 'updated', headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+<ul class="guide-list">
+  {entries.map((entry) => {
+    const isLead = entry.data.status === 'lead';
+    const date = dateMode === 'published' ? entry.data.publishedAt : entry.data.updatedAt;
+    return <li>
+      <article class="guide-row">
+        <div class="guide-row-meta">
+          <a class="guide-tool" href={withBase(`/tools/${entry.data.tool}/`)}>{toolBySlug[entry.data.tool].name}</a>
+          {isLead ? <span class="guide-status guide-status--lead">尚未实测</span> : <span class="guide-status">已亲测</span>}
+          {date && <time datetime={date.toISOString()}>{dateMode === 'published' ? '发布于 ' : '更新于 '}{date.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' })}</time>}
+        </div>
+        <Heading><a href={tutorialUrl(entry)}>{entry.data.title}</a></Heading>
+        <p>{entry.data.summary}</p>
+        <div class="guide-row-actions">
+          <a href={tutorialUrl(entry)} aria-label={`${isLead ? '查看功能资料' : '阅读教程'}：${entry.data.title}`}>{isLead ? '查看功能资料' : '阅读教程'}</a>
+          {entry.data.videoUrl && !isLead && <a class="guide-video" href={entry.data.videoUrl} target="_blank" rel="noopener noreferrer" aria-label={`观看视频：${entry.data.title}（新窗口）`}><Play aria-hidden="true" />观看视频</a>}
+        </div>
+      </article>
+    </li>;
+  })}
+</ul>

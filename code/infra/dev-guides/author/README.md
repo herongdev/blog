@@ -44,6 +44,7 @@
 | 旧稿历史 | 上述目录中的 `.history/` |
 | 微信管理员身份、私有会话与首次绑定证明 | `/var/lib/herong-dev-guides-author/auth/` |
 | 发布状态、隔离构建快照 | `/var/lib/herong-dev-guides-author/publish/` |
+| 累计正式首发日期与旧教程日期缺失记录 | `/var/lib/herong-dev-guides-author/publish/publication-history.json` |
 | 服务配置与目录受限的图片凭据 | `/etc/herong-dev-guides-author/` |
 | 每日私有备份 | `/var/backups/herong-dev-guides-author/` |
 
@@ -63,7 +64,15 @@ python3 infra/dev-guides/author/deploy.py
 
 启用线上写作后，服务器持久内容是发文内容源。本地 `src/content/tutorials/` 不会随网页编辑自动更新；原静态部署工具检测到 `.author-managed` 时拒绝新发布，防止本地旧稿覆盖线上文章。代码升级与文章发布分开执行。
 
-日备份 timer 为 `herong-dev-guides-author-backup.timer`，默认保留全部备份。备份递归包含整个 `project`，因此包含文章、草稿、历史、`.library.json` 和 `.schedule.json`，另包含认证及发布状态，权限为 root 专用；不进入 Git、不由 Nginx 提供访问。目录与排期数据应随对应文章数据一起恢复；恢复旧备份会回到当时的目录组织和拍摄安排，不能只用代码回滚替代数据恢复。当前备份在同一服务器，需按实际运维要求另做异地保管。可用 SSH 将备份下载到本机 Git 忽略的 `code/secrets/`；恢复前先停写作服务并保留当前数据副本。
+日备份 timer 为 `herong-dev-guides-author-backup.timer`，默认保留全部备份。备份递归包含整个 `project`，因此包含文章、草稿、历史、`.library.json` 和 `.schedule.json`，另包含认证、发布状态及存在的 `publish/publication-history.json`，权限为 root 专用；不进入 Git、不由 Nginx 提供访问。目录与排期数据应随对应文章数据一起恢复；恢复旧备份会回到当时的目录组织和拍摄安排，不能只用代码回滚替代数据恢复。当前备份在同一服务器，需按实际运维要求另做异地保管。可用 SSH 将备份下载到本机 Git 忽略的 `code/secrets/`；恢复前先停写作服务并保留当前数据副本。
+
+## 首发日期账本与回滚顺序
+
+公开站按周归档使用首次正式发布日期，按 Asia/Shanghai 的周一至周日分组，与私有拍摄排期、文章目录及 `updatedAt` 独立。`author/publication-dates.mjs` 在隔离快照中注入 `publishedAt`，不改作者原稿；测试日期只作预览，成功切换正式 `current` 后才确认新首发记录。新文章构建跨上海日期时拒绝激活，重新发布即可。旧版已公开而无法确认首发日期的教程保留为 `legacyUndatedSlugs`，不补造历史周。
+
+累计账本为上述 `publish/publication-history.json`（0600），正式 release 的 `release.json` 同时保存 `publicationHistoryVersion`、`firstPublishedAtBySlug` 与 `legacyUndatedSlugs`；后者位于公开 `web/` 外。累计记录保留撤回文章的首发事实，正常回滚不清空它。服务启动和发布前会合并私有账本与当前正式 release 的确认记录；未激活 release、测试发布及手工编辑的日期不能作为首发证据。
+
+若后台提示“网站已发布；发布日期已保存在当前版本，私有历史备份将在下次发布前恢复”，说明公开版本已经生效，不能当作发布失败盲目重发或直接回滚。**先保留当前 release 的元数据和私有数据备份，排除账本写入故障，使用当前版本的恢复逻辑补齐并核对 `publication-history.json`，再执行公开版本回滚。** 未恢复就切回旧 `current`，可能失去尚未落入私有账本的那次首发记录；不能从未激活目录或文件更新时间猜测补回。代码回滚同样保留累计账本，避免以后重新上线把旧教程归到新周。
 
 ## 回滚与验证
 

@@ -1,28 +1,29 @@
 ---
 import { getCollection } from 'astro:content';
-import { ChevronRight } from '@lucide/astro';
+import { ArrowLeft } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ContentCard from '../../components/ContentCard.astro';
+import BrowseHeader from '../../components/BrowseHeader.astro';
+import BrowseNav from '../../components/BrowseNav.astro';
+import GuideList from '../../components/GuideList.astro';
 import { tools, toolBySlug, type ToolSlug } from '../../data/tools';
-import { publishedForTool } from '../../lib/catalog';
+import { sortNewest } from '../../lib/catalog';
 import { withBase } from '../../lib/urls';
-
 export async function getStaticPaths() {
   const entries = await getCollection('tutorials');
-  return tools.filter((tool) => publishedForTool(entries, tool.slug).length > 0).map((tool) => ({ params: { slug: tool.slug } }));
+  return tools.filter((tool) => entries.some((entry) => entry.data.tool === tool.slug)).map((tool) => ({ params: { slug: tool.slug } }));
 }
-
-const slug = Astro.params.slug as ToolSlug;
-const tool = toolBySlug[slug];
-const entries = publishedForTool(await getCollection('tutorials'), slug);
+const tool = toolBySlug[Astro.params.slug as ToolSlug];
+const all = sortNewest(await getCollection('tutorials'));
+const entries = all.filter((entry) => entry.data.tool === tool.slug);
+const published = entries.filter((entry) => entry.data.status === 'published');
+const leads = entries.filter((entry) => entry.data.status === 'lead');
+const activeTools = tools.filter((candidate) => all.some((entry) => entry.data.tool === candidate.slug));
 ---
-
-<BaseLayout title={`${tool.name} 教程`} description={`查找 ${tool.name} 已亲测的开发工具教程：适用条件、步骤、结果和官方出处。`}>
-  <div class="container page-heading">
-    <nav class="breadcrumbs" aria-label="当前位置"><a href={withBase('/')}>首页</a><ChevronRight class="breadcrumb-separator" aria-hidden="true" /><a href={withBase('/tools/')}>工具目录</a></nav>
-    <p class="eyebrow">{tool.category}</p>
-    <h1>{tool.name} 教程</h1>
-    <p>{tool.description} 下列内容均已标注实测环境与官方来源。</p>
-  </div>
-  <section class="container section" aria-label={`${tool.name} 教程列表`}><div class="card-grid">{entries.map((entry) => <ContentCard entry={entry} />)}</div></section>
+<BaseLayout title={`${tool.name} 教程与资料`} description={`查找 ${tool.name} 的完整教程、适用条件、官方出处与原视频。`} noindex={published.length === 0}>
+  <BrowseHeader title={tool.name} toolOptions={activeTools} />
+  <div class="container browse-body"><BrowseNav active="tools" /><div data-browse-content>
+    <div class="browse-result-heading"><a class="browse-inline-link" href={withBase('/tools/')}><ArrowLeft aria-hidden="true" />全部工具</a><span class="browse-count">{entries.length} 条内容</span></div>
+    {published.length > 0 && <section class="browse-group" aria-labelledby="published-heading"><div class="browse-group-heading"><h2 id="published-heading">已亲测教程</h2><span class="browse-count">{published.length} 篇</span></div><GuideList entries={published} /></section>}
+    {leads.length > 0 && <section class="browse-group" aria-labelledby="leads-heading"><div class="browse-group-heading"><h2 id="leads-heading">功能资料</h2><span class="browse-count">{leads.length} 条 · 尚未实测</span></div><GuideList entries={leads} /></section>}
+  </div></div>
 </BaseLayout>

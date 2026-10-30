@@ -1,94 +1,32 @@
 ---
-import '../styles/filters.css';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SearchPanel from '../components/SearchPanel.astro';
-import ContentCard from '../components/ContentCard.astro';
-import { sortNewest } from '../lib/catalog';
+import BrowseHeader from '../components/BrowseHeader.astro';
+import BrowseNav from '../components/BrowseNav.astro';
+import GuideList from '../components/GuideList.astro';
+import WeekFeed from '../components/WeekFeed.astro';
+import { groupByPublicationWeek, publicationWeek, sortNewest } from '../lib/catalog';
 import { tools } from '../data/tools';
-import { themes } from '../data/themes';
 import { DEFAULT_SITE_URL, SITE_DESCRIPTION, SITE_NAME } from '../config/site.mjs';
 import { withBase } from '../lib/urls';
-
 const entries = sortNewest(await getCollection('tutorials'));
 const published = entries.filter((entry) => entry.data.status === 'published');
-const featuredEntries = published.filter((entry) => entry.data.featured);
-const featured = published.length >= 3 ? featuredEntries.slice(0, 3) : [];
-const searchTools = tools.filter((tool) => entries.some((entry) => entry.data.tool === tool.slug));
-const publishedTools = tools.filter((tool) => published.some((entry) => entry.data.tool === tool.slug));
-const visibleThemes = themes.filter((theme) => published.some((entry) => entry.data.themes.includes(theme.slug)));
-const showThemeFilter = published.length >= 3 && visibleThemes.length >= 2;
-const showToolFilter = publishedTools.length >= 2;
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: SITE_NAME,
-  url: new URL(withBase('/'), Astro.site ?? DEFAULT_SITE_URL).href,
-  description: SITE_DESCRIPTION,
-};
+const leads = entries.filter((entry) => entry.data.status === 'lead');
+const weeks = groupByPublicationWeek(entries);
+const undated = published.filter((entry) => !publicationWeek(entry));
+const featured = published.filter((entry) => entry.data.featured).slice(0, 3);
+const activeTools = tools.filter((tool) => entries.some((entry) => entry.data.tool === tool.slug));
+const jsonLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: new URL(withBase('/'), Astro.site ?? DEFAULT_SITE_URL).href, description: SITE_DESCRIPTION };
 ---
-
 <BaseLayout jsonLd={jsonLd} noindex={published.length === 0}>
-  <section class="lookup-hero">
-    <div class="container lookup-inner">
-      <h1>开发工具怎么用？</h1>
-      <SearchPanel compact toolOptions={searchTools} />
-      {published.length === 0 && <p class="availability">暂无已亲测教程。你仍可搜索功能资料，查看官方出处。</p>}
+  <BrowseHeader title="开发工具库" hideTitle toolOptions={activeTools} />
+  <div class="container browse-body">
+    <BrowseNav active="weeks" />
+    <div data-browse-content>
+      {featured.length > 0 && <section class="browse-group browse-featured" aria-labelledby="featured-heading"><div class="browse-group-heading"><h2 id="featured-heading">精选教程</h2></div><GuideList entries={featured} /></section>}
+      {weeks.length > 0 ? <WeekFeed weeks={weeks.slice(0, 8)} more={weeks.length > 8} /> : <p class="browse-empty-note">{published.length ? '暂无按周归档的教程，可继续阅读下方往期教程。' : '暂无已发布教程，可先查看下方功能资料。'}</p>}
+      {undated.length > 0 && <section class="browse-group" aria-labelledby="undated-heading"><div class="browse-group-heading"><h2 id="undated-heading">往期教程</h2><span class="browse-count">{undated.length} 篇</span></div><GuideList entries={undated} /></section>}
+      {leads.length > 0 && <section class="browse-group browse-leads" aria-labelledby="leads-heading"><div class="browse-group-heading"><h2 id="leads-heading">功能资料</h2><span class="browse-count">{leads.length} 条 · 尚未实测</span></div><GuideList entries={leads} /></section>}
     </div>
-  </section>
-
-  {published.length > 0 && <>
-    {featured.length > 0 && <section class="container section featured-section" aria-labelledby="featured-heading">
-      <div class="section-header"><div><p class="eyebrow">先看这里</p><h2 id="featured-heading">重点教程</h2></div></div>
-      <div class="card-grid">{featured.map((entry) => <ContentCard entry={entry} />)}</div>
-    </section>}
-    <section class="container section published-section" id="tutorials" aria-labelledby="published-heading">
-      <div class="section-header"><div><p class="eyebrow">{published.length <= 2 ? '最近更新' : '全部内容'}</p><h2 id="published-heading">{published.length <= 2 ? '最新教程' : '所有已亲测教程'}</h2></div></div>
-      {(showToolFilter || showThemeFilter) && <div class="library-filters" data-library-filters hidden>
-        {showToolFilter && <fieldset class="tool-chip-filter tool-chip-filter--library">
-          <legend>按工具筛选</legend>
-          <div class="tool-chip-list">
-            <label class="tool-chip"><input type="radio" name="library-tool" value="" checked data-library-tool /><span>全部工具</span></label>
-            {publishedTools.map((tool) => <label class="tool-chip"><input type="radio" name="library-tool" value={tool.slug} data-library-tool /><span>{tool.name}</span></label>)}
-          </div>
-        </fieldset>}
-        {showThemeFilter && <div class="theme-filter" role="group" aria-label="按问题主题筛选">
-          <span>按主题筛选</span>
-          <button type="button" data-theme-filter="" aria-pressed="true">全部主题</button>
-          {visibleThemes.map((theme) => <button type="button" data-theme-filter={theme.slug} aria-pressed="false">{theme.name}</button>)}
-        </div>}
-      </div>}
-      <p class="library-count" role="status" aria-live="polite" data-library-count>{published.length} 篇教程</p>
-      <div class="card-grid library-grid" data-library-list>
-        {published.map((entry) => <div data-guide-card data-tool={entry.data.tool} data-themes={entry.data.themes.join(',')}><ContentCard entry={entry} /></div>)}
-      </div>
-    </section>
-  </>}
+  </div>
 </BaseLayout>
-
-<script>
-  const libraryFilters = document.querySelector<HTMLElement>('[data-library-filters]');
-  const toolFilters = [...document.querySelectorAll<HTMLInputElement>('[data-library-tool]')];
-  const themeButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-theme-filter]')];
-  const guideCards = [...document.querySelectorAll<HTMLElement>('[data-guide-card]')];
-  const count = document.querySelector<HTMLElement>('[data-library-count]');
-  let currentTheme = '';
-  function filterGuides() {
-    const selectedTool = toolFilters.find((filter) => filter.checked)?.value || '';
-    let shown = 0;
-    for (const card of guideCards) {
-      const toolMatches = !selectedTool || card.dataset.tool === selectedTool;
-      const themeMatches = !currentTheme || card.dataset.themes?.split(',').includes(currentTheme);
-      card.hidden = !(toolMatches && themeMatches);
-      if (!card.hidden) shown++;
-    }
-    if (count) count.textContent = shown ? `${shown} 篇教程` : '这个筛选条件下暂无教程';
-  }
-  if (guideCards.length) libraryFilters?.removeAttribute('hidden');
-  for (const filter of toolFilters) filter.addEventListener('change', filterGuides);
-  for (const button of themeButtons) button.addEventListener('click', () => {
-    currentTheme = button.dataset.themeFilter || '';
-    for (const candidate of themeButtons) candidate.setAttribute('aria-pressed', String(candidate === button));
-    filterGuides();
-  });
-</script>

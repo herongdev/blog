@@ -1,0 +1,15 @@
+---
+import { CalendarDays, Layers, Wrench } from '@lucide/astro';
+import { withBase } from '../lib/urls';
+import '../styles/browse.css';
+interface Props { active: 'weeks' | 'themes' | 'tools' }
+const { active } = Astro.props;
+const links = [
+  { key: 'weeks', label: '按周', href: '/', Icon: CalendarDays },
+  { key: 'themes', label: '按主题', href: '/themes/', Icon: Layers },
+  { key: 'tools', label: '按工具', href: '/tools/', Icon: Wrench },
+];
+---
+<nav class="browse-nav" aria-label="教程浏览方式">
+  {links.map(({ key, label, href, Icon }) => <a href={withBase(href)} aria-current={active === key ? 'page' : undefined}><Icon aria-hidden="true" /><span>{label}</span></a>)}
+</nav>

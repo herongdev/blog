@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import { ChevronRight } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BrowseHeader from '../../components/BrowseHeader.astro';
+import BrowseNav from '../../components/BrowseNav.astro';
+import { themes } from '../../data/themes';
+import { tools } from '../../data/tools';
+import { tutorialUrl, sortNewest } from '../../lib/catalog';
+import { withBase } from '../../lib/urls';
+const entries = sortNewest(await getCollection('tutorials'));
+const activeTools = tools.filter((tool) => entries.some((entry) => entry.data.tool === tool.slug));
+const activeThemes = themes.filter((theme) => entries.some((entry) => entry.data.themes.includes(theme.slug)));
+const hasPublished = entries.some((entry) => entry.data.status === 'published' && entry.data.themes.length);
+---
+<BaseLayout title="按主题找教程" description="按并行任务、上下文引用、接口排查等主题查找开发工具教程和功能资料。" noindex={!hasPublished}>
+  <BrowseHeader title="按主题找教程" toolOptions={activeTools} />
+  <div class="container browse-body"><BrowseNav active="themes" /><div data-browse-content>
+    {activeThemes.length === 0 && <section class="browse-empty"><h2>暂无已归类的主题</h2><a class="browse-inline-link" href={withBase('/tools/')}>按工具浏览<ChevronRight aria-hidden="true" /></a></section>}
+    <div class="browse-directory">{activeThemes.map((theme) => {
+      const matches = entries.filter((entry) => entry.data.themes.includes(theme.slug));
+      const published = matches.filter((entry) => entry.data.status === 'published');
+      const leads = matches.length - published.length;
+      return <section class="browse-directory-item" aria-labelledby={`theme-${theme.slug}`}>
+        <div class="browse-directory-heading"><h2 id={`theme-${theme.slug}`}><a href={withBase(`/themes/${theme.slug}/`)}>{theme.name}<ChevronRight aria-hidden="true" /></a></h2><p class="browse-count">{published.length > 0 && `${published.length} 篇教程`}{published.length > 0 && leads > 0 && ' · '}{leads > 0 && `${leads} 条功能资料`}</p></div>
+        <ul class="browse-preview-links">{matches.slice(0, 3).map((entry) => <li><a href={tutorialUrl(entry)}>{entry.data.title}</a></li>)}</ul>
+        <a class="browse-inline-link" href={withBase(`/themes/${theme.slug}/`)}>查看全部<ChevronRight aria-hidden="true" /></a>
+      </section>;
+    })}</div>
+  </div></div>
+</BaseLayout>

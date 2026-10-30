@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowLeft } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BrowseHeader from '../../components/BrowseHeader.astro';
+import BrowseNav from '../../components/BrowseNav.astro';
+import GuideList from '../../components/GuideList.astro';
+import { themes } from '../../data/themes';
+import { tools } from '../../data/tools';
+import { sortNewest } from '../../lib/catalog';
+import { withBase } from '../../lib/urls';
+export async function getStaticPaths() {
+  const entries = await getCollection('tutorials');
+  return themes.filter((theme) => entries.some((entry) => entry.data.themes.includes(theme.slug))).map((theme) => ({ params: { slug: theme.slug }, props: { theme } }));
+}
+const { theme } = Astro.props;
+const all = sortNewest(await getCollection('tutorials'));
+const entries = all.filter((entry) => entry.data.themes.includes(theme.slug));
+const published = entries.filter((entry) => entry.data.status === 'published');
+const leads = entries.filter((entry) => entry.data.status === 'lead');
+const activeTools = tools.filter((tool) => all.some((entry) => entry.data.tool === tool.slug));
+---
+<BaseLayout title={`${theme.name}教程与资料`} description={`查找与${theme.name}有关的开发工具教程、适用条件、完整步骤与原视频。`} noindex={published.length === 0}>
+  <BrowseHeader title={theme.name} toolOptions={activeTools} />
+  <div class="container browse-body"><BrowseNav active="themes" /><div data-browse-content>
+    <div class="browse-result-heading"><a class="browse-inline-link" href={withBase('/themes/')}><ArrowLeft aria-hidden="true" />全部主题</a><span class="browse-count">{entries.length} 条内容</span></div>
+    {published.length > 0 && <section class="browse-group" aria-labelledby="published-heading"><div class="browse-group-heading"><h2 id="published-heading">已亲测教程</h2><span class="browse-count">{published.length} 篇</span></div><GuideList entries={published} /></section>}
+    {leads.length > 0 && <section class="browse-group" aria-labelledby="leads-heading"><div class="browse-group-heading"><h2 id="leads-heading">功能资料</h2><span class="browse-count">{leads.length} 条 · 尚未实测</span></div><GuideList entries={leads} /></section>}
+  </div></div>
+</BaseLayout>

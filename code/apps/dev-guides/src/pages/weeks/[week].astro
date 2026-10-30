@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowLeft, ArrowRight } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BrowseHeader from '../../components/BrowseHeader.astro';
+import BrowseNav from '../../components/BrowseNav.astro';
+import GuideList from '../../components/GuideList.astro';
+import { groupByPublicationWeek } from '../../lib/catalog';
+import { tools } from '../../data/tools';
+import { withBase } from '../../lib/urls';
+export async function getStaticPaths() {
+  const groups = groupByPublicationWeek(await getCollection('tutorials'));
+  return groups.map((week, index) => ({ params: { week: week.start }, props: { week, newer: groups[index - 1], older: groups[index + 1] } }));
+}
+const { week, newer, older } = Astro.props;
+const all = await getCollection('tutorials');
+const activeTools = tools.filter((tool) => all.some((entry) => entry.data.tool === tool.slug));
+---
+<BaseLayout title={`${week.label}的教程`} description={`回看 ${week.label} 发布的 ${week.entries.length} 篇开发工具教程，阅读完整步骤或观看原视频。`}>
+  <BrowseHeader title={`${week.label}的教程`} toolOptions={activeTools} />
+  <div class="container browse-body"><BrowseNav active="weeks" /><div data-browse-content>
+    <div class="browse-result-heading"><a class="browse-inline-link" href={withBase('/weeks/')}><ArrowLeft aria-hidden="true" />全部周目录</a><span class="browse-count">{week.entries.length} 篇教程</span></div>
+    <GuideList entries={week.entries} dateMode="published" headingLevel={2} />
+    <nav class="week-neighbors" aria-label="相邻周目录">{newer && <a href={withBase(`/weeks/${newer.start}/`)}><ArrowLeft aria-hidden="true" /><span>较新一周<strong>{newer.label}</strong></span></a>}{older && <a href={withBase(`/weeks/${older.start}/`)}><span>较早一周<strong>{older.label}</strong></span><ArrowRight aria-hidden="true" /></a>}</nav>
+  </div></div>
+</BaseLayout>

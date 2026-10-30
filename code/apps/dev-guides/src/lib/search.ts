@@ -9,6 +9,10 @@ export type SearchItem = {
   keywords: string[];
   searchClues: string[];
   themeNames: string[];
+  themeSlugs?: string[];
+  week?: string;
+  publishedAt?: string;
+  bodyText?: string;
   videoUrl?: string;
 };
 
@@ -35,7 +39,9 @@ function relevance(item: SearchItem, query: string): number {
     ...item.aliases.map((value): [string, number] => [value, 92]),
     ...item.keywords.map((value): [string, number] => [value, 80]),
     ...item.themeNames.map((value): [string, number] => [value, 65]),
+    [item.publishedAt ?? '', 45],
     [item.summary, 28],
+    [item.bodyText ?? '', 12],
   ];
   const full = compact(query);
   let score = 0;
@@ -61,9 +67,11 @@ function relevance(item: SearchItem, query: string): number {
   return score + (item.status === 'published' ? 14 : 0);
 }
 
-export function rankResults(items: SearchItem[], query: string, toolSlug = ''): SearchItem[] {
+export function rankResults(items: SearchItem[], query: string, toolSlug = '', filters: { theme?: string; week?: string } = {}): SearchItem[] {
   return items
     .filter((item) => !toolSlug || item.toolSlug === toolSlug)
+    .filter((item) => !filters.theme || item.themeSlugs?.includes(filters.theme))
+    .filter((item) => !filters.week || item.week === filters.week)
     .map((item) => ({ item, score: relevance(item, query) }))
     .filter(({ score }) => score > 0)
     .sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title, 'zh-CN'))

@@ -1,0 +1,18 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import GuideList from './GuideList.astro';
+import { withBase } from '../lib/urls';
+import type { Tutorial } from '../lib/catalog';
+interface Props { weeks: Array<{ start: string; end: string; label: string; entries: Tutorial[] }>; more?: boolean }
+const { weeks, more = false } = Astro.props;
+---
+<div class:list={['week-feed', weeks.length > 1 && 'week-feed--indexed']}>
+  {weeks.length > 1 && <nav class="week-index" aria-label="近期周目录"><h2>近期发布</h2><ul>{weeks.map((week) => <li><a href={`#week-${week.start}`}><span>{week.label}</span><span class="browse-count">{week.entries.length} 篇</span></a></li>)}</ul><a class="browse-inline-link" href={withBase('/weeks/')}>全部周目录<ArrowRight aria-hidden="true" /></a></nav>}
+  <div class="week-feed-main">
+    {weeks.map((week) => <section class="browse-group" id={`week-${week.start}`} aria-labelledby={`week-title-${week.start}`}>
+      <div class="browse-group-heading"><h2 id={`week-title-${week.start}`}><a href={withBase(`/weeks/${week.start}/`)}>{week.label}</a></h2><span class="browse-count">{week.entries.length} 篇教程</span></div>
+      <GuideList entries={week.entries} dateMode="published" />
+    </section>)}
+    {(more || weeks.length === 1) && <a class="browse-inline-link browse-more" href={withBase('/weeks/')}>查看全部周目录<ArrowRight aria-hidden="true" /></a>}
+  </div>
+</div>
