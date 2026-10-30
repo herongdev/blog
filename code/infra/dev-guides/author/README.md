@@ -40,6 +40,7 @@
 | 只读代码、独立 Node 24 LTS/pnpm 运行时 | `/opt/herong-dev-guides-author/` |
 | 持久文章与草稿 | `/var/lib/herong-dev-guides-author/project/` |
 | 私有目录树与文章归属 | `/var/lib/herong-dev-guides-author/project/.library.json` |
+| 两周拍摄排期、待拍顺序与历史 | `/var/lib/herong-dev-guides-author/project/.schedule.json` |
 | 旧稿历史 | 上述目录中的 `.history/` |
 | 微信管理员身份、私有会话与首次绑定证明 | `/var/lib/herong-dev-guides-author/auth/` |
 | 发布状态、隔离构建快照 | `/var/lib/herong-dev-guides-author/publish/` |
@@ -62,7 +63,7 @@ python3 infra/dev-guides/author/deploy.py
 
 启用线上写作后，服务器持久内容是发文内容源。本地 `src/content/tutorials/` 不会随网页编辑自动更新；原静态部署工具检测到 `.author-managed` 时拒绝新发布，防止本地旧稿覆盖线上文章。代码升级与文章发布分开执行。
 
-日备份 timer 为 `herong-dev-guides-author-backup.timer`，默认保留全部备份。备份递归包含整个 `project`，因此包含文章、草稿、历史及 `.library.json`，另包含认证及发布状态，权限为 root 专用；不进入 Git、不由 Nginx 提供访问。目录数据应随对应文章数据一起恢复；恢复旧备份会回到当时的目录组织，不能只用代码回滚替代数据恢复。当前备份在同一服务器，需按实际运维要求另做异地保管。可用 SSH 将备份下载到本机 Git 忽略的 `code/secrets/`；恢复前先停写作服务并保留当前数据副本。
+日备份 timer 为 `herong-dev-guides-author-backup.timer`，默认保留全部备份。备份递归包含整个 `project`，因此包含文章、草稿、历史、`.library.json` 和 `.schedule.json`，另包含认证及发布状态，权限为 root 专用；不进入 Git、不由 Nginx 提供访问。目录与排期数据应随对应文章数据一起恢复；恢复旧备份会回到当时的目录组织和拍摄安排，不能只用代码回滚替代数据恢复。当前备份在同一服务器，需按实际运维要求另做异地保管。可用 SSH 将备份下载到本机 Git 忽略的 `code/secrets/`；恢复前先停写作服务并保留当前数据副本。
 
 ## 回滚与验证
 
