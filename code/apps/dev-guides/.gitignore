@@ -16,3 +16,6 @@
 /.history/
 /.library.json
 /.library.json.*.tmp
+/.schedule.json
+/.schedule.json.*.tmp
+/.editorial-imports/

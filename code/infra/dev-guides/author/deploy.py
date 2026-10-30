@@ -57,7 +57,7 @@ def main():
         archive = Path(temporary) / (release + '.tar.gz')
         def safe(member):
             parts = Path(member.name).parts
-            if any(part in {'node_modules', 'drafts', '.git', '.astro', '.vite', 'test-results', '.history', '.library.json', '__pycache__'} or part.startswith('.env') or part.endswith('.env') for part in parts):
+            if any(part in {'node_modules', 'drafts', '.git', '.astro', '.vite', 'test-results', '.history', '.library.json', '.schedule.json', '.editorial-imports', '__pycache__'} or part.startswith(('.env', '.schedule.json.', '.library.json.')) or part.endswith('.env') for part in parts):
                 return None
             if not (member.isfile() or member.isdir()):
                 raise RuntimeError('Do not bundle symlinks or irregular source files')

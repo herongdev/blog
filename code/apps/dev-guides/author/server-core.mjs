@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { parseDocument } from 'yaml';
 import { createAuthorAuth } from './auth.mjs';
 import { createLibraryStore } from './library-store.mjs';
+import { createScheduleStore } from './schedule-store.mjs';
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const IMAGE_NAME = /^[a-zA-Z0-9][a-zA-Z0-9._-]*\.(?:png|jpg|webp)$/i;
@@ -185,6 +186,7 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
     projectRoot,
     listArticleKeys: async () => (await listArticles()).map(({ kind, slug }) => `${kind}/${slug}`),
   });
+  const schedule = createScheduleStore({ projectRoot, listArticles: () => listArticles(true) });
 
   function articlePath(kind, slug) {
     if (!Object.hasOwn(roots, kind) || !SLUG.test(slug)) throw httpError(400, '文章地址只能使用英文小写、数字和连字符');
@@ -221,7 +223,7 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
     }
   }
 
-  async function listArticles() {
+  async function listArticles(includeEditorial = false) {
     const items = [];
     for (const [kind, root] of Object.entries(roots)) {
       if (!await safeDirectory(root)) continue;
@@ -233,7 +235,19 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
         if (!info || info.size > MAX_MARKDOWN_BYTES) continue;
         try {
           const { frontmatter } = splitMarkdown(await readFile(path, 'utf8'));
-          items.push({ kind, slug, title: titleFromFrontmatter(frontmatter, slug), status: statusFromFrontmatter(frontmatter) });
+          const item = { kind, slug, title: titleFromFrontmatter(frontmatter, slug), status: statusFromFrontmatter(frontmatter) };
+          if (includeEditorial) {
+            try {
+              const document = parseDocument(frontmatter, { uniqueKeys: true });
+              if (!document.errors.length) {
+                const editorial = document.get('editorial')?.toJSON?.();
+                if (editorial && typeof editorial === 'object' && !Array.isArray(editorial)) {
+                  item.editorial = { sourceId: editorial.sourceId, queue: editorial.queue, week: editorial.week, slot: editorial.slot };
+                }
+              }
+            } catch { /* A malformed optional planning field does not hide the article. */ }
+          }
+          items.push(item);
         } catch { /* A malformed Markdown file is not an article. */ }
       }
     }
@@ -275,6 +289,15 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
 
       if (url.pathname === '/api/articles' && method === 'GET') {
         return sendJson(response, 200, { items: await library.withArticlesMutation(listArticles) });
+      }
+
+      if (url.pathname === '/api/schedule' && method === 'GET') {
+        return sendJson(response, 200, await library.withArticlesMutation(() => schedule.read()));
+      }
+
+      if (url.pathname === '/api/schedule/actions' && method === 'POST') {
+        const input = await readJson(request, 8 * 1024);
+        return sendJson(response, 200, await library.withArticlesMutation(() => schedule.apply(input)));
       }
 
       if (url.pathname === '/api/library' && method === 'GET') {

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BookOpenText, Check, ChevronDown, CircleAlert, ExternalLink, FilePlus2, ImagePlus, List, LoaderCircle, LogOut, Moon, Plus, QrCode, Save, Sun, Trash2, Upload } from 'lucide-react';
+import { ArrowLeft, BookOpenText, CalendarDays, Check, ChevronDown, CircleAlert, ExternalLink, FilePlus2, ImagePlus, List, LoaderCircle, LogOut, Moon, Plus, QrCode, Save, Sun, Trash2, Upload } from 'lucide-react';
 import { parseDocument } from 'yaml';
 import { tools } from '../../src/data/tools';
 import { themes } from '../../src/data/themes';
@@ -17,6 +17,7 @@ type PublishJob = { id: string; environment: 'staging' | 'production'; status: s
 type EnvironmentRelease = { release: string; atUtc: string; url: string; sourceFingerprint: string };
 type PublishState = { enabled: boolean; active: PublishJob | null; lastJob: PublishJob | null; environments: { staging: EnvironmentRelease | null; production: EnvironmentRelease | null } };
 const RichEditor = lazy(() => import('./RichEditor'));
+const ScheduleBoard = lazy(() => import('./ScheduleBoard'));
 const BASE = import.meta.env.BASE_URL;
 const apiUrl = (path: string) => `${BASE}${path.replace(/^\//, '')}`;
 const setupFragment = new URLSearchParams(window.location.hash.slice(1));
@@ -93,6 +94,10 @@ export default function App() {
   const [newTitle, setNewTitle] = useState('');
   const [newSlug, setNewSlug] = useState('');
   const [showCreate, setShowCreate] = useState(false);
+  const [workspaceView, setWorkspaceView] = useState<'writing' | 'schedule'>(() => {
+    try { return window.localStorage.getItem('author-workspace-view') === 'writing' ? 'writing' : 'schedule'; }
+    catch { return 'schedule'; }
+  });
   const [mobileView, setMobileView] = useState<'list' | 'editor'>('list');
   const [error, setError] = useState(initialAuthError);
   const [notice, setNotice] = useState('');
@@ -101,11 +106,13 @@ export default function App() {
   const [theme, setTheme] = useTheme();
   const compact = useCompactEditor();
   const loadSequence = useRef(0);
+  const pendingScheduledDraft = useRef<{ title: string; slug: string } | null>(null);
   const dirty = article !== null && snapshot(article) !== savedSnapshots[articleKey(article)];
   const metadata = useMemo(() => metadataOf(article?.frontmatter ?? ''), [article?.frontmatter]);
   const titleInput = useAutoHeight(metadata.title, auth === 'ready' && mobileView === 'editor');
   const summaryInput = useAutoHeight(metadata.summary, auth === 'ready' && mobileView === 'editor');
   articleRef.current = article;
+  useEffect(() => { try { window.localStorage.setItem('author-workspace-view', workspaceView); } catch { /* Storage is optional. */ } }, [workspaceView]);
 
   const request = useCallback(async <T,>(path: string, options: RequestInit = {}): Promise<T> => {
     const headers = new Headers(options.headers);
@@ -137,7 +144,9 @@ export default function App() {
   const refreshPublish = useCallback(async () => { try { const result = await request<PublishState>('/api/publish'); setPublish(result); } catch (problem) { if ((problem as Error).message === '请重新登录后继续') return; /* Local writing does not require publishing service. */ } }, [request]);
 
   const openArticle = useCallback(async (item: ArticleItem, skipConfirm = false) => {
+    if (articleRef.current && articleKey(articleRef.current) === articleKey(item)) { ++loadSequence.current; setLoading(false); setWorkspaceView('writing'); setMobileView('editor'); return; }
     if (!skipConfirm && dirty && !window.confirm('当前文章有未保存的更改，确定离开吗？')) return;
+    setWorkspaceView('writing');
     const sequence = ++loadSequence.current;
     setMobileView('editor'); setLoading(true); setError(''); setNotice('');
     try { const data = await request<Article>(`/api/articles/${item.kind}/${item.slug}`); if (sequence !== loadSequence.current) return; setArticle(data); setSavedSnapshots((previous) => ({ ...previous, [articleKey(data)]: snapshot(data) })); }
@@ -235,6 +244,25 @@ export default function App() {
     finally { setCreating(false); }
   };
 
+  const createScheduledDraft = async (title: string, _placement: 'front' | 'end'): Promise<{ slug: string }> => {
+    const normalizedTitle = title.trim();
+    if (pendingScheduledDraft.current?.title !== normalizedTitle) pendingScheduledDraft.current = { title: normalizedTitle, slug: `idea-${crypto.randomUUID()}` };
+    const { slug } = pendingScheduledDraft.current;
+    let result: { kind: ArticleKind; slug: string };
+    try { result = await request<typeof result>('/api/drafts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: normalizedTitle, slug }) }); }
+    catch (problem) {
+      // The creation may have succeeded before its response was lost. Reuse its ID on retry.
+      const existing = await request<Article>(`/api/articles/draft/${slug}`).catch(() => null);
+      if (!existing || metadataOf(existing.frontmatter).title !== normalizedTitle) throw problem;
+      result = { kind: existing.kind, slug: existing.slug };
+    }
+    pendingScheduledDraft.current = null;
+    // Keep the draft visible even if the subsequent refresh loses connectivity.
+    setItems((previous) => [...previous.filter((item) => articleKey(item) !== articleKey(result)), { ...result, title: normalizedTitle, status: 'draft' }]);
+    await Promise.all([loadItems(), loadLibrary()]).catch(() => undefined);
+    return result;
+  };
+
   const promote = async () => {
     if (!article || !['lead', 'published'].includes(metadata.status)) { setError('先在发布信息中选择“功能线索”或“实测教程”'); return; }
     if (!window.confirm('将这篇文章加入网站发布内容？网站更新后，读者可以看到它。')) return;
@@ -291,6 +319,8 @@ export default function App() {
 
   return <div className={`app-shell mobile-${mobileView}`}>
     <header className="topbar"><div className="brand"><BookOpenText size={22} aria-hidden="true" /><span>教程写作</span><span className="brand-sub">何荣开发工具库</span></div><div className="topbar-actions"><span className={`media-state media-state-${mediaMode}`}>{mediaMode === 'direct' ? '图片直传' : mediaMode === 'incomplete' ? '图片配置未完成' : '图片暂存'}</span>{themeButton}{online && <button className="icon-text-button" type="button" onClick={() => void logout()}><LogOut size={17} aria-hidden="true" /><span>退出</span></button>}</div></header>
+    <nav className="workspace-tabs" aria-label="工作区"><button type="button" aria-current={workspaceView === 'schedule' ? 'page' : undefined} onClick={() => setWorkspaceView('schedule')}><CalendarDays size={18} aria-hidden="true" />拍摄排期</button><button type="button" aria-current={workspaceView === 'writing' ? 'page' : undefined} onClick={() => setWorkspaceView('writing')}><BookOpenText size={18} aria-hidden="true" />文章写作{dirty && <span className="workspace-dirty">未保存</span>}</button></nav>
+    {workspaceView === 'schedule' ? <><div className="workspace-messages">{messages}</div><Suspense fallback={<div className="welcome"><LoaderCircle className="spin" size={24} aria-hidden="true" /><p>正在打开拍摄排期…</p></div>}><ScheduleBoard request={request} articles={items} onOpen={(item) => void openArticle(item)} onCreate={createScheduledDraft} /></Suspense></> : <>
     <nav className="mobile-navigation" aria-label="写作导航"><button type="button" aria-current={mobileView === 'list' ? 'page' : undefined} onClick={() => setMobileView('list')}><List size={18} aria-hidden="true" />文章</button><button type="button" aria-current={mobileView === 'editor' ? 'page' : undefined} onClick={() => setMobileView('editor')} disabled={!article}><BookOpenText size={18} aria-hidden="true" />编辑</button></nav>
     <div className="workspace-messages">{messages}</div>
     <div className="workspace"><aside className="sidebar" aria-label="文章列表"><div className="sidebar-heading"><h2>我的教程</h2><button type="button" className="new-button" onClick={() => setShowCreate((value) => !value)} aria-expanded={showCreate}><FilePlus2 size={17} aria-hidden="true" />新建</button></div>
@@ -307,6 +337,6 @@ export default function App() {
         <label htmlFor="video-url">原视频链接（选填）</label><input id="video-url" type="url" value={metadata.text('videoUrl')} onChange={(event) => updateField('videoUrl', event.target.value || undefined)} placeholder="https://…" /><fieldset className="theme-fields"><legend>主题（选填）</legend>{themes.map((item) => <label key={item.slug}><input type="checkbox" checked={metadata.list('themes').includes(item.slug)} onChange={(event) => updateField('themes', event.target.checked ? [...metadata.list('themes'), item.slug] : metadata.list('themes').filter((value) => value !== item.slug))} />{item.name}</label>)}</fieldset>
         <details className="advanced-metadata"><summary>高级文章信息</summary><label htmlFor="frontmatter">全部字段（YAML）</label><textarea id="frontmatter" className="frontmatter-input" spellCheck={false} value={article.frontmatter} onChange={(event) => { setArticle({ ...article, frontmatter: event.target.value }); setNotice(''); }} /></details>{metadata.error && <p className="field-error" role="alert">文章信息格式有误：{metadata.error}</p>}{article.kind === 'draft' && <div className="promote-actions"><button className="secondary-button" type="button" disabled={promoting || saving || imageBusy || !['lead', 'published'].includes(metadata.status) || Boolean(metadata.error)} onClick={() => void promote()}>{promoting ? <LoaderCircle className="spin" size={17} aria-hidden="true" /> : <Upload size={17} aria-hidden="true" />}加入发布内容</button><p className="field-help">先选择内容类型并补全信息，再更新测试环境查看效果。</p></div>}</div></details>
       <div className="editor-bottom-actions"><button className="icon-text-button" type="button" onClick={() => setMobileView('list')}><ArrowLeft size={17} aria-hidden="true" />返回文章与发布</button><button className="save-button" type="button" disabled={!dirty || saving || imageBusy || Boolean(metadata.error)} onClick={() => void save()}><Save size={17} aria-hidden="true" />保存</button></div>
-    </> : <div className="welcome"><ImagePlus size={30} aria-hidden="true" /><h1>开始写第一篇教程</h1><p>选择“新建”，填标题与文章地址即可开始。</p></div>}</main></div>
+    </> : <div className="welcome"><ImagePlus size={30} aria-hidden="true" /><h1>开始写第一篇教程</h1><p>选择“新建”，填标题与文章地址即可开始。</p></div>}</main></div></>}
   </div>;
 }

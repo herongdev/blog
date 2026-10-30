@@ -126,17 +126,25 @@ test('domain profile swaps and staging pages missing noindex are rejected', asyn
 });
 
 test('only one job can run and article changes during build stop activation', async (t) => {
-  let releaseBuild;
+  let releaseBuild, enterBuild;
   const hold = new Promise((done) => { releaseBuild = done; });
-  const f = await fixture(t, { runBuild: async (args) => { await hold; await fakeBuild(args); } });
+  const building = new Promise((done) => { enterBuild = done; });
+  const f = await fixture(t, { runBuild: async (args) => { enterBuild(); await hold; await fakeBuild(args); } });
   await f.manager.start('staging');
-  await assert.rejects(f.manager.start('staging'), { status: 409 });
-  await assert.rejects(f.manager.start('garbage;touch /tmp/foo'), { status: 400 });
-  // Wait until the input snapshot has been read and the fake builder is pending.
-  await new Promise((done) => setTimeout(done, 20));
-  await writeFile(join(f.contentRoot, 'first.md'), 'persistent-v2');
-  releaseBuild();
-  await f.manager.waitForIdle();
+  try {
+    await assert.rejects(f.manager.start('staging'), { status: 409 });
+    await assert.rejects(f.manager.start('garbage;touch /tmp/foo'), { status: 400 });
+    // The builder is invoked only after the source snapshot is complete.
+    await Promise.race([
+      building,
+      f.manager.waitForIdle().then(() => assert.fail('Publication stopped before entering the builder')),
+    ]);
+    await writeFile(join(f.contentRoot, 'first.md'), 'persistent-v2');
+  } finally {
+    releaseBuild();
+    await f.manager.waitForIdle();
+  }
+  assert.equal(f.manager.getStatus().lastJob.status, 'failed');
   assert.match(f.manager.getStatus().lastJob.error, /发布期间被修改/);
   await assert.rejects(readlink(join(f.profiles.staging.root, 'current')), { code: 'ENOENT' });
 });
