@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { constants } from 'node:fs';
+import { constants, realpathSync } from 'node:fs';
 import { lstat, mkdir, open, readFile, readdir, rename, unlink } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -195,7 +195,15 @@ export async function importEditorial({ projectRoot, payload, dryRun = true }) {
   } finally { await unlink(lockPath); }
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+function isMainModule() {
+  if (!process.argv[1]) return false;
+  // Releases are invoked through `current`, while import.meta.url uses the real path.
+  // Imported modules (including stdin/eval callers) must still have no CLI side effects.
+  try { return realpathSync(resolve(process.argv[1])) === realpathSync(fileURLToPath(import.meta.url)); }
+  catch { return false; }
+}
+
+if (isMainModule()) {
   try {
     const args = process.argv.slice(2); const flags = new Set(['--apply', '--offline']); const values = new Map();
     for (let index = 0; index < args.length; index++) {

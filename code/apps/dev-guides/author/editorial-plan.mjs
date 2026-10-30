@@ -1,5 +1,6 @@
 /** Build private, unverified writing drafts from the reviewed editorial source files. */
 import { readFile, writeFile } from 'node:fs/promises';
+import { realpathSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 import { stringify } from 'yaml';
@@ -146,7 +147,12 @@ ${topic.commercialContext ? `来源背景：${topic.commercialContext}\n\n` : ''
   return { version: 1, batchId: 'editorial-2026-10-27', entries };
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+function isMainModule() {
+  try { return Boolean(process.argv[1]) && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url)); }
+  catch { return false; }
+}
+
+if (isMainModule()) {
   const output = process.argv[2];
   if (!output) throw new Error('Usage: node editorial-plan.mjs /absolute/path/payload.json');
   const payload = await buildEditorialPlan();

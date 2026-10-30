@@ -2,7 +2,10 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { mkdtemp, mkdir, readFile, readdir, rm, stat, symlink, unlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { importEditorial } from '../editorial-import.mjs';
 import { createLibraryStore } from '../library-store.mjs';
 
@@ -30,6 +33,22 @@ test('preflight is read-only; import creates private drafts and reuses existing 
   const lib = JSON.parse(await readFile(join(projectRoot, '.library.json'), 'utf8'));
   assert.equal(lib.folders.length, 2);
   assert.equal(lib.assignmentsBySlug.dg001, lib.assignmentsBySlug.old);
+});
+
+test('CLI invoked through a symlinked release directory executes and returns its preflight result', async (t) => {
+  const projectRoot = await fixture(t);
+  const link = join(projectRoot, 'current');
+  const authorPath = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+  await symlink(authorPath, link, 'dir');
+  const payloadPath = join(projectRoot, 'payload.json');
+  await writeFile(payloadPath, JSON.stringify(payload([draft()])));
+  const { stdout, stderr } = await promisify(execFile)(process.execPath, [join(link, 'editorial-import.mjs'), '--project', projectRoot, '--payload', payloadPath]);
+  assert.equal(stderr, '');
+  const result = JSON.parse(stdout);
+  assert.equal(result.dryRun, true);
+  assert.equal(result.planned, 1);
+  assert.equal(result.created, 1);
+  assert.ok(!(await readdir(projectRoot)).includes('drafts'));
 });
 
 test('rerun preserves edited text, moved and unfiled articles, promoted articles, and deletions', async (t) => {
