@@ -58,7 +58,7 @@ export default async function MyCoursesPage() {
               </div>
               <div className="text-right text-sm">
                 <div className="font-semibold text-[var(--color-text)]">{formatCoursePrice(course)}</div>
-                <div className={hasAccess ? "text-[var(--color-accent)]" : "text-soft"}>
+                <div className={hasAccess ? "text-[var(--color-success)]" : "text-soft"}>
                   {hasAccess ? "已开通" : "未开通"}
                 </div>
               </div>

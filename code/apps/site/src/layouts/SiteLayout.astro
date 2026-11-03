@@ -1,6 +1,6 @@
 ---
 import { canonicalUrl, localUrl, NOINDEX, GUIDES_URL, TOOLS_URL } from '../config/site.mjs';
-import { renderHeader, renderFooter, themeBootstrapScript, BRAND_LOGO_DATA_URL } from '@herong/site-chrome';
+import { renderHeader, renderFooter, themeBootstrapScript, BRAND_FAVICON_DATA_URL } from '@herong/site-chrome';
 import '@herong/site-chrome/styles.css';
 import '../styles/site.css';
 import '../styles/project-visuals.css';
@@ -30,7 +30,8 @@ const header = renderHeader({ homeUrl: localUrl('/'), guidesUrl: GUIDES_URL, too
     <meta name="description" content={description} />
     <meta name="robots" content={NOINDEX || noindex ? 'noindex, nofollow' : 'index, follow'} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href={BRAND_LOGO_DATA_URL} />
+    <link rel="icon" type="image/svg+xml" href={BRAND_FAVICON_DATA_URL} />
+    <link rel="apple-touch-icon" sizes="180x180" href={localUrl('/apple-touch-icon.png')} />
     <link rel="alternate" type="application/rss+xml" title="何荣 · 历史文章 RSS" href={localUrl('/rss.xml')} />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:type" content="website" />
@@ -39,7 +40,11 @@ const header = renderHeader({ homeUrl: localUrl('/'), guidesUrl: GUIDES_URL, too
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={canonicalUrl('/logo-hr.png')} />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="何荣 HR" />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content={canonicalUrl('/logo-hr.png')} />
     <script type="application/ld+json" set:html={JSON.stringify(structured).replace(/</g, '\\u003c')} />
   </head>
   <body>

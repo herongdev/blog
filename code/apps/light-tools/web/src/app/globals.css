@@ -3,23 +3,27 @@
 
 :root {
   color-scheme: light;
-  --color-page: #f6f7f2;
-  --color-surface: #fffefb;
-  --color-surface-muted: #eef4f1;
-  --color-surface-subtle: #f2f5ef;
-  --color-text: #102022;
-  --color-text-muted: #405a5d;
-  --color-text-soft: #6b7f82;
-  --color-border: #d7e0dc;
-  --color-border-strong: #b9c9c3;
-  --color-primary: #0b6f67;
-  --color-primary-hover: #075c56;
-  --color-primary-foreground: #ffffff;
-  --color-accent: #0d9488;
-  --color-accent-hover: #0f766e;
-  --color-accent-soft: #e2f6f1;
-  --color-accent-border: #76d6c7;
-  --color-accent-foreground: #ffffff;
+  --color-page: var(--hr-brand-canvas);
+  --color-surface: var(--hr-brand-surface);
+  --color-surface-muted: var(--hr-brand-surface-soft);
+  --color-surface-subtle: var(--hr-brand-surface-hover);
+  --color-text: var(--hr-brand-ink);
+  --color-text-muted: var(--hr-brand-text);
+  --color-text-soft: var(--hr-brand-muted);
+  --color-border: var(--hr-brand-line);
+  --color-border-strong: var(--hr-brand-line-strong);
+  --color-primary: var(--hr-brand-primary);
+  --color-primary-hover: var(--hr-brand-primary-hover);
+  --color-primary-foreground: var(--hr-brand-on-primary);
+  --color-accent: var(--hr-brand-primary);
+  --color-accent-hover: var(--hr-brand-primary-hover);
+  --color-accent-soft: var(--hr-brand-soft);
+  --color-accent-border: var(--hr-brand-border);
+  --color-accent-foreground: var(--hr-brand-on-primary);
+  --color-link: var(--hr-brand-link);
+  --color-link-hover: var(--hr-brand-primary-hover);
+  --color-focus: var(--hr-brand-focus);
+  --color-success: #0b6f67;
   --color-category-pdf: #3b5ccc;
   --color-category-pdf-soft: #e8edff;
   --color-category-image: #0b806f;
@@ -36,8 +40,8 @@
   --color-warning: #92400e;
   --color-warning-surface: #fffbeb;
   --color-warning-border: #fde68a;
-  --shadow-focus: 0 0 0 3px rgb(15 118 110 / 14%);
-  --shadow-panel: 0 1px 2px rgb(16 32 34 / 5%);
+  --shadow-focus: var(--hr-brand-focus-shadow);
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 5%);
 
   --radius-control: 6px;
   --radius-panel: 6px;
@@ -51,23 +55,7 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-page: #0e1415;
-  --color-surface: #151d1e;
-  --color-surface-muted: #1d2929;
-  --color-surface-subtle: #111919;
-  --color-text: #edf5f1;
-  --color-text-muted: #b6c8c4;
-  --color-text-soft: #819793;
-  --color-border: #2a3a38;
-  --color-border-strong: #3a514d;
-  --color-primary: #37cfc0;
-  --color-primary-hover: #5eead4;
-  --color-primary-foreground: #062522;
-  --color-accent: #37cfc0;
-  --color-accent-hover: #78eadf;
-  --color-accent-soft: #123330;
-  --color-accent-border: #287c72;
-  --color-accent-foreground: #05221f;
+  --color-success: #37cfc0;
   --color-category-pdf: #8ea4ff;
   --color-category-pdf-soft: #1b2441;
   --color-category-image: #52d8bd;
@@ -84,7 +72,6 @@
   --color-warning: #f8d176;
   --color-warning-surface: #30250d;
   --color-warning-border: #67510f;
-  --shadow-focus: 0 0 0 3px rgb(55 207 192 / 18%);
   --shadow-panel: 0 1px 2px rgb(0 0 0 / 24%);
 }
 
@@ -248,7 +235,7 @@ textarea {
 }
 
 .input-control:focus {
-  border-color: var(--color-accent);
+  border-color: var(--color-focus);
   box-shadow: var(--shadow-focus);
 }
 
@@ -497,12 +484,12 @@ textarea {
 }
 
 .link-accent {
-  color: var(--color-accent);
+  color: var(--color-link);
   font-weight: 650;
 }
 
 .link-accent:hover {
-  color: var(--color-accent-hover);
+  color: var(--color-link-hover);
 }
 
 .status-error,

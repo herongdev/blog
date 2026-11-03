@@ -16,7 +16,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "工具列表",
     description: "浏览 PDF、图片、视频等文件处理工具。",
-    url: getCanonicalUrl("/tools")
+    url: getCanonicalUrl("/tools"),
+    images: [{ url: getCanonicalUrl("/logo-hr.png"), width: 512, height: 512, alt: "何荣 HR" }]
   }
 };
 

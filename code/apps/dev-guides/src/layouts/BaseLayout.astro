@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import '@herong/site-chrome/styles.css';
-import { renderHeader, renderFooter, themeBootstrapScript, BRAND_LOGO_DATA_URL } from '@herong/site-chrome';
+import { renderHeader, renderFooter, themeBootstrapScript, BRAND_FAVICON_DATA_URL } from '@herong/site-chrome';
 import { AUTHOR_NAME, BLOCK_INDEXING, DEFAULT_SITE_URL, SITE_DESCRIPTION, SITE_NAME } from '../config/site.mjs';
 import { withBase } from '../lib/urls';
 
@@ -24,6 +24,7 @@ const {
 } = Astro.props;
 const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? DEFAULT_SITE_URL).href;
+const brandImage = new URL(withBase('/logo-hr.png'), Astro.site ?? DEFAULT_SITE_URL).href;
 const safeJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : '';
 const analyticsSrc = import.meta.env.PUBLIC_UMAMI_SRC;
 const analyticsId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
@@ -45,7 +46,8 @@ const header = renderHeader({
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={AUTHOR_NAME} />
-    <link rel="icon" type="image/svg+xml" href={BRAND_LOGO_DATA_URL} />
+    <link rel="icon" type="image/svg+xml" href={BRAND_FAVICON_DATA_URL} />
+    <link rel="apple-touch-icon" sizes="180x180" href={withBase('/apple-touch-icon.png')} />
     <meta name="robots" content={BLOCK_INDEXING ? 'noindex, nofollow, noarchive' : noindex ? 'noindex, follow' : 'index, follow'} />
     {!omitCanonical && <link rel="canonical" href={canonical} />}
     <link rel="sitemap" type="application/xml" href={withBase('/sitemap.xml')} />
@@ -55,7 +57,12 @@ const header = renderHeader({
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={brandImage} />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="何荣 HR" />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content={brandImage} />
     {jsonLd && <script type="application/ld+json" set:html={safeJsonLd} />}
     {analyticsSrc && analyticsId && <script async defer src={analyticsSrc} data-website-id={analyticsId} />}
   </head>

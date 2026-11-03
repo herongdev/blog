@@ -1,11 +1,13 @@
-/* Shared chrome is intentionally scoped: application content keeps its own tokens. */
+@import './brand.css';
+
+/* Applications retain semantic aliases; the brand palette is shared. */
 .hr-chrome {
-  --hr-chrome-bg: #f3f3f1;
-  --hr-chrome-surface: #fff;
-  --hr-chrome-ink: #1d1e1d;
-  --hr-chrome-muted: #687066;
-  --hr-chrome-line: #d5d7d3;
-  --hr-chrome-accent: #6554cf;
+  --hr-chrome-bg: var(--hr-brand-canvas);
+  --hr-chrome-surface: var(--hr-brand-surface);
+  --hr-chrome-ink: var(--hr-brand-ink);
+  --hr-chrome-muted: var(--hr-brand-muted);
+  --hr-chrome-line: var(--hr-brand-line);
+  --hr-chrome-accent: var(--hr-brand-link);
   --hr-chrome-space-1: 4px;
   --hr-chrome-space-2: 8px;
   --hr-chrome-space-3: 12px;
@@ -14,7 +16,8 @@
   --hr-chrome-space-6: 24px;
   --hr-chrome-space-8: 32px;
   --hr-chrome-height: 76px;
-  --hr-chrome-logo: 46px;
+  --hr-chrome-logo-width: 64px;
+  --hr-chrome-logo-height: 44px;
   --hr-chrome-touch: 44px;
   --hr-chrome-row: 48px;
   --hr-chrome-container: 1440px;
@@ -33,23 +36,9 @@
   text-align: left;
   isolation: isolate;
 }
-:root.dark .hr-chrome,
-:root[data-theme='dark'] .hr-chrome {
-  --hr-chrome-bg: #191a1d;
-  --hr-chrome-surface: #222329;
-  --hr-chrome-ink: #efefeb;
-  --hr-chrome-muted: #a7a9b2;
-  --hr-chrome-line: #3d4049;
-  --hr-chrome-accent: #b5a6ff;
-}
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]):not(.dark) .hr-chrome {
-    --hr-chrome-bg: #191a1d;
-    --hr-chrome-surface: #222329;
-    --hr-chrome-ink: #efefeb;
-    --hr-chrome-muted: #a7a9b2;
-    --hr-chrome-line: #3d4049;
-    --hr-chrome-accent: #b5a6ff;
+    color-scheme: dark;
   }
 }
 .hr-chrome *, .hr-chrome *::before, .hr-chrome *::after { box-sizing: border-box; }
@@ -60,7 +49,17 @@
 .hr-chrome-header { position: relative; z-index: 30; flex-shrink: 0; border-bottom: var(--hr-chrome-border) solid var(--hr-chrome-line); padding-top: env(safe-area-inset-top); }
 .hr-chrome-header__inner { display: flex; align-items: center; min-height: var(--hr-chrome-height); gap: var(--hr-chrome-space-6); }
 .hr-chrome__brand { display: flex; align-items: center; flex-shrink: 0; gap: var(--hr-chrome-space-3); }
-.hr-chrome__logo { display: block; width: var(--hr-chrome-logo); height: var(--hr-chrome-logo); max-width: none; object-fit: contain; border-radius: var(--hr-chrome-radius); }
+.hr-chrome__logo { display: block; width: var(--hr-chrome-logo-width); height: var(--hr-chrome-logo-height); max-width: none; object-fit: contain; }
+/* A host-selected theme takes precedence over the operating system's theme. */
+.hr-chrome__logo--dark { display: none; }
+:root[data-theme='dark'] .hr-chrome__logo--light,
+:root.dark:not([data-theme='light']) .hr-chrome__logo--light { display: none; }
+:root[data-theme='dark'] .hr-chrome__logo--dark,
+:root.dark:not([data-theme='light']) .hr-chrome__logo--dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]):not(.dark) .hr-chrome__logo--light { display: none; }
+  :root:not([data-theme]):not(.dark) .hr-chrome__logo--dark { display: block; }
+}
 .hr-chrome__name { font-size: var(--hr-chrome-brand); font-weight: 700; white-space: nowrap; }
 .hr-chrome__edition { margin-left: var(--hr-chrome-space-2); padding-left: var(--hr-chrome-space-5); border-left: var(--hr-chrome-border) solid var(--hr-chrome-line); color: var(--hr-chrome-muted); font-size: var(--hr-chrome-edition); letter-spacing: .08em; white-space: nowrap; }
 .hr-chrome__nav { display: flex; align-items: center; gap: var(--hr-chrome-space-6); margin-left: auto; }
@@ -74,8 +73,8 @@
 .hr-chrome__button:hover { border-color: var(--hr-chrome-accent); }
 .hr-chrome__button[data-hr-theme-system][aria-pressed='true'] { color: var(--hr-chrome-accent); }
 .hr-chrome__icon { display: block; flex-shrink: 0; width: var(--hr-chrome-icon); height: var(--hr-chrome-icon); stroke: currentColor; }
-.hr-chrome__sun, :root.dark .hr-chrome__moon, :root[data-theme='dark'] .hr-chrome__moon { display: none; }
-:root.dark .hr-chrome__sun, :root[data-theme='dark'] .hr-chrome__sun { display: block; }
+.hr-chrome__sun, :root.dark:not([data-theme='light']) .hr-chrome__moon, :root[data-theme='dark'] .hr-chrome__moon { display: none; }
+:root.dark:not([data-theme='light']) .hr-chrome__sun, :root[data-theme='dark'] .hr-chrome__sun { display: block; }
 .hr-chrome__menu { display: none; }
 .hr-chrome__menu summary { list-style: none; }
 .hr-chrome__menu summary::-webkit-details-marker { display: none; }
@@ -93,7 +92,7 @@
 /* Breakpoints describe layout changes, not additional per-application tokens. */
 @media (max-width: 1000px) { .hr-chrome__edition { display: none; } }
 @media (max-width: 800px) {
-  .hr-chrome { --hr-chrome-height: 64px; --hr-chrome-logo: 38px; }
+  .hr-chrome { --hr-chrome-height: 64px; --hr-chrome-logo-width: 52px; --hr-chrome-logo-height: 36px; }
   .hr-chrome__container { width: calc(100% - 40px); }
   .hr-chrome-header__inner { gap: var(--hr-chrome-space-3); }
   .hr-chrome__nav { display: none; }

@@ -1,0 +1,14 @@
+{
+  "source": "logo.svg (repository root; packaged copy: assets/logo-hr.svg)",
+  "sourceSha256": "63e5c01444c21b9108d8e02b163f55a830de2b6bb4df53886fb56de90b7297d7",
+  "raster": {
+    "logo-hr.png": {
+      "size": 512,
+      "sha256": "3e64a632410001d82b9112395896a05ac9f35776ef83a94d14de64bf65aeac8b"
+    },
+    "apple-touch-icon.png": {
+      "size": 180,
+      "sha256": "1c39ebafc687fc386f7ced1fd7b23756584928b80e20c340ad4505d4d6042e5e"
+    }
+  }
+}

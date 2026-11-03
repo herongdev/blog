@@ -15,4 +15,7 @@ export const BRAND_DESCRIPTION: string;
 export const FILING_NUMBER: string;
 export const FILING_URL: string;
 export const BRAND_LOGO_DATA_URL: string;
+export const BRAND_LOGO_LIGHT_DATA_URL: string;
+export const BRAND_LOGO_DARK_DATA_URL: string;
+export const BRAND_FAVICON_DATA_URL: string;
 export const themeBootstrapScript: string;

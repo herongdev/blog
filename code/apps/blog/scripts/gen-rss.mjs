@@ -24,7 +24,8 @@ async function main() {
     id: SITE_URL,
     link: SITE_URL,
     language: 'zh-CN',
-    favicon: `${SITE_URL}logo.png`,
+    favicon: `${SITE_URL}logo-hr.png`,
+    image: `${SITE_URL}logo-hr.png`,
     updated: new Date(),
     feedLinks: {
       atom: `${SITE_URL}atom.xml`,

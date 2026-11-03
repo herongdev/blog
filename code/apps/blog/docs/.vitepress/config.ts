@@ -1,5 +1,5 @@
 // VitePress 1 config is bundled as CJS; bundle the shared ESM source instead of requiring it.
-import { getNavigation, themeBootstrapScript, BRAND_LOGO_DATA_URL } from '../../../../packages/site/chrome/src/index.mjs';
+import { getNavigation, themeBootstrapScript, BRAND_FAVICON_DATA_URL, BRAND_LOGO_LIGHT_DATA_URL, BRAND_LOGO_DARK_DATA_URL } from '../../../../packages/site/chrome/src/index.mjs';
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
@@ -75,14 +75,15 @@ const HEAD_LINKS: any[] = [
     {
       rel: "icon",
       type: "image/svg+xml",
-      href: BRAND_LOGO_DATA_URL,
+      href: BRAND_FAVICON_DATA_URL,
     },
   ],
   [
     "link",
     {
       rel: "apple-touch-icon",
-      href: `${BASE}logo.png`,
+      href: `${BASE}apple-touch-icon.png`,
+      sizes: "180x180",
     },
   ],
   [
@@ -269,9 +270,14 @@ export default {
       ["meta", { property: "og:title", content: socialTitle }],
       ["meta", { property: "og:description", content: desc }],
       ["meta", { property: "og:url", content: url }],
+      ["meta", { property: "og:image", content: canonicalUrl("/logo-hr.png") }],
+      ["meta", { property: "og:image:width", content: "512" }],
+      ["meta", { property: "og:image:height", content: "512" }],
+      ["meta", { property: "og:image:alt", content: "何荣 HR" }],
       ["meta", { name: "twitter:card", content: "summary" }],
       ["meta", { name: "twitter:title", content: socialTitle }],
       ["meta", { name: "twitter:description", content: desc }],
+      ["meta", { name: "twitter:image", content: canonicalUrl("/logo-hr.png") }],
       ["link", { rel: "canonical", href: url }],
     ];
     if (pageData.isNotFound || BASE === "/site-preview/" || process.env.SITE_NOINDEX === "1") {
@@ -330,8 +336,9 @@ export default {
   },
   themeConfig: {
     logo: {
-      src: "/logo.png",
-      alt: "Harbor & Route",
+      light: BRAND_LOGO_LIGHT_DATA_URL,
+      dark: BRAND_LOGO_DARK_DATA_URL,
+      alt: "何荣 HR",
     },
     siteTitle: "何荣 / 项目档案",
     siteChrome: { guidesUrl: GUIDES_URL, toolsUrl: LIGHT_TOOLS_URL },

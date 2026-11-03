@@ -29,7 +29,10 @@
     "preview:site": "pnpm --filter @herong/site preview",
     "test:site": "node --test apps/site/scripts/*.test.mjs",
     "dev:guides:author": "pnpm --filter @herong/dev-guides-author dev",
-    "check:chrome": "pnpm --filter @herong/site-chrome check && pnpm --filter @herong/site-chrome test"
+    "check:chrome": "pnpm run check:tokens && pnpm --filter @herong/site-chrome check && pnpm --filter @herong/site-chrome test",
+    "brand:generate": "node scripts/generate-brand-assets.mjs && pnpm --filter @herong/site-chrome generate:assets",
+    "check:brand": "node scripts/generate-brand-assets.mjs --check",
+    "check:tokens": "node scripts/check-brand-tokens.mjs"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
-import { getNavigation, renderHeader, renderFooter, BRAND_LOGO_DATA_URL, themeBootstrapScript } from '../src/index.mjs';
+import { getNavigation, renderHeader, renderFooter, BRAND_LOGO_DATA_URL, BRAND_LOGO_LIGHT_DATA_URL, BRAND_LOGO_DARK_DATA_URL, BRAND_FAVICON_DATA_URL, themeBootstrapScript } from '../src/index.mjs';
 import { bootstrapTheme } from '../src/theme.mjs';
 import { initSiteChrome } from '../src/client.mjs';
 
@@ -87,12 +87,33 @@ test('the complete navigation and brand exist before client JavaScript runs', ()
   assert.equal((html.match(/data-hr-nav=/g) || []).length, 12);
   assert.ok(html.includes('<details'));
   assert.ok(html.includes('href="/blog/"'));
-  assert.ok(html.includes('alt="HR"'));
+  const brand = html.match(/<a class="hr-chrome__brand"[^>]*>[\s\S]*?<\/a>/)?.[0];
+  assert.ok(brand);
+  assert.equal((brand.match(/aria-label="何荣首页"/g) || []).length, 1);
+  const logos = [...brand.matchAll(/<img\b[^>]*>/g)].map(match => match[0]);
+  assert.equal(logos.length, 2);
+  const sources = [BRAND_LOGO_LIGHT_DATA_URL, BRAND_LOGO_DARK_DATA_URL];
+  for (const [index, theme] of ['light', 'dark'].entries()) {
+    assert.ok(logos[index].includes(`hr-chrome__logo--${theme}`));
+    assert.ok(logos[index].includes('alt=""'));
+    assert.ok(logos[index].includes('width="64" height="44"'));
+    const source = logos[index].match(/src="([^"]*)"/)?.[1].replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+    assert.equal(source, sources[index]);
+  }
   assert.ok(!html.includes('<script'));
   for (const tag of html.matchAll(/<svg[^>]*>/g)) assert.equal((tag[0].match(/class=/g) || []).length, 1);
-  const logo = decodeURIComponent(BRAND_LOGO_DATA_URL.split(',')[1]);
-  assert.ok(logo.includes('>HR</text>'));
-  assert.ok(!logo.includes('<path'));
+});
+
+test('brand variants and favicon are self-contained vector SVGs', () => {
+  for (const source of [BRAND_LOGO_DATA_URL, BRAND_LOGO_LIGHT_DATA_URL, BRAND_LOGO_DARK_DATA_URL, BRAND_FAVICON_DATA_URL]) {
+    assert.match(source, /^data:image\/svg\+xml[,;]/);
+    const svg = decodeURIComponent(source.slice(source.indexOf(',') + 1));
+    assert.match(svg, /<svg\b[^>]*\bviewBox=/);
+    assert.doesNotMatch(svg, /<(?:image|foreignObject|script)\b/i);
+    assert.doesNotMatch(svg, /(?:xlink:)?href\s*=\s*["'](?!#)/i);
+    assert.doesNotMatch(svg, /url\(\s*["']?(?!#)[^\s)"']/i);
+  }
+  assert.notEqual(BRAND_LOGO_LIGHT_DATA_URL, BRAND_LOGO_DARK_DATA_URL);
 });
 
 test('the shared footer exposes only the requested contact and filing links', () => {
@@ -125,6 +146,15 @@ test('legacy theme recovery and first-paint script use the same behavior', () =>
   assert.equal(b.root.dataset.hrThemePreference, 'dark');
   const recovered = bootstrapTheme(b.document, b.window);
   assert.equal(recovered.getPreference(), 'dark');
+});
+
+test('explicit first-paint themes override the opposite system theme', () => {
+  for (const preference of ['light', 'dark']) {
+    const b = browser({ values: { 'herong-theme': preference }, dark: preference === 'light' });
+    vm.runInNewContext(themeBootstrapScript, { document: b.document, window: b.window });
+    assert.equal(b.root.dataset.theme, preference);
+    assert.equal(b.root.classList.contains('dark'), preference === 'dark');
+  }
 });
 
 test('blocked persistence keeps the selected theme usable for the current visit', () => {

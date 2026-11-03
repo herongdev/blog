@@ -33,6 +33,7 @@ function run(command, args) {
   if (result.status !== 0) process.exit(result.status || 1);
 }
 
+run('pnpm', ['run', 'check:brand']);
 run('pnpm', ['run', 'check:chrome']);
 run('pnpm', ['--filter', '@herong/site', 'check']);
 run(process.execPath, ['apps/site/scripts/build-search-index.mjs']);

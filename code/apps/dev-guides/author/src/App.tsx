@@ -20,6 +20,13 @@ const RichEditor = lazy(() => import('./RichEditor'));
 const ScheduleBoard = lazy(() => import('./ScheduleBoard'));
 const BASE = import.meta.env.BASE_URL;
 const apiUrl = (path: string) => `${BASE}${path.replace(/^\//, '')}`;
+function AuthorBrand({ large = false }: { large?: boolean }) {
+  return <span className={`author-brand-mark${large ? ' author-brand-mark--large' : ''}`} role="img" aria-label="何荣 HR">
+    <img className="author-brand-mark__light" src={`${BASE}logo-hr-light.svg`} width="52" height="36" alt="" aria-hidden="true" />
+    <img className="author-brand-mark__dark" src={`${BASE}logo-hr-dark.svg`} width="52" height="36" alt="" aria-hidden="true" />
+  </span>;
+}
+
 const setupFragment = new URLSearchParams(window.location.hash.slice(1));
 const initialSetupToken = setupFragment.get('setup') ?? '';
 const initialAuthError = wechatErrorMessage(new URLSearchParams(window.location.search).get('authError'));
@@ -299,7 +306,7 @@ export default function App() {
   const messages = <>{error && <div className="message message-error" role="alert"><CircleAlert size={17} aria-hidden="true" /><span>{error}</span><button type="button" onClick={() => setError('')} aria-label="关闭错误提示">关闭</button></div>}{notice && !error && <div className="message message-success" role="status"><Check size={17} aria-hidden="true" /><span>{notice}</span><button type="button" onClick={() => setNotice('')} aria-label="关闭状态提示">关闭</button></div>}</>;
 
   if (auth !== 'ready') return <div className="auth-shell"><div className="auth-theme">{themeButton}</div><main className="auth-card">
-    <BookOpenText size={28} aria-hidden="true" />
+    <AuthorBrand large />
     <h1>登录教程写作台</h1>
     <p>{auth === 'setup' && setupToken ? '首次登录将把此微信绑定为管理员，请使用你自己的微信。' : '使用管理员微信，继续写作与发布。'}</p>
     {messages}
@@ -318,7 +325,7 @@ export default function App() {
   </main></div>;
 
   return <div className={`app-shell mobile-${mobileView}`}>
-    <header className="topbar"><div className="brand"><BookOpenText size={22} aria-hidden="true" /><span>教程写作</span><span className="brand-sub">何荣开发工具库</span></div><div className="topbar-actions"><span className={`media-state media-state-${mediaMode}`}>{mediaMode === 'direct' ? '图片直传' : mediaMode === 'incomplete' ? '图片配置未完成' : '图片暂存'}</span>{themeButton}{online && <button className="icon-text-button" type="button" onClick={() => void logout()}><LogOut size={17} aria-hidden="true" /><span>退出</span></button>}</div></header>
+    <header className="topbar"><div className="brand"><AuthorBrand /><span>教程写作</span><span className="brand-sub">何荣开发工具库</span></div><div className="topbar-actions"><span className={`media-state media-state-${mediaMode}`}>{mediaMode === 'direct' ? '图片直传' : mediaMode === 'incomplete' ? '图片配置未完成' : '图片暂存'}</span>{themeButton}{online && <button className="icon-text-button" type="button" onClick={() => void logout()}><LogOut size={17} aria-hidden="true" /><span>退出</span></button>}</div></header>
     <nav className="workspace-tabs" aria-label="工作区"><button type="button" aria-current={workspaceView === 'schedule' ? 'page' : undefined} onClick={() => setWorkspaceView('schedule')}><CalendarDays size={18} aria-hidden="true" />拍摄排期</button><button type="button" aria-current={workspaceView === 'writing' ? 'page' : undefined} onClick={() => setWorkspaceView('writing')}><BookOpenText size={18} aria-hidden="true" />文章写作{dirty && <span className="workspace-dirty">未保存</span>}</button></nav>
     {workspaceView === 'schedule' ? <><div className="workspace-messages">{messages}</div><Suspense fallback={<div className="welcome"><LoaderCircle className="spin" size={24} aria-hidden="true" /><p>正在打开拍摄排期…</p></div>}><ScheduleBoard request={request} articles={items} onOpen={(item) => void openArticle(item)} onCreate={createScheduledDraft} /></Suspense></> : <>
     <nav className="mobile-navigation" aria-label="写作导航"><button type="button" aria-current={mobileView === 'list' ? 'page' : undefined} onClick={() => setMobileView('list')}><List size={18} aria-hidden="true" />文章</button><button type="button" aria-current={mobileView === 'editor' ? 'page' : undefined} onClick={() => setMobileView('editor')} disabled={!article}><BookOpenText size={18} aria-hidden="true" />编辑</button></nav>

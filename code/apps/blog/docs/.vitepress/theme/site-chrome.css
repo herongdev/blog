@@ -1,4 +1,20 @@
 /* VitePress keeps document navigation/search; shared chrome owns the global bars. */
+:root {
+  --vp-c-brand-1: var(--hr-brand-link);
+  --vp-c-brand-2: var(--hr-brand-primary-hover);
+  --vp-c-brand-3: var(--hr-brand-primary);
+  --vp-c-brand-soft: var(--hr-brand-soft);
+  --vp-button-brand-text: var(--hr-brand-on-primary);
+  --vp-button-brand-hover-text: var(--hr-brand-on-primary);
+  --vp-button-brand-active-text: var(--hr-brand-on-primary);
+  --vp-button-brand-bg: var(--hr-brand-primary);
+  --vp-button-brand-hover-bg: var(--hr-brand-primary-hover);
+  --vp-button-brand-active-bg: var(--hr-brand-primary-hover);
+  --vp-local-search-result-selected-border: var(--hr-brand-focus);
+  --vp-local-search-highlight-bg: var(--hr-brand-primary);
+  --vp-local-search-highlight-text: var(--hr-brand-on-primary);
+}
+
 .hr-blog-shell { --hr-blog-header-height: 77px; }
 .hr-blog-shell .hr-blog-header { position: sticky; top: 0; z-index: 50; }
 .hr-blog-shell .Layout { min-height: calc(100dvh - var(--hr-blog-header-height)); }

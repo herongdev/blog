@@ -58,6 +58,7 @@ RUN node -e "const fs = require('node:fs'); fs.mkdirSync('/etc/ssl/certs', { rec
 
 COPY --from=build /app/apps/light-tools/web/.next/standalone ./
 COPY --from=build /app/apps/light-tools/web/.next/static ./apps/light-tools/web/.next/static
+COPY --from=build /app/apps/light-tools/web/public ./apps/light-tools/web/public
 
 EXPOSE 3000
 

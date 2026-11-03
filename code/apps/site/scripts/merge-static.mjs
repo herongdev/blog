@@ -8,7 +8,11 @@ import { fileRoute, legacyHtmlOwner, legacyRedirects, siteRoutes } from './route
 const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const generatedFiles = new Set(['sitemap.xml', 'route-manifest.json', '__site-health.json'])
 const siteOwnedFiles = new Set(['robots.txt', 'sitemap-site.xml'])
-const sharedFiles = new Set(['logo.png'])
+const sharedFiles = new Set([
+  'logo.png',
+  'logo-hr.svg', 'logo-hr-light.svg', 'logo-hr-dark.svg',
+  'favicon.svg', 'logo-hr.png', 'apple-touch-icon.png',
+])
 const escapeXml = (value) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
 const unescapeXml = (value) => value.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&quot;/g, '"')
 

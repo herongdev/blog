@@ -1,4 +1,6 @@
-/* Single source of truth for the dev-guides visual system. */
+@import '@herong/site-chrome/brand.css';
+
+/* Dev-guides roles consume the shared Herong brand palette. */
 :root {
   color-scheme: light dark;
 
@@ -100,11 +102,11 @@
   --border-width: 1px;
   --border-width-accent: 4px;
   --underline-offset: 3px;
-  --shadow-panel: 0 12px 34px rgb(27 55 101 / .045);
-  --shadow-card-hover: 0 14px 30px rgb(29 51 91 / .055);
-  --shadow-accent: 0 10px 24px rgb(37 89 232 / .17);
-  --focus-ring: light-dark(#6e91ff, #a5beff);
-  --focus-halo: light-dark(#dce6ff, #334c83);
+  --shadow-panel: 0 12px 34px color-mix(in srgb, var(--hr-brand-ink) 4.5%, transparent);
+  --shadow-card-hover: 0 14px 30px color-mix(in srgb, var(--hr-brand-ink) 5.5%, transparent);
+  --shadow-accent: var(--hr-brand-action-shadow);
+  --focus-ring: var(--hr-brand-focus);
+  --focus-halo: var(--hr-brand-focus-halo);
   --focus-width: 3px;
   --focus-offset: 3px;
   --motion-fast: 180ms;
@@ -112,17 +114,17 @@
   --lift-subtle: -2px;
   --lift-card: -3px;
 
-  /* Semantic light palette */
-  --color-canvas: light-dark(#f7f9fc, #0f1725);
-  --color-hero-glow: light-dark(#e8efff, #1a2c4b);
-  --color-header: light-dark(rgb(255 255 255 / .94), rgb(18 28 44 / .96));
-  --color-surface: light-dark(#fff, #172235);
-  --color-surface-control: light-dark(#fbfcff, #1d2a3d);
-  --color-surface-hover: light-dark(#f8faff, #21314a);
-  --color-surface-subtle: light-dark(#f4f7fc, #1b2940);
-  --color-surface-footer: light-dark(#f1f4f9, #111b2b);
-  --color-accent-subtle: light-dark(#eaf0ff, #233d75);
-  --color-code-inline: light-dark(#edf1f7, #273750);
+  /* Semantic roles shared by the public site and private authoring UI. */
+  --color-canvas: var(--hr-brand-canvas);
+  --color-hero-glow: var(--hr-brand-soft);
+  --color-header: color-mix(in srgb, var(--hr-brand-surface) 95%, transparent);
+  --color-surface: var(--hr-brand-surface);
+  --color-surface-control: var(--hr-brand-surface-hover);
+  --color-surface-hover: var(--hr-brand-surface-hover);
+  --color-surface-subtle: var(--hr-brand-surface-soft);
+  --color-surface-footer: var(--hr-brand-surface-soft);
+  --color-accent-subtle: var(--hr-brand-soft);
+  --color-code-inline: var(--hr-brand-surface-soft);
   --color-code-block: light-dark(#182238, #0b1220);
   /* Private authoring editor syntax colors. */
   --author-code-keyword: light-dark(#a34dce, #d5aaff);
@@ -132,40 +134,40 @@
   --color-warning-surface: light-dark(#fff9eb, #352918);
   --color-warning-badge: light-dark(#fff3dc, #3b2b16);
   --color-success-badge: light-dark(#e5f6ec, #143528);
-  --color-neutral-badge: light-dark(#eef2f8, #283a55);
-  --color-text-primary: light-dark(#172238, #edf3ff);
-  --color-text-secondary: light-dark(#53627a, #c0cde0);
-  --color-text-muted: light-dark(#5f6b80, #a8b9d1);
-  --color-text-prose: light-dark(#334159, #d4deee);
-  --color-text-placeholder: light-dark(#617087, #a8b9d1);
-  --color-text-on-action: light-dark(#fff, #fff);
-  --color-text-on-brand: light-dark(#fff, #fff);
+  --color-neutral-badge: var(--hr-brand-surface-soft);
+  --color-text-primary: var(--hr-brand-ink);
+  --color-text-secondary: var(--hr-brand-text);
+  --color-text-muted: var(--hr-brand-muted);
+  --color-text-prose: var(--hr-brand-text);
+  --color-text-placeholder: var(--hr-brand-muted);
+  --color-text-on-action: var(--hr-brand-on-primary);
+  --color-text-on-brand: var(--hr-brand-on-primary);
   --color-text-code: light-dark(#f1f5ff, #e9f0ff);
   --color-text-warning: light-dark(#705d3d, #eed4a6);
   --color-text-warning-strong: light-dark(#7c530a, #ffe1a0);
   --color-text-warning-badge: light-dark(#8d5e06, #ffd680);
   --color-text-success-badge: light-dark(#177448, #71d0a3);
-  --color-text-neutral-badge: light-dark(#34455f, #dbe6f9);
-  --color-text-disabled: light-dark(#8b97a8, #a8b9d1);
-  --color-accent: light-dark(#2559e8, #a5beff);
-  --color-accent-strong: light-dark(#2559e8, #3966c9);
-  --color-accent-hover: light-dark(#1948c2, #446cce);
-  --color-action: light-dark(#172238, #3966c9);
-  --color-action-hover: light-dark(#2e4061, #446cce);
-  --color-brand-mark: light-dark(#172b52, #284672);
-  --color-border: light-dark(#dfe5ee, #344258);
-  --color-border-control: light-dark(#cbd5e5, #52637c);
-  --color-border-panel: light-dark(#dae3f2, #344a69);
-  --color-border-subtle: light-dark(#eef1f5, #2b3b53);
-  --color-border-hover: light-dark(#b7c9ed, #718ab6);
-  --color-border-result-hover: light-dark(#9bb2f7, #718ab6);
+  --color-text-neutral-badge: var(--hr-brand-text);
+  --color-text-disabled: var(--hr-brand-muted);
+  --color-accent: var(--hr-brand-link);
+  --color-accent-strong: var(--hr-brand-primary);
+  --color-accent-hover: var(--hr-brand-primary-hover);
+  --color-action: var(--hr-brand-primary);
+  --color-action-hover: var(--hr-brand-primary-hover);
+  --color-brand-mark: var(--hr-brand-primary);
+  --color-border: var(--hr-brand-line);
+  --color-border-control: var(--hr-brand-line-strong);
+  --color-border-panel: var(--hr-brand-line);
+  --color-border-subtle: var(--hr-brand-line);
+  --color-border-hover: var(--hr-brand-border);
+  --color-border-result-hover: var(--hr-brand-border);
   --color-border-warning: light-dark(#f0d99e, #775c30);
-  --color-selection: light-dark(#d6e2ff, #304c8b);
-  --color-theme-switch-track: light-dark(#f1f1f1, #2f2f2f);
-  --color-theme-switch-border: light-dark(rgb(60 60 60 / .29), #8e8e8e);
-  --color-theme-switch-border-hover: light-dark(#8e8e8e, #b5b5b5);
-  --color-theme-switch-thumb: light-dark(#fff, #1a1a1a);
-  --color-theme-switch-icon: light-dark(#50596a, #d4dce8);
+  --color-selection: var(--hr-brand-selection);
+  --color-theme-switch-track: var(--hr-brand-surface-soft);
+  --color-theme-switch-border: var(--hr-brand-line-strong);
+  --color-theme-switch-border-hover: var(--hr-brand-muted);
+  --color-theme-switch-thumb: var(--hr-brand-surface);
+  --color-theme-switch-icon: var(--hr-brand-text);
   --shadow-theme-switch-thumb: 0 1px 2px rgb(0 0 0 / .06), 0 1px 2px rgb(0 0 0 / .04);
   --color-tool-default: light-dark(#7386a2, #9db1ce);
   --color-tool-blue: light-dark(#4172e6, #86aaff);
@@ -186,8 +188,6 @@
   color-scheme: dark;
   --shadow-panel: 0 12px 34px rgb(0 0 0 / .15);
   --shadow-card-hover: 0 14px 30px rgb(0 0 0 / .2);
-  --shadow-accent: 0 10px 24px rgb(28 53 111 / .25);
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -195,6 +195,5 @@
     color-scheme: dark;
     --shadow-panel: 0 12px 34px rgb(0 0 0 / .15);
     --shadow-card-hover: 0 14px 30px rgb(0 0 0 / .2);
-    --shadow-accent: 0 10px 24px rgb(28 53 111 / .25);
   }
 }

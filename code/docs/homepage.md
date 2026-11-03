@@ -14,9 +14,11 @@
 
 主导航依次为：**教程、文章、工具、应用、作品、关于**。教程直接进入 `https://dev.herong.info/`，不经过旧 IP；文章进入历史文章目录 `/posts/`；工具保留 `https://herong.info/file-tools`，继续由独立应用承接；应用复用已有 `/products/` 路由，导航显示“应用”，页面标题为“我的应用”。“应用”按用户定义承接本人开发的收费小应用或工具，只展示已有真实条目；具体价格以各应用自己的说明为准，不编造金额、套餐或付费方式。作品入口 `/projects/` 按用户 2026-11-03 上线前补充要求，完整承接改造前的作品首页：标题“技术落地的不同现场”、五个领域加“开发工具教程”的六卡及原概念图/交互背景。由卡片进入领域列表和作品详情；主域 `/` 保持搜索首页。顶部 Logo 返回搜索首页，不重复设置“搜索”菜单。公共导航、完整头尾模板、品牌、邮箱和备案统一维护在 `packages/site/chrome/`（`@herong/site-chrome`）；各应用只传递当前栏目和环境地址，禁止各自再写菜单。主站的环境地址在 `apps/site/src/config/site.mjs`，历史文章、教程和工具各有薄适配。
 
-用户已于 2026-11-03 确认当前 Logo 是**只有 HR 字母的简化字标**，不包含灯塔、光束、波浪或英文全称。沿用教程站已有 `apps/dev-guides/public/favicon.svg`（提交 `0d6e0a5`，2026-10-30）的深蓝底、白色 HR 字标，公共字标源为 `packages/site/chrome/assets/logo-hr.svg`，由生成脚本导出 data URL，公共头部及主站、文章区、教程 favicon 共用。旧主站 `apps/site/public/logo-hr.svg` 作为兼容资产保留，分享图继续使用同图导出的 PNG。旧 `logo.png` 灯塔图及根目录原图作为历史资产保留，供历史博客兼容，不得恢复为主站当前品牌；代码、预览与正式上线状态仍以任务记录为准。
+当前代码中的品牌采用 **HR 小象标志**，仓库根目录 `logo.svg` 是唯一可编辑的纯矢量母版。H 的背毯与下方留白对应上下开口，D 形耳朵对应 R 的字腔，象鼻保留 R 的斜笔关系；主体、耳朵和鼻尖保持蓝紫同色系，使用微渐变和浅层次。它取代此前深蓝底、白色 HR 的简化字标，不恢复灯塔、光束或英文全称。
 
-主站、历史文章、教程公开站和文件工具各自静态或服务端渲染同一个公共头部与页脚，保留独立技术栈和部署，不引入运行时微前端。顶部呈现纯 HR 字标、品牌和主导航；应用内部目录与功能导航继续独立。公共页脚只保留联系邮箱 `herong2023@qq.com`（链接 `mailto:herong2023@qq.com`）及备案链接，不重复 Logo、品牌标语或主导航，也不提供显眼的 RSS 入口。RSS 接口及 HTML head 中的订阅自动发现继续保留，兼容已有订阅和博客自动发布；移除可见入口不等于删除订阅能力。
+根目录 `logo-light.svg`、`logo-dark.svg`、`logo-icon.svg` 及各应用品牌资源均由母版生成。修改后在 `code/` 执行 `pnpm run brand:generate` 同步，再用 `pnpm run check:brand` 检查资产一致性；共享模块另由 `pnpm run check:chrome` 检查。公共头部通过显式浅色、深色两个图片资源，随站点 `[data-theme]` 自动切换；favicon 使用减少织物与浅浮雕细节的版本，随系统明暗主题变化。旧 `logo.png` 及根目录历史原图保留文章兼容；知序、声稿等独立产品品牌不在本次替换范围内。代码、预览与正式上线状态仍以任务记录为准。
+
+主站、历史文章、教程公开站和文件工具各自静态或服务端渲染同一个公共头部与页脚，保留独立技术栈和部署，不引入运行时微前端。顶部呈现 HR 小象标志、品牌和主导航；应用内部目录与功能导航继续独立。公共页脚只保留联系邮箱 `herong2023@qq.com`（链接 `mailto:herong2023@qq.com`）及备案链接，不重复 Logo、品牌标语或主导航，也不提供显眼的 RSS 入口。RSS 接口及 HTML head 中的订阅自动发现继续保留，兼容已有订阅和博客自动发布；移除可见入口不等于删除订阅能力。
 
 ## 搜索与公开内容边界
 
@@ -44,11 +46,13 @@
 
 政企领域仍由 `apps/enterprise-showcase/` 的独立应用接管 `/projects/enterprise/`，汽车采样站由 `apps/3d-showcase/` 与独立 Java API 承接 `/projects/enterprise/sampling-station/`；不能互相覆盖。`/projects/enterprise/enterprise-platform/` 作品详情仍由主站承接，不能被领域应用代理吞掉。`fields` 仅保留旧地址兼容，不能成为新入口；正式路径、原服务器依赖及发布边界见 [部署交接文档](enterprise-demo-deployment.md)。
 
-历史文章 URL、`/articles/`、`/posts/`、归档、RSS、已有搜索资产与 `/file-tools` 保持有效。教程站、写作台、媒体域名和各产品继续各自部署；主站与工具各一个容器。保留现行纯 HR 字标及历史灯塔 Logo 资产、备案号 `湘ICP备2024071383号-6`、备案链接、页脚、原有博客自动发布及 GitHub Pages `/blog/` 备份发布；不移动或删除根目录资料。
+历史文章 URL、`/articles/`、`/posts/`、归档、RSS、已有搜索资产与 `/file-tools` 保持有效。教程站、写作台、媒体域名和各产品继续各自部署；主站与工具各一个容器。维护现行 HR 小象标志，保留历史灯塔 Logo 资产、备案号 `湘ICP备2024071383号-6`、备案链接、页脚、原有博客自动发布及 GitHub Pages `/blog/` 备份发布；不移动或删除根目录资料。
 
 ## 当前视觉与交互边界
 
 - 新增或重做页面前，查看用途相符的成熟产品实际页面或可核验截图，记录参考产品、场景、信息结构与布局；保留本站中性色、语义 token、明暗主题与 Lucide，不按印象拼卡片。
+- UI 主色和页面中性色统一维护在 `packages/site/chrome/src/brand.css`：主色浅色主题为 `#5c50b8`、深色主题为 `#b5a6e5`，悬停、主色上文字、轻背景、强调边线和焦点均有对应语义值。公共头尾直接导入，主站、历史博客、教程、文件工具与写作台通过原有语义别名引用同一 CSS，不复制生成色板；根目录 Logo 母版及其微渐变保持不变。具体变量与映射约定见 [UI 规范](ui-guidelines.md)。
+- 本轮统一配色参考 [GitHub 搜索页](https://github.com/search?q=design+tokens&type=repositories) 和 [Radix Playground](https://www.radix-ui.com/themes/playground) 的控件层次与状态，保留现有布局，不引入 Radix Themes。状态色、软件/文件分类、代码高亮及项目图示保留自身语义。本轮代码与本地预览已完成，`check:tokens` 覆盖入口、漂移和对比度，由 `check:chrome` 及调用它的主站构建执行；Edge 原生复核的实际范围及未完成项见 [品牌配色任务](tasks/2026-11-03-brand-color-tokens.md)，本轮配色尚未发布线上。
 - 首页首先呈现关键词搜索，主题和发布时间为快捷筛选；不显示“最新内容”或“按工具查阅”辅助入口。结果使用清楚的文字列表，不恢复六卡首屏或产品入口墙。首页和结果都自然滚动，不能用全页 `overflow: hidden` 裁切内容。
 - 覆盖中文输入法、键盘提交、焦点、清空、来源筛选、无结果、加载失败与重试、分页及浏览器前进后退。没有真实匹配时提供诚实状态，不伪装成功。
 - 支持手机、平板、桌面与深浅色；长标题和链接正常换行，触控区域和可访问名称符合 UI 规范。代码检查、浏览器实际渲染和手机真机验收分开报告。
@@ -57,7 +61,7 @@
 ## 代码位置与维护
 
 - Astro 主站：首页 `apps/site/src/pages/index.astro`；搜索组件 `apps/site/src/components/SearchHome.astro`；交互与检索 `apps/site/src/search/`；共享头尾调用适配 `apps/site/src/layouts/SiteLayout.astro`；正文样式 `apps/site/src/styles/site.css`、`search.css`。
-- 公共头尾、菜单、语义 tokens、品牌源、主题和手机交互：`packages/site/chrome/`。共享包更改后须重新构建发布消费应用，不会实时改变线上静态产物；独立域名 localStorage 各自隔离，同 key 不代表跨域主题同步。实现和验证见 [公共头尾任务](tasks/2026-11-03-shared-site-chrome.md)。
+- 公共头尾、菜单、语义 tokens、品牌接入、主题和手机交互：`packages/site/chrome/`；UI 色源为其中直接共享的 `src/brand.css`，品牌图形母版为仓库根目录 `logo.svg`，后者通过 `scripts/generate-brand-assets.mjs` 同步共享包及应用资产。共享包更改后须重新构建发布消费应用，不会实时改变线上静态产物；独立域名 localStorage 各自隔离，同 key 不代表跨域主题同步。实现和验证见 [公共头尾任务](tasks/2026-11-03-shared-site-chrome.md)。
 - 主站环境地址及产品域名：`apps/site/src/config/site.mjs`。`PUBLIC_SITE_URL` 是站点 origin，`PUBLIC_BASE_PATH` 用于内部链接与资源；`PUBLIC_TUTORIAL_SEARCH_URL` 指向正式公开 feed，预览可覆盖为同源安全快照。预览使用 `PUBLIC_DEPLOY_ENV=staging` 或 `PUBLIC_NOINDEX=true`，IP / HTTP / localhost 同样禁止索引。
 - 历史文章与工具索引：`apps/site/scripts/build-search-index.mjs`。教程源端门禁：`apps/dev-guides/src/lib/published-search.mjs`；公开 feed：`apps/dev-guides/src/pages/search/published.json.ts`；Nginx 正式域名配置：`infra/dev-guides/nginx-domains.conf`，CORS 只覆盖该精确路径并只允许 `https://herong.info`。
 - 领域与作品事实：`apps/blog/docs/.vitepress/theme/data/portfolio.ts`，主站由 `apps/site/src/config/portfolio.ts` 共享导入，不重复维护履历。作品首页 `apps/site/src/pages/projects/index.astro`、领域 `[field]/index.astro`、详情 `[field]/[project].astro`；应用目录 `products.astro` 继续使用 `/products/` 路由并显示标题“我的应用”，关于 `about.astro`。

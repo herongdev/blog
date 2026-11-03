@@ -1,0 +1,24 @@
+/* Canonical UI palette for the Herong brand. All application tokens alias this file.
+   Inspired by the HR elephant's blue-violet body; solid UI colors retain text contrast. */
+:root {
+  --hr-brand-primary: light-dark(#5c50b8, #b5a6e5);
+  --hr-brand-primary-hover: light-dark(#4f439f, #c7b8f2);
+  --hr-brand-on-primary: light-dark(#ffffff, #211a36);
+  --hr-brand-link: var(--hr-brand-primary);
+  --hr-brand-soft: light-dark(#eeecf8, #2d2842);
+  --hr-brand-border: light-dark(#a59bd1, #7f70ab);
+  --hr-brand-selection: light-dark(#dfdaf3, #443961);
+  --hr-brand-focus: var(--hr-brand-primary);
+  --hr-brand-focus-halo: color-mix(in srgb, var(--hr-brand-primary) 20%, transparent);
+  --hr-brand-focus-shadow: 0 0 0 3px var(--hr-brand-focus-halo);
+  --hr-brand-action-shadow: 0 10px 24px color-mix(in srgb, var(--hr-brand-primary) 17%, transparent);
+  --hr-brand-canvas: light-dark(#f3f3f1, #191a1d);
+  --hr-brand-surface: light-dark(#ffffff, #222329);
+  --hr-brand-surface-hover: light-dark(#fafafa, #282a31);
+  --hr-brand-surface-soft: light-dark(#eeedf3, #202026);
+  --hr-brand-ink: light-dark(#1d1e1d, #efefeb);
+  --hr-brand-text: light-dark(#50505b, #c8c9ce);
+  --hr-brand-muted: light-dark(#686773, #a7a9b2);
+  --hr-brand-line: light-dark(#d8d6df, #3d4049);
+  --hr-brand-line-strong: light-dark(#bcb9c9, #595562);
+}

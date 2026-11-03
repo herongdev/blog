@@ -1,16 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#0f766e"/>
-  <path
-    d="M20 14h18l10 10v26H20z"
-    fill="#ffffff"
-    opacity=".96"
-  />
-  <path d="M38 14v10h10" fill="#ccfbf1"/>
-  <path
-    d="M26 31h16M26 38h16M26 45h10"
-    fill="none"
-    stroke="#0f766e"
-    stroke-linecap="round"
-    stroke-width="4"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" role="img" aria-labelledby="hr-title hr-description" data-brand="herong-hr-elephant" data-variant="icon">
+  <title id="hr-title">何荣 · HR 小象</title>
+  <desc id="hr-description">H 的双竖与横梁构成象身和腿，背毯对应 H 上方留白；D 形耳面与上卷象鼻构成 R。蓝紫配色，透明背景，随系统明暗主题调整。</desc>
+  <!-- Editable vector master. Theme variants and application assets are generated from this file. -->
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .hr-body-start { stop-color: #929CE8; }
+      .hr-body-end { stop-color: #B098E1; }
+      .hr-cloth-start { stop-color: #505A89; }
+      .hr-cloth-middle { stop-color: #46507D; }
+      .hr-cloth-end { stop-color: #3F4873; }
+      .hr-ear-start { stop-color: #535B8C; }
+      .hr-ear-middle { stop-color: #454D7C; }
+      .hr-ear-end { stop-color: #3C436F; }
+      .hr-hem { stroke: #8185AD; }
+      .hr-eye { fill: #363963; }
+      .hr-ear-light { stroke: #7479A3; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="hr-body" x1="0" y1="280" x2="925" y2="180" gradientUnits="userSpaceOnUse">
+      <stop class="hr-body-start" stop-color="#3F4BB3"/>
+      <stop class="hr-body-end" offset="1" stop-color="#7959BE"/>
+    </linearGradient>
+    <linearGradient id="hr-cloth" x1="180" y1="0" x2="315" y2="208" gradientUnits="userSpaceOnUse">
+      <stop class="hr-cloth-start" stop-color="#A5A8CF"/>
+      <stop class="hr-cloth-middle" offset=".55" stop-color="#989DC6"/>
+      <stop class="hr-cloth-end" offset="1" stop-color="#8A91BB"/>
+    </linearGradient>
+    <linearGradient id="hr-ear" x1="507" y1="86" x2="626" y2="263" gradientUnits="userSpaceOnUse">
+      <stop class="hr-ear-start" stop-color="#ACA8D3"/>
+      <stop class="hr-ear-middle" offset=".52" stop-color="#9D99CD"/>
+      <stop class="hr-ear-end" offset="1" stop-color="#908AC0"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(38 46)">
+    <path id="hr-silhouette" fill="url(#hr-body)" d="M158 0H650C744 0 817 75 817 164C817 235 773 293 708 322L750 389C767 415 785 433 807 433C833 433 845 414 849 394C852 379 860 375 873 375H905C918 375 925 382 925 395C925 478 862 546 781 546C719 546 674 515 639 457L570 351C557 330 541 320 521 320H518C508 320 503 326 503 338V516Q503 534 485 534H354Q336 534 336 516V338Q336 320 318 320H198Q180 320 180 338V516Q180 534 162 534H18Q0 534 0 516V166C0 75 71 0 158 0Z"/>
+    <g id="hr-blanket">
+      <path fill="url(#hr-cloth)" d="M172 0H344V163Q344 197 310 197H206Q172 197 172 163Z"/>
+    </g>
+    <g id="hr-ear-plane">
+      <path fill="url(#hr-ear)" d="M504 84H563C615 84 656 122 656 171C656 220 616 259 565 259H504Z"/>
+    </g>
+  </g>
 </svg>

@@ -10,9 +10,8 @@
 .knowledge-search__field input::-webkit-search-cancel-button { display:none; }
 .knowledge-search__clear { display:flex; flex-shrink:0; align-items:center; justify-content:center; width:40px; height:44px; margin-right:-10px; padding:0; border:0; background:transparent; color:var(--home-muted); border-radius:5px; cursor:pointer; }
 .knowledge-search__clear:hover { color:var(--home-ink); background:var(--home-card-hover); }
-.knowledge-search__submit { display:inline-flex; align-items:center; justify-content:center; min-width:112px; min-height:60px; padding:12px 22px; gap:12px; border:1px solid var(--home-accent); border-radius:8px; color:var(--home-card); background:var(--home-accent); font-weight:600; cursor:pointer; }
-.dark .knowledge-search__submit { color:var(--home-bg); }
-.knowledge-search__submit:hover { filter:brightness(.94); }
+.knowledge-search__submit { display:inline-flex; align-items:center; justify-content:center; min-width:112px; min-height:60px; padding:12px 22px; gap:12px; border:1px solid var(--hr-brand-primary); border-radius:8px; color:var(--hr-brand-on-primary); background:var(--hr-brand-primary); font-weight:600; cursor:pointer; }
+.knowledge-search__submit:hover { background:var(--hr-brand-primary-hover); border-color:var(--hr-brand-primary-hover); }
 .knowledge-search__submit:disabled { opacity:.6; cursor:progress; }
 .knowledge-search__shortcuts { margin-top:22px; display:grid; gap:6px; text-align:left; }
 .knowledge-search__shortcut-row { display:grid; grid-template-columns:72px minmax(0,1fr) auto; align-items:start; gap:8px; }
@@ -20,7 +19,7 @@
 .knowledge-search__choices { display:flex; flex-wrap:wrap; gap:4px; }
 .knowledge-search__choices button { min-height:44px; padding:7px 13px; border:1px solid transparent; border-radius:6px; background:transparent; color:var(--home-text); font-size:13px; white-space:nowrap; cursor:pointer; }
 .knowledge-search__choices button:hover { background:var(--home-card-hover); }
-.knowledge-search__choices button[aria-pressed="true"] { color:var(--home-accent); background:color-mix(in srgb,var(--home-accent) 9%,transparent); border-color:color-mix(in srgb,var(--home-accent) 24%,transparent); font-weight:600; }
+.knowledge-search__choices button[aria-pressed="true"] { color:var(--home-accent); background:var(--hr-brand-soft); border-color:var(--hr-brand-border); font-weight:600; }
 .knowledge-search__reset { display:inline-flex; align-items:center; gap:5px; min-height:44px; padding:7px 0 7px 8px; border:0; background:transparent; font-size:12px; color:var(--home-muted); cursor:pointer; }
 .knowledge-search__reset:hover { color:var(--home-accent); }
 .knowledge-search__notice { margin:18px 0; color:var(--home-muted); font-size:13px; }
