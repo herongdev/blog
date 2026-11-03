@@ -49,7 +49,7 @@ const cleanup = initSiteChrome(document);
 
 本轮只统一 UI 语义颜色，不修改根目录 Logo、页面布局、状态色、软件/文件分类、代码高亮或项目图示。参考 [GitHub 搜索页](https://github.com/search?q=design+tokens&type=repositories) 与 [Radix Playground](https://www.radix-ui.com/themes/playground) 的控件层次和状态，不引入 Radix Themes 库。
 
-检查入口为 `code/scripts/check-brand-tokens.mjs` / `pnpm run check:tokens`，检查共享入口、漂移与对比度；`check:chrome` 先调用该检查，主站构建再通过 `check:chrome` 执行。当前代码与本地预览已完成，Edge 原生复核的实际范围及未完成项记录在 `code/docs/tasks/2026-11-03-brand-color-tokens.md`；本轮配色未发布线上，不表示 Edge 全面验收或手机真机验收已完成。
+检查入口为 `code/scripts/check-brand-tokens.mjs` / `pnpm run check:tokens`，检查共享入口、漂移与对比度；`check:chrome` 先调用该检查，主站构建再通过 `check:chrome` 执行。当前代码与本地预览已完成，Edge 原生复核的实际范围及未完成项记录在 `code/docs/tasks/2026-11-03-brand-color-tokens.md`；Logo 与配色已于 2026-11-04 正式上线，详见 `code/docs/tasks/2026-11-04-brand-production-release.md`；线上 HTTP 检查不等同于 Edge 全面验收或手机真机验收。
 
 ## 资源与检查
 

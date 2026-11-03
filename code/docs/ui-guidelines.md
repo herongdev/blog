@@ -36,7 +36,7 @@ UI 配色的唯一源文件为 `packages/site/chrome/src/brand.css`，公共包�
 - 主按钮、链接、选中态、输入框焦点、分页、搜索高亮与公共中性色使用对应语义变量，避免在组件内重新写主色、白色按钮文字或固定深色背景。
 - 成功、警告、错误等状态色，以及软件/文件分类色、代码语法高亮、项目图示颜色保留原有语义，不统一染成品牌紫色。
 - 参考 [GitHub 搜索页](https://github.com/search?q=design+tokens&type=repositories) 与 [Radix Playground](https://www.radix-ui.com/themes/playground) 的控件层次和状态表达；只借鉴语义层次，不引入 Radix Themes 库，不调整现有页面布局。
-- 检查入口为 `scripts/check-brand-tokens.mjs` / `pnpm run check:tokens`，覆盖共享入口、别名/色值漂移与对比度；`check:chrome` 调用它，主站构建通过 `check:chrome` 执行同一检查。本轮代码、构建检查与本地预览已完成；Edge 原生复核的实际范围及未完成项见 [品牌配色任务](tasks/2026-11-03-brand-color-tokens.md)，未发布线上，不将 Chromium 记录或浏览器模拟视为 Edge 全面验收或手机真机验收。
+- 检查入口为 `scripts/check-brand-tokens.mjs` / `pnpm run check:tokens`，覆盖共享入口、别名/色值漂移与对比度；`check:chrome` 调用它，主站构建通过 `check:chrome` 执行同一检查。本轮代码、构建检查与本地预览已完成；Edge 原生复核的实际范围及未完成项见 [品牌配色任务](tasks/2026-11-03-brand-color-tokens.md)，Logo 与配色已于 2026-11-04 正式上线，版本、回滚和线上检查见 [品牌上线记录](tasks/2026-11-04-brand-production-release.md)；不将 HTTP、Chromium 记录或浏览器模拟视为 Edge 全面验收或手机真机验收。
 
 ## 图标
 

@@ -52,7 +52,7 @@
 
 - 新增或重做页面前，查看用途相符的成熟产品实际页面或可核验截图，记录参考产品、场景、信息结构与布局；保留本站中性色、语义 token、明暗主题与 Lucide，不按印象拼卡片。
 - UI 主色和页面中性色统一维护在 `packages/site/chrome/src/brand.css`：主色浅色主题为 `#5c50b8`、深色主题为 `#b5a6e5`，悬停、主色上文字、轻背景、强调边线和焦点均有对应语义值。公共头尾直接导入，主站、历史博客、教程、文件工具与写作台通过原有语义别名引用同一 CSS，不复制生成色板；根目录 Logo 母版及其微渐变保持不变。具体变量与映射约定见 [UI 规范](ui-guidelines.md)。
-- 本轮统一配色参考 [GitHub 搜索页](https://github.com/search?q=design+tokens&type=repositories) 和 [Radix Playground](https://www.radix-ui.com/themes/playground) 的控件层次与状态，保留现有布局，不引入 Radix Themes。状态色、软件/文件分类、代码高亮及项目图示保留自身语义。本轮代码与本地预览已完成，`check:tokens` 覆盖入口、漂移和对比度，由 `check:chrome` 及调用它的主站构建执行；Edge 原生复核的实际范围及未完成项见 [品牌配色任务](tasks/2026-11-03-brand-color-tokens.md)，本轮配色尚未发布线上。
+- 本轮统一配色参考 [GitHub 搜索页](https://github.com/search?q=design+tokens&type=repositories) 和 [Radix Playground](https://www.radix-ui.com/themes/playground) 的控件层次与状态，保留现有布局，不引入 Radix Themes。状态色、软件/文件分类、代码高亮及项目图示保留自身语义。本轮代码与本地预览已完成，`check:tokens` 覆盖入口、漂移和对比度，由 `check:chrome` 及调用它的主站构建执行；Edge 原生复核的实际范围及未完成项见 [品牌配色任务](tasks/2026-11-03-brand-color-tokens.md)，Logo 与配色已于 2026-11-04 正式上线，版本、回滚和线上检查见 [品牌上线记录](tasks/2026-11-04-brand-production-release.md)。
 - 首页首先呈现关键词搜索，主题和发布时间为快捷筛选；不显示“最新内容”或“按工具查阅”辅助入口。结果使用清楚的文字列表，不恢复六卡首屏或产品入口墙。首页和结果都自然滚动，不能用全页 `overflow: hidden` 裁切内容。
 - 覆盖中文输入法、键盘提交、焦点、清空、来源筛选、无结果、加载失败与重试、分页及浏览器前进后退。没有真实匹配时提供诚实状态，不伪装成功。
 - 支持手机、平板、桌面与深浅色；长标题和链接正常换行，触控区域和可访问名称符合 UI 规范。代码检查、浏览器实际渲染和手机真机验收分开报告。
