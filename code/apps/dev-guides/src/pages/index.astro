@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getPublicTutorials } from '../lib/public-content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BrowseHeader from '../components/BrowseHeader.astro';
 import BrowseNav from '../components/BrowseNav.astro';
@@ -9,7 +9,7 @@ import { groupByPublicationWeek, publicationWeek, sortNewest } from '../lib/cata
 import { tools } from '../data/tools';
 import { DEFAULT_SITE_URL, SITE_DESCRIPTION, SITE_NAME } from '../config/site.mjs';
 import { withBase } from '../lib/urls';
-const entries = sortNewest(await getCollection('tutorials'));
+const entries = sortNewest(await getPublicTutorials());
 const published = entries.filter((entry) => entry.data.status === 'published');
 const leads = entries.filter((entry) => entry.data.status === 'lead');
 const weeks = groupByPublicationWeek(entries);

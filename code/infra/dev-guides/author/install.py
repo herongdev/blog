@@ -51,7 +51,7 @@ if not node.is_file():
 env = dict(os.environ, PATH=str(runtime / 'bin') + ':/usr/bin:/bin')
 if not (runtime / 'bin/pnpm').exists():
     subprocess.run([str(runtime / 'bin/npm'), 'install', '--global', '--prefix', str(runtime), 'pnpm@10.28.0', '--registry=https://registry.npmjs.org'], env=env, check=True)
-subprocess.run([str(runtime / 'bin/pnpm'), 'install', '--filter', '@herong/dev-guides', '--filter', '@herong/dev-guides-author', '--frozen-lockfile', '--registry=https://registry.npmjs.org'], cwd=target / 'code', env=env, check=True)
+subprocess.run([str(runtime / 'bin/pnpm'), 'install', '--filter', '@herong/dev-guides...', '--filter', '@herong/dev-guides-author', '--frozen-lockfile', '--registry=https://registry.npmjs.org'], cwd=target / 'code', env=env, check=True)
 try:
     account = pwd.getpwnam(USER)
 except KeyError:

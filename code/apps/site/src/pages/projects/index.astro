@@ -1,15 +1,34 @@
 ---
-import SiteLayout from '../../layouts/SiteLayout.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
-import { capabilities, projectMap } from '../../config/portfolio';
 import { ArrowUpRight } from '@lucide/astro';
-import { localUrl, canonicalUrl } from '../../config/site.mjs';
-const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: '作品目录', url: canonicalUrl('/projects/'), mainEntity: { '@type': 'ItemList', itemListElement: capabilities.map((field, index) => ({ '@type': 'ListItem', position: index + 1, name: field.title, url: canonicalUrl(`/projects/${field.id}/`) })) } };
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import FieldPreview from '../../../../blog/docs/.vitepress/theme/components/FieldPreview.vue';
+import InteractiveBackdrop from '../../components/InteractiveBackdrop.vue';
+import { capabilities } from '../../config/portfolio';
+import { GUIDES_URL, localUrl, canonicalUrl } from '../../config/site.mjs';
+const homeFocus: Record<string, string[]> = {
+  'ai-agent': ['流式交互', '工具权限', '追踪评估'],
+  enterprise: ['多端架构', 'GIS', '业务流程'],
+  finance: ['实时行情', '交易系统', '图表 SDK'],
+  fullstack: ['商品订单', '小程序', '全栈交付'],
+  'video-live': ['短视频', '直播互动', '内容平台'],
+};
+const homeCards = [
+  ...capabilities.map((field) => ({ ...field, focus: homeFocus[field.id] || field.focus, href: localUrl(`/projects/${field.id}/`), action: field.projectIds.length ? '查看项目' : '了解领域', kind: field.projectIds.length ? '项目案例' : '领域方向' })),
+  { id: 'learning', title: '开发工具教程', focus: ['功能演示', '完整教程', '工程实践'], href: GUIDES_URL, action: '阅读与学习', kind: '个人教程' },
+];
+const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: '技术落地的不同现场', url: canonicalUrl('/projects/'), description: '何荣的项目、产品与开发工具教程。', mainEntity: { '@type': 'ItemList', itemListElement: homeCards.map((field, index) => ({ '@type': 'ListItem', position: index + 1, name: field.title, url: new URL(field.href, canonicalUrl('/')).href })) } };
 ---
-<SiteLayout title="作品目录" description="按领域浏览何荣的真实项目：AI 应用、编码 Agent、政企与数字孪生、实时交易与图表、商业平台与全栈交付。" schema={schema}>
-  <header class="page-intro works-container"><span class="eyebrow">PROJECT ARCHIVE</span><h1>作品目录</h1><p>从产品场景、关键实现到工程边界，按领域查看项目。</p></header>
-  {capabilities.map((field) => <section class="category works-container" id={field.id}>
-    <header class="category__header"><h2>{field.title}</h2><a class="text-link" href={localUrl(`/projects/${field.id}/`)}>进入领域<ArrowUpRight size={17} aria-hidden="true" /></a></header>
-    {field.projectIds.length ? <div class="works-case-grid">{field.projectIds.map((id) => <ProjectCard project={projectMap[id]} />)}</div> : <p class="empty-state">暂无公开案例。</p>}
-  </section>)}
+<SiteLayout title="技术落地的不同现场" description="何荣的项目与产品：AI 应用与 Agent 编程、政企系统与数字孪生、金融交易图表、商业平台与全栈交付，以及开发工具教程。" compact schema={schema}>
+  <InteractiveBackdrop client:idle />
+  <section class="project-grid-home" aria-labelledby="project-grid-title">
+    <header class="project-grid-home__intro"><h1 id="project-grid-title">技术落地的<span class="home-title-accent">不同现场</span></h1></header>
+    <div class="field-grid">
+      {homeCards.map((field) => <a class="project-grid-card" href={field.href} aria-label={`${field.title}：${field.action}`}>
+        <FieldPreview field={field.id} />
+        <h2>{field.title}</h2>
+        <p>{field.focus.join(' · ')}</p>
+        <div class="field-card__footer"><span class="field-card__kind">{field.kind}</span><span class="field-card__link">{field.action}<ArrowUpRight size={17} aria-hidden="true" /></span></div>
+      </a>)}
+    </div>
+  </section>
 </SiteLayout>

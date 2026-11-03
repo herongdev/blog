@@ -17,6 +17,7 @@ COPY apps/light-tools/web/package.json apps/light-tools/web/package.json
 COPY apps/light-tools/worker/package.json apps/light-tools/worker/package.json
 COPY packages/light-tools/file-core/package.json packages/light-tools/file-core/package.json
 COPY packages/light-tools/shared/package.json packages/light-tools/shared/package.json
+COPY packages/site/chrome/package.json packages/site/chrome/package.json
 
 RUN pnpm install --frozen-lockfile --filter @light-tools/web...
 
@@ -42,11 +43,13 @@ ENV LIGHT_TOOLS_FFMPEG_PATH=/usr/bin/ffmpeg
 
 WORKDIR /app
 
-RUN if [ -f /etc/apt/sources.list.d/debian.sources ]; then \
+# Slim Node omits the OS CA store. Bootstrap verified HTTPS from Node's bundled
+# Mozilla roots before installing Debian's managed ca-certificates package.
+RUN node -e "const fs = require('node:fs'); fs.mkdirSync('/etc/ssl/certs', { recursive: true }); fs.writeFileSync('/etc/ssl/certs/ca-certificates.crt', require('node:tls').rootCertificates.join('\\n') + '\\n');" \
+  && if [ -f /etc/apt/sources.list.d/debian.sources ]; then \
     sed -i \
       -e 's|http://deb.debian.org/debian|https://mirrors.aliyun.com/debian|g' \
-      -e 's|https://mirrors.aliyun.com/debian|http://mirrors.aliyun.com/debian|g' \
-      -e 's|http://deb.debian.org/debian-security|http://mirrors.aliyun.com/debian-security|g' \
+      -e 's|https://deb.debian.org/debian|https://mirrors.aliyun.com/debian|g' \
       /etc/apt/sources.list.d/debian.sources; \
   fi \
   && apt-get update \

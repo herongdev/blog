@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, writeFile, rm, readlink, symlink, stat, lstat } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, rm, readlink, realpath, symlink, stat, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createPublishManager } from '../publish-manager.mjs';
@@ -83,6 +83,58 @@ test('changed article, template, or lockfile invalidates the staging receipt acr
     assert.match((await publish(manager, 'production')).error, /先发布测试环境/);
     assert.equal((await publish(manager, 'staging')).status, 'succeeded');
   }
+});
+
+async function useSharedChrome(f) {
+  const chrome = join(f.root, 'code/packages/site/chrome');
+  await mkdir(join(chrome, 'src'), { recursive: true });
+  await mkdir(join(chrome, 'assets'), { recursive: true });
+  await writeFile(join(chrome, 'package.json'), '{"name":"@herong/site-chrome"}');
+  await writeFile(join(chrome, 'src/header.mjs'), 'export const header = "v1";');
+  await writeFile(join(chrome, 'assets/logo.svg'), '<svg/>');
+  await writeFile(join(f.projectRoot, 'package.json'), '{"dependencies":{"@herong/site-chrome":"workspace:*"}}');
+  await mkdir(join(f.projectRoot, 'node_modules/@herong'), { recursive: true });
+  await symlink(chrome, join(f.projectRoot, 'node_modules/@herong/site-chrome'));
+  return chrome;
+}
+
+test('shared chrome changes require a new staging receipt, without copying shared source into public content', async (t) => {
+  let chrome;
+  const f = await fixture(t, { runBuild: async (args) => {
+    assert.equal(await realpath(join(args.snapshotRoot, 'node_modules/@herong/site-chrome')), await realpath(chrome));
+    await assert.rejects(readFile(join(args.snapshotRoot, 'src/header.mjs')), { code: 'ENOENT' });
+    await fakeBuild(args);
+  } });
+  chrome = await useSharedChrome(f);
+  assert.equal((await publish(f.manager, 'staging')).status, 'succeeded');
+  await writeFile(join(chrome, 'src/header.mjs'), 'export const header = "v2";');
+  const manager = await createPublishManager(f.managerOptions);
+  assert.match((await publish(manager, 'production')).error, /先发布测试环境/);
+  assert.equal((await publish(manager, 'staging')).status, 'succeeded');
+  assert.equal((await publish(manager, 'production')).status, 'succeeded');
+});
+
+test('shared chrome changed during a build or missing from a declared dependency cannot be activated', async (t) => {
+  let chrome;
+  const f = await fixture(t, { runBuild: async (args) => {
+    await fakeBuild(args);
+    await writeFile(join(chrome, 'assets/logo.svg'), '<svg>changed while building</svg>');
+  } });
+  chrome = await useSharedChrome(f);
+  assert.match((await publish(f.manager, 'staging')).error, /发布期间被修改/);
+  await assert.rejects(readlink(join(f.profiles.staging.root, 'current')), { code: 'ENOENT' });
+  await rm(chrome, { recursive: true });
+  assert.match((await publish(f.manager, 'staging')).error, /公共界面依赖源码不完整/);
+});
+
+test('the installed shared chrome must resolve to the same workspace source that is fingerprinted', async (t) => {
+  const f = await fixture(t);
+  await useSharedChrome(f);
+  const installed = join(f.projectRoot, 'node_modules/@herong/site-chrome');
+  await rm(installed);
+  await symlink(f.contentRoot, installed);
+  assert.match((await publish(f.manager, 'staging')).error, /公共界面依赖尚未正确安装/);
+  await assert.rejects(readlink(join(f.profiles.staging.root, 'current')), { code: 'ENOENT' });
 });
 
 test('switching to domains requires a new staging publication and uses isolated canonical URLs', async (t) => {

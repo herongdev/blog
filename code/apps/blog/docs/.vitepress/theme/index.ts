@@ -3,6 +3,8 @@ import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import './custom.css'
 import './responsive.css'
+import '@herong/site-chrome/styles.css'
+import './site-chrome.css'
 
 export default {
   extends: DefaultTheme,

@@ -16,7 +16,7 @@ const env = {
   PUBLIC_SITE_URL: site.origin,
   PUBLIC_BASE_PATH: base,
   PUBLIC_DEPLOY_ENV: process.env.PUBLIC_DEPLOY_ENV || 'production',
-  PUBLIC_GUIDES_URL: process.env.PUBLIC_GUIDES_URL || 'https://101.96.210.172/dev/',
+  PUBLIC_GUIDES_URL: process.env.PUBLIC_GUIDES_URL || 'https://dev.herong.info/',
   PUBLIC_TOOLS_URL: process.env.PUBLIC_TOOLS_URL || 'https://herong.info/file-tools',
   SITE_URL: site.origin,
   BASE: base,
@@ -33,7 +33,9 @@ function run(command, args) {
   if (result.status !== 0) process.exit(result.status || 1);
 }
 
+run('pnpm', ['run', 'check:chrome']);
 run('pnpm', ['--filter', '@herong/site', 'check']);
+run(process.execPath, ['apps/site/scripts/build-search-index.mjs']);
 run('pnpm', ['--filter', '@herong/blog', 'build']);
 run('pnpm', ['--filter', '@herong/site', 'build']);
 run(process.execPath, ['apps/site/scripts/merge-static.mjs', '--base', base, '--site-url', site.origin]);

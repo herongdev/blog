@@ -1,12 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
+import { getPublicTutorials } from '../../lib/public-content';
 import { ChevronRight } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BrowseHeader from '../../components/BrowseHeader.astro';
 import BrowseNav from '../../components/BrowseNav.astro';
 import { tools } from '../../data/tools';
 import { withBase } from '../../lib/urls';
-const entries = await getCollection('tutorials');
+const entries = await getPublicTutorials();
 const hasPublished = entries.some((entry) => entry.data.status === 'published');
 const activeTools = tools.filter((tool) => entries.some((entry) => entry.data.tool === tool.slug));
 ---

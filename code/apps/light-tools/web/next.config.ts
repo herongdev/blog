@@ -10,7 +10,12 @@ const nextConfig: NextConfig = {
   output: "standalone",
   outputFileTracingRoot: path.join(__dirname, "../../../"),
   serverExternalPackages: ["ffmpeg-static"],
-  transpilePackages: ["@light-tools/shared"]
+  transpilePackages: ["@light-tools/shared", "@herong/site-chrome"],
+  async headers() {
+    return process.env.PUBLIC_NOINDEX === "true"
+      ? [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] }]
+      : [];
+  }
 };
 
 export default nextConfig;

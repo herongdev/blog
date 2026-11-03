@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getPublicTutorials } from '../../lib/public-content';
 import { ArrowLeft } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BrowseHeader from '../../components/BrowseHeader.astro';
@@ -10,11 +10,11 @@ import { tools } from '../../data/tools';
 import { sortNewest } from '../../lib/catalog';
 import { withBase } from '../../lib/urls';
 export async function getStaticPaths() {
-  const entries = await getCollection('tutorials');
+  const entries = await getPublicTutorials();
   return themes.filter((theme) => entries.some((entry) => entry.data.themes.includes(theme.slug))).map((theme) => ({ params: { slug: theme.slug }, props: { theme } }));
 }
 const { theme } = Astro.props;
-const all = sortNewest(await getCollection('tutorials'));
+const all = sortNewest(await getPublicTutorials());
 const entries = all.filter((entry) => entry.data.themes.includes(theme.slug));
 const published = entries.filter((entry) => entry.data.status === 'published');
 const leads = entries.filter((entry) => entry.data.status === 'lead');

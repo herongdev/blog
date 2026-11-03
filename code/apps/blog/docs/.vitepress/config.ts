@@ -1,7 +1,10 @@
+// VitePress 1 config is bundled as CJS; bundle the shared ESM source instead of requiring it.
+import { getNavigation, themeBootstrapScript, BRAND_LOGO_DATA_URL } from '../../../../packages/site/chrome/src/index.mjs';
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { articlePath, normalizeBase, pathUrl, siteRoot } from "../../scripts/site-urls.mjs";
+import { renderPublicSearchDocument } from "../../scripts/search-visibility.mjs";
 const BASE = normalizeBase(process.env.BASE || "/");
 const SITE_HOSTNAME = process.env.SITE_URL || "https://herong.info";
 const SITE_ROOT = siteRoot(SITE_HOSTNAME, BASE);
@@ -13,7 +16,7 @@ const GA_ID = process.env.GA_ID || "";
 const OUT_DIR = process.env.OUT_DIR || "./.vitepress/dist";
 const ENABLE_PAGE_VIEWS = process.env.ENABLE_PAGE_VIEWS !== "0";
 const LIGHT_TOOLS_URL = process.env.LIGHT_TOOLS_URL || "http://127.0.0.1:3000";
-const GUIDES_URL = process.env.GUIDES_URL || process.env.PUBLIC_GUIDES_URL || "https://101.96.210.172/dev/";
+const GUIDES_URL = process.env.GUIDES_URL || process.env.PUBLIC_GUIDES_URL || "https://dev.herong.info/";
 const ARCHIVE_BUILD = process.env.ARCHIVE_BUILD === "1";
 const COURSES_URL = `${LIGHT_TOOLS_URL.replace(/\/$/, "")}/courses`;
 const LIGHT_TOOLS_NAV =
@@ -66,12 +69,13 @@ function pageKeywords(pageData: { frontmatter: Record<string, unknown> }): strin
 }
 
 const HEAD_LINKS: any[] = [
+  ["script", {}, themeBootstrapScript],
   [
     "link",
     {
       rel: "icon",
-      type: "image/png",
-      href: `${BASE}logo.png`,
+      type: "image/svg+xml",
+      href: BRAND_LOGO_DATA_URL,
     },
   ],
   [
@@ -194,6 +198,8 @@ if (process.env.CI) {
 
 export default {
   lang: "zh-CN",
+  // The shared chrome owns theme state; disable the second VitePress controller.
+  appearance: false,
   title: "何荣｜项目档案",
   description: "AI 产品、空间系统、金融图表与商业平台的项目案例。",
   lastUpdated: true,
@@ -229,6 +235,8 @@ export default {
     },
   },
   transformPageData(pageData) {
+    // The shared header replaces the default global navbar; retain local document navigation.
+    pageData.frontmatter.navbar = false;
     const fromFm = pageData.frontmatter.description;
     if (typeof fromFm === "string" && fromFm.trim() && !pageData.description) {
       pageData.description = fromFm.trim();
@@ -326,20 +334,14 @@ export default {
       alt: "Harbor & Route",
     },
     siteTitle: "何荣 / 项目档案",
-    nav: [
-      { text: "主页", link: "/" },
-      { text: "教程", link: GUIDES_URL, target: "_self", rel: "" },
-      { ...LIGHT_TOOLS_NAV, text: "工具" },
-      { text: "自营产品", link: "/products/" },
-      { text: "关于", link: "/about/" },
-    ],
+    siteChrome: { guidesUrl: GUIDES_URL, toolsUrl: LIGHT_TOOLS_URL },
+    nav: getNavigation({ homeUrl: BASE, guidesUrl: GUIDES_URL, toolsUrl: LIGHT_TOOLS_URL }).map((item) => ({ text: item.label, link: item.href })),
     socialLinks: [],
-    search: { provider: "local" },
-    outline: { level: [2, 3] },
-    footer: {
-      copyright:
-        '<a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">湘ICP备2024071383号-6</a>',
+    search: {
+      provider: "local",
+      options: { _render: renderPublicSearchDocument },
     },
+    outline: { level: [2, 3] },
     // Each article renders only its folder/chapter, rather than thousands of
     // unrelated links in every HTML file. All chapters remain reachable.
     sidebar: generateLocalSidebars(path.resolve(__dirname, "../posts"), "/posts/"),

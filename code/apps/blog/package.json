@@ -24,6 +24,7 @@
     "fast-glob": "^3.3.3",
     "feed": "^5.1.0",
     "gray-matter": "^4.0.3",
-    "lucide-vue-next": "^1.0.0"
+    "lucide-vue-next": "^1.0.0",
+    "@herong/site-chrome": "workspace:*"
   }
 }

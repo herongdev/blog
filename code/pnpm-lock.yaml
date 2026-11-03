@@ -20,6 +20,9 @@ importers:
 
   apps/blog:
     dependencies:
+      '@herong/site-chrome':
+        specifier: workspace:*
+        version: link:../../packages/site/chrome
       '@types/node':
         specifier: ^24.5.2
         version: 24.13.6
@@ -169,6 +172,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.921.0
         version: 3.1153.0
+      '@herong/site-chrome':
+        specifier: workspace:*
+        version: link:../../packages/site/chrome
       '@lucide/astro':
         specifier: ^1.59.0
         version: 1.59.0(astro@7.4.1(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
@@ -254,6 +260,9 @@ importers:
 
   apps/light-tools/web:
     dependencies:
+      '@herong/site-chrome':
+        specifier: workspace:*
+        version: link:../../../packages/site/chrome
       '@light-tools/shared':
         specifier: workspace:*
         version: link:../../../packages/light-tools/shared
@@ -337,6 +346,9 @@ importers:
       '@astrojs/vue':
         specifier: ^7.1.2
         version: 7.1.2(@types/node@26.6.2)(astro@7.4.1(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(vue@3.5.43(typescript@5.9.3))(yaml@2.9.1)
+      '@herong/site-chrome':
+        specifier: workspace:*
+        version: link:../../packages/site/chrome
       '@lucide/astro':
         specifier: ^1.59.0
         version: 1.59.0(astro@7.4.1(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
@@ -361,6 +373,12 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.9.3
+
+  packages/site/chrome:
+    devDependencies:
+      lucide-static:
+        specifier: 1.66.0
+        version: 1.66.0
 
 packages:
 
@@ -4920,6 +4938,9 @@ packages:
     resolution: {integrity: sha512-o8C23aXpNQypRY73W7fW02EyvWJinEMXgKeGjFoKym0zj3Q73hD97A1IQps1g8C14HTGsOpZL0Am+xjfgFZAbg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  lucide-static@1.66.0:
+    resolution: {integrity: sha512-j8Bjf/f21PtlD8p0wx1lRxyOrs98WZ1QEImkWmfskuJ8mOCwTN7Dwc6EHUzJDSzh79aB+Bo7SWcoTCM2zEjnJg==}
 
   lucide-vue-next@1.0.0:
     resolution: {integrity: sha512-V6SPvx1IHTj/UY+FrIYWV5faISsPSb8BnWSFDxAtezWKvWc9ZZ40PDrdu1/Qb5vg4lHWr1hs1BAMGVGm6V1Xdg==}
@@ -11737,6 +11758,8 @@ snapshots:
   lucide-react@1.47.0(react@19.3.0):
     dependencies:
       react: 19.3.0
+
+  lucide-static@1.66.0: {}
 
   lucide-vue-next@1.0.0(vue@3.5.43(typescript@6.0.3)):
     dependencies:

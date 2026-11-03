@@ -2,5 +2,6 @@ node_modules/
 .astro/
 dist/
 output/
+public/search-index/
 .env
 .env.*.local

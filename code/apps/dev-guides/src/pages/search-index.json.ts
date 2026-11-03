@@ -1,12 +1,13 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import { getPublicTutorials } from '../lib/public-content';
+import { isSearchVisibleTutorial } from '../lib/published-search.mjs';
 import { toolBySlug } from '../data/tools';
 import { themes } from '../data/themes';
 import { tutorialUrl, publicationWeek } from '../lib/catalog';
 import { shanghaiDate } from '../lib/calendar';
 
 export const GET: APIRoute = async () => {
-  const entries = await getCollection('tutorials');
+  const entries = (await getPublicTutorials()).filter(isSearchVisibleTutorial);
   const items = entries.map((entry) => {
       const tool = toolBySlug[entry.data.tool];
       return {

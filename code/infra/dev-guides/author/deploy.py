@@ -70,6 +70,9 @@ def main():
                 bundle.add(CODE / name, arcname='code/' + name, filter=safe)
             for name in ['src', 'public', 'scripts', 'templates', 'author', 'package.json', 'astro.config.mjs', 'tsconfig.json']:
                 bundle.add(APP / name, arcname='code/apps/dev-guides/' + name, filter=safe)
+            # Public layouts depend on the shared chrome package. Include only
+            # that workspace source, never sibling applications or private data.
+            bundle.add(CODE / 'packages/site/chrome', arcname='code/packages/site/chrome', filter=safe)
             bundle.add(INFRA, arcname='code/infra/dev-guides/author', filter=safe)
         checksum = hashlib.sha256(archive.read_bytes()).hexdigest()
         subprocess.run([*scp, str(archive), 'root@101.96.210.172:' + BASE + '/incoming/'], check=True)

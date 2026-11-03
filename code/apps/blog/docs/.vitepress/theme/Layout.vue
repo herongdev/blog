@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme, { VPNavBarSearch } from 'vitepress/theme'
+import SiteChromeHeader from './components/SiteChromeHeader.vue'
+import SiteChromeFooter from './components/SiteChromeFooter.vue'
 import PageViews from './components/PageViews.vue'
 import PortfolioHome from './components/PortfolioHome.vue'
 import ProjectsIndex from './components/ProjectsIndex.vue'
@@ -19,7 +21,10 @@ const pageLayout = computed(() => String(frontmatter.value.layout || ''))
   <ProjectDetail v-else-if="pageLayout === 'portfolio-project'" />
   <ArticlesLanding v-else-if="pageLayout === 'portfolio-articles'" />
   <AboutPage v-else-if="pageLayout === 'portfolio-about'" />
-  <DefaultTheme.Layout v-else>
+  <div v-else class="hr-blog-shell">
+    <SiteChromeHeader />
+    <DefaultTheme.Layout>
+    <template #doc-top><div class="hr-blog-tools" aria-label="文章搜索"><VPNavBarSearch /></div></template>
     <template #doc-footer-before>
       <PageViews mode="page" />
     </template>
@@ -27,6 +32,8 @@ const pageLayout = computed(() => String(frontmatter.value.layout || ''))
       <div class="vp-site-views-wrap">
         <PageViews mode="site" />
       </div>
+      <SiteChromeFooter />
     </template>
-  </DefaultTheme.Layout>
+    </DefaultTheme.Layout>
+  </div>
 </template>

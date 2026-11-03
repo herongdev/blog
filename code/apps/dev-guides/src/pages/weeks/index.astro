@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getPublicTutorials } from '../../lib/public-content';
 import { ChevronRight } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BrowseHeader from '../../components/BrowseHeader.astro';
@@ -8,7 +8,7 @@ import GuideList from '../../components/GuideList.astro';
 import { groupByPublicationWeek, publicationWeek, sortNewest } from '../../lib/catalog';
 import { tools } from '../../data/tools';
 import { withBase } from '../../lib/urls';
-const entries = await getCollection('tutorials');
+const entries = await getPublicTutorials();
 const weeks = groupByPublicationWeek(entries);
 const years = [...new Set(weeks.map((week) => week.start.slice(0, 4)))];
 const undated = sortNewest(entries.filter((entry) => entry.data.status === 'published' && !publicationWeek(entry)));

@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
+import "@herong/site-chrome/styles.css";
+import { themeBootstrapScript } from "@herong/site-chrome";
 import { AnalyticsTracker } from "@/components/site/AnalyticsTracker";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { getSiteUrl } from "@/lib/seo";
+
+const noindex = process.env.PUBLIC_NOINDEX === "true";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -29,33 +33,17 @@ export const metadata: Metadata = {
     description: "免费在线 PDF、图片、视频小工具，快速处理常见文件任务。"
   },
   robots: {
-    index: true,
-    follow: true
+    index: !noindex,
+    follow: !noindex,
+    noarchive: noindex || undefined
   }
 };
-
-const themeScript = `
-(() => {
-  try {
-    const storedTheme = localStorage.getItem("light-tools-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const theme = storedTheme === "dark" || storedTheme === "light"
-      ? storedTheme
-      : prefersDark
-        ? "dark"
-        : "light";
-    document.documentElement.dataset.theme = theme;
-  } catch {
-    document.documentElement.dataset.theme = "light";
-  }
-})();
-`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} /></head>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>

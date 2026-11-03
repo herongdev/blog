@@ -1,0 +1,164 @@
+---
+import { Search, X, ArrowRight, ArrowUpRight } from '@lucide/astro';
+import { GUIDES_URL, TUTORIAL_SEARCH_URL, localUrl } from '../config/site.mjs';
+import { TOPICS, PERIODS } from '../search/filters.mjs';
+import '../styles/search.css';
+const guides = GUIDES_URL.endsWith('/') ? GUIDES_URL : `${GUIDES_URL}/`;
+---
+<section class="knowledge-search" data-search-home data-index={localUrl('/search-index/')} data-tutorials={TUTORIAL_SEARCH_URL} aria-labelledby="search-heading">
+  <div class="knowledge-search__hero">
+    <h1 id="search-heading" class="sr-only">知识搜索</h1>
+    <form class="knowledge-search__form" role="search" method="get" action={localUrl('/')}>
+      <label class="sr-only" for="knowledge-query">搜索工具、功能或问题</label>
+      <div class="knowledge-search__field">
+        <Search size={23} aria-hidden="true" />
+        <input id="knowledge-query" type="search" name="q" placeholder="搜工具、功能，或你遇到的问题" maxlength="200" autocomplete="off" />
+        <button type="button" class="knowledge-search__clear" aria-label="清空关键词" hidden><X size={19} aria-hidden="true" /></button>
+      </div>
+      <button class="knowledge-search__submit" type="submit"><span>搜索</span><ArrowRight size={19} aria-hidden="true" /></button>
+    </form>
+    <div class="knowledge-search__shortcuts" aria-label="快捷筛选">
+      <div class="knowledge-search__shortcut-row" role="group" aria-labelledby="search-topics-label">
+        <span class="knowledge-search__shortcut-label" id="search-topics-label">主题</span>
+        <div class="knowledge-search__choices knowledge-search__choices--topics">{TOPICS.map(({ id, label }) => <button type="button" data-topic={id} aria-pressed={id === 'all'}>{label}</button>)}</div>
+      </div>
+      <div class="knowledge-search__shortcut-row" role="group" aria-labelledby="search-periods-label">
+        <span class="knowledge-search__shortcut-label" id="search-periods-label">发布时间</span>
+        <div class="knowledge-search__choices">{PERIODS.map(({ id, label }) => <button type="button" data-period={id} aria-pressed={id === 'all'}>{label}</button>)}</div>
+        <button type="button" class="knowledge-search__reset" hidden><X size={15} aria-hidden="true" />清除筛选</button>
+      </div>
+    </div>
+    <noscript><p class="knowledge-search__notice">启用 JavaScript 后可搜索，也可以直接浏览<a href={localUrl('/posts/')}>历史文章</a>或<a href={guides}>教程目录</a>。</p></noscript>
+  </div>
+  <div class="knowledge-search__workspace" hidden>
+    <div class="knowledge-search__filters" role="group" aria-label="搜索来源">
+      <button type="button" data-source="all" aria-pressed="true">全部<span data-count="all"></span></button>
+      <button type="button" data-source="tutorial" aria-pressed="false">正式教程<span data-count="tutorial"></span></button>
+      <button type="button" data-source="article" aria-pressed="false">历史文章<span data-count="article"></span></button>
+      <button type="button" data-source="tool" aria-pressed="false">实用工具<span data-count="tool"></span></button>
+    </div>
+    <div class="knowledge-search__status" role="status" aria-live="polite" aria-atomic="true"></div>
+    <p class="knowledge-search__notice" data-search-warning hidden></p>
+    <div class="knowledge-search__results" aria-busy="false">
+      <ol class="knowledge-search__list" aria-label="搜索结果"></ol>
+      <div class="knowledge-search__empty" hidden><h2>没有找到相关内容</h2><p>试试软件名、功能名，或换一种说法。</p><a href={guides}>浏览教程目录<ArrowUpRight size={16} aria-hidden="true" /></a></div>
+      <div class="knowledge-search__error" hidden><h2>暂时无法完成搜索</h2><p>请检查网络后重试。</p><button type="button" data-retry>重新搜索</button></div>
+    </div>
+    <button class="knowledge-search__more" type="button" hidden>加载更多</button>
+  </div>
+</section>
+<template id="knowledge-result-template">
+  <li class="knowledge-result">
+    <p class="knowledge-result__meta"><span class="knowledge-result__source"></span><span class="knowledge-result__software"></span><time></time></p>
+    <h2><a class="knowledge-result__title"></a></h2>
+    <p class="knowledge-result__summary"></p><span class="knowledge-result__address"></span>
+  </li>
+</template>
+<script>
+  import { createSearchClient, type SearchResult, type SearchSource, type SearchTopic, type SearchPeriod } from '../search/client.mjs';
+  import { normalizeTopic, normalizePeriod } from '../search/filters.mjs';
+  const root = document.querySelector<HTMLElement>('[data-search-home]')!;
+  const form = root.querySelector<HTMLFormElement>('form')!;
+  const input = root.querySelector<HTMLInputElement>('input[name="q"]')!;
+  const clear = root.querySelector<HTMLButtonElement>('.knowledge-search__clear')!;
+  const submit = root.querySelector<HTMLButtonElement>('[type="submit"]')!;
+  const workspace = root.querySelector<HTMLElement>('.knowledge-search__workspace')!;
+  const status = root.querySelector<HTMLElement>('[role="status"]')!;
+  const results = root.querySelector<HTMLElement>('.knowledge-search__results')!;
+  const list = root.querySelector<HTMLOListElement>('ol')!;
+  const empty = root.querySelector<HTMLElement>('.knowledge-search__empty')!;
+  const error = root.querySelector<HTMLElement>('.knowledge-search__error')!;
+  const warning = root.querySelector<HTMLElement>('[data-search-warning]')!;
+  const more = root.querySelector<HTMLButtonElement>('.knowledge-search__more')!;
+  const filters = [...root.querySelectorAll<HTMLButtonElement>('[data-source]')];
+  const topicButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-topic]')];
+  const periodButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-period]')];
+  const reset = root.querySelector<HTMLButtonElement>('.knowledge-search__reset')!;
+  const template = document.querySelector<HTMLTemplateElement>('#knowledge-result-template')!;
+  const robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]')!;
+  const originalRobots = robots.content, originalTitle = document.title;
+  const client = createSearchClient({ baseUrl: root.dataset.index, tutorialsUrl: root.dataset.tutorials });
+  const labels = { tutorial: '正式教程', article: '历史文章', tool: '实用工具' };
+  const sources: SearchSource[] = ['all', 'tutorial', 'article', 'tool'];
+  let source: SearchSource = 'all', topic: SearchTopic = 'all', period: SearchPeriod = 'all';
+  let query = '', displayed = 0, sequence = 0, composing = false;
+  function setFilters() {
+    filters.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.source === source)));
+    topicButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.topic === topic)));
+    periodButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.period === period)));
+    reset.hidden = topic === 'all' && period === 'all' && source === 'all';
+  }
+  function setUrl() {
+    const url = new URL(location.href);
+    for (const key of ['q', 'source', 'topic', 'period']) url.searchParams.delete(key);
+    if (query) url.searchParams.set('q', query);
+    if (source !== 'all') url.searchParams.set('source', source);
+    if (topic !== 'all') url.searchParams.set('topic', topic);
+    if (period !== 'all') url.searchParams.set('period', period);
+    if (url.href !== location.href) history.pushState(null, '', url);
+  }
+  function appendResult(item: SearchResult) {
+    const node = template.content.firstElementChild!.cloneNode(true) as HTMLElement; node.dataset.type = item.type;
+    node.querySelector('.knowledge-result__source')!.textContent = labels[item.type];
+    node.querySelector('.knowledge-result__software')!.textContent = [item.software, item.version].filter(Boolean).join(' · ');
+    const title = node.querySelector<HTMLAnchorElement>('.knowledge-result__title')!;
+    title.textContent = item.title; title.href = item.url;
+    node.querySelector('.knowledge-result__summary')!.textContent = item.summary;
+    node.querySelector('.knowledge-result__address')!.textContent = new URL(item.url).hostname;
+    const date = item.publishedAt || item.updatedAt, time = node.querySelector('time')!;
+    if (date && !Number.isNaN(Date.parse(date))) {
+      time.dateTime = date;
+      time.textContent = `${item.publishedAt ? '发布' : '更新'}于 ${new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(date))}`;
+    } else time.remove();
+    list.append(node);
+  }
+  async function runSearch(append = false, updateHistory = true) {
+    const request = ++sequence; query = input.value.trim().slice(0, 200); input.value = query; clear.hidden = !query;
+    if (updateHistory) setUrl();
+    const active = Boolean(query || topic !== 'all' || period !== 'all' || source !== 'all');
+    root.classList.toggle('has-query', active); workspace.hidden = !active;
+    document.title = query ? `${query} · 搜索 · 何荣` : active ? '浏览内容 · 何荣' : originalTitle;
+    robots.content = active ? 'noindex, follow' : originalRobots;
+    if (!append) { displayed = 0; list.replaceChildren(); }
+    empty.hidden = true; error.hidden = true; warning.hidden = true; more.hidden = true;
+    if (!active) { setFilters(); results.setAttribute('aria-busy', 'false'); submit.disabled = false; return; }
+    setFilters(); results.setAttribute('aria-busy', 'true'); submit.disabled = true; status.textContent = '正在查找…';
+    try {
+      const response = await client.search(query, { source, topic, period, limit: 12, offset: append ? displayed : 0 });
+      if (request !== sequence) return;
+      response.results.forEach(appendResult); displayed += response.results.length;
+      const count = response.sources.article + response.sources.tool + response.sources.tutorial;
+      for (const kind of sources) root.querySelector(`[data-count="${kind}"]`)!.textContent = ` ${kind === 'all' ? count : response.sources[kind]}`;
+      status.textContent = response.total ? `找到 ${response.total} 条结果，已显示 ${displayed} 条` : '找到 0 条结果';
+      empty.hidden = response.total > 0;
+      const tutorialEmpty = !response.total && source === 'tutorial' && !response.warnings.length;
+      const narrowed = topic !== 'all' || period !== 'all';
+      empty.querySelector('h2')!.textContent = tutorialEmpty ? '暂无匹配的正式教程' : narrowed ? '没有找到符合条件的内容' : '没有找到相关内容';
+      empty.querySelector('p')!.textContent = tutorialEmpty ? '可以切换到“全部”查找相关技术文章或工具。' : narrowed ? '试试其他主题或时间范围，或清除筛选。' : '试试软件名、功能名，或换一种说法。';
+      warning.hidden = !response.warnings.length; warning.textContent = response.warnings.join(' ');
+      more.hidden = displayed >= response.total;
+    } catch {
+      if (request !== sequence) return;
+      error.hidden = false; status.textContent = '搜索未完成，请重试。';
+    } finally { if (request === sequence) { results.setAttribute('aria-busy', 'false'); submit.disabled = false; } }
+  }
+  input.addEventListener('input', () => { clear.hidden = !input.value; });
+  input.addEventListener('compositionstart', () => { composing = true; });
+  input.addEventListener('compositionend', () => { composing = false; });
+  form.addEventListener('submit', (event) => { event.preventDefault(); if (!composing) void runSearch(); });
+  clear.addEventListener('click', () => { input.value = ''; void runSearch(); input.focus(); });
+  topicButtons.forEach((button) => button.addEventListener('click', () => { topic = button.dataset.topic as SearchTopic; void runSearch(); }));
+  periodButtons.forEach((button) => button.addEventListener('click', () => { period = button.dataset.period as SearchPeriod; void runSearch(); }));
+  reset.addEventListener('click', () => { topic = 'all'; period = 'all'; source = 'all'; void runSearch(); });
+  filters.forEach((button) => button.addEventListener('click', () => { source = button.dataset.source as SearchSource; void runSearch(); }));
+  more.addEventListener('click', () => { void runSearch(true, false); });
+  root.querySelector('[data-retry]')!.addEventListener('click', () => { void runSearch(); });
+  function restore() {
+    const params = new URL(location.href).searchParams; input.value = (params.get('q') || '').slice(0, 200);
+    source = sources.includes(params.get('source') as SearchSource) ? params.get('source') as SearchSource : 'all';
+    topic = normalizeTopic(params.get('topic')) as SearchTopic;
+    period = normalizePeriod(params.get('period')) as SearchPeriod;
+    void runSearch(false, false);
+  }
+  window.addEventListener('popstate', restore); restore();
+</script>

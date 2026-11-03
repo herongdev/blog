@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getPublicTutorials } from '../../lib/public-content';
 import { ArrowLeft, ArrowRight } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BrowseHeader from '../../components/BrowseHeader.astro';
@@ -9,11 +9,11 @@ import { groupByPublicationWeek } from '../../lib/catalog';
 import { tools } from '../../data/tools';
 import { withBase } from '../../lib/urls';
 export async function getStaticPaths() {
-  const groups = groupByPublicationWeek(await getCollection('tutorials'));
+  const groups = groupByPublicationWeek(await getPublicTutorials());
   return groups.map((week, index) => ({ params: { week: week.start }, props: { week, newer: groups[index - 1], older: groups[index + 1] } }));
 }
 const { week, newer, older } = Astro.props;
-const all = await getCollection('tutorials');
+const all = await getPublicTutorials();
 const activeTools = tools.filter((tool) => all.some((entry) => entry.data.tool === tool.slug));
 ---
 <BaseLayout title={`${week.label}的教程`} description={`回看 ${week.label} 发布的 ${week.entries.length} 篇开发工具教程，阅读完整步骤或观看原视频。`}>

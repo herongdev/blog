@@ -1,0 +1,18 @@
+/* VitePress keeps document navigation/search; shared chrome owns the global bars. */
+.hr-blog-shell { --hr-blog-header-height: 77px; }
+.hr-blog-shell .hr-blog-header { position: sticky; top: 0; z-index: 50; }
+.hr-blog-shell .Layout { min-height: calc(100dvh - var(--hr-blog-header-height)); }
+.hr-blog-shell .VPContent { padding-top: 0; }
+.hr-blog-shell .VPSidebar { top: var(--hr-blog-header-height); }
+.hr-blog-shell .VPLocalNav { top: var(--hr-blog-header-height); }
+.hr-blog-shell .hr-blog-footer { position: relative; z-index: 40; }
+.hr-blog-tools { display: flex; justify-content: flex-end; margin-bottom: 24px; }
+.hr-blog-tools .VPNavBarSearch { padding: 0; }
+.hr-blog-tools .DocSearch-Button { margin: 0; }
+@media (max-width: 800px) {
+  .hr-blog-shell { --hr-blog-header-height: 65px; }
+}
+@media (min-width: 960px) {
+  .hr-blog-shell .VPSidebar { padding-top: 24px; }
+  .hr-blog-shell .VPSidebar .curtain { display: none; }
+}

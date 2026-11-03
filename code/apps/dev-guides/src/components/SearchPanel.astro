@@ -1,7 +1,7 @@
 ---
 import '../styles/filters.css';
 import '../styles/search.css';
-import { getCollection } from 'astro:content';
+import { getPublicTutorials } from '../lib/public-content';
 import { ListFilter, Search, X, Play } from '@lucide/astro';
 import { themes } from '../data/themes';
 import { groupByPublicationWeek } from '../lib/catalog';
@@ -9,7 +9,7 @@ import { withBase } from '../lib/urls';
 
 interface Props { compact?: boolean; toolOptions?: Array<{ slug: string; name: string }> }
 const { compact = false, toolOptions = [] } = Astro.props;
-const entries = await getCollection('tutorials');
+const entries = await getPublicTutorials();
 const visibleThemes = themes.filter((theme) => entries.some((entry) => entry.data.themes.includes(theme.slug)));
 const weeks = groupByPublicationWeek(entries);
 ---

@@ -587,11 +587,6 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
 
   useEffect(() => {
     if (!source || format === "png" || format === "ico") {
-      setEstimatedSize({
-        sizeBytes: null,
-        isEstimating: false,
-        error: ""
-      });
       return;
     }
 
@@ -682,6 +677,11 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
     clearResult();
     setProgress(null);
     setError("");
+    resetEstimatedSize();
+  }
+
+  function resetEstimatedSize() {
+    setEstimatedSize({ sizeBytes: null, isEstimating: false, error: "" });
   }
 
   function applyPreset(preset: ScenePreset) {
@@ -812,6 +812,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
     try {
       const decoded = await decodeSourceImage(file);
       if (sourceRef.current?.url) URL.revokeObjectURL(sourceRef.current.url);
+      resetEstimatedSize();
       setSource(decoded);
       setZoom(1);
       setPositionX(0);
@@ -822,6 +823,7 @@ export function ImageConvertTool({ tool }: { tool: ToolDefinition }) {
         detail: `${decoded.sourceKind}，${decoded.width} x ${decoded.height}`
       });
     } catch (caught) {
+      resetEstimatedSize();
       setSource(null);
       setProgress(null);
       setError(caught instanceof Error ? caught.message : "图片读取失败。");

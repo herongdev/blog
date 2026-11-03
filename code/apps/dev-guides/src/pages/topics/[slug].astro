@@ -1,9 +1,10 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
+import { getPublicTutorials } from '../../lib/public-content';
 import GuideArticle from '../../components/GuideArticle.astro';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('tutorials');
+  const entries = await getPublicTutorials();
   for (const entry of entries) {
     if (entry.data.status !== 'published') continue;
     const { headings } = await render(entry);

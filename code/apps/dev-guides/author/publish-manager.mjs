@@ -101,6 +101,29 @@ async function sourceSnapshot(projectRoot, contentRoot, destination) {
     if (stat && !stat.isFile()) throw failure('依赖锁定文件不安全', 500);
     if (stat) digest.update(`${relative(projectRoot, path)}\0`).update(await readFile(path)).update('\0');
   }
+  // The writable snapshot resolves installed workspace dependencies through
+  // node_modules. Their public source is part of the tested revision too:
+  // changing a shared header after staging must require a fresh staging build.
+  const manifest = JSON.parse(await readFile(join(projectRoot, 'package.json'), 'utf8'));
+  if (manifest.dependencies?.['@herong/site-chrome']) {
+    const chromeRoot = resolve(projectRoot, '../../packages/site/chrome');
+    const chromeInfo = await info(chromeRoot);
+    if (!chromeInfo?.isDirectory() || chromeInfo.isSymbolicLink()) throw failure('公共界面依赖源码不完整', 503);
+    const installedChrome = await realpath(join(projectRoot, 'node_modules/@herong/site-chrome')).catch(() => null);
+    if (installedChrome !== await realpath(chromeRoot)) throw failure('公共界面依赖尚未正确安装', 503);
+    for (const name of ['package.json', 'src', 'assets']) {
+      const path = join(chromeRoot, name);
+      const stat = await info(path);
+      if (!stat || stat.isSymbolicLink()) throw failure('公共界面依赖源码不完整', 503);
+      const files = stat.isDirectory() ? await tree(path, name)
+        : stat.isFile() ? [{ path, name }] : null;
+      if (!files) throw failure('公共界面依赖源码不安全', 500);
+      for (const file of files) {
+        const bytes = await readFile(file.path);
+        digest.update(`@herong/site-chrome/${file.name}\0${bytes.length}\0`).update(bytes).update('\0');
+      }
+    }
+  }
   return digest.digest('hex');
 }
 

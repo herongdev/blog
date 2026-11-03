@@ -28,7 +28,8 @@
     "check:site": "pnpm --filter @herong/site check",
     "preview:site": "pnpm --filter @herong/site preview",
     "test:site": "node --test apps/site/scripts/*.test.mjs",
-    "dev:guides:author": "pnpm --filter @herong/dev-guides-author dev"
+    "dev:guides:author": "pnpm --filter @herong/dev-guides-author dev",
+    "check:chrome": "pnpm --filter @herong/site-chrome check && pnpm --filter @herong/site-chrome test"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

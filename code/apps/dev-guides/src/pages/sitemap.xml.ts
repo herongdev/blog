@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import { getPublicTutorials } from '../lib/public-content';
+import { isPublishedSearchTutorial } from '../lib/published-search.mjs';
 import { tools } from '../data/tools';
 import { themes } from '../data/themes';
 import { groupByPublicationWeek } from '../lib/catalog';
@@ -10,7 +11,7 @@ const escapeXml = (value: string) => value.replace(/[<>&"']/g, (character) => ({
 
 export const GET: APIRoute = async ({ site }) => {
   if (!site) throw new Error('Astro site URL is required for sitemap generation');
-  const published = BLOCK_INDEXING ? [] : (await getCollection('tutorials')).filter((entry) => entry.data.status === 'published');
+  const published = BLOCK_INDEXING ? [] : (await getPublicTutorials()).filter(isPublishedSearchTutorial);
   const publishedToolSlugs = new Set(published.map((entry) => entry.data.tool));
   const publishedThemeSlugs = new Set(published.flatMap((entry) => entry.data.themes));
   const weeks = groupByPublicationWeek(published);
