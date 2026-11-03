@@ -38,3 +38,32 @@ Nginx 备份：`/var/backups/herong-site/20261103-shared-chrome/herong-dev-guide
 - 服务器候选公共包资源/测试、教程 Astro check、发布与公开 feed 回归通过；发布前完整备份及持久项目/管理员摘要核对未变。工具本轮全量 lint/typecheck 已通过。
 
 详细日志、校验、回执：`code/output/shared-chrome-release-20261103/`（不提交私有部署材料）。正式结果及最终 release 将在本记录中补齐，不能把上述准备状态当成已全部上线。
+
+
+## 正式发布结果
+
+源码已独立提交并推送 `4a77bd2b1387a8e1ee3ba43418dfd9a980a3b901`，未夹带其他产品、3D 或视频发布中心的工作区修改。
+
+| 应用 | 正式版本 | 保留回滚基线 |
+| --- | --- | --- |
+| 主站与历史文章 | `4a77bd2b1387a8e1ee3ba43418dfd9a980a3b901-202611031315-1` | `68b567ff2c05e47d3b8d2a63e6b22209dfa94c2f-40080671767-1` |
+| 教程公开站 | `20261103T045634Z-e3a92a83` | `20261030T080538Z-5dc4f387` |
+| 教程测试站 | `20261103T045310Z-56ee6356` | `20261030T080331Z-ee47dd89` |
+| 作者代码 | `20261103T044826Z-chrome` | `20261102T142731Z` |
+| 文件工具 | `20261103T050046Z-4a77bd2-chrome` | `20261024T075359Z-final` |
+
+主站 [CI run 41581261297](https://github.com/herongdev/blog/actions/runs/41581261297) 的干净生产构建和 artifact 上传已完成。GitHub runner 到服务器 SCP 约 15KB/s，为加速上线，通过 GitHub 连接器取得该 run 的精确 artifact `13206411983`，ZIP SHA256 与 GitHub 元数据完全一致：`288b628f0833b860e3919c707d266a3ce21ac94f662214c99badc64820c739ed`。再次核验正式域名/索引与无 localhost/旧 IP 菜单，通过 static verify 后，使用原 `pack-static.py` 及服务器 root-owned 固定发布器激活；没有复建、改写产物或上传可执行发布代码。严格归档 SHA256 为 `4069f60b585dc462b7038f9944ca83fb9b0a7400f72bbe7a82540fef681ead1a`，主站 buildId 为 `d03baad729bd997c`，3,041 HTML / 3,039 sitemap。
+
+记录时原 CI 的 SCP 上传步骤仍继续运行，不能称整条 Actions 或 GitHub Pages 已完成；它后续使用的正是已上线的同一 artifact/buildId，版本一致。本次上线不依赖这条慢上传完成。备用干净 worktree 已完成 frozen offline install，但发现精确 artifact 可取后停止了仅本任务的构建，没有使用其未完成产物。
+
+## 正式验收与数据保护
+
+- 正式浏览器：主域首页 `index, follow`、canonical 正确、初始搜索索引请求 0；“图片压缩”返回 27 条、首屏 12 条，首项进入真实工具原页；文件处理筛选返回 28 条。元数据和倒排分片均 HTTP 200/gzip，搜索查询切为 noindex；搜索没有请求 localhost、测试站或管理员接口。一次冷查询约 7.9 秒，未声称完成性能基准。
+- 作品入口 `/projects/` 是原六卡首页，五个领域与教程链接、原概念图和背景均保留；桌面及手机实际查看，无横向溢出。主域搜索首页未被替换或重定向。
+- 手机菜单六项完整，深色刷新保留；主站→文章→工具→教程→主站实际跨站导航通过。四公开应用均只有 1 套公共头尾；历史本地搜索“Vue”仍显示 16 项。
+- [公共兼容报告](../../output/shared-chrome-release-20261103/public-compat.json) 为 `production-verified`，71 项全部通过，覆盖新 buildId、SEO、页面/旧地址、RSS/Atom/JSON Feed、真实404/缺失JS、独立政企与采样站资源及 API。真实 station ID snapshot 和 SSE 均可用，SSE 收到 2 个模拟事件后主动关闭；全程 GET，未操作旧机模拟状态。
+- 教程保持 4 lead / 0 published / 135 private draft，150 个项目文件和管理员身份摘要不变；作者原前端/登录及视频发布代码未被本机脏改动覆盖。正式 feed 73B/0 项、CORS 只允许主域，原资料索引仍 4 条。详见 [教程发布记录](2026-11-03-shared-chrome-release-guides.md)。
+- 工具全量 lint、typecheck、Linux 标准构建通过；正式浏览器 PNG→JPG 输出 512×512/12,114B，公开边缘 MP4→GIF 为 200/GIF89a/1,176B。原课程数据文件、4 用户/2 权益/2 订单、原数据卷、runtime 与 secrets 内容摘要不变。详见 [工具发布记录](2026-11-03-shared-chrome-release-tools.md)。未验证真实账号登录、支付交易或手机真机。
+- 主站与工具容器均 healthy，最终服务器根盘约 4.6GB 可用（88% 使用）。没有清理其他项目镜像、缓存、数据卷或旧机服务；当前和明确的旧回滚版本均保留。
+
+证据：`code/output/shared-chrome-release-20261103/` 的 artifact、publisher receipt、JSON、HTTP 与浏览器报告；截图为仓库根 `output/playwright/release-*`。私有备份与身份材料仅留服务器私有目录，没有进入公共产物或 Git。
