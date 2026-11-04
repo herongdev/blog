@@ -17,10 +17,10 @@
 1. 新建草稿，编辑正文并保存；粘贴或选择截图后等待上传成功。
 2. 在“发布信息”填写类型、搜索线索、官方来源、版本、实测记录及可选视频链接。手机可用表单，不必直接编写 YAML。
 3. 完成草稿后点“加入发布内容”；未实测内容选择“功能线索”，有完整实测证据才选择“实测教程”。
-4. 点“更新测试环境”，检查页面、图片与搜索。
-5. 点“发布正式网站”，确认后更新。发布覆盖“发布内容”中的全部文章；草稿不公开。
+4. 在当前内容的“发布”页签生成本文预览，检查页面、图片与搜索。
+5. 确认已检查的本文预览后发布正式网站。只推进选中文章的固定修订，其它文章沿用已确认的线上版本，不夹带未确认的工作稿。
 
-保存不改变线上页面。服务器构建仍会校验字段、实测信息、正文与图片；正式发布要求源码和内容与最近成功的测试发布一致，且该回执 URL 匹配当前测试环境。失败时保留当前网站版本。网页保存使用版本冲突检查，多设备编辑同一篇文章时不会静默覆盖。
+保存不改变线上页面。服务器构建仍会校验字段、实测信息、正文与图片；正式发布要求源码、选定的不可变内容投影及 `previewId` 与最近成功的测试发布一致，且回执 URL 匹配当前测试环境。预览后继续编辑不会改写已确认的快照。失败时保留当前网站版本。网页保存使用版本冲突检查，多设备编辑同一篇文章时不会静默覆盖。旧正式站缺少修订基线时，须先停写、备份，并从核对过的公开内容显式导入基线；不能把当前工作稿直接当作线上版本。
 
 ## 文章目录管理
 
@@ -40,8 +40,11 @@
 | 只读代码、独立 Node 24 LTS/pnpm 运行时 | `/opt/herong-dev-guides-author/` |
 | 持久文章与草稿 | `/var/lib/herong-dev-guides-author/project/` |
 | 私有目录树与文章归属 | `/var/lib/herong-dev-guides-author/project/.library.json` |
-| 两周拍摄排期、待拍顺序与历史 | `/var/lib/herong-dev-guides-author/project/.schedule.json` |
+| 本周/其它拍摄队列与历史 | `/var/lib/herong-dev-guides-author/project/.schedule.json` |
 | 旧稿历史 | 上述目录中的 `.history/` |
+| 不可变文章修订、线上指针与预览计划 | 上述目录中的 `.article-revisions/` |
+| 私有制作素材、分片与版本关系 | 上述目录中的 `.content-workspace/` |
+| 视频发布队列、私有账号会话与投稿素材 | `/var/lib/herong-dev-guides-author/publishing/`（可由 `PUBLISHER_DATA_DIR` 配置） |
 | 微信管理员身份、私有会话与首次绑定证明 | `/var/lib/herong-dev-guides-author/auth/` |
 | 发布状态、隔离构建快照 | `/var/lib/herong-dev-guides-author/publish/` |
 | 累计正式首发日期与旧教程日期缺失记录 | `/var/lib/herong-dev-guides-author/publish/publication-history.json` |
@@ -64,7 +67,11 @@ python3 infra/dev-guides/author/deploy.py
 
 启用线上写作后，服务器持久内容是发文内容源。本地 `src/content/tutorials/` 不会随网页编辑自动更新；原静态部署工具检测到 `.author-managed` 时拒绝新发布，防止本地旧稿覆盖线上文章。代码升级与文章发布分开执行。
 
-日备份 timer 为 `herong-dev-guides-author-backup.timer`，默认保留全部备份。备份递归包含整个 `project`，因此包含文章、草稿、历史、`.library.json` 和 `.schedule.json`，另包含认证、发布状态及存在的 `publish/publication-history.json`，权限为 root 专用；不进入 Git、不由 Nginx 提供访问。目录与排期数据应随对应文章数据一起恢复；恢复旧备份会回到当时的目录组织和拍摄安排，不能只用代码回滚替代数据恢复。当前备份在同一服务器，需按实际运维要求另做异地保管。可用 SSH 将备份下载到本机 Git 忽略的 `code/secrets/`；恢复前先停写作服务并保留当前数据副本。
+日备份 timer 为 `herong-dev-guides-author-backup.timer`，默认保留全部备份。备份递归包含整个 `project`，因此包含文章、草稿、历史、`.library.json`、`.schedule.json`、`.content-workspace/` 和 `.article-revisions/`；另包含认证、发布状态、首发账本，以及视频发布数据库的一致 SQLite 快照、素材与账号会话。权限为 root 专用，不进入 Git、不由 Nginx 提供访问。普通在线 tar 不能保证项目内多个文件处于同一时点；工作区、修订和文章的完整恢复基线须在停写或一致文件系统快照下备份，不能仅凭日备份成功宣称已完成恢复演练。私有云对象另需独立副本，项目归档不包含其远端字节。
+
+目录、排期、工作区和修订应随对应文章一起恢复。发布队列恢复时先禁用执行器，并逐项核对备份后可能已经投稿的任务，不能直接重新跑旧队列；详见[发布中心说明](../../../docs/dev-guides/publishing-integration.md)。当前备份在同一服务器，需按实际运维要求另做异地保管。可用 SSH 将备份下载到本机 Git 忽略的 `code/secrets/`；恢复前先停写作服务并保留当前数据副本。
+
+私有制作素材默认本地存储。需要 S3 兼容存储时，按 `apps/dev-guides/author/workspace.env.example` 创建 `/etc/herong-dev-guides-author/workspace.env`（root 所有、0600）；service 可选读取该文件，不复用公开图片凭据。模板只是配置说明，不创建桶或改变桶策略。本轮仅修订代码与模板，未更改线上配置。
 
 ## 首发日期账本与回滚顺序
 
@@ -114,3 +121,15 @@ python3 infra/dev-guides/author/deploy.py
 - 数据仍在 `/var/lib/herong-dev-guides-author/project/`；标题、搜索词、来源、演示提纲已预填。所有新增稿件标记 `draft` / 待实测，未填虚构验证或视频地址。来源核对时间保留 2026-10-27，不能视为拍摄当天已重新确认。
 - 导入前后均已私有备份，导入后备份为 `20261030T062833Z.tar.gz`。运维回执在 `/var/backups/herong-dev-guides/editorial-20261030/`；具体事务回执在项目 `.editorial-imports/`。重复预检确认 138 项全部保留，不产生第二份稿件。工具用法见 [写作台说明](../../../apps/dev-guides/author/README.md)。
 - 线上入口与静态资源 200，未登录文章/目录 API 401，私有文件及草稿公开地址 404。测试、正式公开站 release 均保持原样，搜索索引仍各有原来 4 篇线索；本次没有发布计划稿。隔离环境验证了 135 篇草稿可读取、保存重开和目录结构；线上验证为持久数据、权限、HTTP 与资源检查，未以伪造管理员身份验收。
+
+
+## 2026-11-02 视频发布中心上线
+
+- 当前作者服务 release：`20261102T142731Z`，正式入口仍为 `https://dev.herong.info/admin/`。独立执行器为 `/opt/herong-social-publisher/releases/20261102T134337Z`，通过 `current` 与 0600 的 `publishing.env` 引用；四个平台执行组件就绪，真实账号登录和投稿未执行。
+- Chromium / Python / FFmpeg 可执行文件位于 `/opt`，不放在安装器会递归设为 0600 的私有数据目录。CentOS 的系统 `ffmpeg-free` 无法解析 H.264，正式使用 `PUBLISHER_FFPROBE` 指定的固定完整构建。
+- 真实服务用户及 systemd 限制下通过两种 Chromium 启动、11 项 Python 离线测试、16 项 Node 发布测试及 H.264 文件探测。线上登录页、静态资源和未登录权限检查通过；未伪造管理员身份验收内部页面。
+- SQLite 备份辅助进程使用 DB 所属的服务账号与 `mode=ro`，父进程继续保管 root 私有归档。备份服务仅对发布子目录开放 WAL/SHM 辅助文件写入；停服和运行中备份、重新启动及快照完整性均通过。自定义发布数据目录时须同步调整备份 service 的 `ReadWritePaths`。
+- 原有 150 个项目文件、3 个认证文件内容完全保留；没有重发测试或正式教程站。上线后完整私有备份为 `20261102T142947Z.tar.gz`，剩余磁盘约 7.1 GiB；素材总额度 2 GiB、单视频 512 MiB。视频备份仍为全量并保留全部历史，异地与留存策略未配置。
+- 部署回执、配置备份与代码回滚脚本：`/var/backups/herong-dev-guides-author/20261102T134248Z-before-publishing/`。原始回滚基线为 `20261030T080026Z-committed`；`previous` 指向本次中间版，完整回滚应使用保存的 `rollback-code.py`。不还原历史任务队列，不删除发布私有数据。
+
+详细运行版本、来源摘要、边界与验收见 [发布中心集成说明](../../../docs/dev-guides/publishing-integration.md)。

@@ -173,7 +173,7 @@ async function publishImage({ asset, env }) {
   return asset.url;
 }
 
-export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.env, publishImageAsset = publishImage, auth, apiHandler }) {
+export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.env, publishImageAsset = publishImage, auth, apiHandler, articleRevisions }) {
   const roots = {
     draft: resolve(projectRoot, 'drafts'),
     content: resolve(projectRoot, 'src/content/tutorials'),
@@ -283,6 +283,10 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
         throw httpError(403, '本地编辑器验证失败');
       }
 
+      if (!onlineAuth && url.pathname === '/api/auth/session' && method === 'GET') {
+        return sendJson(response, 200, { mode: 'local', authenticated: true });
+      }
+
       if (url.pathname === '/api/session' && method === 'GET') {
         return sendJson(response, 200, { token: currentSession?.csrfToken ?? sessionToken, mediaMode: mediaMode(mediaEnv) });
       }
@@ -341,6 +345,7 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
           if (info.size > MAX_MARKDOWN_BYTES) throw httpError(413, '文章超过 2 MB');
           const content = await readFile(source, 'utf8');
           if (input?.revision !== digest(content)) throw httpError(409, '草稿已修改，请刷新后再操作');
+          if (articleRevisions) await articleRevisions.recordBeforeSave({ kind: 'draft', slug });
           const { frontmatter, body } = splitMarkdown(content);
           const document = parseDocument(frontmatter, { uniqueKeys: true });
           if (document.errors.length) throw httpError(422, '发布信息的 YAML 格式错误');
@@ -397,6 +402,7 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
           const current = await readFile(path, 'utf8');
           if (input.revision !== digest(current)) throw httpError(409, '文章已在其他窗口修改，请刷新后再保存');
           const next = composeMarkdown(input.frontmatter, input.body);
+          if (articleRevisions) await articleRevisions.recordBeforeSave({ kind, slug });
           await saveRevision(kind, slug, current);
           await writeAtomic(path, next);
           return sendJson(response, 200, { revision: digest(next) });
@@ -470,7 +476,7 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
       if (url.pathname.startsWith('/api/') && apiHandler && await apiHandler(request, response, {
         url, projectRoot, roots, templatePath, session: currentSession,
         readJson, sendJson, httpError, digest, splitMarkdown, composeMarkdown,
-        articlePath, withLock, regularFile, safeDirectory, writeAtomic, saveRevision,
+        articlePath, withLock, withArticleLock: withLock, regularFile, safeDirectory, writeAtomic, saveRevision,
       })) return;
       if (url.pathname.startsWith('/api/')) throw httpError(404, '接口不存在');
       if (frontend) return frontend(request, response);

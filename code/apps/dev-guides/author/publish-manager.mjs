@@ -260,7 +260,7 @@ async function install(snapshotRoot, environment, profile, manifest, fingerprint
 }
 
 /** Fixed-environment publisher. Never pass request-controlled paths, commands or env here. */
-export async function createPublishManager({ projectRoot, contentRoot = join(projectRoot, 'src/content/tutorials'), stateRoot, profiles, pnpmCommand = 'pnpm', buildEnv = {}, runBuild = defaultBuild, clock = () => new Date() }) {
+export async function createPublishManager({ projectRoot, contentRoot = join(projectRoot, 'src/content/tutorials'), stateRoot, profiles, pnpmCommand = 'pnpm', buildEnv = {}, runBuild = defaultBuild, clock = () => new Date(), articleRevisions }) {
   if (!stateRoot) throw new Error('A private publisher state directory is required');
   projectRoot = resolve(projectRoot); contentRoot = resolve(contentRoot); stateRoot = resolve(stateRoot);
   const trustedProfiles = Object.fromEntries(['staging', 'production'].map((key) => [key, profileOf(key, profiles?.[key])]));
@@ -268,6 +268,7 @@ export async function createPublishManager({ projectRoot, contentRoot = join(pro
   await directory(stateRoot);
   const publicationDates = createPublicationDates({ stateRoot, getProductionRelease: () => currentRelease(trustedProfiles.production.root), clock });
   await publicationDates.recover();
+  if (articleRevisions) await articleRevisions.recoverFromRelease(await currentRelease(trustedProfiles.production.root));
   const statePath = join(stateRoot, 'state.json');
   let persisted;
   try {
@@ -277,15 +278,28 @@ export async function createPublishManager({ projectRoot, contentRoot = join(pro
   let state = { enabled: true, active: null, lastJob: persisted?.lastJob ?? null, environments: { staging: persisted?.environments?.staging ?? null, production: persisted?.environments?.production ?? null } };
   if (persisted?.active) state.lastJob = { ...persisted.active, status: 'failed', finishedAt: now(), error: '上次发布因服务重启中断，请重新发布预览' };
   let work = Promise.resolve();
+  let starting = false;
+  async function assertRevisionMigration() {
+    if (!articleRevisions) return;
+    const release = await currentRelease(trustedProfiles.production.root);
+    if (!release) return; // A fresh isolated website has no older pages to drop.
+    const metadata = JSON.parse(await readFile(join(release, 'release.json'), 'utf8'));
+    if (!metadata.articleRevisionPlan && !await articleRevisions.baselineReady()) throw failure('已有正式网站尚未导入已核对的文章版本，请先由维护者完成发布基线迁移；当前工作稿可以继续保存', 409);
+  }
   async function save() { await atomicJson(statePath, state); }
   async function execute(job) {
     const snapshotRoot = join(stateRoot, 'work', job.id);
     try {
+      const revisionPlan = articleRevisions ? await articleRevisions.plan(job.previewId) : null;
+      if (revisionPlan) await articleRevisions.assertBaseline(revisionPlan);
+      // In revision mode this immutable projection contains only confirmed
+      // articles plus this selection. Other work-in-progress never enters it.
+      const selectedContentRoot = revisionPlan?.contentRoot ?? contentRoot;
       await directory(snapshotRoot);
-      const fingerprint = await sourceSnapshot(projectRoot, contentRoot, snapshotRoot);
+      const fingerprint = await sourceSnapshot(projectRoot, selectedContentRoot, snapshotRoot);
       const stagingReceipt = state.environments.staging;
       const stagingUrl = trustedProfiles.staging.site + trustedProfiles.staging.basePath;
-      if (job.environment === 'production' && (stagingReceipt?.sourceFingerprint !== fingerprint || stagingReceipt?.url !== stagingUrl)) {
+      if (job.environment === 'production' && (stagingReceipt?.sourceFingerprint !== fingerprint || stagingReceipt?.url !== stagingUrl || (revisionPlan && stagingReceipt?.previewId !== revisionPlan.id))) {
         throw failure('内容或发布地址已更新，请先发布测试环境并检查效果，再发布正式环境');
       }
       const publicationPlan = await publicationDates.prepare(snapshotRoot);
@@ -304,14 +318,19 @@ export async function createPublishManager({ projectRoot, contentRoot = join(pro
       await runBuild({ snapshotRoot, environment: job.environment, profile, pnpmCommand, buildEnv, onPhase });
       await onPhase('verifying');
       const manifest = await artifactManifest(join(snapshotRoot, 'dist'), profile);
-      if (await sourceSnapshot(projectRoot, contentRoot) !== fingerprint) throw failure('内容在发布期间被修改，请保存后重新发布测试环境');
+      if (await sourceSnapshot(projectRoot, selectedContentRoot) !== fingerprint) throw failure('内容在发布期间被修改，请保存后重新发布测试环境');
+      if (revisionPlan) await articleRevisions.assertBaseline(revisionPlan);
       await onPhase('activating');
       const release = await install(snapshotRoot, job.environment, profile, manifest, fingerprint, job,
-        publicationDates.metadata(publicationPlan, job.environment),
+        { ...publicationDates.metadata(publicationPlan, job.environment), ...(revisionPlan ? { articleRevisionPlan: revisionPlan.id } : {}) },
         () => { if (job.environment === 'production') publicationDates.assertActivationDate(publicationPlan); });
-      state.environments[job.environment] = release;
+      state.environments[job.environment] = { ...release, ...(revisionPlan ? { previewId: revisionPlan.id, selection: revisionPlan.selection } : {}) };
       Object.assign(job, { status: 'succeeded', finishedAt: now(), release: release.release, url: release.url });
       if (job.environment === 'production') {
+        if (revisionPlan) {
+          try { await articleRevisions.commit(revisionPlan, release.atUtc); }
+          catch { job.warning = '网站已发布；修订记录将在下次启动时从正式版本恢复，请先核对线上内容。'; }
+        }
         try { await publicationDates.commit(publicationPlan); }
         catch { job.warning = '网站已发布；发布日期已保存在当前版本，私有历史备份将在下次发布前恢复。'; }
       }
@@ -321,21 +340,38 @@ export async function createPublishManager({ projectRoot, contentRoot = join(pro
       state.active = null; state.lastJob = job;
       await save();
       await rm(snapshotRoot, { recursive: true, force: true });
+      // The plan persists as immutable object references; its disposable build
+      // projection can be recreated without duplicating every image per preview.
+      if (articleRevisions && job.previewId) await articleRevisions.releaseProjection(job.previewId).catch(() => {});
     }
   }
   await save();
   return {
     getStatus() { return structuredClone(state); },
-    async start(environment) {
+    async start(environment, selection) {
       if (!['staging', 'production'].includes(environment)) throw failure('请选择测试环境或正式环境', 400);
-      if (state.active) throw failure('已有发布正在进行，请稍候');
-      const job = { id: randomUUID(), environment, status: 'queued', createdAt: now() };
-      state.active = job;
-      try { await save(); } catch (error) { state.active = null; throw error; }
-      work = execute(job);
-      // Handle storage failures without an unhandled rejection; waitForIdle still reports them.
-      work.catch(() => {});
-      return structuredClone(job);
+      if (state.active || starting) throw failure('已有发布正在进行，请稍候');
+      starting = true;
+      try {
+        await assertRevisionMigration();
+        let revisionPlan;
+        if (articleRevisions) {
+          if (environment === 'staging') revisionPlan = await articleRevisions.prepareSelection(selection);
+          else {
+            const previewId = selection?.previewId ?? state.environments.staging?.previewId;
+            if (previewId !== state.environments.staging?.previewId) throw failure('请选择已经检查成功的本文预览', 409);
+            revisionPlan = await articleRevisions.plan(previewId);
+            await articleRevisions.assertBaseline(revisionPlan);
+          }
+        }
+        const job = { id: randomUUID(), environment, status: 'queued', createdAt: now(), ...(revisionPlan ? { previewId: revisionPlan.id, selection: revisionPlan.selection } : {}) };
+        state.active = job;
+        try { await save(); } catch (error) { state.active = null; throw error; }
+        work = execute(job);
+        // Handle storage failures without an unhandled rejection; waitForIdle still reports them.
+        work.catch(() => {});
+        return structuredClone(job);
+      } finally { starting = false; }
     },
     async waitForIdle() { await work; },
   };

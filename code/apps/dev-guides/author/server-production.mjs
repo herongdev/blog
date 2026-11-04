@@ -5,6 +5,10 @@ import { fileURLToPath } from 'node:url';
 import { createAuthorServer } from './server-core.mjs';
 import { createPublishManager } from './publish-manager.mjs';
 import { createPublishProfiles } from './publish-profiles.mjs';
+import { createPublishingService } from './publishing/service.mjs';
+import { createArticleRevisions } from './article-revisions.mjs';
+import { createContentWorkspace } from './content-workspace.mjs';
+import { createWorkspaceHandler } from './workspace-api.mjs';
 
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const frontendRoot = resolve(appRoot, 'author/dist');
@@ -19,6 +23,12 @@ if (!/^\/(?:[a-z0-9-]+\/)*$/.test(basePath) || !Number.isInteger(port) || port <
   throw new Error('Invalid author base path or port');
 }
 
+const publishing = await createPublishingService({
+  dataRoot: resolve(process.env.PUBLISHER_DATA_DIR || resolve(dataRoot, 'publishing')),
+  env: process.env,
+});
+const revisions = await createArticleRevisions({ projectRoot: resolve(dataRoot, 'project') });
+const workspace = await createContentWorkspace({ projectRoot: resolve(dataRoot, 'project') });
 const manager = await createPublishManager({
   projectRoot: appRoot,
   contentRoot: resolve(dataRoot, 'project/src/content/tutorials'),
@@ -26,11 +36,13 @@ const manager = await createPublishManager({
   profiles: createPublishProfiles({ target: process.env.AUTHOR_PUBLISH_TARGET, authorOrigin: origin }),
   pnpmCommand: process.env.AUTHOR_PNPM_COMMAND || 'pnpm',
   buildEnv: { MEDIA_PUBLIC_BASE_URL: process.env.MEDIA_PUBLIC_BASE_URL },
+  articleRevisions: revisions,
 });
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2', '.ico': 'image/x-icon' };
 const server = createAuthorServer({
   projectRoot: resolve(dataRoot, 'project'),
+  articleRevisions: revisions,
   auth: {
     provider: process.env.AUTHOR_AUTH_PROVIDER || 'password',
     wechat: {
@@ -42,19 +54,7 @@ const server = createAuthorServer({
     stateDirectory: resolve(dataRoot, 'auth'),
     bootstrapTokenFile: resolve(dataRoot, 'auth/bootstrap-token'),
   },
-  apiHandler: async (request, response, context) => {
-    if (context.url.pathname !== '/api/publish') return false;
-    if (request.method === 'GET') {
-      context.sendJson(response, 200, manager.getStatus());
-    } else if (request.method === 'POST') {
-      const { environment } = await context.readJson(request, 4096);
-      const job = await manager.start(environment);
-      context.sendJson(response, 202, { job });
-    } else {
-      throw context.httpError(405, '请求方式不支持');
-    }
-    return true;
-  },
+  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager }),
   frontend: async (request, response) => {
     try {
       const url = new URL(request.url, origin);
@@ -71,7 +71,7 @@ const server = createAuthorServer({
         'Cache-Control': 'no-store',
         'X-Content-Type-Options': 'nosniff',
         'X-Robots-Tag': 'noindex, nofollow, noarchive',
-        'Content-Security-Policy': "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://media.herong.info data: blob:; connect-src 'self'; font-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
+        'Content-Security-Policy': "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://media.herong.info data: blob:; media-src 'self' blob:; connect-src 'self'; font-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
         'Referrer-Policy': 'no-referrer',
       });
       if (request.method === 'HEAD') response.end();
@@ -82,10 +82,12 @@ const server = createAuthorServer({
     }
   },
 });
-server.requestTimeout = 60_000;
+server.requestTimeout = Number(process.env.PUBLISHER_UPLOAD_TIMEOUT_MS || 20 * 60_000);
 server.headersTimeout = 20_000;
 server.listen(port, '127.0.0.1', () => console.log('Online tutorial author service ready'));
-for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => {
+for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => {
+  await publishing.close();
+  await workspace.close();
   server.close(() => process.exit(0));
   setTimeout(() => process.exit(1), 25_000).unref();
 });

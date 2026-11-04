@@ -13,6 +13,8 @@ Environment=NODE_ENV=production
 EnvironmentFile=/etc/herong-dev-guides-author/service.env
 EnvironmentFile=/etc/herong-dev-guides-author/media.env
 EnvironmentFile=-/etc/herong-dev-guides-author/wechat.env
+EnvironmentFile=-/etc/herong-dev-guides-author/publishing.env
+EnvironmentFile=-/etc/herong-dev-guides-author/workspace.env
 ExecStart=/opt/herong-dev-guides-author/runtime/bin/node /opt/herong-dev-guides-author/current/code/apps/dev-guides/author/server-production.mjs
 Restart=on-failure
 RestartSec=5

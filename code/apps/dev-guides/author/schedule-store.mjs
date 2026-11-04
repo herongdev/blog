@@ -41,7 +41,8 @@ function validEntry(entry, withDone = false) {
 }
 
 function validate(state) {
-  if (!record(state) || state.version !== 1 || !Number.isInteger(state.cadence) || state.cadence < 1 || state.cadence > 21 ||
+  if (!record(state) || ![1, 2].includes(state.version) ||
+      (state.version === 1 && (!Number.isInteger(state.cadence) || state.cadence < 1 || state.cadence > 21)) ||
       !record(state.current) || !validMonday(state.current.start) || !Array.isArray(state.current.entries) ||
       !Array.isArray(state.queue) || !Array.isArray(state.history) || state.history.length > 2000 ||
       state.queue.length + state.current.entries.length > MAX_ITEMS) fail(500, '排期数据格式错误，请从私有备份恢复');
@@ -58,6 +59,7 @@ function validate(state) {
 }
 
 const snapshot = (entry) => ({ slug: entry.slug, title: entry.title, kind: entry.kind, status: entry.status });
+const doneCount = (entries) => entries.filter((entry) => entry.done).length;
 // Three imported topics reuse older manuscripts without changing their frontmatter.
 const importedSourceIds = { 'codex-worktrees': 'DG004', 'apifox-actual-request': 'DG006', 'cursor-remote-control': 'DG125' };
 function initialRank(entry) {
@@ -131,21 +133,36 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
     if (!Array.isArray(articles) || articles.length > MAX_ITEMS || !articles.every((entry) => validEntry(entry)) || new Set(articles.map((entry) => entry.slug)).size !== articles.length) fail(409, '文章列表含重复地址或无效信息，请先检查文章');
     const thisMonday = weekStartShanghai(now());
     let state = await readDisk();
+    let changed = false;
     if (!state) {
       const ordered = sortInitial(articles).map(snapshot);
-      state = { version: 1, cadence: 3, current: { start: thisMonday, entries: ordered.splice(0, 3).map((entry) => ({ ...entry, done: false })) }, queue: ordered, history: [] };
-      await write(state);
-    } else if (thisMonday > state.current.start) {
-      const archived = { start: state.current.start, entries: state.current.entries.map((entry) => ({ ...snapshot(live(entry, articles)), done: entry.done })) };
-      // Freeze what was already shown as next week; carry unfinished work to the
-      // front of the remaining queue, never silently claim it was completed.
-      const promised = state.queue.splice(0, state.cadence);
-      const unfinished = archived.entries.filter((entry) => !entry.done).map(snapshot);
-      state.history.push(archived);
-      state.current = { start: thisMonday, entries: promised.map((entry) => ({ ...snapshot(live(entry, articles)), done: false })) };
-      state.queue = [...unfinished, ...state.queue];
-      await write(state);
+      state = { version: 2, current: { start: thisMonday, entries: [] }, queue: ordered, history: [] };
+      changed = true;
+    } else if (state.version === 1) {
+      // Upgrade in place without reselecting this week's entries, changing
+      // completion records, or treating the old quota as a new assignment.
+      state = { ...state, version: 2 };
+      delete state.cadence;
+      changed = true;
     }
+    if (thisMonday > state.current.start) {
+      const archived = { start: state.current.start, entries: state.current.entries.map((entry) => ({ ...snapshot(live(entry, articles)), done: entry.done })) };
+      // A new week starts empty. Unfinished entries remain available at the
+      // front of the other topics, and only actual past plans enter history.
+      const unfinished = archived.entries.filter((entry) => !entry.done).map(snapshot);
+      if (archived.entries.length) state.history.push(archived);
+      state.current = { start: thisMonday, entries: [] };
+      state.queue = [...unfinished, ...state.queue];
+      changed = true;
+    }
+    // Completed entries stay in a fixed prefix. Keep each group's old relative
+    // order when adopting existing v1/v2 plans; queue and history stay intact.
+    const grouped = [...state.current.entries.filter((entry) => entry.done), ...state.current.entries.filter((entry) => !entry.done)];
+    if (grouped.some((entry, index) => entry !== state.current.entries[index])) {
+      state.current = { ...state.current, entries: grouped };
+      changed = true;
+    }
+    if (changed) await write(state);
     return { state, articles };
   }
   function present(state, articles) {
@@ -153,9 +170,8 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
     const queue = state.queue.map((entry) => live(entry, articles));
     return {
       revision: hash(JSON.stringify([state, articles.map(snapshot).sort((a, b) => a.slug.localeCompare(b.slug))])),
-      cadence: state.cadence, timezone: ZONE,
+      timezone: ZONE,
       thisWeek: { start: state.current.start, end: addDays(state.current.start, 6), entries: currentEntries },
-      nextWeek: { start: addDays(state.current.start, 7), end: addDays(state.current.start, 13), entries: queue.slice(0, state.cadence) },
       queue,
       history: [...state.history].reverse().map((week) => ({ ...week, end: addDays(week.start, 6), entries: week.entries.map((entry) => {
         const article = articles.find((item) => item.slug === entry.slug);
@@ -183,12 +199,32 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
       if (input.action !== 'cadence' && (typeof input.slug !== 'string' || !SLUG.test(input.slug))) fail(400, '文章地址无效');
       switch (input.action) {
         case 'cadence':
-          if (!Number.isInteger(input.value) || input.value < 1 || input.value > 21) fail(400, '每周条数应为 1 至 21 的整数');
-          state.cadence = input.value; break;
+          fail(410, '排期已改为手动安排，请将条目移入本周');
+        case 'transfer': {
+          if (!['queue', 'current'].includes(input.scope)) fail(400, '只可移到本周或其它');
+          const source = state.current.entries.some((entry) => entry.slug === input.slug) ? state.current.entries : state.queue;
+          const sourceIndex = source.findIndex((entry) => entry.slug === input.slug);
+          if (sourceIndex === -1) fail(404, '这篇文章不在排期中，请刷新后重试');
+          const target = input.scope === 'current' ? state.current.entries : state.queue;
+          const entry = source[sourceIndex];
+          if (source !== target && source === state.current.entries && entry.done) fail(409, '已拍条目请先撤销已拍，再移回其它');
+          if (source === target && source === state.current.entries && entry.done) fail(400, '已拍条目固定在顶部，请先撤销已拍再调整位置');
+          if (source !== target && target === state.current.entries && !articles.some((article) => article.slug === entry.slug)) fail(404, '文章已不存在，请先移出其它');
+          const maximum = target.length + (source === target ? 0 : 1);
+          const requested = position(input.position, maximum, maximum - 1);
+          const destination = target === state.current.entries ? Math.max(requested, doneCount(target)) : requested;
+          source.splice(sourceIndex, 1);
+          target.splice(destination, 0, source === target ? entry : target === state.current.entries
+            ? { ...snapshot(live(entry, articles)), done: false }
+            : snapshot(live(entry, articles)));
+          break;
+        }
         case 'move': {
           if (!['queue', 'current'].includes(input.scope)) fail(400, '只可调整本周或待拍队列');
           const list = input.scope === 'queue' ? state.queue : state.current.entries;
-          const destination = position(input.position, list.length);
+          const requested = position(input.position, list.length);
+          if (input.scope === 'current' && list.some((entry) => entry.slug === input.slug && entry.done)) fail(400, '已拍条目固定在顶部，请先撤销已拍再调整位置');
+          const destination = input.scope === 'current' ? Math.max(requested, doneCount(list)) : requested;
           const entry = take(list, input.slug, '这篇文章不在所选队列，请刷新后重试');
           list.splice(destination, 0, entry); break;
         }
@@ -200,7 +236,7 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
           state.queue.splice(destination, 0, snapshot(article)); break;
         }
         case 'pull': {
-          const destination = position(input.position, state.current.entries.length + 1, state.current.entries.length);
+          const destination = Math.max(position(input.position, state.current.entries.length + 1, state.current.entries.length), doneCount(state.current.entries));
           const entry = take(state.queue, input.slug, '文章不在待拍队列');
           if (!articles.some((article) => article.slug === entry.slug)) fail(404, '文章已不存在，请先移出队列');
           state.current.entries.splice(destination, 0, { ...snapshot(live(entry, articles)), done: false }); break;
@@ -208,7 +244,7 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
         case 'defer': {
           const destination = position(input.position, state.queue.length + 1, state.queue.length);
           const entry = take(state.current.entries, input.slug, '文章不在本周排期');
-          if (entry.done) fail(409, '已拍文章请先取消完成，再移回队列');
+          if (entry.done) fail(409, '已拍条目请先撤销已拍，再移回其它');
           state.queue.splice(destination, 0, snapshot(live(entry, articles))); break;
         }
         case 'complete': {
@@ -216,7 +252,14 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
           const entry = state.current.entries.find((item) => item.slug === input.slug);
           if (!entry) fail(404, '只可修改本周文章的完成状态');
           if (!articles.some((article) => article.slug === entry.slug)) fail(404, '文章不存在，不能标记已拍');
-          entry.done = input.done; break;
+          if (entry.done !== input.done) {
+            state.current.entries.splice(state.current.entries.indexOf(entry), 1);
+            entry.done = input.done;
+            // Completing appends to the completed prefix; undoing inserts at
+            // the front of pending work without disturbing either group.
+            state.current.entries.splice(doneCount(state.current.entries), 0, entry);
+          }
+          break;
         }
         case 'remove': take(state.queue, input.slug, '文章不在待拍队列'); break;
         default: fail(400, '不支持的排期操作');

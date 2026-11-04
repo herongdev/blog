@@ -2,6 +2,7 @@
 Description=Back up private tutorial author content
 
 [Service]
+EnvironmentFile=-/etc/herong-dev-guides-author/publishing.env
 Type=oneshot
 ExecStart=/usr/bin/python3 /opt/herong-dev-guides-author/current/code/infra/dev-guides/author/backup.py
 UMask=0077
@@ -11,3 +12,6 @@ ProtectHome=true
 ProtectSystem=strict
 ReadOnlyPaths=/var/lib/herong-dev-guides-author
 ReadWritePaths=/var/backups/herong-dev-guides-author
+# Read-only SQLite connections may recreate WAL coordination files after shutdown.
+# The backup subprocess uses the database owner; the DB itself is opened mode=ro.
+ReadWritePaths=-/var/lib/herong-dev-guides-author/publishing

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BookOpenText, CalendarDays, Check, ChevronDown, CircleAlert, ExternalLink, FilePlus2, ImagePlus, List, LoaderCircle, LogOut, Moon, Plus, QrCode, Save, Sun, Trash2, Upload } from 'lucide-react';
+import { ArrowLeft, BookOpenText, CalendarDays, Check, ChevronDown, CircleAlert, ExternalLink, FilePlus2, ImagePlus, List, LoaderCircle, LogOut, Moon, Plus, QrCode, Save, Send, Sun, Trash2, Upload } from 'lucide-react';
 import { parseDocument } from 'yaml';
 import { tools } from '../../src/data/tools';
 import { themes } from '../../src/data/themes';
@@ -18,8 +18,11 @@ type EnvironmentRelease = { release: string; atUtc: string; url: string; sourceF
 type PublishState = { enabled: boolean; active: PublishJob | null; lastJob: PublishJob | null; environments: { staging: EnvironmentRelease | null; production: EnvironmentRelease | null } };
 const RichEditor = lazy(() => import('./RichEditor'));
 const ScheduleBoard = lazy(() => import('./ScheduleBoard'));
+const PublishingCenter = lazy(() => import('./PublishingCenter'));
+const ContentWorkspace = lazy(() => import('./ContentWorkspace'));
 const BASE = import.meta.env.BASE_URL;
 const apiUrl = (path: string) => `${BASE}${path.replace(/^\//, '')}`;
+
 function AuthorBrand({ large = false }: { large?: boolean }) {
   return <span className={`author-brand-mark${large ? ' author-brand-mark--large' : ''}`} role="img" aria-label="何荣 HR">
     <img className="author-brand-mark__light" src={`${BASE}logo-hr-light.svg`} width="52" height="36" alt="" aria-hidden="true" />
@@ -101,10 +104,14 @@ export default function App() {
   const [newTitle, setNewTitle] = useState('');
   const [newSlug, setNewSlug] = useState('');
   const [showCreate, setShowCreate] = useState(false);
-  const [workspaceView, setWorkspaceView] = useState<'writing' | 'schedule'>(() => {
-    try { return window.localStorage.getItem('author-workspace-view') === 'writing' ? 'writing' : 'schedule'; }
+  const [workspaceView, setWorkspaceView] = useState<'writing' | 'schedule' | 'publishing'>(() => {
+    try { const saved = window.localStorage.getItem('author-workspace-view'); return saved === 'writing' || saved === 'publishing' ? saved : 'schedule'; }
     catch { return 'schedule'; }
   });
+  const [workspacePending, setWorkspacePending] = useState(false);
+  const [contentTab, setContentTab] = useState<'article' | 'video' | 'assets' | 'publish'>('article');
+  const [publishingContext, setPublishingContext] = useState<{slug:string;title:string;contentId?:string;videoAssetId?:string}|null>(null);
+  const articleOrigin = useRef<'schedule'|'writing'>('schedule');
   const [mobileView, setMobileView] = useState<'list' | 'editor'>('list');
   const [error, setError] = useState(initialAuthError);
   const [notice, setNotice] = useState('');
@@ -150,16 +157,17 @@ export default function App() {
   const refreshLibrary = useCallback(async () => { try { await Promise.all([loadItems(), loadLibrary()]); } catch (problem) { setError((problem as Error).message); } }, [loadItems, loadLibrary]);
   const refreshPublish = useCallback(async () => { try { const result = await request<PublishState>('/api/publish'); setPublish(result); } catch (problem) { if ((problem as Error).message === '请重新登录后继续') return; /* Local writing does not require publishing service. */ } }, [request]);
 
-  const openArticle = useCallback(async (item: ArticleItem, skipConfirm = false) => {
+  const openArticle = useCallback(async (item: ArticleItem, skipConfirm = false, tab: 'article'|'video'|'assets'|'publish' = 'article') => {
+    setContentTab(tab);
     if (articleRef.current && articleKey(articleRef.current) === articleKey(item)) { ++loadSequence.current; setLoading(false); setWorkspaceView('writing'); setMobileView('editor'); return; }
-    if (!skipConfirm && dirty && !window.confirm('当前文章有未保存的更改，确定离开吗？')) return;
+    if (!skipConfirm && (dirty || workspacePending) && !window.confirm('当前内容有未保存的修改或正在上传，确定切换吗？')) return;
     setWorkspaceView('writing');
     const sequence = ++loadSequence.current;
     setMobileView('editor'); setLoading(true); setError(''); setNotice('');
     try { const data = await request<Article>(`/api/articles/${item.kind}/${item.slug}`); if (sequence !== loadSequence.current) return; setArticle(data); setSavedSnapshots((previous) => ({ ...previous, [articleKey(data)]: snapshot(data) })); }
     catch (problem) { if (sequence === loadSequence.current) setError((problem as Error).message); }
     finally { if (sequence === loadSequence.current) setLoading(false); }
-  }, [dirty, request]);
+  }, [dirty, workspacePending, request]);
 
   const connectWorkspace = useCallback(async (loadPublishing = false) => {
     const session = await request<{ token: string; mediaMode: MediaMode }>('/api/session');
@@ -202,7 +210,7 @@ export default function App() {
   useEffect(() => { const beforeUnload = (event: BeforeUnloadEvent) => { if (!dirty) return; event.preventDefault(); event.returnValue = ''; }; window.addEventListener('beforeunload', beforeUnload); return () => window.removeEventListener('beforeunload', beforeUnload); }, [dirty]);
 
   const logout = async () => {
-    if (dirty && !window.confirm('当前文章有未保存的更改，退出会丢弃这些更改。确定退出吗？')) return;
+    if ((dirty || workspacePending) && !window.confirm('当前内容有未保存的修改或正在上传，确定退出吗？')) return;
     try { await request('/api/auth/logout', { method: 'POST' }); csrf.current = ''; setArticle(null); articleRef.current = null; setItems([]); setLibrary(null); setLibrarySelection('all'); setSavedSnapshots({}); setPublish(null); setAuth('login'); setError(''); setNotice(''); } catch (problem) { setError((problem as Error).message); }
   };
 
@@ -238,7 +246,7 @@ export default function App() {
   useEffect(() => { const onKeyDown = (event: KeyboardEvent) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's') { event.preventDefault(); if (auth === 'ready') void save(); } }; window.addEventListener('keydown', onKeyDown); return () => window.removeEventListener('keydown', onKeyDown); }, [save, auth]);
 
   const createDraft = async (event: React.FormEvent) => {
-    event.preventDefault(); if (dirty && !window.confirm('当前文章有未保存的更改，确定新建吗？')) return;
+    event.preventDefault(); if ((dirty || workspacePending) && !window.confirm('当前内容有未保存的修改或正在上传，确定新建吗？')) return;
     setCreating(true); setError('');
     try {
       const folderId = ['all', 'unfiled'].includes(librarySelection) ? null : librarySelection;
@@ -279,15 +287,6 @@ export default function App() {
     finally { setPromoting(false); }
   };
 
-  const beginPublish = async (environment: 'staging' | 'production') => {
-    if (dirty) { setError('请先保存当前文章，再发布网站'); return; }
-    if (environment === 'production' && !window.confirm('将更新正式网站的全部发布内容，读者将看到本次版本。请确认已检查测试环境。继续发布吗？')) return;
-    setPublishBusy(true); setError('');
-    try { await request('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ environment }) }); await refreshPublish(); setNotice(environment === 'staging' ? '正在更新测试环境，可继续写作' : '正在发布正式网站，可继续写作'); }
-    catch (problem) { setError((problem as Error).message); }
-    finally { setPublishBusy(false); }
-  };
-
   const uploadImages = useCallback(async (files: File[]) => {
     if (!article) throw new Error('请先打开文章'); setError(''); const results = [];
     for (const file of files) {
@@ -325,16 +324,18 @@ export default function App() {
   </main></div>;
 
   return <div className={`app-shell mobile-${mobileView}`}>
-    <header className="topbar"><div className="brand"><AuthorBrand /><span>教程写作</span><span className="brand-sub">何荣开发工具库</span></div><div className="topbar-actions"><span className={`media-state media-state-${mediaMode}`}>{mediaMode === 'direct' ? '图片直传' : mediaMode === 'incomplete' ? '图片配置未完成' : '图片暂存'}</span>{themeButton}{online && <button className="icon-text-button" type="button" onClick={() => void logout()}><LogOut size={17} aria-hidden="true" /><span>退出</span></button>}</div></header>
-    <nav className="workspace-tabs" aria-label="工作区"><button type="button" aria-current={workspaceView === 'schedule' ? 'page' : undefined} onClick={() => setWorkspaceView('schedule')}><CalendarDays size={18} aria-hidden="true" />拍摄排期</button><button type="button" aria-current={workspaceView === 'writing' ? 'page' : undefined} onClick={() => setWorkspaceView('writing')}><BookOpenText size={18} aria-hidden="true" />文章写作{dirty && <span className="workspace-dirty">未保存</span>}</button></nav>
-    {workspaceView === 'schedule' ? <><div className="workspace-messages">{messages}</div><Suspense fallback={<div className="welcome"><LoaderCircle className="spin" size={24} aria-hidden="true" /><p>正在打开拍摄排期…</p></div>}><ScheduleBoard request={request} articles={items} onOpen={(item) => void openArticle(item)} onCreate={createScheduledDraft} /></Suspense></> : <>
+    <header className="topbar"><div className="brand"><AuthorBrand /><span>教程写作</span><span className="brand-sub">何荣开发工具库</span></div><div className="topbar-actions"><span className={`media-state media-state-${mediaMode}`}>{!online ? '本地预览' : mediaMode === 'direct' ? '图片直传' : mediaMode === 'incomplete' ? '图片配置未完成' : '图片暂存'}</span>{themeButton}{online && <button className="icon-text-button" type="button" onClick={() => void logout()}><LogOut size={17} aria-hidden="true" /><span>退出</span></button>}</div></header>
+    <nav className="workspace-tabs" aria-label="工作区"><button type="button" aria-current={workspaceView === 'schedule' ? 'page' : undefined} onClick={() => setWorkspaceView('schedule')}><CalendarDays size={18} aria-hidden="true" />拍摄排期</button><button type="button" aria-current={workspaceView === 'writing' ? 'page' : undefined} onClick={() => setWorkspaceView('writing')}><BookOpenText size={18} aria-hidden="true" />内容库{dirty && <span className="workspace-dirty">未保存</span>}</button><button type="button" aria-current={workspaceView === 'publishing' ? 'page' : undefined} onClick={() => { setPublishingContext(null); setWorkspaceView('publishing'); }}><Send size={18} aria-hidden="true" />发布中心</button></nav>
+    <div hidden={workspaceView !== 'publishing'}><Suspense fallback={<div className="welcome"><LoaderCircle className="spin" size={24} aria-hidden="true" /><p>正在打开发布中心…</p></div>}><PublishingCenter key={publishingContext ? `${publishingContext.contentId}:${publishingContext.videoAssetId ?? ''}` : 'all'} request={request} contentContext={publishingContext ?? undefined} onBack={publishingContext ? () => { setContentTab('publish'); setWorkspaceView('writing'); } : undefined} /></Suspense></div>
+    <div hidden={workspaceView !== 'schedule'}><div className="workspace-messages">{messages}</div><Suspense fallback={<div className="welcome"><LoaderCircle className="spin" size={24} aria-hidden="true" /><p>正在打开拍摄排期…</p></div>}><ScheduleBoard request={request} articles={items} onOpen={(item, tab) => { articleOrigin.current = 'schedule'; void openArticle(item, false, tab); }} onCreate={createScheduledDraft} /></Suspense></div>
+    <div hidden={workspaceView !== 'writing'}>
     <nav className="mobile-navigation" aria-label="写作导航"><button type="button" aria-current={mobileView === 'list' ? 'page' : undefined} onClick={() => setMobileView('list')}><List size={18} aria-hidden="true" />文章</button><button type="button" aria-current={mobileView === 'editor' ? 'page' : undefined} onClick={() => setMobileView('editor')} disabled={!article}><BookOpenText size={18} aria-hidden="true" />编辑</button></nav>
     <div className="workspace-messages">{messages}</div>
     <div className="workspace"><aside className="sidebar" aria-label="文章列表"><div className="sidebar-heading"><h2>我的教程</h2><button type="button" className="new-button" onClick={() => setShowCreate((value) => !value)} aria-expanded={showCreate}><FilePlus2 size={17} aria-hidden="true" />新建</button></div>
       {showCreate && <form className="new-form" onSubmit={createDraft}><label htmlFor="new-title">教程标题</label><input id="new-title" value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder="例如：Codex 怎么并行改代码？" minLength={2} maxLength={160} required autoFocus /><label htmlFor="new-slug">文章地址</label><input id="new-slug" value={newSlug} onChange={(event) => setNewSlug(event.target.value.toLowerCase())} placeholder="codex-worktrees" pattern="[a-z0-9]+(-[a-z0-9]+)*" required /><p>保存到：{library && !['all', 'unfiled'].includes(librarySelection) ? folderPath(library.folders, librarySelection) : '未分类'}。文章地址使用英文小写、数字和连字符。</p><button className="create-submit" type="submit" disabled={creating || libraryBusy}>{creating ? '正在创建…' : '创建草稿'}</button></form>}
-      <ArticleLibrary library={library} items={items} activeKey={article ? articleKey(article) : undefined} selection={librarySelection} busy={libraryBusy || creating} onSelect={setLibrarySelection} onOpen={(item) => void openArticle(item)} onAction={changeLibrary} onRefresh={refreshLibrary} />
-      {publish?.enabled && <section className="publish-panel" aria-label="网站发布"><h2>网站发布</h2><p className="field-help">更新“发布内容”中的全部文章，草稿不会公开。</p>{lastJob && <div className={`publish-progress ${lastJob.status === 'failed' ? 'is-error' : ''}`} role="status">{runningJob(lastJob) && <LoaderCircle className="spin" size={16} aria-hidden="true" />}<span>{lastJob.environment === 'staging' ? '测试环境' : '正式网站'}：{statusLabels[lastJob.status] ?? lastJob.status}</span></div>}{lastJob?.error && <p className="field-error" role="alert">{lastJob.error}</p>}{lastJob?.warning && <p className="field-help" role="status">{lastJob.warning}</p>}<div className="publish-actions"><button type="button" className="secondary-button" disabled={busy || dirty} onClick={() => void beginPublish('staging')}><Upload size={16} aria-hidden="true" />更新测试环境</button>{publish.environments.staging && <a className="inline-link" href={publish.environments.staging.url} target="_blank" rel="noreferrer">查看测试网站<ExternalLink size={14} aria-hidden="true" /></a>}<button type="button" className="save-button" disabled={busy || dirty || !publish.environments.staging} onClick={() => void beginPublish('production')}><Upload size={16} aria-hidden="true" />发布正式网站</button>{publish.environments.production && <a className="inline-link" href={publish.environments.production.url} target="_blank" rel="noreferrer">查看正式网站<ExternalLink size={14} aria-hidden="true" /></a>}</div>{dirty && <p className="field-help">先保存当前更改，再发布网站。</p>}</section>}
-    </aside><main className="main-content">{loading ? <div className="welcome"><LoaderCircle className="spin" size={26} aria-hidden="true" /><p>正在打开教程…</p></div> : article ? <><div className="article-topline"><span className="article-location">{library ? folderPath(library.folders, library.assignments[articleKey(article)]) : '我的教程'} / {article.kind === 'draft' ? '草稿' : '发布内容'}</span><div className="save-actions"><span className={`save-status ${dirty ? 'is-dirty' : ''}`}>{saving ? '保存中…' : dirty ? '有未保存的更改' : '已保存'}</span><button type="button" className="save-button" onClick={() => void save()} disabled={!dirty || saving || imageBusy || Boolean(metadata.error)}>{saving ? <LoaderCircle className="spin" size={17} aria-hidden="true" /> : <Save size={17} aria-hidden="true" />}保存</button></div></div>
+      <ArticleLibrary library={library} items={items} activeKey={article ? articleKey(article) : undefined} selection={librarySelection} busy={libraryBusy || creating} onSelect={setLibrarySelection} onOpen={(item) => { articleOrigin.current = 'writing'; void openArticle(item); }} onAction={changeLibrary} onRefresh={refreshLibrary} />
+
+    </aside><main className="main-content">{loading ? <div className="welcome"><LoaderCircle className="spin" size={26} aria-hidden="true" /><p>正在打开教程…</p></div> : article ? <Suspense fallback={<p role="status">正在打开内容…</p>}><ContentWorkspace key={article.slug} slug={article.slug} title={metadata.title || article.slug} kind={article.kind} request={request} dirty={dirty} onPendingChange={setWorkspacePending} onSave={save} articleRevision={article.revision} initialTab={contentTab} onRestore={(restored) => { setArticle(restored); setSavedSnapshots((previous) => ({ ...previous, [articleKey(restored)]: snapshot(restored) })); void loadItems(); }} onBack={() => { setWorkspaceView(articleOrigin.current); setMobileView('list'); }} onOpenPublishing={(context) => { if (!context.videoAssetId) return; setNotice('正在准备所选成片…'); void request<{video_asset_id:string;content_id:string}>(`/api/workspaces/${context.slug}/publishing-video`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assetId:context.videoAssetId})}).then((result) => { setPublishingContext({...context,contentId:result.content_id,videoAssetId:result.video_asset_id}); setWorkspaceView('publishing'); setNotice(''); }).catch((problem) => setError(problem.message)); }}><div className="article-topline"><span className="article-location">{library ? folderPath(library.folders, library.assignments[articleKey(article)]) : '我的教程'} / {article.kind === 'draft' ? '草稿' : '发布内容'}</span><div className="save-actions"><span className={`save-status ${dirty ? 'is-dirty' : ''}`}>{saving ? '保存中…' : dirty ? '有未保存的更改' : '已保存'}</span><button type="button" className="save-button" onClick={() => void save()} disabled={!dirty || saving || imageBusy || Boolean(metadata.error)}>{saving ? <LoaderCircle className="spin" size={17} aria-hidden="true" /> : <Save size={17} aria-hidden="true" />}保存</button></div></div>
       <div className="article-fields"><label className="sr-only" htmlFor="article-title">教程标题</label><textarea ref={titleInput} id="article-title" className="title-input" value={metadata.title} onChange={(event) => updateField('title', event.target.value.replace(/[\r\n]+/g, ' '))} placeholder="用读者会搜索的问题写标题" rows={1} disabled={Boolean(metadata.error)} /><label className="sr-only" htmlFor="article-summary">一句话摘要</label><textarea ref={summaryInput} id="article-summary" className="summary-input" value={metadata.summary} onChange={(event) => updateField('summary', event.target.value)} placeholder="一句话说明能解决什么问题" rows={2} disabled={Boolean(metadata.error)} /><div className="field-row"><label htmlFor="article-tool">工具</label><span className="select-wrap"><select id="article-tool" value={metadata.tool} onChange={(event) => updateField('tool', event.target.value)} disabled={Boolean(metadata.error)}><option value="">选择工具</option>{tools.map((tool) => <option value={tool.slug} key={tool.slug}>{tool.name}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></span><span className="article-folder-field"><span id="article-folder-label">目录</span><FolderPicker folders={library?.folders ?? []} value={library?.assignments[articleKey(article)] ?? null} label="文章所在目录" disabled={!library || libraryBusy || promoting} onChange={(folderId) => { void changeLibrary({ action: 'assign', articleKey: articleKey(article), folderId }).catch((problem) => setError((problem as Error).message)); }} /></span><span className="format-hint">Markdown 正文 · 可粘贴或拖入截图</span></div></div>
       <div className="editor-tools"><button className="secondary-button" type="button" disabled={imageBusy} onClick={() => imageInput.current?.click()}>{imageBusy ? <LoaderCircle className="spin" size={17} aria-hidden="true" /> : <ImagePlus size={17} aria-hidden="true" />}{imageBusy ? '正在上传截图…' : '添加截图'}</button><input ref={imageInput} className="file-input" type="file" accept="image/png,image/jpeg,image/webp" multiple aria-label="选择教程截图" onChange={async (event) => { const files = Array.from(event.target.files ?? []); event.target.value = ''; if (!files.length) return; const targetKey = articleKey(article); setImageBusy(true); try { const images = await uploadImages(files); setArticle((current) => current && articleKey(current) === targetKey ? { ...current, body: `${current.body.trimEnd()}\n\n${images.map((image) => `![${image.alt.replace(/[\[\]\r\n]/g, '')}](${image.url})`).join('\n\n')}\n` } : current); } catch { /* uploadImages already reports an actionable error. */ } finally { setImageBusy(false); } }} /><span className="field-help">插入到正文末尾，可继续编辑位置和说明。</span></div>
       <div className="editor-wrap" aria-label="Markdown 正文编辑区"><Suspense fallback={<div className="welcome"><LoaderCircle className="spin" size={22} aria-hidden="true" /><p>正在打开编辑器…</p></div>}><RichEditor key={articleKey(article)} kind={article.kind} slug={article.slug} value={article.body} onChange={(body) => setArticle((current) => current ? { ...current, body } : current)} compact={compact} uploadImages={uploadImages} /></Suspense></div>
@@ -344,6 +345,6 @@ export default function App() {
         <label htmlFor="video-url">原视频链接（选填）</label><input id="video-url" type="url" value={metadata.text('videoUrl')} onChange={(event) => updateField('videoUrl', event.target.value || undefined)} placeholder="https://…" /><fieldset className="theme-fields"><legend>主题（选填）</legend>{themes.map((item) => <label key={item.slug}><input type="checkbox" checked={metadata.list('themes').includes(item.slug)} onChange={(event) => updateField('themes', event.target.checked ? [...metadata.list('themes'), item.slug] : metadata.list('themes').filter((value) => value !== item.slug))} />{item.name}</label>)}</fieldset>
         <details className="advanced-metadata"><summary>高级文章信息</summary><label htmlFor="frontmatter">全部字段（YAML）</label><textarea id="frontmatter" className="frontmatter-input" spellCheck={false} value={article.frontmatter} onChange={(event) => { setArticle({ ...article, frontmatter: event.target.value }); setNotice(''); }} /></details>{metadata.error && <p className="field-error" role="alert">文章信息格式有误：{metadata.error}</p>}{article.kind === 'draft' && <div className="promote-actions"><button className="secondary-button" type="button" disabled={promoting || saving || imageBusy || !['lead', 'published'].includes(metadata.status) || Boolean(metadata.error)} onClick={() => void promote()}>{promoting ? <LoaderCircle className="spin" size={17} aria-hidden="true" /> : <Upload size={17} aria-hidden="true" />}加入发布内容</button><p className="field-help">先选择内容类型并补全信息，再更新测试环境查看效果。</p></div>}</div></details>
       <div className="editor-bottom-actions"><button className="icon-text-button" type="button" onClick={() => setMobileView('list')}><ArrowLeft size={17} aria-hidden="true" />返回文章与发布</button><button className="save-button" type="button" disabled={!dirty || saving || imageBusy || Boolean(metadata.error)} onClick={() => void save()}><Save size={17} aria-hidden="true" />保存</button></div>
-    </> : <div className="welcome"><ImagePlus size={30} aria-hidden="true" /><h1>开始写第一篇教程</h1><p>选择“新建”，填标题与文章地址即可开始。</p></div>}</main></div></>}
+    </ContentWorkspace></Suspense> : <div className="welcome"><ImagePlus size={30} aria-hidden="true" /><h1>开始写第一篇教程</h1><p>选择“新建”，填标题与文章地址即可开始。</p></div>}</main></div></div>
   </div>;
 }

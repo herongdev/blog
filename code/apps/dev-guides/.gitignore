@@ -19,3 +19,6 @@
 /.schedule.json
 /.schedule.json.*.tmp
 /.editorial-imports/
+.publishing-private/
+/.content-workspace/
+/.article-revisions/
