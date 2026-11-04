@@ -10,4 +10,6 @@
 
 开发者工具教程与短视频 IP 的计划、来源库、候选选题及研究资料，统一从 [项目文档入口](code/docs/dev-guides/README.md) 查看；网站和线上写作台的使用说明见 [应用 README](code/apps/dev-guides/README.md)。
 
+涉及政企与数字孪生、3D 或汽车采样站发布时，必须先阅读 [`code/docs/enterprise-demo-deployment.md`](code/docs/enterprise-demo-deployment.md)，不要根据旧 `/3d/` 路径或代码目录名推断正式地址。
+
 > 证件、私钥、商户证书等敏感原件不要提交到 Git；部署私钥请放到已忽略的 `code/secrets/` 目录。

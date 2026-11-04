@@ -1,0 +1,25 @@
+[Unit]
+Description=Herong sampling station demo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sampling-demo
+Group=sampling-demo
+WorkingDirectory=/var/lib/herong-sampling-station
+Environment=SPRING_PROFILES_ACTIVE=local
+Environment=SERVER_ADDRESS=127.0.0.1
+Environment=SERVER_PORT=24310
+ExecStart=/usr/bin/java -jar /var/www/herong-demos/sampling-station/current/server/fuelvision-server.jar
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/herong-sampling-station
+
+[Install]
+WantedBy=multi-user.target
