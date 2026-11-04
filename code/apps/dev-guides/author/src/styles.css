@@ -105,8 +105,16 @@ a, button, input, textarea, select, summary { -webkit-tap-highlight-color: trans
 .field-row { flex-wrap: wrap; gap: var(--space-2) var(--space-4); padding: var(--space-2) 0; font-size: var(--font-size-sm); }
 .field-row label { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .format-hint { margin-left: auto; color: var(--color-text-muted); font-size: var(--font-size-sm); }
-.editor-wrap { border: 1px solid var(--color-border-control); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-surface); }
+.editor-wrap { --author-editor-gutter: var(--space-4); border: 1px solid var(--color-border-control); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-surface); }
 .bytemd { height: max(56vh, 530px); border: 0; color: var(--color-text-primary); background: var(--color-surface); }
+/* Editing panes use their available width instead of ByteMD's centered 800px page.
+   Keep the measuring line and visible lines identical so cursor coordinates match. */
+.editor-wrap .bytemd-editor .CodeMirror .CodeMirror-lines { max-width: none; margin: 0; padding: var(--author-editor-gutter) 0; }
+.editor-wrap .bytemd-editor .CodeMirror pre.CodeMirror-line,
+.editor-wrap .bytemd-editor .CodeMirror pre.CodeMirror-line-like { padding: 0 var(--author-editor-gutter); }
+.editor-wrap .bytemd .bytemd-preview { padding: 0; }
+.editor-wrap .bytemd-preview .markdown-body { max-width: none; margin: 0; padding: var(--author-editor-gutter); }
+@media (max-width: 760px) { .editor-wrap { --author-editor-gutter: var(--space-3); } }
 .bytemd-toolbar, .bytemd-status { color: var(--color-text-secondary); background: var(--color-surface-subtle); border-color: var(--color-border); }
 .bytemd-toolbar-icon:hover, .bytemd-toolbar-icon-active { background: var(--color-accent-subtle); color: var(--color-accent); }
 .bytemd-split .bytemd-preview, .bytemd-editor, .bytemd-preview { min-width: 0; background: var(--color-surface); color: var(--color-text-primary); }
