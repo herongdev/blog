@@ -281,7 +281,7 @@ export async function createPublishingService({ dataRoot, env = process.env, run
             const authorized = operation.kind === 'target' && typeof event.request_id === 'string' && store.beforeSubmit(value.id, operation.attempt.id, owner);
             send({ type: 'submit_authorized', request_id: event.request_id, authorized: Boolean(authorized) });
           } else if (event.type === 'stage') {
-            const known = new Set(['checking', 'uploading', 'filling', 'preparing', 'submitting', 'verifying', 'waiting_scan', 'waiting_confirmation', 'login', 'done']);
+            const known = new Set(['checking', 'logging_in', 'uploading', 'filling', 'preparing', 'submitting', 'verifying', 'waiting_scan', 'waiting_confirmation', 'login', 'done']);
             store.updateOperation(operation, { stage: known.has(event.stage) ? event.stage : 'working' }, owner);
           } else if (event.type === 'qrcode' && operation.kind === 'session') {
             const qr = event.image_path ?? event.qrcode?.image_path;
@@ -297,7 +297,8 @@ export async function createPublishingService({ dataRoot, env = process.env, run
             if (typeof event.image_path === 'string' && resolve(event.image_path).startsWith(workDirectory + sep)) challenge.image_url = `${PREFIX}/challenges/${challenge.id}/image`;
             store.updateOperation(operation, { status: 'waiting_user', challenge, challenge_image_path: event.image_path && resolve(event.image_path).startsWith(workDirectory + sep) ? event.image_path : null }, owner);
           } else if (event.type === 'result') result = event;
-          else if (event.type === 'error') result = { status: 'failed' };
+          // Only the store's error-code allowlist can turn this into user text.
+          else if (event.type === 'error') result = { status: 'failed', error_code: event.error_code };
         } catch { stop(); break; }
       }
     });

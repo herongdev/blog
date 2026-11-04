@@ -122,6 +122,72 @@ test('login operations isolate accounts and prohibit disconnect during active wo
   } finally { await f.close(); }
 });
 
+test('session failures retain only controlled error codes and never publish raw runner diagnostics', async () => {
+  const f = await fixture();
+  try {
+    for (const [code, message] of [
+      ['LOGIN_PAGE_UNAVAILABLE', '抖音登录页暂时无法打开，请稍后重试'],
+      ['QR_UNAVAILABLE', '未取得登录二维码，请重试'],
+      ['LOGIN_TIMEOUT', '扫码登录超时，请重新扫码'],
+      ['LOGIN_NOT_COMPLETED', '登录尚未完成，请重新扫码'],
+      ['AUTH_CHECK_FAILED', '暂时无法检查账号会话，请稍后重试'],
+    ]) {
+      const session = f.store.newSession(f.account.id, 'login'); const operation = f.store.claim('login-worker');
+      f.store.finish(operation, { status: 'failed', auth_status: 'invalid', error_code: code, message: 'Cookie=private-token https://private.invalid/path /private/account.json', stderr: 'private traceback', url: 'https://private.invalid/path' }, 'login-worker');
+      const saved = f.store.get('sessions', session.id);
+      assert.equal(saved.status, 'failed');
+      assert.equal(saved.auth_status, 'unknown');
+      assert.equal(saved.error_code, code);
+      assert.equal(saved.message, message);
+      assert.equal(f.store.account(f.account.id).auth_status, 'unknown');
+      assert.doesNotMatch(JSON.stringify(saved), /private-token|private\.invalid|account\.json|traceback/);
+    }
+  } finally { await f.close(); }
+});
+
+test('failed login preparation and incomplete QR confirmation cannot be mistaken for an expired session', async () => {
+  const f = await fixture();
+  try {
+    for (const [qrVersion, code, message] of [[0, 'QR_UNAVAILABLE', '未取得登录二维码，请重试'], [1, 'LOGIN_NOT_COMPLETED', '登录尚未完成，请重新扫码']]) {
+      const session = f.store.newSession(f.account.id, 'login'); const operation = f.store.claim('login-worker');
+      f.store.updateOperation(operation, { qr_version: qrVersion }, 'login-worker');
+      f.store.finish(operation, { status: 'failed', auth_status: 'invalid', error_code: 'https://secret.invalid/cookie', message: '/private/account.json' }, 'login-worker');
+      const saved = f.store.get('sessions', session.id);
+      assert.equal(saved.status, 'failed'); assert.equal(saved.auth_status, 'unknown');
+      assert.equal(saved.error_code, code); assert.equal(saved.message, message);
+      assert.doesNotMatch(JSON.stringify(saved), /secret\.invalid|account\.json|失效/);
+    }
+  } finally { await f.close(); }
+});
+
+test('session checks distinguish invalid credentials from check errors and preserve success and cancellation', async () => {
+  const f = await fixture();
+  try {
+    const invalid = f.store.newSession(f.account.id, 'check'); let operation = f.store.claim('check-worker');
+    f.store.finish(operation, { status: 'completed', auth_status: 'invalid' }, 'check-worker');
+    const invalidResult = f.store.get('sessions', invalid.id);
+    assert.equal(invalidResult.status, 'completed'); assert.equal(invalidResult.auth_status, 'invalid'); assert.equal(invalidResult.error_code, null);
+    assert.match(invalidResult.message, /未登录或会话已失效/);
+
+    const failed = f.store.newSession(f.account.id, 'check'); operation = f.store.claim('check-worker');
+    f.store.finish(operation, { status: 'failed', auth_status: 'invalid', message: 'sensitive unknown error' }, 'check-worker');
+    const failedResult = f.store.get('sessions', failed.id);
+    assert.equal(failedResult.status, 'failed'); assert.equal(failedResult.auth_status, 'unknown'); assert.equal(failedResult.error_code, 'AUTH_CHECK_FAILED');
+    assert.equal(failedResult.message, '暂时无法检查账号会话，请稍后重试');
+
+    const valid = f.store.newSession(f.account.id, 'login'); operation = f.store.claim('check-worker');
+    f.store.finish(operation, { auth_status: 'valid', status: 'completed' }, 'check-worker');
+    assert.equal(f.store.get('sessions', valid.id).status, 'completed'); assert.equal(f.store.account(f.account.id).auth_status, 'valid');
+    assert.equal(f.store.get('sessions', valid.id).message, '账号已连接'); assert.equal(f.store.get('sessions', valid.id).error_code, null);
+
+    const canceled = f.store.newSession(f.account.id, 'login'); operation = f.store.claim('check-worker');
+    f.store.updateOperation(operation, { cancel_requested: true }, 'check-worker');
+    f.store.finish(operation, { status: 'failed', auth_status: 'unknown', error_code: 'LOGIN_TIMEOUT' }, 'check-worker');
+    const canceledResult = f.store.get('sessions', canceled.id);
+    assert.equal(canceledResult.status, 'canceled'); assert.equal(canceledResult.message, '已取消本次操作'); assert.equal(canceledResult.error_code, null);
+  } finally { await f.close(); }
+});
+
 test('explicit unsupported declarations and duplicate target selection are rejected', async () => {
   const f = await fixture();
   try {

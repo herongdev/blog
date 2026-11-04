@@ -168,3 +168,10 @@ python3 infra/dev-guides/author/deploy.py
 - 作者 release `20261104T171716Z`，前版 `20261104T165017Z`；选定文件后立即展示准备、传输和校验保存状态，成片页可直接进入账号及文案配置，准备期间防重复请求。新成片限 MP4/MOV/M4V/WebM，MKV 原片继续可保存，历史 MKV 成片可读但准备投稿时提示转换。
 - 183 项测试及构建通过，Edge 隔离环境实际打开选择器、上传预览并带入发布中心。未真实投稿；COS/TOS 当前仍未配置启用。
 - 停写备份 `20261104T171838Z.tar.gz`，回执 `/var/backups/herong-dev-guides-author/20261104T171716Z-video-upload/`。165 个项目文件、认证、配置与公开站/执行器链接保持原样。详细范围见 [本轮记录](../../../docs/tasks/2026-11-05-video-selection-publishing.md)。
+
+## 2026-11-05 抖音登录二维码恢复
+
+- 作者 release `20261104T174057Z`，前版 `20261104T171716Z`；执行器 release `20261104T174054Z-douyin-login`。同条件对照确认 `TasksMax=128` 导致 Chromium 页面崩溃，调整为 512 后生成二维码；2 GiB 内存限额及既有隔离保持不变。
+- 错误反馈区分登录页不可用、没有二维码、扫码超时和检查失败；执行故障不再误报账号会话失效。187 项 Node、29 项选择性 Python 测试及生产构建通过。
+- Edge 后台已实际显示抖音二维码；本人未完成扫码，该次登录超时，尚未验收会话保存或真实投稿。停写备份 `20261104T174434Z.tar.gz`，回执 `/var/backups/herong-dev-guides-author/20261104T174057Z-douyin-login/`，165 个项目文件及认证、配置、公开站保持原样。
+- 新执行器复用 `20261104T085306Z-content-entries` 的只读依赖，该旧版本不可清理或原地重装。完整证据、源码摘要及回滚限制见 [登录修复记录](../../../docs/tasks/2026-11-05-douyin-login-recovery.md)。

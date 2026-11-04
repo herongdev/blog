@@ -51,7 +51,7 @@ async function waitFor(check) {
 async function fixture(options = {}) {
   const root = await mkdtemp(join(tmpdir(), 'publishing-service-'));
   const sauRoot = join(root, 'sau'); await mkdir(join(sauRoot, 'uploader'), { recursive: true });
-  const runnerPath = join(root, 'fake.py'); await writeFile(runnerPath, fake);
+  const runnerPath = join(root, 'fake.py'); await writeFile(runnerPath, options.runnerSource || fake);
   const service = await createPublishingService({ dataRoot: join(root, 'data'), runnerPath, env: { ...process.env, PUBLISHER_PYTHON: '/usr/bin/python3', PUBLISHER_SAU_ROOT: sauRoot, ...options.env }, startWorker: false });
   const server = createServer(async (request, response) => {
     const context = {
@@ -188,5 +188,33 @@ test('QR versions and per-code expiry are enforced, session API never exposes fi
     assert.equal((await fetch(`${f.origin}/api/publishing/login-sessions/${session.id}/qrcode?v=2`)).status, 410);
     f.service.store.finish(operation, { auth_status: 'valid' }, 'qr-worker');
     assert.equal((await f.api(`/login-sessions/${session.id}`)).data.session.qrcode_url, null);
+  } finally { await f.close(); }
+});
+
+test('login/check routes preserve login stage and safe codes across both error and result events', async () => {
+  const source = fake.replace("event('result',auth_status='valid',status='completed')", `event('stage',stage='logging_in' if request['operation']=='login' else 'checking')
+ time.sleep(0.25)
+ event('error' if request['operation']=='login' else 'result',status='failed',auth_status='invalid',error_code='LOGIN_PAGE_UNAVAILABLE' if request['operation']=='login' else 'AUTH_CHECK_FAILED',message='Cookie=do-not-persist https://private.invalid/account /private/account.json')`);
+  const f = await fixture({ runnerSource: source });
+  try {
+    for (const [route, operation, stage, code, message] of [
+      ['login-sessions', 'login', 'logging_in', 'LOGIN_PAGE_UNAVAILABLE', '抖音登录页暂时无法打开，请稍后重试'],
+      ['check', 'check', 'checking', 'AUTH_CHECK_FAILED', '暂时无法检查账号会话，请稍后重试'],
+    ]) {
+      const created = await f.api(`/accounts/${f.account.id}/${route}`, {});
+      assert.equal(created.status, 202); assert.equal(created.data.session.operation, operation);
+      const sessionId = created.data.session.id;
+      const running = f.service.tick();
+      await waitFor(() => f.service.store.get('sessions', sessionId)?.stage === stage);
+      const active = (await f.api(`/login-sessions/${sessionId}`)).data.session;
+      assert.equal(active.stage, stage); assert.equal(active.status, 'running');
+      await running;
+      const completed = (await f.api(`/login-sessions/${sessionId}`)).data.session;
+      assert.equal(completed.status, 'failed'); assert.equal(completed.auth_status, 'unknown');
+      assert.equal(completed.error_code, code); assert.equal(completed.message, message);
+      assert.equal(completed.qr_version, 0); assert.equal(completed.qrcode_url, null);
+      assert.doesNotMatch(JSON.stringify(completed), /do-not-persist|private\.invalid|account\.json/);
+      assert.doesNotMatch(JSON.stringify(f.service.store.all('sessions')), /do-not-persist|private\.invalid|account\.json/);
+    }
   } finally { await f.close(); }
 });

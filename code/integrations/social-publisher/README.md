@@ -16,6 +16,8 @@ uv run --python 3.12 --no-project setup.py
 
 生产 systemd 若配置 ProtectHome，Python 解释器不能引用 `/root/.local`。初始化前设置 `UV_PYTHON_INSTALL_DIR=/opt/herong-social-publisher/python`，确保宿主服务用户可以读取和执行解释器、fork、虚拟环境与浏览器依赖。也可以使用已安装的 `/usr/bin/python3.12` 创建独立虚拟环境。浏览器随 `/opt` 下的执行器版本部署，不能放进作者数据目录：宿主安装器会将私有数据文件统一设为 0600。root 安装的 biliup 默认 0700，生产需明确设置为 `root:dev-guides-author`、0750。私有会话目录仍仅授权宿主用户。
 
+宿主 service 的 `TasksMax` 同时限制进程和线程，Node、Python 与 Chromium 共用该上限。生产抖音登录在 `TasksMax=128` 下触发 `pids.events max` 并崩溃，保持 2 GiB 内存限额、仅提高到 512 后恢复二维码生成。部署使用仓库 service 的 512；诊断需同时检查 PID 上限事件与内存 OOM，不能将页面崩溃直接归因于账号失效。证据见 [登录修复记录](../../docs/tasks/2026-11-05-douyin-login-recovery.md)。
+
 B站二进制固定官方 biliup v1.3.4，各系统下载 URL 与发布方 SHA256 见 `fork-lock.json`。初始化核对下载摘要，运行再核对本地二进制摘要，任务执行中不访问 latest 或自动升级。保留 fork/LICENSE 与 biliup 的 THIRD-PARTY-NOTICES。主线 uv.lock 尚未列入当前 pyproject 的 tinycss2；本模块将这部分及 webencodings 另行精确锁定，其他运行依赖沿用基线 uv.lock。
 
 Linux 生产视频探测工具锁定在 `linux-runtime-lock.json`。本次 CentOS 的系统 `ffmpeg-free` 不能解析 H.264 MP4，生产使用锁中指定的完整静态构建：核对归档 SHA256 后，将归档顶层目录内容解压至执行器的 `.vendor/ffmpeg/`，保留 `LICENSE.txt`，设置 `PUBLISHER_FFPROBE=/opt/herong-social-publisher/current/.vendor/ffmpeg/bin/ffprobe`。不替换系统 FFmpeg 或其他服务的库；上线验收必须用真实 H.264 文件，不能只运行 `ffprobe -version`。

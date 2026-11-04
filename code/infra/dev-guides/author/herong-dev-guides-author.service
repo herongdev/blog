@@ -30,7 +30,7 @@ ProtectControlGroups=true
 RestrictSUIDSGID=true
 ReadWritePaths=/var/lib/herong-dev-guides-author /var/www/herong-dev-guides /var/www/herong-dev-guides-staging
 MemoryMax=2G
-TasksMax=128
+TasksMax=512
 
 [Install]
 WantedBy=multi-user.target

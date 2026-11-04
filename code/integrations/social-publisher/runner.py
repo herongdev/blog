@@ -57,6 +57,7 @@ class Bridge:
         self.runtime = Path(request["data_dir"]).resolve()
         self.qr_version = 0
         self.qr_files = []
+        self.qrcode_seen = False
     def emit(self, event_type, **fields):
         self.seq += 1
         event = {"type": event_type, "seq": self.seq, "at": now(), **{k: self.request[k] for k in ("session_id", "target_id", "attempt_id", "account_id") if k in self.request}, **fields}
@@ -118,6 +119,7 @@ class Bridge:
             raise SafeError("QR_UNAVAILABLE", "平台未提供可用的二维码")
         path = self.copy_qr(payload["image_path"])
         self.emit("qrcode", image_path=str(path), version=self.qr_version, expires_at=(datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat())
+        self.qrcode_seen = True
         self.emit("stage", stage="waiting_scan")
     def cleanup(self):
         for path in self.qr_files:
@@ -199,16 +201,54 @@ def prepare(request):
     return request
 
 
+AUTH_FAILURE_MESSAGES = {
+    "LOGIN_PAGE_UNAVAILABLE": "平台登录页面暂时无法打开，请稍后重试或检查执行节点网络",
+    "QR_UNAVAILABLE": "未能获取平台登录二维码，请重新发起扫码登录",
+    "LOGIN_TIMEOUT": "等待扫码登录超时，请重新获取二维码",
+    "LOGIN_NOT_COMPLETED": "扫码登录尚未完成，请重试；若平台要求验证，请按提示处理",
+    "AUTH_CHECK_FAILED": "暂时无法检查账号会话，请稍后重试",
+}
+# SAU can return a caught browser exception as a failed result. Inspect it only
+# for known navigation failures; never expose its URL, paths, or raw text.
+NAVIGATION_FAILURE = re.compile(
+    r"\b(?:Page|Frame)\.goto:\s|\bnet::ERR_[A-Z_]+\b|"
+    r"\bNavigation (?:failed|timeout|to\s+[\"']|was (?:interrupted|cancelled)|is interrupted)"
+)
+
+
+def auth_failure_result(bridge, detail=None, error=None):
+    detail = detail if isinstance(detail, dict) else {}
+    if bridge.request["operation"] == "check":
+        if detail.get("success") is False and detail.get("status") == "cookie_invalid":
+            return {"status": "completed", "auth_status": "invalid", "message": "账号会话无效，请重新登录", "checked_at": now()}
+        code = "AUTH_CHECK_FAILED"
+    else:
+        message = str(error) if error is not None else str(detail.get("message", ""))
+        if bridge.qrcode_seen:
+            timed_out = detail.get("status") == "timeout" or type(error).__name__ == "TimeoutError"
+            code = "LOGIN_TIMEOUT" if timed_out else "LOGIN_NOT_COMPLETED"
+        else:
+            code = "LOGIN_PAGE_UNAVAILABLE" if NAVIGATION_FAILURE.search(message) else "QR_UNAVAILABLE"
+    return {"status": "failed", "auth_status": "unknown", "error_code": code, "message": AUTH_FAILURE_MESSAGES[code], "checked_at": now()}
+
+
 async def browser_operation(bridge):
     request = bridge.request
     platform, operation = request["platform"], request["operation"]
-    module = importlib.import_module(f"uploader.{platform}_uploader.main")
     account = request["account_file"]
     bridge.emit("stage", stage="checking" if operation != "login" else "logging_in")
     if operation != "publish":
-        result = await getattr(module, PLATFORMS[platform][1])(account, handle=operation == "login", return_detail=True, qrcode_callback=bridge.qrcode, headless=True)
-        valid = bool(result.get("success"))
-        return {"status": "completed" if valid or operation == "check" else "failed", "auth_status": "valid" if valid else "invalid", "message": "账号会话有效" if valid else "账号会话无效或登录未完成", "checked_at": now()}
+        if operation == "check" and not Path(account).is_file():
+            return {"status": "completed", "auth_status": "invalid", "message": "账号尚未登录，请先扫码登录", "checked_at": now()}
+        try:
+            module = importlib.import_module(f"uploader.{platform}_uploader.main")
+            result = await getattr(module, PLATFORMS[platform][1])(account, handle=operation == "login", return_detail=True, qrcode_callback=bridge.qrcode, headless=True)
+        except Exception as error:
+            return auth_failure_result(bridge, error=error)
+        if isinstance(result, dict) and result.get("success") is True:
+            return {"status": "completed", "auth_status": "valid", "message": "账号会话有效", "checked_at": now()}
+        return auth_failure_result(bridge, detail=result)
+    module = importlib.import_module(f"uploader.{platform}_uploader.main")
     if not Path(account).is_file():
         raise SafeError("ACCOUNT_LOGIN_REQUIRED", "请先登录目标账号")
     options = request.get("platform_options") or {}

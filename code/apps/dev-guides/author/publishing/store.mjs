@@ -16,7 +16,9 @@ const errorMessages = {
   INVALID_TITLE: '标题不符合该平台要求，请修改后新建发布', INVALID_TAGS: '话题不符合该平台要求，请修改后新建发布',
   UNSUPPORTED_DECLARATION: '所选声明尚未接入该平台，请修改后新建发布', SOURCE_REQUIRED: '转载内容需要填写来源',
   CATEGORY_REQUIRED: 'B站需要选择投稿分区', ORIGIN_REQUIRED: 'B站需要选择原创或转载',
-  OPERATION_STOPPED: '操作超时或已停止，请检查后重试', QR_UNAVAILABLE: '暂时无法获取登录二维码，请重新登录',
+  OPERATION_STOPPED: '操作超时或已停止，请检查后重试', QR_UNAVAILABLE: '未取得登录二维码，请重试',
+  LOGIN_PAGE_UNAVAILABLE: '抖音登录页暂时无法打开，请稍后重试', LOGIN_TIMEOUT: '扫码登录超时，请重新扫码',
+  LOGIN_NOT_COMPLETED: '登录尚未完成，请重新扫码', AUTH_CHECK_FAILED: '暂时无法检查账号会话，请稍后重试',
   BROWSER_NOT_INSTALLED: '发布服务尚未准备好，请联系维护者', BILIUP_NOT_INSTALLED: 'B站发布服务尚未准备好，请联系维护者',
   FORK_PATCH_MISMATCH: '发布服务版本不一致，请联系维护者', BILIUP_VERSION_MISMATCH: 'B站发布服务版本不一致，请联系维护者',
   COVER_NOT_APPLIED: '指定封面未确认保存，已在提交前停止，请检查封面要求',
@@ -200,9 +202,16 @@ export function createPublishingStore(path) {
       if (operation.kind === 'session') {
         const session = get('sessions', operation.value.id);
         if (session && ['running', 'waiting_user'].includes(session.status)) {
-          const authStatus = ['valid', 'invalid', 'unknown'].includes(result?.auth_status) ? result.auth_status : 'unknown';
-          const completed = authStatus === 'valid' || session.operation === 'check' && authStatus === 'invalid';
-          put('sessions', { ...session, status: session.cancel_requested ? 'canceled' : completed ? 'completed' : 'failed', auth_status: authStatus, challenge: null, qr_path: null, message: authStatus === 'valid' ? '账号已连接' : authStatus === 'invalid' ? '账号尚未登录或会话已失效，请重新登录' : '未完成账号验证，请重试或在执行节点处理验证', finished_at: now() });
+          const knownError = typeof result?.error_code === 'string' && Object.hasOwn(errorMessages, result.error_code) ? result.error_code : null;
+          const valid = result?.auth_status === 'valid' && !result?.error_code && result?.status !== 'failed';
+          // A failed login preparation does not prove that an account expired.
+          // Only a completed check with an explicit invalid result establishes that.
+          const invalidCheck = session.operation === 'check' && result?.auth_status === 'invalid' && !result?.error_code && result?.status !== 'failed';
+          const completed = valid || invalidCheck;
+          const authStatus = valid ? 'valid' : invalidCheck ? 'invalid' : 'unknown';
+          const errorCode = session.cancel_requested || completed ? null : knownError || (session.operation === 'check' ? 'AUTH_CHECK_FAILED' : session.qr_version > 0 ? 'LOGIN_NOT_COMPLETED' : 'QR_UNAVAILABLE');
+          const message = session.cancel_requested ? '已取消本次操作' : errorCode ? errorMessages[errorCode] : valid ? '账号已连接' : '账号尚未登录或会话已失效，请重新登录';
+          put('sessions', { ...session, status: session.cancel_requested ? 'canceled' : completed ? 'completed' : 'failed', auth_status: authStatus, challenge: null, qr_path: null, error_code: errorCode, message, finished_at: now() });
           const acc = account(session.account_id); put('accounts', { ...acc, auth_status: authStatus, checked_at: now() });
         }
       } else {
