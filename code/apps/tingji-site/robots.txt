@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tingji.herong.info/sitemap.xml
