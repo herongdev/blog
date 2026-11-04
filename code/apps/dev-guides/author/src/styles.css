@@ -303,10 +303,28 @@ a, button, input, textarea, select, summary { -webkit-tap-highlight-color: trans
 .workspace-messages:not(:empty) { padding-top: var(--space-4); }
 .workspace-messages .message { margin-bottom: 0; }
 .bytemd .CodeMirror .cm-variable-2 { color: var(--color-accent); }
-.editor-tools { display: inline-flex; align-items: center; gap: var(--space-1); margin: 0; }
+.editor-tools { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--space-1); margin: 0; }
 .article-tool-field { display: inline-flex; align-items: center; gap: var(--space-2); }
+.article-tool-field > label, .article-folder-field > span { flex: none; white-space: nowrap; }
 .editor-tools .field-help { margin: 0; }
 .file-input { display: none; }
+.markdown-import-dialog { width: min(760px, calc(100vw - var(--space-6))); }
+.markdown-import-source-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-2); }
+.markdown-import-source-heading label, .markdown-import-source-heading h3 { margin: 0; color: var(--color-text-primary); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); }
+.markdown-import-input { display: block; width: 100%; min-height: 240px; height: min(36dvh, 360px); resize: vertical; padding: var(--space-3); border: var(--border-width) solid var(--color-border-control); border-radius: var(--radius-sm); background: var(--color-surface-control); color: var(--color-text-primary); font-family: var(--font-family-mono); font-size: var(--font-size-sm); line-height: var(--leading-compact); tab-size: 2; }
+.markdown-import-input::placeholder { color: var(--color-text-placeholder); }
+.markdown-import-notice { display: flex; align-items: flex-start; gap: var(--space-2); margin: 0 0 var(--space-3); color: var(--color-text-warning-strong); font-size: var(--font-size-sm); line-height: var(--leading-compact); }
+.markdown-import-notice svg { flex: none; margin-top: var(--space-half); }
+.markdown-import-metadata { margin: 0; font-size: var(--font-size-sm); }
+.markdown-import-metadata > div { display: grid; grid-template-columns: 5.5em minmax(0, 1fr); gap: var(--space-3); padding-block: var(--space-2); border-bottom: var(--border-width) solid var(--color-border); }
+.markdown-import-metadata dt { color: var(--color-text-muted); }
+.markdown-import-metadata dd { min-width: 0; margin: 0; color: var(--color-text-primary); line-height: var(--leading-compact); overflow-wrap: anywhere; white-space: pre-wrap; }
+.markdown-import-warnings { margin: var(--space-3) 0; padding-left: var(--space-5); color: var(--color-text-warning-strong); font-size: var(--font-size-sm); line-height: var(--leading-compact); }
+.markdown-import-warnings li + li { margin-top: var(--space-1); }
+.markdown-import-body { margin-top: var(--space-3); color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+.markdown-import-body summary { cursor: pointer; min-height: var(--author-control-height); align-content: center; }
+.markdown-import-body pre { max-height: 200px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; margin: var(--space-2) 0 0; padding: var(--space-3); border: var(--border-width) solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface-control); font-family: var(--font-family-mono); }
+.markdown-import-error { overflow-wrap: anywhere; }
 @media (max-width: 760px) { .editor-tools .field-help { display: none; } }
 
 /* Shared author density; mobile and coarse pointers retain touch-size controls. */
