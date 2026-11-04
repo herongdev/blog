@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://herongdev.github.io/blog/</id>
     <title>我的技术分享</title>
-    <updated>2026-11-04T16:28:30.879Z</updated>
+    <updated>2026-11-04T17:12:40.607Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://herongdev.github.io/blog/"/>
     <link rel="self" href="https://herongdev.github.io/blog/atom.xml"/>
@@ -585,7 +585,7 @@ async handleSendMessage() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/AI-%E5%8D%8F%E4%BD%9C%E4%B8%8E%E8%BE%B9%E7%95%8C/ChatGPT%20Scheduled%20%2B%20Secure%20MCP%20Tunnel%20%E4%B8%AA%E4%BA%BA%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C]]></title>
         <id>https://herongdev.github.io/blog/posts/AI-%E5%8D%8F%E4%BD%9C%E4%B8%8E%E8%BE%B9%E7%95%8C/ChatGPT%20Scheduled%20%2B%20Secure%20MCP%20Tunnel%20%E4%B8%AA%E4%BA%BA%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C</id>
         <link href="https://herongdev.github.io/blog/posts/AI-%E5%8D%8F%E4%BD%9C%E4%B8%8E%E8%BE%B9%E7%95%8C/ChatGPT%20Scheduled%20%2B%20Secure%20MCP%20Tunnel%20%E4%B8%AA%E4%BA%BA%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C"/>
-        <updated>2026-11-04T16:28:30.921Z</updated>
+        <updated>2026-11-04T17:12:40.646Z</updated>
         <content type="html"><![CDATA[# ChatGPT Scheduled + Secure MCP Tunnel 个人操作手册
 
 这份手册面向第一次接触这条链路的人，也作为“码圈一分钟”当前个人 Canary 环境的日常运维说明。
@@ -60194,7 +60194,7 @@ Profile = 应用运行通行证
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/harmonyos%E6%95%99%E7%A8%8B/HarmonyOS%20%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%9AWebSocket%20%2B%20SSE%20%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0%EF%BC%88ArkTS/ETS%EF%BC%89]]></title>
         <id>https://herongdev.github.io/blog/posts/harmonyos%E6%95%99%E7%A8%8B/HarmonyOS%20%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%9AWebSocket%20%2B%20SSE%20%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0%EF%BC%88ArkTS/ETS%EF%BC%89</id>
         <link href="https://herongdev.github.io/blog/posts/harmonyos%E6%95%99%E7%A8%8B/HarmonyOS%20%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%9AWebSocket%20%2B%20SSE%20%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0%EF%BC%88ArkTS/ETS%EF%BC%89"/>
-        <updated>2026-11-04T16:28:31.425Z</updated>
+        <updated>2026-11-04T17:12:41.079Z</updated>
         <content type="html"><![CDATA[# HarmonyOS 最佳实践：WebSocket + SSE 分层架构与完整实现（ArkTS/ETS）
 
 > 目标：提供在鸿蒙 ArkTS/ETS 中实现 **WebSocket + SSE + HTTP** 的“分层、可复用、可观察、可回退（WS→SSE→HTTP）”的**最佳实践**。
@@ -73159,7 +73159,7 @@ source ~/.bash_profile
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/java%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%B8%83%E9%83%A8%E5%88%86%EF%BC%9A%E6%9E%84%E5%BB%BA%E4%B8%8E%E8%BF%90%E7%BB%B4/01-Maven/%E7%94%A8%E5%89%8D%E7%AB%AF%E8%A7%86%E8%A7%92%E7%90%86%E8%A7%A3%20Maven%EF%BC%9A%E5%83%8F%20pnpm%20%E4%B8%80%E6%A0%B7%E4%B8%8B%E8%BD%BD%E4%BE%9D%E8%B5%96%E3%80%81%E7%BC%96%E8%AF%91%E3%80%81%E6%B5%8B%E8%AF%95%E3%80%81%E6%89%93%E5%8C%85]]></title>
         <id>https://herongdev.github.io/blog/posts/java%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%B8%83%E9%83%A8%E5%88%86%EF%BC%9A%E6%9E%84%E5%BB%BA%E4%B8%8E%E8%BF%90%E7%BB%B4/01-Maven/%E7%94%A8%E5%89%8D%E7%AB%AF%E8%A7%86%E8%A7%92%E7%90%86%E8%A7%A3%20Maven%EF%BC%9A%E5%83%8F%20pnpm%20%E4%B8%80%E6%A0%B7%E4%B8%8B%E8%BD%BD%E4%BE%9D%E8%B5%96%E3%80%81%E7%BC%96%E8%AF%91%E3%80%81%E6%B5%8B%E8%AF%95%E3%80%81%E6%89%93%E5%8C%85</id>
         <link href="https://herongdev.github.io/blog/posts/java%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%B8%83%E9%83%A8%E5%88%86%EF%BC%9A%E6%9E%84%E5%BB%BA%E4%B8%8E%E8%BF%90%E7%BB%B4/01-Maven/%E7%94%A8%E5%89%8D%E7%AB%AF%E8%A7%86%E8%A7%92%E7%90%86%E8%A7%A3%20Maven%EF%BC%9A%E5%83%8F%20pnpm%20%E4%B8%80%E6%A0%B7%E4%B8%8B%E8%BD%BD%E4%BE%9D%E8%B5%96%E3%80%81%E7%BC%96%E8%AF%91%E3%80%81%E6%B5%8B%E8%AF%95%E3%80%81%E6%89%93%E5%8C%85"/>
-        <updated>2026-11-04T16:28:31.452Z</updated>
+        <updated>2026-11-04T17:12:41.094Z</updated>
         <content type="html"><![CDATA[# 用前端视角理解 Maven：像 pnpm 一样下载依赖、编译、测试、打包
 
 你可以把 Maven 理解成：
@@ -127696,7 +127696,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%881%EF%BC%89%EF%BC%9A%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E4%B8%8E%20Lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%881%EF%BC%89%EF%BC%9A%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E4%B8%8E%20Lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%881%EF%BC%89%EF%BC%9A%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E4%B8%8E%20Lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F"/>
-        <updated>2026-11-04T16:28:31.582Z</updated>
+        <updated>2026-11-04T17:12:41.199Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 1 篇**，保持 Hexo 技术分享风格，主题是 **高阶函数与 Lambda 表达式**。
 
 ---
@@ -127836,7 +127836,7 @@ fun main() {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%882%EF%BC%89%EF%BC%9A%E6%89%A9%E5%B1%95%E5%87%BD%E6%95%B0%EF%BC%88%E7%BB%99%E7%B1%BB%E6%B7%BB%E5%8A%A0%E6%96%B0%E5%8A%9F%E8%83%BD%EF%BC%89]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%882%EF%BC%89%EF%BC%9A%E6%89%A9%E5%B1%95%E5%87%BD%E6%95%B0%EF%BC%88%E7%BB%99%E7%B1%BB%E6%B7%BB%E5%8A%A0%E6%96%B0%E5%8A%9F%E8%83%BD%EF%BC%89</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%882%EF%BC%89%EF%BC%9A%E6%89%A9%E5%B1%95%E5%87%BD%E6%95%B0%EF%BC%88%E7%BB%99%E7%B1%BB%E6%B7%BB%E5%8A%A0%E6%96%B0%E5%8A%9F%E8%83%BD%EF%BC%89"/>
-        <updated>2026-11-04T16:28:31.583Z</updated>
+        <updated>2026-11-04T17:12:41.199Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 2 篇**，保持 Hexo 技术分享风格，主题是 **扩展函数**。
 
 ---
@@ -128285,7 +128285,7 @@ fun unsafeProcess(data: String?): String {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%884%EF%BC%89%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%B1%BB%E3%80%81%E6%9E%9A%E4%B8%BE%E7%B1%BB%E3%80%81%E5%AF%86%E5%B0%81%E7%B1%BB]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%884%EF%BC%89%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%B1%BB%E3%80%81%E6%9E%9A%E4%B8%BE%E7%B1%BB%E3%80%81%E5%AF%86%E5%B0%81%E7%B1%BB</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%884%EF%BC%89%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%B1%BB%E3%80%81%E6%9E%9A%E4%B8%BE%E7%B1%BB%E3%80%81%E5%AF%86%E5%B0%81%E7%B1%BB"/>
-        <updated>2026-11-04T16:28:31.583Z</updated>
+        <updated>2026-11-04T17:12:41.199Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 4 篇**，主题是 **数据类、枚举类、密封类**，保持 Hexo 技术分享风格。
 
 ---
@@ -128431,7 +128431,7 @@ fun eval(expr: Expr): Int = when(expr) {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%885%EF%BC%89%EF%BC%9A%E5%8D%8F%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%BC%82%E6%AD%A5%E4%BB%A3%E7%A0%81%E6%9C%80%E5%B8%B8%E7%94%A8%E5%86%99%E6%B3%95%EF%BC%89]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%885%EF%BC%89%EF%BC%9A%E5%8D%8F%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%BC%82%E6%AD%A5%E4%BB%A3%E7%A0%81%E6%9C%80%E5%B8%B8%E7%94%A8%E5%86%99%E6%B3%95%EF%BC%89</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%885%EF%BC%89%EF%BC%9A%E5%8D%8F%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%BC%82%E6%AD%A5%E4%BB%A3%E7%A0%81%E6%9C%80%E5%B8%B8%E7%94%A8%E5%86%99%E6%B3%95%EF%BC%89"/>
-        <updated>2026-11-04T16:28:31.583Z</updated>
+        <updated>2026-11-04T17:12:41.199Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 5 篇**，主题是 **协程入门（异步代码最常用写法）**，保持 Hexo 技术分享风格，简明实用。
 
 ---
@@ -128590,7 +128590,7 @@ fun main() = runBlocking {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%886%EF%BC%89%EF%BC%9A%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96]]></title>
         <id>https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%886%EF%BC%89%EF%BC%9A%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96</id>
         <link href="https://herongdev.github.io/blog/posts/kotlin%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E8%BF%9B%E9%98%B6%E5%BF%85%E4%BF%AE/Kotlin%20%E8%BF%9B%E9%98%B6%EF%BC%886%EF%BC%89%EF%BC%9A%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"/>
-        <updated>2026-11-04T16:28:31.584Z</updated>
+        <updated>2026-11-04T17:12:41.199Z</updated>
         <content type="html"><![CDATA[好的 ✅ 我来帮你写 **进阶系列第 6 篇**，主题是 **内联函数与性能优化**，继续保持 Hexo 技术分享风格，实用精简。
 
 ---
@@ -132892,7 +132892,7 @@ cargo run
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/swift-quickstart/0-%E6%8F%90%E7%A4%BA%E8%AF%8D]]></title>
         <id>https://herongdev.github.io/blog/posts/swift-quickstart/0-%E6%8F%90%E7%A4%BA%E8%AF%8D</id>
         <link href="https://herongdev.github.io/blog/posts/swift-quickstart/0-%E6%8F%90%E7%A4%BA%E8%AF%8D"/>
-        <updated>2026-11-04T16:28:31.587Z</updated>
+        <updated>2026-11-04T17:12:41.202Z</updated>
         <content type="html"><![CDATA[我来为你总结一些提示词，这样你以后可以快速让我以这种风格来整理和分类 Swift 知识点：
 
 ## 🎯 **提示词模板**
@@ -138885,7 +138885,7 @@ ssh myserver
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E4%BA%91%E5%BC%80%E5%8F%91/%E9%98%BF%E9%87%8C%E4%BA%91/herongsite%20nginx%E9%85%8D%E7%BD%AE]]></title>
         <id>https://herongdev.github.io/blog/posts/%E4%BA%91%E5%BC%80%E5%8F%91/%E9%98%BF%E9%87%8C%E4%BA%91/herongsite%20nginx%E9%85%8D%E7%BD%AE</id>
         <link href="https://herongdev.github.io/blog/posts/%E4%BA%91%E5%BC%80%E5%8F%91/%E9%98%BF%E9%87%8C%E4%BA%91/herongsite%20nginx%E9%85%8D%E7%BD%AE"/>
-        <updated>2026-11-04T16:28:31.595Z</updated>
+        <updated>2026-11-04T17:12:41.208Z</updated>
         <content type="html"><![CDATA[1. `/etc/nginx/nginx.conf`（主配置，已合并我建议的优化）
 2. `/etc/nginx/sites-available/vitepress`（站点配置）
 
@@ -141831,7 +141831,7 @@ export function middleEllipsis(input: string, keepHead = 6, keepTail = 6) {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/MaybeRefOrGetter%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94Vue3%E5%93%8D%E5%BA%94%E5%BC%8FHook%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7%E8%AE%BE%E8%AE%A1]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/MaybeRefOrGetter%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94Vue3%E5%93%8D%E5%BA%94%E5%BC%8FHook%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7%E8%AE%BE%E8%AE%A1</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/MaybeRefOrGetter%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94Vue3%E5%93%8D%E5%BA%94%E5%BC%8FHook%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7%E8%AE%BE%E8%AE%A1"/>
-        <updated>2026-11-04T16:28:31.597Z</updated>
+        <updated>2026-11-04T17:12:41.210Z</updated>
         <content type="html"><![CDATA[# MaybeRefOrGetter 最佳实践——Vue3 响应式 Hook 的兼容性设计
 
 ## 前言
@@ -146977,7 +146977,7 @@ export const useTradeStore = defineStore("trade", () => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/Vue3%20%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%EF%BC%88%E4%BB%A5%20selectedAccount%20%E4%B8%BA%E4%BE%8B%EF%BC%8C%E8%B6%85%E7%BB%86%E9%A2%97%E7%B2%92%E5%BA%A6%EF%BC%89]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/Vue3%20%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%EF%BC%88%E4%BB%A5%20selectedAccount%20%E4%B8%BA%E4%BE%8B%EF%BC%8C%E8%B6%85%E7%BB%86%E9%A2%97%E7%B2%92%E5%BA%A6%EF%BC%89</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/Vue3%20%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%EF%BC%88%E4%BB%A5%20selectedAccount%20%E4%B8%BA%E4%BE%8B%EF%BC%8C%E8%B6%85%E7%BB%86%E9%A2%97%E7%B2%92%E5%BA%A6%EF%BC%89"/>
-        <updated>2026-11-04T16:28:31.600Z</updated>
+        <updated>2026-11-04T17:12:41.212Z</updated>
         <content type="html"><![CDATA[````markdown
 ---
 title: Vue3 计算属性的依赖收集（以 selectedAccount 为例，超细颗粒度）
@@ -147408,7 +147408,7 @@ const { value: viaGetter } = useSmartThing(() => route.query.id);
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/VueUse%20useWindowSize%20%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E6%96%87%E7%AB%A0]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/VueUse%20useWindowSize%20%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E6%96%87%E7%AB%A0</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/VueUse%20useWindowSize%20%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E6%96%87%E7%AB%A0"/>
-        <updated>2026-11-04T16:28:31.600Z</updated>
+        <updated>2026-11-04T17:12:41.213Z</updated>
         <content type="html"><![CDATA[我来为你解析 `@vueuse/core` 中 `useWindowSize` 的实现原理，以 hexo 技术分享的方式呈现：
 Ran tool
 Ran tool
@@ -148160,7 +148160,7 @@ class AuthInterceptor implements Interceptor {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/Web%20%E5%9B%BE%E7%89%87%E6%80%A7%E8%83%BD%E4%B8%8E%E4%BD%93%E9%AA%8C%EF%BC%9A%E4%B8%80%E4%BB%BD%E3%80%8C%E8%83%BD%E8%90%BD%E5%9C%B0%E3%80%8D%E7%9A%84%20Hexo%20%E6%95%99%E7%A8%8B%EF%BC%88%E8%B6%85%E5%85%A8%EF%BC%89]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/Web%20%E5%9B%BE%E7%89%87%E6%80%A7%E8%83%BD%E4%B8%8E%E4%BD%93%E9%AA%8C%EF%BC%9A%E4%B8%80%E4%BB%BD%E3%80%8C%E8%83%BD%E8%90%BD%E5%9C%B0%E3%80%8D%E7%9A%84%20Hexo%20%E6%95%99%E7%A8%8B%EF%BC%88%E8%B6%85%E5%85%A8%EF%BC%89</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/Web%20%E5%9B%BE%E7%89%87%E6%80%A7%E8%83%BD%E4%B8%8E%E4%BD%93%E9%AA%8C%EF%BC%9A%E4%B8%80%E4%BB%BD%E3%80%8C%E8%83%BD%E8%90%BD%E5%9C%B0%E3%80%8D%E7%9A%84%20Hexo%20%E6%95%99%E7%A8%8B%EF%BC%88%E8%B6%85%E5%85%A8%EF%BC%89"/>
-        <updated>2026-11-04T16:28:31.601Z</updated>
+        <updated>2026-11-04T17:12:41.213Z</updated>
         <content type="html"><![CDATA[# Web 图片性能与体验：一份「能落地」的 Hexo 教程（超全）
 
 > 目标：在保持高画质的前提下，把**首屏更快、滚动更稳、流量更省、渲染更顺**做到极致。
@@ -148539,7 +148539,7 @@ for (const file of files) {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/defineModel]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/defineModel</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/defineModel"/>
-        <updated>2026-11-04T16:28:31.601Z</updated>
+        <updated>2026-11-04T17:12:41.213Z</updated>
         <content type="html"><![CDATA[不是“不能 push”，而是\*\*`defineModel` 只在你给 `model.value` 赋新值时才会触发 `update:modelValue`**。
 像 `push / splice` 这种**对同一个数组实例的就地修改\*\*，不会触发 `defineModel` 的 setter，因此**不会向父组件同步**（除非父子共享同一对象引用，这样虽然会“看起来生效”，但违反单向数据流，且很容易被父层下一次渲染覆盖）。
 
@@ -153558,7 +153558,7 @@ watch(
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/window.open]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/window.open</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/window.open"/>
-        <updated>2026-11-04T16:28:31.604Z</updated>
+        <updated>2026-11-04T17:12:41.216Z</updated>
         <content type="html"><![CDATA[下面把“谁开的窗口、谁来关”说清楚，并给你**可直接用的最短代码片段**（复杂点的地方我在上一行加了注释）。
 
 ---
@@ -153846,7 +153846,7 @@ watch(virtualizerRange, ({ startIndex, endIndex }) => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/%E4%B8%BA%E4%BB%80%E4%B9%88%E2%80%9C%E5%8A%A8%E6%80%81%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E2%80%9D%E7%94%A8%20import()%EF%BC%8C%E8%80%8C%E2%80%9C%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6%E2%80%9D%E7%94%A8%20defineAsyncComponent]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/%E4%B8%BA%E4%BB%80%E4%B9%88%E2%80%9C%E5%8A%A8%E6%80%81%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E2%80%9D%E7%94%A8%20import()%EF%BC%8C%E8%80%8C%E2%80%9C%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6%E2%80%9D%E7%94%A8%20defineAsyncComponent</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/%E4%B8%BA%E4%BB%80%E4%B9%88%E2%80%9C%E5%8A%A8%E6%80%81%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E2%80%9D%E7%94%A8%20import()%EF%BC%8C%E8%80%8C%E2%80%9C%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6%E2%80%9D%E7%94%A8%20defineAsyncComponent"/>
-        <updated>2026-11-04T16:28:31.605Z</updated>
+        <updated>2026-11-04T17:12:41.216Z</updated>
         <content type="html"><![CDATA[# 为什么“动态导入模块”用 `import()`，而“异步组件”用 `defineAsyncComponent(() => import(...))`
 
 > `import()` 是 **ES 模块层** 的动态加载原语，返回的是“**模块对象的 Promise**”；
@@ -157721,7 +157721,7 @@ const handleRefresh = () => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/%E8%A1%A8%E6%A0%BC%E5%B0%81%E8%A3%85]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/%E8%A1%A8%E6%A0%BC%E5%B0%81%E8%A3%85</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/Vue/%E8%A1%A8%E6%A0%BC%E5%B0%81%E8%A3%85"/>
-        <updated>2026-11-04T16:28:31.608Z</updated>
+        <updated>2026-11-04T17:12:41.219Z</updated>
         <content type="html"><![CDATA[结论先说：不用另起炉灶。\*\*在现有组件上做“模式开关”\*\*更划算——把“虚拟滚动”做成可拔插策略，同时新增两种模式：`pagination`（分页）和 `infinite`（滚动加载更多）。这样一套列定义、排序、展开、固定列粘性、对外事件全复用，维护成本最低。
 
 下面只给“需要改动的代码片段”，并在复杂逻辑上一行加注释（遵循你的偏好）。
@@ -158481,7 +158481,7 @@ grid-template-columns: 240px minmax(0, 1fr);
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/css/%E5%90%B8%E9%A1%B6sticky%E7%9A%84%E7%94%A8%E6%B3%95]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/css/%E5%90%B8%E9%A1%B6sticky%E7%9A%84%E7%94%A8%E6%B3%95</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/css/%E5%90%B8%E9%A1%B6sticky%E7%9A%84%E7%94%A8%E6%B3%95"/>
-        <updated>2026-11-04T16:28:31.609Z</updated>
+        <updated>2026-11-04T17:12:41.219Z</updated>
         <content type="html"><![CDATA[# stricky
 
 - 当一个滚动区域的一部分需要固定在顶部时，可以使用 stricky
@@ -164637,7 +164637,7 @@ input:-webkit-autofill {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80/%E6%BB%9A%E5%8A%A8%E6%9D%A1%E6%A0%B7%E5%BC%8F%E8%B0%83%E6%95%B4]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80/%E6%BB%9A%E5%8A%A8%E6%9D%A1%E6%A0%B7%E5%BC%8F%E8%B0%83%E6%95%B4</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80/%E6%BB%9A%E5%8A%A8%E6%9D%A1%E6%A0%B7%E5%BC%8F%E8%B0%83%E6%95%B4"/>
-        <updated>2026-11-04T16:28:31.615Z</updated>
+        <updated>2026-11-04T17:12:41.224Z</updated>
         <content type="html"><![CDATA[对于 chrome 浏览器，它提供了修改滚动条样式的接口，开发者只需要加上几句 css 脚本，就可轻松实现滚动条样式的修改.
 
 先说一下滚动条的参数：
@@ -166355,7 +166355,7 @@ watchEffect(() => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%B8%B8%E7%94%A8%E5%BA%93/tanstack%E6%9B%B4%E6%96%B0]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%B8%B8%E7%94%A8%E5%BA%93/tanstack%E6%9B%B4%E6%96%B0</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%B8%B8%E7%94%A8%E5%BA%93/tanstack%E6%9B%B4%E6%96%B0"/>
-        <updated>2026-11-04T16:28:31.617Z</updated>
+        <updated>2026-11-04T17:12:41.226Z</updated>
         <content type="html"><![CDATA[结论先说：
 在 **@tanstack/vue-table v8.20+** 中，`useVueTable` 的 `data` 是按 **shallowRef（浅层响应）** 来处理的——**只侦听 `ref` 的 `.value` 本身是否换了新引用**。因此：
 
@@ -166499,7 +166499,7 @@ const table = useVueTable({
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%B8%B8%E7%94%A8%E5%BA%93/%E6%B5%AE%E5%B1%82]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%B8%B8%E7%94%A8%E5%BA%93/%E6%B5%AE%E5%B1%82</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E5%B8%B8%E7%94%A8%E5%BA%93/%E6%B5%AE%E5%B1%82"/>
-        <updated>2026-11-04T16:28:31.618Z</updated>
+        <updated>2026-11-04T17:12:41.226Z</updated>
         <content type="html"><![CDATA[好的，我给你一个**可落地**的实现方案：点击 `Bid/Ask` 单元格时，**在单元格旁边**弹出交易面板；若屏幕较小（如 ≤768px），自动改为 **底部 Drawer** 展示。方案要点：
 
 - **定位与避免遮挡**：用 `@floating-ui/dom`（更稳健的 Popper 替代）做锚点定位，自动 `flip/shift/offset/size`，保证面板不超出视口。
@@ -169053,7 +169053,7 @@ offsetWidth
         <title type="html"><![CDATA[深入理解 ResizeObserver —— API、回调参数与实战（含 Vue 示例）]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20ResizeObserver%20%E2%80%94%E2%80%94%20API%E3%80%81%E5%9B%9E%E8%B0%83%E5%8F%82%E6%95%B0%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%88%E5%90%AB%20Vue%20%E7%A4%BA%E4%BE%8B%EF%BC%89</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20ResizeObserver%20%E2%80%94%E2%80%94%20API%E3%80%81%E5%9B%9E%E8%B0%83%E5%8F%82%E6%95%B0%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%88%E5%90%AB%20Vue%20%E7%A4%BA%E4%BE%8B%EF%BC%89"/>
-        <updated>2026-11-04T16:28:31.620Z</updated>
+        <updated>2026-11-04T17:12:41.228Z</updated>
         <content type="html"><![CDATA[
 # 一文吃透 ResizeObserver：它解决了什么问题？如何使用？回调入参 entries 的每个属性（contentRect、borderBoxSize、contentBoxSize、devicePixelContentBoxSize、target）到底代表什么？observe 的 box 选项怎么选？附跨浏览器坑位、性能与 Vue 组合式写法
 
@@ -169420,7 +169420,7 @@ ro.disconnect();
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E7%AE%97%E6%B3%95%E6%8A%80%E5%B7%A7/%E9%AB%98%E9%A2%91%E8%A1%8C%E6%80%A7%E5%90%88%E6%89%B9/%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86/%E5%90%88%E5%B9%B6%E5%A4%84%E7%90%86]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E7%AE%97%E6%B3%95%E6%8A%80%E5%B7%A7/%E9%AB%98%E9%A2%91%E8%A1%8C%E6%80%A7%E5%90%88%E6%89%B9/%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86/%E5%90%88%E5%B9%B6%E5%A4%84%E7%90%86</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E7%AE%97%E6%B3%95%E6%8A%80%E5%B7%A7/%E9%AB%98%E9%A2%91%E8%A1%8C%E6%80%A7%E5%90%88%E6%89%B9/%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86/%E5%90%88%E5%B9%B6%E5%A4%84%E7%90%86"/>
-        <updated>2026-11-04T16:28:31.620Z</updated>
+        <updated>2026-11-04T17:12:41.228Z</updated>
         <content type="html"><![CDATA[```ts
 高频行情合批（如果需要）
 // 在复杂逻辑上一行加注释：行情高频更新时合批后再换数组引用，降低重算与渲染频次
@@ -172868,7 +172868,7 @@ declare module "axios" {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E9%89%B4%E6%9D%83-%E7%99%BB%E5%BD%95/%E5%8D%95%E4%B8%80%E5%85%A5%E5%8F%A3%EF%BC%9A%E5%8C%85%E8%A3%85%E5%99%A8%20verifiedAction%E2%80%9D%E6%96%B9%E6%A1%88%EF%BC%88Vite%2BVue3%2BPinia%EF%BC%89]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E9%89%B4%E6%9D%83-%E7%99%BB%E5%BD%95/%E5%8D%95%E4%B8%80%E5%85%A5%E5%8F%A3%EF%BC%9A%E5%8C%85%E8%A3%85%E5%99%A8%20verifiedAction%E2%80%9D%E6%96%B9%E6%A1%88%EF%BC%88Vite%2BVue3%2BPinia%EF%BC%89</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%89%8D%E7%AB%AF/%E9%89%B4%E6%9D%83-%E7%99%BB%E5%BD%95/%E5%8D%95%E4%B8%80%E5%85%A5%E5%8F%A3%EF%BC%9A%E5%8C%85%E8%A3%85%E5%99%A8%20verifiedAction%E2%80%9D%E6%96%B9%E6%A1%88%EF%BC%88Vite%2BVue3%2BPinia%EF%BC%89"/>
-        <updated>2026-11-04T16:28:31.623Z</updated>
+        <updated>2026-11-04T17:12:41.232Z</updated>
         <content type="html"><![CDATA[下面我给出**一套“单一入口：包装器 verifiedAction”方案**（Vite+Vue3+Pinia），目标是：**改动最少、好维护、好扩展、使用方便**。
 实现要点：
 
@@ -175659,7 +175659,7 @@ describe("RedisService", () => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E5%90%8E%E7%AB%AF/Python/Win11%20%E5%8D%87%E7%BA%A7%20Python%203.9%20%E5%88%B0%203.10%2B%20%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97%EF%BC%88winget%20%2B%20py%E5%90%AF%E5%8A%A8%E5%99%A8%E6%96%B9%E6%A1%88%EF%BC%89]]></title>
         <id>https://herongdev.github.io/blog/posts/%E5%90%8E%E7%AB%AF/Python/Win11%20%E5%8D%87%E7%BA%A7%20Python%203.9%20%E5%88%B0%203.10%2B%20%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97%EF%BC%88winget%20%2B%20py%E5%90%AF%E5%8A%A8%E5%99%A8%E6%96%B9%E6%A1%88%EF%BC%89</id>
         <link href="https://herongdev.github.io/blog/posts/%E5%90%8E%E7%AB%AF/Python/Win11%20%E5%8D%87%E7%BA%A7%20Python%203.9%20%E5%88%B0%203.10%2B%20%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97%EF%BC%88winget%20%2B%20py%E5%90%AF%E5%8A%A8%E5%99%A8%E6%96%B9%E6%A1%88%EF%BC%89"/>
-        <updated>2026-11-04T16:28:31.668Z</updated>
+        <updated>2026-11-04T17:12:41.267Z</updated>
         <content type="html"><![CDATA[# Win11 升级 Python 3.9 到 3.10+ 完整指南（winget + py 启动器方案）
 
 在 Win11 上把 Python 从 3.9.20 升到 3.10+，最省事的是用 **winget** 安装"并存版本"，再把默认版本指到 3.10（或更高）。按下面做就行：
@@ -177516,7 +177516,7 @@ HTTPS 下推荐流程：
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E6%95%B0%E5%80%BC%E5%AE%89%E5%85%A8%E5%88%A4%E6%96%AD]]></title>
         <id>https://herongdev.github.io/blog/posts/%E6%95%B0%E5%80%BC%E5%AE%89%E5%85%A8%E5%88%A4%E6%96%AD</id>
         <link href="https://herongdev.github.io/blog/posts/%E6%95%B0%E5%80%BC%E5%AE%89%E5%85%A8%E5%88%A4%E6%96%AD"/>
-        <updated>2026-11-04T16:28:31.671Z</updated>
+        <updated>2026-11-04T17:12:41.269Z</updated>
         <content type="html"><![CDATA[好问题 👍
 这几个其实是一组常见的“数值安全判断函数”，很多人混用。
 下面我给出 **一张完整对比表 + 推荐用法总结**，一眼就能看明白。
@@ -181018,7 +181018,7 @@ self.addEventListener('message', (e) => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E4%B8%8E%E6%B7%B1%E5%BA%A6%E8%B0%83%E8%AF%95/%E5%89%8D%E7%AB%AF%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/%E4%B8%8D%E7%94%A8%E5%BD%95%E5%B1%8F%E7%9A%84%E5%8D%A1%E6%AD%BB%E9%87%87%E6%A0%B7%E6%94%BB%E7%95%A5]]></title>
         <id>https://herongdev.github.io/blog/posts/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E4%B8%8E%E6%B7%B1%E5%BA%A6%E8%B0%83%E8%AF%95/%E5%89%8D%E7%AB%AF%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/%E4%B8%8D%E7%94%A8%E5%BD%95%E5%B1%8F%E7%9A%84%E5%8D%A1%E6%AD%BB%E9%87%87%E6%A0%B7%E6%94%BB%E7%95%A5</id>
         <link href="https://herongdev.github.io/blog/posts/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E4%B8%8E%E6%B7%B1%E5%BA%A6%E8%B0%83%E8%AF%95/%E5%89%8D%E7%AB%AF%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/%E4%B8%8D%E7%94%A8%E5%BD%95%E5%B1%8F%E7%9A%84%E5%8D%A1%E6%AD%BB%E9%87%87%E6%A0%B7%E6%94%BB%E7%95%A5"/>
-        <updated>2026-11-04T16:28:31.673Z</updated>
+        <updated>2026-11-04T17:12:41.271Z</updated>
         <content type="html"><![CDATA[title: 不用录屏，让页面自动采样定位前端卡死
 date: 2025-11-08
 tags: [前端调试, 性能, 卡顿, Chrome, 采样]
@@ -181190,7 +181190,7 @@ async function processBig(list) {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E4%B8%8E%E6%B7%B1%E5%BA%A6%E8%B0%83%E8%AF%95/%E5%89%8D%E7%AB%AF%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/%E4%B8%8D%E9%A2%84%E5%85%88%E5%BC%80%20DevTools%20%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%89%8D%E7%AB%AF%E2%80%9C%E5%8D%A1%E6%AD%BB%E2%80%9D]]></title>
         <id>https://herongdev.github.io/blog/posts/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E4%B8%8E%E6%B7%B1%E5%BA%A6%E8%B0%83%E8%AF%95/%E5%89%8D%E7%AB%AF%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/%E4%B8%8D%E9%A2%84%E5%85%88%E5%BC%80%20DevTools%20%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%89%8D%E7%AB%AF%E2%80%9C%E5%8D%A1%E6%AD%BB%E2%80%9D</id>
         <link href="https://herongdev.github.io/blog/posts/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E4%B8%8E%E6%B7%B1%E5%BA%A6%E8%B0%83%E8%AF%95/%E5%89%8D%E7%AB%AF%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/%E4%B8%8D%E9%A2%84%E5%85%88%E5%BC%80%20DevTools%20%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%89%8D%E7%AB%AF%E2%80%9C%E5%8D%A1%E6%AD%BB%E2%80%9D"/>
-        <updated>2026-11-04T16:28:31.673Z</updated>
+        <updated>2026-11-04T17:12:41.271Z</updated>
         <content type="html"><![CDATA[title: 不预先开 DevTools 时，如何定位前端“卡死”
 date: 2025-11-08
 tags: [前端调试, 性能, 卡顿, Chrome, Vue, React]
@@ -186246,7 +186246,7 @@ CSP 的核心不是“资源能不能访问”，而是：
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E8%BF%90%E7%BB%B4/%E6%94%BE%E8%A1%8C-%E7%94%B3%E8%AF%B7-%E6%8C%82%E8%BD%BD-%E5%B7%A1%E6%A3%80%EF%BC%9ALet%E2%80%99s%20Encrypt%20%2B%20Certbot%20%2B%20Nginx%20%E8%AF%81%E4%B9%A6%E5%85%A8%E6%B5%81%E7%A8%8B]]></title>
         <id>https://herongdev.github.io/blog/posts/%E8%BF%90%E7%BB%B4/%E6%94%BE%E8%A1%8C-%E7%94%B3%E8%AF%B7-%E6%8C%82%E8%BD%BD-%E5%B7%A1%E6%A3%80%EF%BC%9ALet%E2%80%99s%20Encrypt%20%2B%20Certbot%20%2B%20Nginx%20%E8%AF%81%E4%B9%A6%E5%85%A8%E6%B5%81%E7%A8%8B</id>
         <link href="https://herongdev.github.io/blog/posts/%E8%BF%90%E7%BB%B4/%E6%94%BE%E8%A1%8C-%E7%94%B3%E8%AF%B7-%E6%8C%82%E8%BD%BD-%E5%B7%A1%E6%A3%80%EF%BC%9ALet%E2%80%99s%20Encrypt%20%2B%20Certbot%20%2B%20Nginx%20%E8%AF%81%E4%B9%A6%E5%85%A8%E6%B5%81%E7%A8%8B"/>
-        <updated>2026-11-04T16:28:31.679Z</updated>
+        <updated>2026-11-04T17:12:41.276Z</updated>
         <content type="html"><![CDATA[# 放行 → 申请 → 挂载 → 巡检：Let’s Encrypt + Certbot + Nginx 证书全流程
 
 最容易记的思路只有四个词：
@@ -187679,7 +187679,7 @@ function handleChangeSymbol(symbol: SymbolTabItem) {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/WebSocket%E8%AE%A2%E9%98%85%E7%AE%A1%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/WebSocket%E8%AE%A2%E9%98%85%E7%AE%A1%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/WebSocket%E8%AE%A2%E9%98%85%E7%AE%A1%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"/>
-        <updated>2026-11-04T16:28:31.679Z</updated>
+        <updated>2026-11-04T17:12:41.276Z</updated>
         <content type="html"><![CDATA[好的，我将调研 Vue 3 应用中基于单个 socket 实现多组件共享订阅、按需管理订阅/取消订阅（尤其是在虚拟滚动和选中状态变化场景下）的方法。同时，我也会扩展到 React 和大型前端项目的最佳实践，包括是否使用 Web Worker 或主线程控制来优化资源利用和订阅一致性管理。
 
 完成后我会整理推荐的架构方案、可能的代码组织方式和性能注意点。请稍等，我会尽快返回给你结果。
@@ -188679,7 +188679,7 @@ server {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/socket/websocket%E5%88%86%E5%B1%82%E5%B0%81%E8%A3%85%E5%AE%9E%E8%B7%B5%E5%85%B3%E9%97%AD%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/socket/websocket%E5%88%86%E5%B1%82%E5%B0%81%E8%A3%85%E5%AE%9E%E8%B7%B5%E5%85%B3%E9%97%AD%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/socket/websocket%E5%88%86%E5%B1%82%E5%B0%81%E8%A3%85%E5%AE%9E%E8%B7%B5%E5%85%B3%E9%97%AD%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"/>
-        <updated>2026-11-04T16:28:31.680Z</updated>
+        <updated>2026-11-04T17:12:41.277Z</updated>
         <content type="html"><![CDATA[# 分层与命名建议
 
 1. 传输层（Transport / Adapter）
@@ -189571,7 +189571,7 @@ user_id: 'user-123',                          // 你系统里能标识用户的�
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/vue3%20main.ts%20%E6%A0%87%E5%87%86%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/vue3%20main.ts%20%E6%A0%87%E5%87%86%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/vue3%20main.ts%20%E6%A0%87%E5%87%86%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B"/>
-        <updated>2026-11-04T16:28:31.682Z</updated>
+        <updated>2026-11-04T17:12:41.279Z</updated>
         <content type="html"><![CDATA[```ts
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -191115,7 +191115,7 @@ if includeEff.contains("idfa") {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E5%AF%B9localstorage%E7%9A%84%E7%9B%91%E5%90%AC%E6%8B%A6%E6%88%AA]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E5%AF%B9localstorage%E7%9A%84%E7%9B%91%E5%90%AC%E6%8B%A6%E6%88%AA</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E5%AF%B9localstorage%E7%9A%84%E7%9B%91%E5%90%AC%E6%8B%A6%E6%88%AA"/>
-        <updated>2026-11-04T16:28:31.683Z</updated>
+        <updated>2026-11-04T17:12:41.280Z</updated>
         <content type="html"><![CDATA[```ts
 // 🔍 调试：全局监听 localStorage 变化（在最早期捕获）
 if (import.meta.env.DEV) {
@@ -195851,7 +195851,7 @@ function identifyDevice(aaguid: string): string {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/WebAuthn%20transports%20%E7%9A%84%E6%89%80%E6%9C%89%E5%8F%96%E5%80%BC%E4%B8%8E%E5%90%AB%E4%B9%89%EF%BC%88%E5%90%AB%E6%96%B0%E7%89%88%20smart-card/mediation%20%E6%94%BE%E5%9C%A8%20credentials.get%20%E9%A1%B6%E5%B1%82%E5%88%B0%E5%BA%95%E5%B9%B2%E5%98%9B]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/WebAuthn%20transports%20%E7%9A%84%E6%89%80%E6%9C%89%E5%8F%96%E5%80%BC%E4%B8%8E%E5%90%AB%E4%B9%89%EF%BC%88%E5%90%AB%E6%96%B0%E7%89%88%20smart-card/mediation%20%E6%94%BE%E5%9C%A8%20credentials.get%20%E9%A1%B6%E5%B1%82%E5%88%B0%E5%BA%95%E5%B9%B2%E5%98%9B</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/WebAuthn%20transports%20%E7%9A%84%E6%89%80%E6%9C%89%E5%8F%96%E5%80%BC%E4%B8%8E%E5%90%AB%E4%B9%89%EF%BC%88%E5%90%AB%E6%96%B0%E7%89%88%20smart-card/mediation%20%E6%94%BE%E5%9C%A8%20credentials.get%20%E9%A1%B6%E5%B1%82%E5%88%B0%E5%BA%95%E5%B9%B2%E5%98%9B"/>
-        <updated>2026-11-04T16:28:31.686Z</updated>
+        <updated>2026-11-04T17:12:41.283Z</updated>
         <content type="html"><![CDATA[## 1）`mediation` 放在 `credentials.get` 顶层到底干嘛？
 
 `navigator.credentials.get({ publicKey, mediation })` 的 `mediation` 是**取凭据的“介入方式”**，跟 WebAuthn 的 `publicKey` 选项是两块：
@@ -196390,7 +196390,7 @@ return {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/uniapp%20%E5%BE%AE%E4%BF%A1%E7%99%BB%E5%BD%95]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/uniapp%20%E5%BE%AE%E4%BF%A1%E7%99%BB%E5%BD%95</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/uniapp%20%E5%BE%AE%E4%BF%A1%E7%99%BB%E5%BD%95"/>
-        <updated>2026-11-04T16:28:31.687Z</updated>
+        <updated>2026-11-04T17:12:41.283Z</updated>
         <content type="html"><![CDATA[# uniapp 使用 微信登录
 
 - 微信开放平台注册 app, 通过审核后得到 appId 和 AppSecret;
@@ -197790,7 +197790,7 @@ export async function loginWithFallback(opts: {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E6%B5%81%E7%A8%8B]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E6%B5%81%E7%A8%8B</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95%E6%B5%81%E7%A8%8B"/>
-        <updated>2026-11-04T16:28:31.689Z</updated>
+        <updated>2026-11-04T17:12:41.285Z</updated>
         <content type="html"><![CDATA[## 退出登录流程
 
 - 向后端发送请求
@@ -198801,7 +198801,7 @@ class PerformanceMonitor {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%99%BB%E5%BD%95]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%99%BB%E5%BD%95</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%99%BB%E5%BD%95"/>
-        <updated>2026-11-04T16:28:31.689Z</updated>
+        <updated>2026-11-04T17:12:41.285Z</updated>
         <content type="html"><![CDATA[下面给你两部分：**（A）最佳实践要点**（基于规范与资料的广泛检索），**（B）最小改造代码片段**（只贴需要改的地方，复杂逻辑行上方有注释）。
 
 ---
@@ -198928,7 +198928,7 @@ http.interceptors.request.use((config) => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/README]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/README</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/README"/>
-        <updated>2026-11-04T16:28:31.690Z</updated>
+        <updated>2026-11-04T17:12:41.286Z</updated>
         <content type="html"><![CDATA[# UTS 数据类型学习指南
 
 > 本系列文档将复杂的 UTS 数据类型系统分为**快速入门**和**进阶指南**两部分，帮助不同层次的开发者高效学习。
@@ -199039,7 +199039,7 @@ http.interceptors.request.use((config) => {
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/UTS%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/UTS%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/UTS%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"/>
-        <updated>2026-11-04T16:28:31.690Z</updated>
+        <updated>2026-11-04T17:12:41.286Z</updated>
         <content type="html"><![CDATA[# UTS 数据类型快速入门
 
 > **目标读者**：刚接触 UTS 的开发者，特别是来自 JavaScript/TypeScript 背景的同学
@@ -199482,7 +199482,7 @@ console.log(userData.getBoolean("isVip")); // 返回 boolean | null
         <title type="html"><![CDATA[https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/UTS%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BF%9B%E9%98%B6%E6%8C%87%E5%8D%97]]></title>
         <id>https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/UTS%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BF%9B%E9%98%B6%E6%8C%87%E5%8D%97</id>
         <link href="https://herongdev.github.io/blog/posts/%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0/%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/UTS%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BF%9B%E9%98%B6%E6%8C%87%E5%8D%97"/>
-        <updated>2026-11-04T16:28:31.690Z</updated>
+        <updated>2026-11-04T17:12:41.286Z</updated>
         <content type="html"><![CDATA[# UTS 数据类型进阶指南
 
 > **目标读者**：已掌握 UTS 基础类型，需要深入了解类型系统的开发者
@@ -200583,7 +200583,7 @@ UTS 的类型系统提供了强大的功能：
         <title type="html"><![CDATA[https://herongdev.github.io/blog/vue-progress-scroll-tutorial]]></title>
         <id>https://herongdev.github.io/blog/vue-progress-scroll-tutorial</id>
         <link href="https://herongdev.github.io/blog/vue-progress-scroll-tutorial"/>
-        <updated>2026-11-04T16:28:31.691Z</updated>
+        <updated>2026-11-04T17:12:41.286Z</updated>
         <content type="html"><![CDATA[# Vue.js 进度条点击跳转功能实现教程
 
 ## 📖 概述
