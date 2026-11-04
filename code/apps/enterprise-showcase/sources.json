@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "rights": {
+    "status": "not-verified",
+    "note": "Source URLs and acquisition hashes establish provenance only. This repository does not include a redistribution license or permission record for the EasyV media. Reference projects are not Herong's client work.",
+    "permissionRecords": []
+  },
+  "bundleManifestHash": "4a0220536f80a714bbd86734c9df9efef30c350934f1843e24cba316cc98c435",
+  "coverManifestHash": "1297fc7f29485f5d513bcd1e116324e928dd5b3c2ddc22645bc4a457717d39f8",
+  "resources": [
+    {
+      "id": "island",
+      "path": "assets/three-dimensional-main.webm",
+      "url": "https://dt-easyv-prod.oss-cn-hangzhou.aliyuncs.com/homepage-assets/videos/three-dimensional-main.webm",
+      "sha256": "ea37d546b46760221a8c0b023a2202a9c3a0c78881efe6c44007dede8558c2ae",
+      "acquisition": "fresh-get",
+      "bytes": 3488197
+    },
+    {
+      "id": "digital-human",
+      "path": "assets/digital-man-animation.webm",
+      "url": "https://dt-easyv-prod.oss-cn-hangzhou.aliyuncs.com/homepage-assets/videos/digital-man-animation.webm",
+      "sha256": "8877e199dac1de6867b525fd26a78fec17905e23c355a37887113e9a04ec3415",
+      "acquisition": "fresh-get",
+      "bytes": 1271114
+    },
+    {
+      "id": "digital-building",
+      "path": "assets/digital-file-animation.webm",
+      "url": "https://dt-easyv-prod.oss-cn-hangzhou.aliyuncs.com/homepage-assets/videos/digital-file-animation.webm",
+      "sha256": "8e0700b83fb173e252b8e4e996b84d03fcf1c53966b61da704469b0d984d2b2b",
+      "acquisition": "fresh-get",
+      "bytes": 937708
+    },
+    {
+      "id": "cloud-left",
+      "path": "assets/cloud-left.png",
+      "url": "https://assets.easyv.cloud/homepage/common/assets/images/home-header/cloud-left.png",
+      "sha256": "0302a38a6646826cc85dbbdeae3ebc183c5662de13a719f35dd775a80773c180",
+      "acquisition": "archive",
+      "bytes": 52007
+    },
+    {
+      "id": "cloud-center",
+      "path": "assets/cloud-center.png",
+      "url": "https://assets.easyv.cloud/homepage/common/assets/images/home-header/cloud-center.png",
+      "sha256": "38f82a246a983a12ef2b6de5ae55261155ad171b77cea7e819c9d03e35c190d8",
+      "acquisition": "archive",
+      "bytes": 15187
+    },
+    {
+      "id": "cloud-right",
+      "path": "assets/cloud-right.png",
+      "url": "https://assets.easyv.cloud/homepage/common/assets/images/home-header/cloud-right.png",
+      "sha256": "78b94147894ccc1f28caafaf65f2c0cf13d77578a1b5914582636a769fcd2bb3",
+      "acquisition": "archive",
+      "bytes": 16813
+    },
+    {
+      "id": "background",
+      "path": "assets/pc-home-page-background.png",
+      "url": "https://assets.easyv.cloud/homepage/common/assets/images/home-header/pc-home-page-background.png",
+      "sha256": "7939252cb96a3ba3fd276ffa5f439c75be0e633e262a5d989a1a44a5753fc602",
+      "acquisition": "archive",
+      "bytes": 263916
+    },
+    {
+      "id": "baseplate",
+      "path": "assets/three-dimensional-baseplate.webm",
+      "url": "https://dt-easyv-prod.oss-cn-hangzhou.aliyuncs.com/homepage-assets/videos/three-dimensional-baseplate.webm",
+      "sha256": "cd8aaa42e80abb3060bdd97fc20ebc97816ef52746b27c0ea9710512210b0c7d",
+      "acquisition": "fresh-get",
+      "bytes": 3276540
+    },
+    {
+      "path": "assets/easyv-1239.jpg",
+      "url": "https://assets.easyv.cloud/data/3384/3971028/img/ne2ozyisf_1780564181651_g4qhl1rx1s.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "76e9b1e14b9d425ef35f2f15c09d6f1a0b644212b619bbec4477e1cd8ab7881f",
+      "acquisition": "public-cover-http-get",
+      "bytes": 132201
+    },
+    {
+      "path": "assets/easyv-1248.jpg",
+      "url": "https://assets.easyv.cloud/data/3384/3989985/img/eoch6yzpch_1780918896184_dh9xpqtx2t.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "8fb505abca9568dc9f4bddc357341a30bdb5bdb360dc2d6f05a3252ac6c9b13e",
+      "acquisition": "public-cover-http-get",
+      "bytes": 114643
+    },
+    {
+      "path": "assets/easyv-1254.png",
+      "url": "https://assets.easyv.cloud/data/121/3954455/img/glsh7qtkk4_1779155526444_pct9m564fc.png?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "d9e493374028f1b3f325fd983b64f82f2faf7dad9ef84159eb245b3478bc8c89",
+      "acquisition": "public-cover-http-get",
+      "bytes": 447047
+    },
+    {
+      "path": "assets/easyv-1208.jpg",
+      "url": "https://assets.easyv.cloud/data/3384/3527540/img/bml984ivcs_1752731783407_sdkak8c8af.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "b8c5a0428e85b3f002bbf1b7dbb622865ecc43c9cc0b480711a4e3c8c3ce5901",
+      "acquisition": "public-cover-http-get",
+      "bytes": 409333
+    },
+    {
+      "path": "assets/easyv-1091.jpg",
+      "url": "https://assets.easyv.cloud/data/1409/2680354/img/siybg7zk4d_1711527769460_9oy3sz5u28.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "1981723e3c2011f1bfae3eb95da816c61c2e98caac4b9e3294c5eea62631cfae",
+      "acquisition": "public-cover-http-get",
+      "bytes": 278627
+    },
+    {
+      "path": "assets/easyv-758.jpg",
+      "url": "https://assets.easyv.cloud/data/100385/1634363/img/nh0ht4ejds_1676345181891_qp17e2lrmr.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "d7e8338934ea3435a519a55a5b43c0e493ab6083d5f763524f0afce8238b9e10",
+      "acquisition": "public-cover-http-get",
+      "bytes": 451781
+    },
+    {
+      "path": "assets/easyv-1087.jpg",
+      "url": "https://assets.easyv.cloud/data/476/3782659/img/vi5qpu1is_1704358661111_l2ak3ie4z8.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "c7ed4921cf637c92e645847cfa0e57ae3ad543f0e3a22b6e5dbc9ddbb4d982c4",
+      "acquisition": "public-cover-http-get",
+      "bytes": 104323
+    },
+    {
+      "path": "assets/easyv-1086.jpg",
+      "url": "https://assets.easyv.cloud/data/1409/2530902/img/zdp5rf4on_1704358651147_ezlajvt0h4.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "b1d959502ce077eb211dbd7adcf35f36c0b4fd4739720c14e7dcb07fd2c2b99d",
+      "acquisition": "public-cover-http-get",
+      "bytes": 100430
+    },
+    {
+      "path": "assets/easyv-1190.png",
+      "url": "https://assets.easyv.cloud/data/3384/3406314/img/6an0pyhf7_1745310333581_9wbir0yv5e.png?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "84879ec7cdb53c808a38f21fd0232c2b57446b8de173e56b6124d4b7e6488896",
+      "acquisition": "public-cover-http-get",
+      "bytes": 418338
+    },
+    {
+      "path": "assets/easyv-984.png",
+      "url": "https://assets.easyv.cloud/data/1409/2387791/img/4tydonawtm_1699845011015_i8jtlj84bj.png?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "f7f5fc33e507ff19578c83c13df58904231fa5197a9447ece9f475f781f4afd8",
+      "acquisition": "public-cover-http-get",
+      "bytes": 1226426
+    },
+    {
+      "path": "assets/easyv-583.png",
+      "url": "https://assets.easyv.cloud/data/112796/1387047/img/pvxne2iv4_1665394696071_q6evb9ig9u.png?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "a5705fbc302a24830d23261217650605912f50c6a0699022397f5d63db5a6a28",
+      "acquisition": "public-cover-http-get",
+      "bytes": 404907
+    },
+    {
+      "path": "assets/easyv-844.jpg",
+      "url": "https://assets.easyv.cloud/easyv-market/templates/thumb/FITaIuQV3rH9eXvxWQNEt.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "3b6029f00bf7b77fa7ae6eb6401b88210377b28e53919bda015106ebdd758658",
+      "acquisition": "public-cover-http-get",
+      "bytes": 406464
+    },
+    {
+      "path": "assets/easyv-1219.jpg",
+      "url": "https://assets.easyv.cloud/data/160/3690193/img/w680mphy75_1761288869735_rgygjzmptq.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "d90c0f2d4f04aad612aa0dcbeefc31b1a81b91e77576f762435abb5ffe489a29",
+      "acquisition": "public-cover-http-get",
+      "bytes": 359686
+    },
+    {
+      "path": "assets/easyv-969.jpg",
+      "url": "https://assets.easyv.cloud/data/3384/2361232/img/uwvd95tgg_1698805642432_efdtaqpklpg.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "eba1cf3cb6a098f2600c70f1dbe3c4c96cf2e92d18d8de70cc9794d23cb47fe4",
+      "acquisition": "public-cover-http-get",
+      "bytes": 150316
+    },
+    {
+      "path": "assets/easyv-325.jpg",
+      "url": "https://assets.easyv.cloud/easyv-market/templates/thumb/277a6a48-ecd6-4ea1-a60c-cdb641411da2.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "4a2812aa3be978098a1afbb6a53264cf996a8ee01608a8ec44045f570f58bf39",
+      "acquisition": "public-cover-http-get",
+      "bytes": 79477
+    },
+    {
+      "path": "assets/easyv-1250.png",
+      "url": "https://assets.easyv.cloud/data/3384/4010876/img/9raw1u8wst_1782374945925_e3bssipv8.png?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "4da4a561dda9aa9b4a9dc14f40e5295492c47d2da49b8546333fc68e5ddb71b6",
+      "acquisition": "public-cover-http-get",
+      "bytes": 579153
+    },
+    {
+      "path": "assets/easyv-1242.jpg",
+      "url": "https://assets.easyv.cloud/data/3384/3983964/img/u6zp8by1bsh_1780471273865_gr4sc304g7.jpg?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "e20b18a48c49bfda85ad32721261935ccad3093e5ef4e5a2531c9a701e1f8db6",
+      "acquisition": "public-cover-http-get",
+      "bytes": 102097
+    },
+    {
+      "path": "assets/easyv-415.png",
+      "url": "https://assets.easyv.cloud/easyv-market/templates/thumb/725c9695-915f-4705-a0f2-4bf0d7d3acf1.png?x-oss-process=image/resize,m_lfit,h_500",
+      "sha256": "33101b244bc21bcb0e5986342a68e11f09f190b41ff83b005283dcaa7f73708c",
+      "acquisition": "public-cover-http-get",
+      "bytes": 555820
+    }
+  ],
+  "renderer": "Layered video/image composition; not a live geometry engine"
+}

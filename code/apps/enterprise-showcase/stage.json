@@ -1,0 +1,392 @@
+{
+  "version": 1,
+  "assetBase": "https://herong-media.tos-cn-beijing.volces.com/projects/enterprise/v1/assets/",
+  "label": "城市、能源与港口动态展示。空格暂停或继续播放。",
+  "header": {
+    "title": "何荣工作室的数字孪生世界",
+    "actions": [
+      "商务合作",
+      "预约展示"
+    ],
+    "actionIcons": [
+      "link",
+      "cube"
+    ]
+  },
+  "background": "linear-gradient(270deg,#00090e -0.4%,#0f0f11 88.82%,#101011 99.91%)",
+  "aspectRatio": 1.7777777777777777,
+  "widthPercent": 74,
+  "timeoutMs": 60000,
+  "tilt": {
+    "layer": "island",
+    "perspective": 900,
+    "rotateX": 4,
+    "rotateY": 3,
+    "alphaThreshold": 0.1
+  },
+  "backdrop": [
+    {
+      "id": "background",
+      "kind": "image",
+      "src": "assets/pc-home-page-background.png",
+      "x": 0,
+      "y": 0,
+      "width": 100,
+      "height": 100,
+      "z": 1,
+      "fit": "cover"
+    },
+    {
+      "id": "baseplate",
+      "kind": "video",
+      "src": "assets/three-dimensional-baseplate.webm",
+      "x": 0,
+      "y": 0,
+      "width": 100,
+      "height": 100,
+      "z": 2,
+      "fit": "cover",
+      "opacity": 0.7
+    }
+  ],
+  "layers": [
+    {
+      "id": "island",
+      "kind": "video",
+      "src": "assets/three-dimensional-main.webm",
+      "x": 0,
+      "y": 0,
+      "width": 100,
+      "height": 100,
+      "z": 5
+    },
+    {
+      "id": "digital-human",
+      "kind": "video",
+      "src": "assets/digital-man-animation.webm",
+      "x": 2,
+      "y": 20.2222222222,
+      "width": 24,
+      "height": 35.5555555556,
+      "z": 6
+    },
+    {
+      "id": "digital-building",
+      "kind": "video",
+      "src": "assets/digital-file-animation.webm",
+      "x": 87,
+      "y": 26.5333333333,
+      "width": 22,
+      "height": 46.9333333333,
+      "z": 6
+    },
+    {
+      "id": "cloud-left",
+      "kind": "image",
+      "src": "assets/cloud-left.png",
+      "x": 26,
+      "y": 28.84,
+      "width": 16.2,
+      "height": 11.2,
+      "z": 8,
+      "opacity": 0.5,
+      "floatSeconds": 11
+    },
+    {
+      "id": "cloud-center",
+      "kind": "image",
+      "src": "assets/cloud-center.png",
+      "x": 41,
+      "y": 33,
+      "width": 21.6,
+      "height": 11.2,
+      "z": 9,
+      "floatSeconds": 10
+    },
+    {
+      "id": "cloud-right",
+      "kind": "image",
+      "src": "assets/cloud-right.png",
+      "x": 53.6,
+      "y": 27.88,
+      "width": 16.2,
+      "height": 9.6,
+      "z": 10,
+      "opacity": 0.7,
+      "floatSeconds": 12
+    }
+  ],
+  "showcase": {
+    "showHeading": false,
+    "title": "项目展示",
+    "description": "从业务场景到交互细节，按领域探索数字孪生项目。",
+    "placeholders": 0,
+    "categories": [
+      {
+        "id": "energy",
+        "label": "智慧能源",
+        "icon": "energy"
+      },
+      {
+        "id": "traffic",
+        "label": "智慧交通",
+        "icon": "route"
+      },
+      {
+        "id": "industry",
+        "label": "智慧工厂",
+        "icon": "factory"
+      },
+      {
+        "id": "water",
+        "label": "智慧水利",
+        "icon": "water"
+      },
+      {
+        "id": "campus",
+        "label": "智慧园区",
+        "icon": "buildings"
+      },
+      {
+        "id": "logistics",
+        "label": "物流仓储",
+        "icon": "warehouse"
+      }
+    ],
+    "hotspots": [
+      {
+        "category": "traffic",
+        "x": 22,
+        "y": 56
+      },
+      {
+        "category": "energy",
+        "x": 34,
+        "y": 78
+      },
+      {
+        "category": "industry",
+        "x": 56,
+        "y": 68
+      },
+      {
+        "category": "water",
+        "x": 68,
+        "y": 38
+      },
+      {
+        "category": "campus",
+        "x": 47,
+        "y": 44
+      }
+    ],
+    "projects": [
+      {
+        "id": "sampling-station",
+        "category": "energy",
+        "title": "汽车采样站数字孪生演示",
+        "summary": "燃料采样 / 三维组态 / 实时流程",
+        "role": "前后端集成、三维场景与部署",
+        "href": "https://herong.info/projects/enterprise/sampling-station/"
+      },
+      {
+        "id": "easyv-1239",
+        "category": "energy",
+        "title": "电力能源运行监测可视化平台",
+        "summary": "电力 / 能源 / 地图",
+        "cover": "assets/easyv-1239.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1239.html"
+        }
+      },
+      {
+        "id": "easyv-1248",
+        "category": "energy",
+        "title": "风电场运行监测驾驶舱",
+        "summary": "风电 / 运行监测",
+        "cover": "assets/easyv-1248.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1248.html"
+        }
+      },
+      {
+        "id": "easyv-1254",
+        "category": "energy",
+        "title": "炼焦煤重介浮选联合全流程",
+        "summary": "露天矿 / 能源矿产",
+        "cover": "assets/easyv-1254.png",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1254.html"
+        }
+      },
+      {
+        "id": "easyv-1208",
+        "category": "traffic",
+        "title": "数字港口业务系统",
+        "summary": "港口 / 数字港口 / 码头",
+        "cover": "assets/easyv-1208.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1208.html"
+        }
+      },
+      {
+        "id": "easyv-1091",
+        "category": "traffic",
+        "title": "智慧交通驾驶可视化大屏",
+        "summary": "交通 / 公交车",
+        "cover": "assets/easyv-1091.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1091.html"
+        }
+      },
+      {
+        "id": "easyv-758",
+        "category": "traffic",
+        "title": "地铁运维管理系统",
+        "summary": "地铁",
+        "cover": "assets/easyv-758.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/758.html"
+        }
+      },
+      {
+        "id": "easyv-1087",
+        "category": "industry",
+        "title": "3D智慧工厂可视化（厂区视图）",
+        "summary": "工业 / 园区 / 厂区",
+        "cover": "assets/easyv-1087.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1087.html"
+        }
+      },
+      {
+        "id": "easyv-1086",
+        "category": "industry",
+        "title": "3D智慧工厂可视化（产线视图）",
+        "summary": "工业 / 园区 / 厂线",
+        "cover": "assets/easyv-1086.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1086.html"
+        }
+      },
+      {
+        "id": "easyv-1190",
+        "category": "industry",
+        "title": "涡轮引擎数据监测大屏",
+        "summary": "涡轮引擎 / 制造业 / 零部件",
+        "cover": "assets/easyv-1190.png",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1190.html"
+        }
+      },
+      {
+        "id": "easyv-984",
+        "category": "water",
+        "title": "琥珀黄-水雨情综合监测预报预警",
+        "summary": "水利 / 河流监管",
+        "cover": "assets/easyv-984.png",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/984.html"
+        }
+      },
+      {
+        "id": "easyv-583",
+        "category": "water",
+        "title": "智慧水域指挥平台",
+        "summary": "水利 / 水域 / 水务",
+        "cover": "assets/easyv-583.png",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/583.html"
+        }
+      },
+      {
+        "id": "easyv-844",
+        "category": "water",
+        "title": "城市水循环可视化",
+        "summary": "水资源 / 能源可视化",
+        "cover": "assets/easyv-844.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/844.html"
+        }
+      },
+      {
+        "id": "easyv-1219",
+        "category": "campus",
+        "title": "办公园区孪生可视化平台",
+        "summary": "办公园区 / 智慧园区 / 3d高斯",
+        "cover": "assets/easyv-1219.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1219.html"
+        }
+      },
+      {
+        "id": "easyv-969",
+        "category": "campus",
+        "title": "Web3D园区渲染",
+        "summary": "3D园区",
+        "cover": "assets/easyv-969.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/969.html"
+        }
+      },
+      {
+        "id": "easyv-325",
+        "category": "campus",
+        "title": "3D园区场景漫游",
+        "summary": "园区",
+        "cover": "assets/easyv-325.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/325.html"
+        }
+      },
+      {
+        "id": "easyv-1250",
+        "category": "logistics",
+        "title": "物流配送调度可视化平台",
+        "summary": "物流",
+        "cover": "assets/easyv-1250.png",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1250.html"
+        }
+      },
+      {
+        "id": "easyv-1242",
+        "category": "logistics",
+        "title": "全国仓储产业链监管平台",
+        "summary": "仓储 / 产业链",
+        "cover": "assets/easyv-1242.jpg",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/1242.html"
+        }
+      },
+      {
+        "id": "easyv-415",
+        "category": "logistics",
+        "title": "智能仓库生产监测系统",
+        "summary": "工业 / 仓库 / 3D",
+        "cover": "assets/easyv-415.png",
+        "reference": {
+          "label": "EasyV",
+          "url": "https://easyv.cloud/m/market/415.html"
+        }
+      }
+    ]
+  }
+}
