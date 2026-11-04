@@ -55,3 +55,6 @@ db.json
 # 本地调试输出，以及误拷进博客目录的生成物
 output/
 code/apps/blog/my-blog/
+
+# Generated planning exports stay local; source and task documents live in code/docs.
+code/outputs/
