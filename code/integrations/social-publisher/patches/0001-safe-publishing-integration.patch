@@ -1,0 +1,687 @@
+From 5b0a0b9f328c9cd890dd7757b6563494abfcbb87 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E4=BD=95=E8=8D=A3?= <379925144@qq.com>
+Date: Mon, 2 Nov 2026 21:10:44 +0800
+Subject: [PATCH] Add guarded publishing hooks for host integration
+
+Original patch commit: 5b0a0b9f328c9cd890dd7757b6563494abfcbb87.
+Includes the 2026-11-04 source-relative static-resource fix below; the From
+commit identifies the original patch, not a new commit for this amendment.
+
+---
+ conf.example.py                       |   3 +-
+ uploader/douyin_uploader/main.py      |  76 +++++---------------
+ uploader/tencent_uploader/main.py     | 100 ++++++++------------------
+ uploader/xiaohongshu_uploader/main.py |  48 ++++++-------
+ utils/log.py                          |   5 +-
+ utils/login_qrcode.py                 |   8 ++-
+ utils/publishing_hooks.py             |  85 ++++++++++++++++++++++
+ utils/base_social_media.py            |   4 +---
+ 8 files changed, 167 insertions(+), 162 deletions(-)
+ create mode 100644 utils/publishing_hooks.py
+
+diff --git a/conf.example.py b/conf.example.py
+index cf2e942..82dad49 100644
+--- a/conf.example.py
++++ b/conf.example.py
+@@ -1,6 +1,7 @@
+ from pathlib import Path
++import os
+ 
+-BASE_DIR = Path(__file__).parent.resolve()
++BASE_DIR = Path(os.environ.get("PUBLISHER_DATA_DIR", Path(__file__).parent)).resolve()
+ XHS_SERVER = "http://127.0.0.1:11901"  # only used by xhs-related flows
+ LOCAL_CHROME_PATH = ""  # optional, e.g. C:/Program Files/Google/Chrome/Application/chrome.exe
+ LOCAL_CHROME_HEADLESS = True  # default headless behavior for uploader/examples
+diff --git a/uploader/douyin_uploader/main.py b/uploader/douyin_uploader/main.py
+index f6ac2be..d352e88 100644
+--- a/uploader/douyin_uploader/main.py
++++ b/uploader/douyin_uploader/main.py
+@@ -19,6 +19,7 @@ from utils.login_qrcode import decode_qrcode_from_path
+ from utils.login_qrcode import print_terminal_qrcode
+ from utils.login_qrcode import remove_qrcode_file
+ from utils.login_qrcode import save_data_url_image
++from utils.publishing_hooks import save_storage_state, notify, submit_once, handle_sms
+ from utils.log import douyin_logger
+ 
+ DOUYIN_PUBLISH_STRATEGY_IMMEDIATE = "immediate"
+@@ -298,7 +299,7 @@ async def douyin_cookie_gen(
+             )
+             if result["success"]:
+                 await asyncio.sleep(2)
+-                await context.storage_state(path=account_file)
++                await save_storage_state(context, account_file)
+                 # 登录已通过"发布视频"确认成功、storage_state 刚从已登录浏览器抓下来，
+                 # 不再用 flaky 的浏览器重检（那正是导致成功被误判为失败的老 bug）。
+                 # 只轻量确认文件里有 sessionid。
+@@ -746,7 +747,7 @@ class DouYinVideo(DouYinBaseUploader):
+                 pass
+ 
+     async def _submit_sms_verify_code(self, page: Page, sms_input, code: str, code_file: str) -> bool:
+-        douyin_logger.info(_msg("✍️", f"已获取验证码，准备填入: {code}"))
++        douyin_logger.info(_msg("✍️", "已获取验证码，准备填入"))
+         await sms_input.click()
+         await sms_input.fill(code)
+         douyin_logger.info(_msg("✅", "验证码已填入输入框"))
+@@ -867,8 +868,7 @@ class DouYinVideo(DouYinBaseUploader):
+             except Exception:
+                 continue
+         if not opened:
+-            douyin_logger.warning(_msg("⚠️", "封面弹窗打不开，跳过自定义封面继续发布（交给推荐封面兜底）"))
+-            return
++            raise RuntimeError("指定封面未能设置，停止投稿")
+ 
+         await page.wait_for_timeout(1500)
+ 
+@@ -954,18 +954,12 @@ class DouYinVideo(DouYinBaseUploader):
+                 closed = True
+                 break
+ 
+-            # 仍没关掉：Esc 兜底后再验证一次
+-            douyin_logger.debug(_msg("🖼️", f"封面「完成」后弹窗未关，重试(第{attempt + 1}次)"))
+-            await page.keyboard.press("Escape")
+-            await page.wait_for_timeout(1000)
+-            if await cover_locator.count() == 0:
+-                closed = True
+-                break
++            # Dismissal with Escape is not evidence that a requested cover was saved.
+ 
+         if closed:
+             douyin_logger.info(_msg("🥳", "视频封面设置完成，弹窗已关闭"))
+         else:
+-            douyin_logger.warning(_msg("⚠️", "封面弹窗未能关闭，可能挡住自主声明/发布"))
++            raise RuntimeError("封面保存未确认，停止投稿")
+ 
+ 
+     async def upload(self, playwright: Playwright) -> None:
+@@ -1001,7 +995,10 @@ class DouYinVideo(DouYinBaseUploader):
+         await upload_input.wait_for(state="attached", timeout=60000)
+         await upload_input.set_input_files(self.file_path)
+ 
++        deadline = asyncio.get_running_loop().time() + 1800
+         while True:
++            if asyncio.get_running_loop().time() >= deadline:
++                raise TimeoutError("视频上传等待超时")
+             try:
+                 await page.wait_for_url(
+                     "https://creator.douyin.com/creator-micro/content/publish?enter_from=publish_page",
+@@ -1026,7 +1023,10 @@ class DouYinVideo(DouYinBaseUploader):
+         await self.fill_title_and_description(page, self.title, self.desc, self.tags)
+         douyin_logger.info(_msg("🏷️", f"小人一共贴了 {len(self.tags)} 个话题"))
+ 
++        deadline = asyncio.get_running_loop().time() + 1800
+         while True:
++            if asyncio.get_running_loop().time() >= deadline:
++                raise TimeoutError("视频上传等待超时")
+             try:
+                 number = await page.locator('[class^="long-card"] div:has-text("重新上传")').count()
+                 if number > 0:
+@@ -1046,10 +1046,7 @@ class DouYinVideo(DouYinBaseUploader):
+             await self.set_product_link(page, self.productLink, self.productTitle)
+             douyin_logger.info(_msg("🥳", "商品链接设置完成"))
+ 
+-        # 自主声明：本项目成片含 AI 生成内容（TTS 配音 / AI 字幕 / AI 前贴片），
+-        # 按平台合规如实选「内容由AI生成」（与转载等并列，单选，无二级选项、无需填来源）。
+-        if not self.declaration:
+-            self.declaration = "内容由AI生成"
++        # Content declarations are provided explicitly by the caller.
+         await self.apply_self_declaration(page)
+ 
+         # 先归集：此时尚未打开封面弹窗，避免 dy-creator-content-portal 封面浮层拦截合集下拉
+@@ -1067,49 +1064,10 @@ class DouYinVideo(DouYinBaseUploader):
+         if self.publish_strategy == DOUYIN_PUBLISH_STRATEGY_SCHEDULED and self.publish_date != 0:
+             await self.set_schedule_time_douyin(page, self.publish_date)
+ 
+-        sms_prompt_logged = False
+-        while True:
+-            try:
+-                # 移除会拦截发布按钮点击的新手引导/话题下拉浮层
+-                await page.evaluate(
+-                    "() => { document.querySelectorAll('.shepherd-element, .shepherd-modal-overlay-container, [class*=\"mention-wrapper\"]').forEach(e => e.remove()); }"
+-                )
+-                # 检测并处理短信验证码弹窗
+-                sms_input = page.locator('input[placeholder*="验证码"], input[type="tel"], input[placeholder*="短信"], input[placeholder*="手机号"]').first
+-                if await sms_input.count() and await sms_input.is_visible():
+-                    douyin_logger.warning(_msg("📱", "检测到短信验证码弹窗"))
+-                    # 点击「获取验证码」按钮（仅首次）
+-                    get_code_btn = page.get_by_text("获取验证码").first
+-                    if await get_code_btn.count() and await get_code_btn.is_visible():
+-                        await get_code_btn.click()
+-                        douyin_logger.info(_msg("📤", "已点击「获取验证码」，请查看手机短信"))
+-                    code_file = os.path.join(BASE_DIR, "verify_code.txt")
+-                    code = await _read_verify_code(code_file)
+-                    if code:
+-                        sms_prompt_logged = False
+-                        await self._submit_sms_verify_code(page, sms_input, code, code_file)
+-                    elif not sms_prompt_logged:
+-                        douyin_logger.warning(_msg("⏳", f"等待验证码输入；可在交互终端直接输入，或写入文件: {code_file}"))
+-                        sms_prompt_logged = True
+-
+-                # ── 正常发布流程 ──
+-                publish_button = page.get_by_role("button", name="发布", exact=True)
+-                if await publish_button.count():
+-                    await publish_button.click(force=True)
+-                await page.wait_for_url(
+-                    "https://creator.douyin.com/creator-micro/content/manage**",
+-                    timeout=3000,
+-                )
+-                douyin_logger.success(_msg("🥳", "视频发布成功，小人开心收工"))
+-                break
+-            except Exception:
+-                await self.handle_auto_video_cover(page)
+-                douyin_logger.info(_msg("🏃", "小人正在冲刺发布视频"))
+-                if self.debug:
+-                    await page.screenshot(full_page=True)
+-                await asyncio.sleep(0.5)
++        await handle_sms(self, page)
++        await submit_once(self, page, page.get_by_role("button", name="发布", exact=True).first)
+ 
+-        await context.storage_state(path=self.account_file)
++        await save_storage_state(context, self.account_file)
+         douyin_logger.success(_msg("🥳", "cookie 更新完毕"))
+         await asyncio.sleep(2)
+         await context.close()
+@@ -1250,7 +1208,7 @@ class DouYinNote(DouYinBaseUploader):
+             upload_success = True
+         finally:
+             if upload_success:
+-                await context.storage_state(path=self.account_file)
++                await save_storage_state(context, self.account_file)
+                 douyin_logger.success(_msg("🥳", "cookie 更新完毕"))
+                 await asyncio.sleep(2)
+             await context.close()
+diff --git a/uploader/tencent_uploader/main.py b/uploader/tencent_uploader/main.py
+index de1fc96..b1ef445 100644
+--- a/uploader/tencent_uploader/main.py
++++ b/uploader/tencent_uploader/main.py
+@@ -17,6 +17,7 @@ from patchright.async_api import async_playwright
+ from conf import BASE_DIR, DEBUG_MODE, LOCAL_CHROME_HEADLESS, LOCAL_CHROME_PATH
+ from uploader.base_video import BaseVideoUploader
+ from utils.base_social_media import set_init_script
++from utils.publishing_hooks import save_storage_state, notify, submit_once, handle_sms
+ from utils.log import tencent_logger
+ 
+ TENCENT_LOGIN_URL = "https://channels.weixin.qq.com"
+@@ -419,7 +420,7 @@ async def tencent_cookie_gen(
+             )
+             if result["success"]:
+                 await asyncio.sleep(2)
+-                await context.storage_state(path=account_file)
++                await save_storage_state(context, account_file)
+                 if not await cookie_auth(account_file):
+                     result = _build_login_result(
+                         False,
+@@ -532,12 +533,14 @@ class TencentBaseUploader(BaseVideoUploader):
+         if not await dialog.count() or not await dialog.is_visible():
+             return None
+ 
++        if not qr_path and os.environ.get("PUBLISHER_RUNTIME_DIR"):
++            qr_path = Path(os.environ["PUBLISHER_RUNTIME_DIR"]) / "administrator-verification.png"
+         output_path = Path(qr_path) if qr_path else Path(self.account_file).with_name(
+             f"{Path(self.account_file).stem}_verification_qr.png"
+         )
+         output_path.parent.mkdir(parents=True, exist_ok=True)
+         await dialog.screenshot(path=str(output_path))
+-        tencent_logger.warning(_msg("📱", f"需要管理员微信扫码完成实名验证: {output_path}"))
++        await notify(self, "challenge", kind="qrcode", message="请管理员微信扫码完成实名验证", image_path=str(output_path))
+ 
+         deadline = asyncio.get_running_loop().time() + timeout_seconds
+         while await dialog.count() and await dialog.is_visible():
+@@ -676,7 +679,14 @@ class TencentBaseUploader(BaseVideoUploader):
+     async def set_short_title(self, page: Page, title: str, short_title: str | None = None) -> None:
+         # 视频号「短标题」即界面上要求填写的“标题”（那个大编辑区其实是“视频描述”）。
+         # 走 format_str_for_short_title 保证长度落在 7~15，避免发布时被校验拦下。
+-        value = format_str_for_short_title(short_title or title)
++        if getattr(self, "integration_hooks", None):
++            if not short_title:
++                return
++            if not 6 <= len(short_title) <= 16:
++                raise ValueError("短标题必须为 6 至 16 个字符")
++            value = short_title
++        else:
++            value = format_str_for_short_title(short_title or title)
+         # 优先用 placeholder 定位（已 dump 验证更稳），兜底旧的“短标题”相邻 input。
+         field = page.locator('input[placeholder="填写短标题有机会获得更多流量"]').first
+         if not await field.count():
+@@ -788,15 +798,14 @@ class TencentBaseUploader(BaseVideoUploader):
+                 pass
+ 
+     async def apply_original_statement(self, page: Page) -> None:
+-        # 视频号「视频标注」下拉：本项目成片经 AI 处理（TTS 配音、AI 字幕、AI 前贴片），
+-        # 依平台合规要求如实选「含AI生成内容」（与「内容为转载」等并列，选定即可、无需填写来源）。
+-        # 注意：这与上方独立的「声明原创」复选框是两个不同字段，本项目走 AI 标注、不勾原创声明。
+-        label_text = getattr(self, "content_label", None) or "含AI生成内容"
++        # The caller explicitly selects a content label; no origin or AI claim is inferred.
++        label_text = getattr(self, "content_label", None)
++        if not label_text:
++            return
+         try:
+             entry = page.get_by_text("选择视频标注", exact=True).first
+             if not await entry.count():
+-                tencent_logger.info(_msg("🧾", "当前页面未发现「视频标注」入口，跳过标注继续发布"))
+-                return
++                raise RuntimeError("指定视频声明无法设置")
+             await entry.click()
+             await page.wait_for_timeout(800)
+             option = page.get_by_text(label_text, exact=True).first
+@@ -805,7 +814,7 @@ class TencentBaseUploader(BaseVideoUploader):
+             await page.wait_for_timeout(500)
+             tencent_logger.success(_msg("🏷️", f"视频标注已选择：{label_text}"))
+         except Exception as exc:
+-            tencent_logger.warning(_msg("😵", f"设置视频标注「{label_text}」失败，跳过继续发布：{exc}"))
++            raise RuntimeError("指定视频声明未能设置，停止投稿") from exc
+ 
+     async def wait_for_upload_complete(
+         self, page: Page, timeout_seconds: int = 3600, max_retries: int = 3
+@@ -880,61 +889,13 @@ class TencentBaseUploader(BaseVideoUploader):
+                 await asyncio.sleep(2)
+ 
+     async def submit_publish(self, page: Page) -> None:
+-        is_draft = getattr(self, "is_draft", False)
+-        # 先等待并清理遮罩/弹窗,再等发表按钮出现
+-        for wait_round in range(60):
+-            await self._dismiss_switch_account_dialog(page)
+-            try:
+-                await page.evaluate("""() => document.querySelectorAll('.mask, .changeAccount-dialog, .common-dialog').forEach(e => e.remove())""")
+-            except Exception:
+-                pass
+-            publish_btn = page.get_by_role("button", name="发表", exact=True).first if not is_draft else page.get_by_role("button", name="保存草稿").first
+-            try:
+-                if await publish_btn.count() and await publish_btn.is_visible():
+-                    break
+-            except Exception:
+-                pass
+-            await asyncio.sleep(1)
+-        else:
+-            tencent_logger.warning(_msg("😵", "60s 内未找到可见的发表/草稿按钮，尝试强制继续"))
+-        # 点发表/草稿
+-        for attempt in range(20):
+-            try:
+-                if await publish_btn.count():
+-                    try:
+-                        await publish_btn.click(timeout=4000)
+-                    except Exception:
+-                        await publish_btn.evaluate("el => el.click()")
+-                if is_draft:
+-                    await page.wait_for_url("**/post/list**", timeout=5000)
+-                    tencent_logger.success(_msg("🥳", "视频草稿保存成功"))
+-                else:
+-                    # 发表成功后视频号可能跳 /platform（首页）、/post/list 或留在 create 页但按钮消失。
+-                    # 综合判断：URL 离开 /post/create 或 发表按钮不再存在。
+-                    for _ in range(10):
+-                        await asyncio.sleep(1)
+-                        cur = page.url
+-                        if "/post/create" not in cur:
+-                            tencent_logger.success(_msg("🥳", "视频发布成功"))
+-                            return
+-                        if not await publish_btn.count():
+-                            tencent_logger.success(_msg("🥳", "视频发布成功（按钮已消失）"))
+-                            return
+-                    raise Exception("发表后 10s 页面未变化")
+-                return
+-            except Exception as exc:
+-                current_url = page.url
+-                if is_draft and ("post/list" in current_url or "draft" in current_url):
+-                    tencent_logger.success(_msg("🥳", "视频草稿保存成功"))
+-                    return
+-                if (not is_draft) and "/post/create" not in current_url:
+-                    tencent_logger.success(_msg("🥳", "视频发布成功"))
+-                    return
+-                if attempt and attempt % 5 == 0:
+-                    tencent_logger.warning(_msg("😵", f"发布仍未完成(第{attempt}次)，异常: {str(exc)[:60]}"))
+-                tencent_logger.info(_msg("🏃", "视频正在发布中..."))
+-                await asyncio.sleep(1)
+-        raise RuntimeError("发布未在预期时间内完成，请检查发布页面")
++        name = "保存草稿" if getattr(self, "is_draft", False) else "发表"
++        button = page.get_by_role("button", name=name, exact=True).first
++        if getattr(self, "is_draft", False):
++            await button.click(timeout=10000)
++            await page.wait_for_url("**/post/list**", timeout=30000)
++            return
++        await submit_once(self, page, button)
+ 
+ 
+ class TencentVideo(TencentBaseUploader):
+@@ -1051,14 +1012,13 @@ class TencentVideo(TencentBaseUploader):
+     ) -> None:
+         cover_dialog = await self.open_thumbnail_dialog(page, selectors, dialog_titles)
+         if not cover_dialog:
+-            tencent_logger.info(_msg("🧍", f"当前页面没有出现{label}封面编辑弹窗，小人先跳过"))
+-            return
++            raise RuntimeError("指定封面入口不可用，停止投稿")
+ 
+         try:
+             await self.upload_thumbnail_in_dialog(page, cover_dialog, thumbnail_path)
+             tencent_logger.success(_msg("🥳", f"{label}封面已经设置完成"))
+         except Exception as exc:
+-            tencent_logger.warning(_msg("😵", f"{label}封面设置失败，这次先跳过: {exc}"))
++            raise RuntimeError("指定封面未能设置，停止投稿") from exc
+ 
+     async def set_thumbnail(self, page: Page) -> None:
+         if not self.thumbnail_landscape_path and not self.thumbnail_portrait_path:
+@@ -1130,7 +1090,7 @@ class TencentVideo(TencentBaseUploader):
+             await self.set_short_title(page, self.title, self.short_title)
+             await self.submit_publish(page)
+ 
+-            await context.storage_state(path=self.account_file)
++            await save_storage_state(context, self.account_file)
+             tencent_logger.success(_msg("🥳", "cookie 更新完毕"))
+         finally:
+             await context.close()
+@@ -1230,7 +1190,7 @@ class TencentNote(TencentBaseUploader):
+ 
+             await self.submit_publish(page)
+ 
+-            await context.storage_state(path=self.account_file)
++            await save_storage_state(context, self.account_file)
+             tencent_logger.success(_msg("🥳", "cookie 更新完毕"))
+         finally:
+             await context.close()
+diff --git a/uploader/xiaohongshu_uploader/main.py b/uploader/xiaohongshu_uploader/main.py
+index 7ca7163..b320586 100644
+--- a/uploader/xiaohongshu_uploader/main.py
++++ b/uploader/xiaohongshu_uploader/main.py
+@@ -19,6 +19,7 @@ from utils.login_qrcode import decode_qrcode_from_path
+ from utils.login_qrcode import print_terminal_qrcode
+ from utils.login_qrcode import remove_qrcode_file
+ from utils.login_qrcode import save_data_url_image
++from utils.publishing_hooks import save_storage_state, notify, submit_once, handle_sms
+ from utils.log import xiaohongshu_logger
+ 
+ XHS_DEFAULT_CREATOR_BASE_URL = "https://creator.xiaohongshu.com"
+@@ -269,7 +270,7 @@ async def xiaohongshu_cookie_gen(
+             for _ in range(max_checks):
+                 if await _is_xhs_login_completed(page):
+                     await asyncio.sleep(2)
+-                    await context.storage_state(path=account_file)
++                    await save_storage_state(context, account_file)
+                     if await cookie_auth(account_file):
+                         xiaohongshu_logger.success(_msg("🥳", "小红书扫码登录成功，小人开心收工"))
+                         result = _build_login_result(True, "success", "小红书扫码登录成功", account_file, qrcode_info, page.url)
+@@ -459,7 +460,7 @@ class XiaoHongShuBaseUploader(BaseVideoUploader):
+                 # 清掉已键入但未成词的 "#tag" 文本，避免它残留进正文
+                 for _ in range(len("#" + tag)):
+                     await page.keyboard.press("Backspace")
+-                continue
++                raise RuntimeError("指定话题未能设置，停止投稿") from exc
+ 
+     async def fill_meta(self, page: Page) -> None:
+         await self.fill_title(page)
+@@ -472,9 +473,13 @@ class XiaoHongShuBaseUploader(BaseVideoUploader):
+         流程（对应 codegen 录制）：
+           点「添加内容类型声明」→ 点包含「来源转载」的 div
+           → 填 placeholder「请输入媒体名称」→ 点 button「确认」。
+-        容错：任一步失败记 warning 跳过、继续发布，不中断。
++        仅调用方明确选择转载时设置，指定声明失败则停止投稿。
+         """
++        if getattr(self, "content_origin", "unspecified") != "repost":
++            return
+         source = getattr(self, "repost_source", "") or ""
++        if not source.strip():
++            raise ValueError("转载必须填写来源")
+         try:
+             # 1. 点「添加内容类型声明」
+             trigger = page.get_by_text("添加内容类型声明", exact=False).first
+@@ -514,7 +519,7 @@ class XiaoHongShuBaseUploader(BaseVideoUploader):
+             await page.wait_for_timeout(1000)
+             xiaohongshu_logger.success(_msg("🧾", f"来源转载已声明（来源：{source}）"))
+         except Exception as exc:
+-            xiaohongshu_logger.warning(_msg("⚠️", f"设置来源转载失败，跳过继续发布: {exc}"))
++            raise RuntimeError("转载声明未能设置，停止投稿") from exc
+             try:
+                 await page.keyboard.press("Escape")
+             except Exception:
+@@ -567,7 +572,7 @@ class XiaoHongShuVideo(XiaoHongShuBaseUploader):
+ 
+         xiaohongshu_logger.info(_msg("🖼️", "小人准备设置封面"))
+ 
+-        # 封面设置为增强步骤：失败时记 warning 跳过、继续发布（用视频首帧兜底）。
++        # A requested cover is part of confirmed content; failure stops submission.
+         try:
+             # 发布页封面区域内嵌，点击 div.upload-cover 打开封面弹窗（d-modal）。
+             cover_section = page.locator("text=设置封面").first
+@@ -609,11 +614,11 @@ class XiaoHongShuVideo(XiaoHongShuBaseUploader):
+             modal = page.locator("div.d-modal")
+             try:
+                 await modal.first.wait_for(state="hidden", timeout=15000)
+-            except Exception:
+-                pass
++            except Exception as exc:
++                raise RuntimeError("封面保存未确认") from exc
+             xiaohongshu_logger.success(_msg("🥳", "封面已经设置完成"))
+         except Exception as exc:
+-            xiaohongshu_logger.warning(_msg("🖼️", f"封面设置失败，跳过该步骤继续发布（用视频首帧）：{exc}"))
++            raise RuntimeError("指定封面未能设置，停止投稿") from exc
+             try:
+                 await page.keyboard.press("Escape")
+                 await page.wait_for_timeout(500)
+@@ -630,7 +635,10 @@ class XiaoHongShuVideo(XiaoHongShuBaseUploader):
+         await page.wait_for_url(publish_url)
+         await page.locator("div[class^='upload-content'] input[class='upload-input']").set_input_files(self.file_path)
+ 
++        deadline = asyncio.get_running_loop().time() + 1800
+         while True:
++            if asyncio.get_running_loop().time() >= deadline:
++                raise TimeoutError("视频上传等待超时")
+             try:
+                 upload_input = await page.wait_for_selector('input.upload-input', timeout=3000)
+                 preview_new = await upload_input.query_selector(
+@@ -680,23 +688,9 @@ class XiaoHongShuVideo(XiaoHongShuBaseUploader):
+         if self.publish_strategy == XIAOHONGSHU_PUBLISH_STRATEGY_SCHEDULED and self.publish_date != 0:
+             await self.set_schedule_time_xiaohongshu(page, self.publish_date)
+ 
+-        while True:
+-            try:
+-                if self.publish_strategy == XIAOHONGSHU_PUBLISH_STRATEGY_SCHEDULED:
+-                    await page.locator('button:has-text("定时发布")').click()
+-                else:
+-                    await page.locator('button:has-text("发布")').click()
+-                await page.wait_for_url(
+-                    XHS_PUBLISH_SUCCESS_URL_PATTERN,
+-                    timeout=3000
+-                )
+-                xiaohongshu_logger.success(_msg("🥳", "视频发布成功，小人开心收工"))
+-                break
+-            except Exception:
+-                xiaohongshu_logger.info(_msg("🏃", "小人正在冲刺发布视频"))
+-                if self.debug:
+-                    await page.screenshot(full_page=True)
+-                await asyncio.sleep(0.5)
++        button_text = "定时发布" if self.publish_strategy == XIAOHONGSHU_PUBLISH_STRATEGY_SCHEDULED else "发布"
++        await submit_once(self, page, page.get_by_role("button", name=button_text, exact=True).first,
++                          success_url=_build_xhs_creator_url("/publish/success"))
+ 
+     async def upload(self, playwright: Playwright) -> None:
+         xiaohongshu_logger.info(_msg("🧍", "小人先检查 cookie、视频文件、封面和发布时间"))
+@@ -712,7 +706,7 @@ class XiaoHongShuVideo(XiaoHongShuBaseUploader):
+         try:
+             page = await context.new_page()
+             await self.upload_video_content(page)
+-            await context.storage_state(path=self.account_file)
++            await save_storage_state(context, self.account_file)
+             xiaohongshu_logger.success(_msg("🥳", "cookie 更新完毕"))
+         finally:
+             await context.close()
+@@ -835,7 +829,7 @@ class XiaoHongShuNote(XiaoHongShuBaseUploader):
+         try:
+             page = await context.new_page()
+             await self.upload_note_content(page)
+-            await context.storage_state(path=self.account_file)
++            await save_storage_state(context, self.account_file)
+             xiaohongshu_logger.success(_msg("🥳", "cookie 更新完毕"))
+         finally:
+             await context.close()
+diff --git a/utils/log.py b/utils/log.py
+index 3f7d180..687dba5 100644
+--- a/utils/log.py
++++ b/utils/log.py
+@@ -1,4 +1,5 @@
+ import sys
++import os
+ from pathlib import Path
+ from loguru import logger
+ 
+@@ -39,6 +40,8 @@ def create_logger(log_name: str, file_path: str):
+     def filter_record(record):
+         return record["extra"].get("business_name") == log_name
+ 
++    if os.environ.get("PUBLISHER_INTEGRATION"):
++        return logger.bind(business_name=log_name)
+     Path(BASE_DIR / file_path).parent.mkdir(exist_ok=True)
+     logger.add(Path(BASE_DIR / file_path), filter=filter_record, level="INFO", rotation="10 MB", retention="10 days", backtrace=True, diagnose=True)
+     return logger.bind(business_name=log_name)
+@@ -47,7 +50,7 @@ def create_logger(log_name: str, file_path: str):
+ # Remove all existing handlers
+ logger.remove()
+ # Add a standard console handler
+-logger.add(sys.stdout, colorize=True, format=log_formatter)
++logger.add(sys.stderr, colorize=False, format=log_formatter, diagnose=False, backtrace=False)
+ 
+ douyin_logger = create_logger('douyin', 'logs/douyin.log')
+ tencent_logger = create_logger('tencent', 'logs/tencent.log')
+diff --git a/utils/login_qrcode.py b/utils/login_qrcode.py
+index 04be939..9d6556a 100644
+--- a/utils/login_qrcode.py
++++ b/utils/login_qrcode.py
+@@ -1,6 +1,8 @@
+ # -*- coding: utf-8 -*-
+ from datetime import datetime
+ import base64
++import os
++import uuid
+ from pathlib import Path
+ import sys
+ 
+@@ -12,7 +14,9 @@ import segno
+ def build_login_qrcode_path(account_file: str, suffix: str = "login_qrcode") -> Path:
+     account_path = Path(account_file)
+     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+-    return account_path.with_name(f"{account_path.stem}_{suffix}_{timestamp}.png")
++    directory = Path(os.environ.get("PUBLISHER_RUNTIME_DIR", account_path.parent))
++    directory.mkdir(parents=True, exist_ok=True, mode=0o700)
++    return directory / f"{account_path.stem}_{suffix}_{timestamp}_{uuid.uuid4().hex}.png"
+ 
+ 
+ def save_data_url_image(data_url: str, output_path: Path) -> Path:
+@@ -74,6 +78,8 @@ def print_terminal_qrcode(
+     compact: bool = True,
+     border: int = 0,
+ ) -> None:
++    if os.environ.get("PUBLISHER_INTEGRATION"):
++        return
+     print()
+     print(f"请使用{app_name}扫描下方二维码登录：")
+     qrcode = segno.make(qrcode_content, error="L", boost_error=False)
+diff --git a/utils/publishing_hooks.py b/utils/publishing_hooks.py
+new file mode 100644
+index 0000000..8a60426
+--- /dev/null
++++ b/utils/publishing_hooks.py
+@@ -0,0 +1,85 @@
++"""Small integration hooks shared by the existing CLI and embedded publisher.
++
++A submit click is never retried. Acceptance must be observed on the platform.
++"""
++INTEGRATION_PROTOCOL_VERSION = 1
++
++import asyncio
++import getpass
++import os
++import uuid
++from pathlib import Path
++from urllib.parse import urlparse
++
++
++async def save_storage_state(context, path):
++    destination = Path(path)
++    destination.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
++    temporary = destination.with_name(destination.name + "." + uuid.uuid4().hex + ".tmp")
++    try:
++        await context.storage_state(path=str(temporary))
++        temporary.chmod(0o600)
++        os.replace(temporary, destination)
++    finally:
++        temporary.unlink(missing_ok=True)
++
++
++async def notify(uploader, event, **payload):
++    hooks = getattr(uploader, "integration_hooks", None)
++    if hooks:
++        return await hooks(event, **payload)
++
++
++async def handle_sms(uploader, page):
++    field = page.locator('input[placeholder*="验证码"], input[placeholder*="短信"]').first
++    if await field.count() and await field.is_visible():
++        code = await notify(uploader, "challenge", kind="sms", message="请输入平台发送的短信验证码")
++        if not code and not getattr(uploader, "integration_hooks", None):
++            import sys
++            if sys.stdin.isatty():
++                code = (await asyncio.to_thread(getpass.getpass, "请输入短信验证码: ")).strip()
++        if not code:
++            raise RuntimeError("需要人工完成短信验证")
++        await field.fill(code)
++        button = page.get_by_text("验证", exact=True).first
++        await button.click(timeout=5000)
++        await field.wait_for(state="hidden", timeout=15000)
++
++
++async def submit_once(uploader, page, button, success_url=None, timeout_seconds=60):
++    if getattr(uploader, "submission_intent_recorded", False):
++        raise RuntimeError("禁止重复提交")
++    # Authorization is durable in the host before any possibly submitting action.
++    await button.wait_for(state="visible", timeout=15000)
++    initial_indicators = set()
++    for text in ("发布成功", "发表成功", "投稿成功"):
++        indicator = page.get_by_text(text, exact=True).first
++        if await indicator.count() and await indicator.is_visible():
++            initial_indicators.add(text)
++    await notify(uploader, "before_submit")
++    uploader.submission_intent_recorded = True
++    # Click timeout is ambiguous: never fall back to JS or click a second time.
++    try:
++        await button.click(timeout=10000)
++    except Exception:
++        pass
++    deadline = asyncio.get_running_loop().time() + timeout_seconds
++    while asyncio.get_running_loop().time() < deadline:
++        actual, expected = urlparse(page.url), urlparse(success_url or "")
++        if success_url and (actual.scheme, actual.netloc, actual.path) == (expected.scheme, expected.netloc, expected.path):
++            uploader.publish_evidence = {"kind": "platform_acceptance", "summary": "平台显示投稿成功页面"}
++            return uploader.publish_evidence
++        for text in ("发布成功", "发表成功", "投稿成功"):
++            if text in initial_indicators:
++                continue
++            try:
++                indicator = page.get_by_text(text, exact=True).first
++                if await indicator.count() and await indicator.is_visible():
++                    uploader.publish_evidence = {"kind": "platform_acceptance", "summary": "平台显示：" + text}
++                    return uploader.publish_evidence
++            except Exception:
++                pass
++        # A challenge after clicking is still inside the submission boundary.
++        await handle_sms(uploader, page)
++        await asyncio.sleep(1)
++    raise RuntimeError("SUBMISSION_UNKNOWN: 未获取平台受理证据，请人工核对")
+diff --git a/utils/base_social_media.py b/utils/base_social_media.py
+index 7697875..12960f1 100644
+--- a/utils/base_social_media.py
++++ b/utils/base_social_media.py
+@@ -1,7 +1,5 @@
+ from pathlib import Path
+ from typing import List
+-
+-from conf import BASE_DIR
+ 
+ SOCIAL_MEDIA_DOUYIN = "douyin"
+ SOCIAL_MEDIA_TENCENT = "tencent"
+@@ -19,6 +17,6 @@
+ 
+ 
+ async def set_init_script(context):
+-    stealth_js_path = Path(BASE_DIR / "utils/stealth.min.js")
++    stealth_js_path = Path(__file__).resolve().with_name("stealth.min.js")
+     await context.add_init_script(path=stealth_js_path)
+     return context
+-- 
+2.50.1 (Apple Git-155)
+

@@ -1,0 +1,55 @@
+{
+  "repository": "https://github.com/herongxhr-netizen/social-auto-upload.git",
+  "baseline_sha": "3847fff01f5434a8a32829833163cd6723cabc59",
+  "branch": "codex/publishing-integration",
+  "patch_file": "patches/0001-safe-publishing-integration.patch",
+  "patched_sha": "5b0a0b9f328c9cd890dd7757b6563494abfcbb87",
+  "patch_revision_note": "patched_sha identifies the original reviewed patch commit; patch_file also includes the 2026-11-04 source-relative static-resource amendment. patched_files defines the complete current source projection.",
+  "biliup": {
+    "version": "v1.3.4",
+    "assets": {
+      "biliupR-v1.3.4-aarch64-android.tar.xz": {
+        "url": "https://github.com/biliup/biliup/releases/download/v1.3.4/biliupR-v1.3.4-aarch64-android.tar.xz",
+        "sha256": "4a1abc1bd0bf93115b2a6b1e6723d0cbde07127865522a9cb2f8b8df712a0fa3"
+      },
+      "biliupR-v1.3.4-aarch64-linux.tar.xz": {
+        "url": "https://github.com/biliup/biliup/releases/download/v1.3.4/biliupR-v1.3.4-aarch64-linux.tar.xz",
+        "sha256": "f2c6813f44e6cb758af14df46a54e21210e087caf148bf677cba3091c2597f18"
+      },
+      "biliupR-v1.3.4-aarch64-macos.tar.xz": {
+        "url": "https://github.com/biliup/biliup/releases/download/v1.3.4/biliupR-v1.3.4-aarch64-macos.tar.xz",
+        "sha256": "1bfdb13a092600907e6111c0ed08c30af4abe5c8ed0b041e6d98b94efe376d46"
+      },
+      "biliupR-v1.3.4-arm-linux.tar.xz": {
+        "url": "https://github.com/biliup/biliup/releases/download/v1.3.4/biliupR-v1.3.4-arm-linux.tar.xz",
+        "sha256": "e1452c2bcad843b9c68d0e159f2d30aadc695521912129ab7e24409874e1e24e"
+      },
+      "biliupR-v1.3.4-x86_64-linux-musl.tar.xz": {
+        "url": "https://github.com/biliup/biliup/releases/download/v1.3.4/biliupR-v1.3.4-x86_64-linux-musl.tar.xz",
+        "sha256": "01c7898cc0ba917261f38043b672b5acfbb9780dc5a25151ed2ba2d36df2c7ef"
+      },
+      "biliupR-v1.3.4-x86_64-linux.tar.xz": {
+        "url": "https://github.com/biliup/biliup/releases/download/v1.3.4/biliupR-v1.3.4-x86_64-linux.tar.xz",
+        "sha256": "c842430e242234766b0a7de92c761f2ead6aad4667b35873332a4d8745d6c952"
+      },
+      "biliupR-v1.3.4-x86_64-macos.tar.xz": {
+        "url": "https://github.com/biliup/biliup/releases/download/v1.3.4/biliupR-v1.3.4-x86_64-macos.tar.xz",
+        "sha256": "a829852f5f120e408a895bba0bce0508566aab414718ce5e3089abb87835f6d3"
+      },
+      "biliupR-v1.3.4-x86_64-windows.zip": {
+        "url": "https://github.com/biliup/biliup/releases/download/v1.3.4/biliupR-v1.3.4-x86_64-windows.zip",
+        "sha256": "3dde3ec89dc957b5b21f0b02fa6519e182530c8af39c8c06ad4245cf961f7219"
+      }
+    }
+  },
+  "patched_files": {
+    "conf.example.py": "0ead35a0a5da2592f767f51863f7dfadfe231af2da2375da71d555207f6a785a",
+    "uploader/douyin_uploader/main.py": "9ff395c12673c493e5f31e129e70ccb22c2c01736e51c4680ad10ff33fb58687",
+    "uploader/tencent_uploader/main.py": "dd67d94c2328177beb5a69e153c7358c9c1950f8edfc903c181f79b485017828",
+    "uploader/xiaohongshu_uploader/main.py": "77d0da3b76d02a693c6812880153fb617f9f130dc845dbf88ed4d582ae8074aa",
+    "utils/log.py": "499e7933606dcea6094159718c37d493c3afa041cdea579715415f92d483d208",
+    "utils/login_qrcode.py": "99ec324aa55f5e00c90d6bb2952f4a6d0c8534d89a03755f37401e918a014f44",
+    "utils/publishing_hooks.py": "3f7f80e2f70e5769a99a00aaff36feb1d85487103dc3991aadbf9a4a73e1012a",
+    "utils/base_social_media.py": "ad68f0b10c191febcc5ac4fe49049e098b6887b66050c8803116df2a71bf139e"
+  }
+}

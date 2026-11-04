@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "ffmpeg": {
+    "provider": "BtbN/FFmpeg-Builds",
+    "version": "n8.1.3-27-g8dca1586f4",
+    "release_branch": "8.1",
+    "tag": "autobuild-2026-10-31-12-59",
+    "platform": "linux-x86_64",
+    "variant": "gpl-static",
+    "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-31-12-59/ffmpeg-n8.1.3-27-g8dca1586f4-linux64-gpl-8.1.tar.xz",
+    "archive_filename": "ffmpeg-n8.1.3-27-g8dca1586f4-linux64-gpl-8.1.tar.xz",
+    "archive_size_bytes": 152246308,
+    "archive_sha256": "41e9c565594c390622cf968d82fa4135d9e9a11d06c1515644288cbc844e3380",
+    "archive_root": "ffmpeg-n8.1.3-27-g8dca1586f4-linux64-gpl-8.1",
+    "publisher_checksums": {
+      "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-31-12-59/checksums.sha256",
+      "sha256": "7d2e17125fcd15c8165ad735c7088e9bff6027a44a5f9d8fcca95cbbfff1b77f"
+    },
+    "license": {
+      "name": "GNU General Public License v3",
+      "notice_file": "LICENSE.txt",
+      "build_flags": [
+        "--enable-gpl",
+        "--enable-version3"
+      ],
+      "preserve_notice": true
+    },
+    "sources": {
+      "upstream_download_page": "https://ffmpeg.org/download.html",
+      "build_repository": "https://github.com/BtbN/FFmpeg-Builds",
+      "release": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-10-31-12-59",
+      "build_readme": "https://raw.githubusercontent.com/BtbN/FFmpeg-Builds/autobuild-2026-10-31-12-59/README.md",
+      "build_readme_sha256": "4f6f817fd57c5524e0d0832618e8f75d589093e2f05ef1ec2839af98e70e5053",
+      "note": "Third-party FFmpeg release-branch build from the BtbN project linked by the FFmpeg download page; fixed month-end release, not a floating latest URL."
+    },
+    "runtime": {
+      "minimum_glibc": "2.28",
+      "minimum_linux_kernel": "4.18",
+      "native_build_flags": [
+        "--enable-libx264",
+        "--enable-libx265"
+      ],
+      "binaries": {
+        "bin/ffmpeg": {
+          "sha256": "6ad8e7b802374502e927fdcf6de8019f4f24cac3c80fbfe3b41eda6f08648b55",
+          "size_bytes": 173092296
+        },
+        "bin/ffprobe": {
+          "sha256": "8c638116ac7d084ad516656e8e2541c888339a93538b8759ddcd4d766aad1601",
+          "size_bytes": 172862856
+        }
+      }
+    },
+    "verification": {
+      "archive_matches_publisher_manifest": true,
+      "archive_matches_github_asset_digest": true,
+      "archive_readable": true,
+      "binary_configuration_inspected": true,
+      "linux_execution_required_on_target": true
+    }
+  }
+}
