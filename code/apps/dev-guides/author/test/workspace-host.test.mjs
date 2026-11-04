@@ -69,3 +69,46 @@ test('video publishing drafts persist validated content identity and reject forg
   assert.equal(job.status, 'draft');
   assert.equal((await fetch(`${app.origin}/api/publishing/jobs`, { method: 'POST', headers, body: JSON.stringify({ ...payload, content_ref: { id: 'forged-id', slug: 'topic' } }) })).status, 422);
 });
+
+test('legacy MKV finish is rejected by the publishing bridge before any cloud download or import', async () => {
+  let resolved = false, imported = false;
+  const asset = { id: 'ac3a5d0c-bc9c-4dfd-9a0e-592b61bc0a30', filename: 'legacy.mkv', category: 'video', storage: 's3' };
+  const handler = createWorkspaceHandler({
+    revisions: { async handle() { return false; } },
+    workspace: {
+      async read() { return { id: 'content-id', assets: [asset] }; },
+      async resolveAsset() { resolved = true; throw new Error('Cloud bytes should not be requested'); },
+    },
+    publishing: { async importWorkspaceVideo() { imported = true; } },
+  });
+  const context = {
+    url: new URL('http://local.test/api/workspaces/topic/publishing-video'),
+    async readJson() { return { assetId: asset.id }; },
+    httpError(status, message) { return Object.assign(new Error(message), { status }); },
+  };
+  await assert.rejects(() => handler({ method: 'POST' }, {}, context), (error) => error.status === 422 && /MKV.*原始录屏/.test(error.message));
+  assert.equal(resolved, false);
+  assert.equal(imported, false);
+});
+
+test('publishable M4V finish passes the bridge with the original content identity and releases its cache', async () => {
+  const asset = { id: '4bda0891-1266-4ad7-bf3a-31c5057a46c7', filename: 'finished.M4V', category: 'video', storage: 's3' };
+  let released = false, result;
+  const handler = createWorkspaceHandler({
+    revisions: { async handle() { return false; } },
+    workspace: {
+      async read() { return { id: 'content-id', assets: [asset] }; },
+      async resolveAsset(slug, assetId) { assert.equal(slug, 'topic'); assert.equal(assetId, asset.id); return { path: '/private/cache', asset }; },
+      async releaseAsset(slug, assetId) { assert.equal(slug, 'topic'); assert.equal(assetId, asset.id); released = true; },
+    },
+    publishing: { async importWorkspaceVideo(value) { assert.deepEqual(value, { path: '/private/cache', filename: asset.filename }); return { id: 'publishing-video' }; } },
+  });
+  const context = {
+    url: new URL('http://local.test/api/workspaces/topic/publishing-video'),
+    async readJson() { return { assetId: asset.id }; },
+    sendJson(_response, status, body) { result = { status, body }; },
+  };
+  assert.equal(await handler({ method: 'POST' }, {}, context), true);
+  assert.equal(released, true);
+  assert.deepEqual(result, { status: 201, body: { video_asset_id: 'publishing-video', content_id: 'content-id' } });
+});

@@ -11,6 +11,10 @@ const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ID = /^[a-f0-9-]{36}$/;
 const CATEGORIES = new Set(['video', 'recording', 'image', 'audio', 'project', 'subtitle', 'other']);
 const fail = (status, message) => Object.assign(new Error(message), { status });
+const PUBLISHABLE_VIDEO_EXTENSIONS = new Set(['.mp4', '.mov', '.m4v', '.webm']);
+export function requirePublishableVideo(filename) {
+  if (typeof filename !== 'string' || !PUBLISHABLE_VIDEO_EXTENSIONS.has(extname(filename).toLowerCase())) throw fail(422, '成片仅支持 MP4、MOV、M4V 和 WebM，请转为上述格式；MKV 可作为原始录屏保存。');
+}
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 const now = () => new Date().toISOString();
 const positive = (value, fallback) => Number.isSafeInteger(Number(value)) && Number(value) > 0 ? Number(value) : fallback;
@@ -66,6 +70,7 @@ async function receive(request, destination, maximum, expected) {
 }
 async function verifyMedia(path, category, filename, env) {
   const extension = extname(filename).toLowerCase();
+  if (category === 'video') requirePublishableVideo(filename);
   if (category === 'image') {
     if (!['.png', '.jpg', '.jpeg', '.webp', '.gif', '.tif', '.tiff', '.heic', '.avif'].includes(extension)) throw fail(422, '图片格式不受支持');
     const { default: sharp } = await import('sharp'); let metadata;
@@ -178,6 +183,7 @@ export async function createContentWorkspace({ projectRoot, resolveArticle, env 
     if (!input || typeof input !== 'object' || Array.isArray(input)) throw fail(422, '上传信息无效');
     const value = await content(slug), filename = filenameOf(input.filename), relativePath = relativePathOf(input.relativePath, filename), category = input.category || 'other';
     if (!CATEGORIES.has(category)) throw fail(422, '请选择素材类型');
+    if (category === 'video') requirePublishableVideo(filename);
     if (!Number.isSafeInteger(input.size) || input.size < 1 || input.size > fileLimit) throw fail(413, '文件超过大小限制或为空');
     if (usage() + reserved() + input.size > storageLimit) throw fail(413, '私有素材空间不足，请检查存储用量');
     await requirePrivateStorageSpace(root, input.size * 2);

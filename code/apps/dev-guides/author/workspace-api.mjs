@@ -1,3 +1,5 @@
+import { requirePublishableVideo } from './content-workspace.mjs';
+
 /** Composed after the host's existing session, Origin and CSRF checks. */
 export function createWorkspaceHandler({ workspace, revisions, publishing, manager, localOnly = false, previewOrigins = {} }) {
   function status() {
@@ -11,8 +13,13 @@ export function createWorkspaceHandler({ workspace, revisions, publishing, manag
     const bridge = /^\/api\/workspaces\/([a-z0-9]+(?:-[a-z0-9]+)*)\/publishing-video$/.exec(context.url.pathname);
     if (bridge && request.method === 'POST') {
       const input = await context.readJson(request, 4096);
+      const source = await workspace.read(bridge[1]);
+      const selected = source.assets.find((asset) => asset.id === input.assetId);
+      if (!selected) throw context.httpError(404, '素材不存在');
+      if (selected.category !== 'video') throw context.httpError(422, '请选择此内容的成片视频');
+      // Reject legacy unsupported finishes before downloading a cloud original.
+      requirePublishableVideo(selected.filename);
       const { path, asset } = await workspace.resolveAsset(bridge[1], input.assetId);
-      if (asset.category !== 'video') throw context.httpError(422, '请选择此内容的成片视频');
       let imported;
       try { imported = await publishing.importWorkspaceVideo({ path, filename: asset.filename }); }
       finally { await workspace.releaseAsset?.(bridge[1], input.assetId); }

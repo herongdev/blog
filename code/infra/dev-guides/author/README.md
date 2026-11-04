@@ -162,3 +162,9 @@ python3 infra/dev-guides/author/deploy.py
 - 停写一致备份 `20261104T165507Z.tar.gz`，回执 `/var/backups/herong-dev-guides-author/20261104T165017Z-markdown-import/`。165 个项目文件摘要保持一致，认证、配置、公开站及执行器链接保持原样。首次导入功能部署 `20261104T163128Z` 仅更新代码管理的 `templates/tutorial.md`，没有重写旧稿。
 - 180 项回归与构建通过；Edge 隔离环境桌面深色完成整篇粘贴、取消、错误输入、应用与保存核对。线上 HTML 与 16 个 JS/CSS 文件摘要一致，权限与私有路径检查通过；窄屏、浅色和手机真机视觉未覆盖。
 - 云端「开发者知识微课制作」Skill 已加入文章元数据契约并重新下载核对；GPT 直送插件尚未启用。完整证据与范围见 [导入记录](../../../docs/tasks/2026-11-05-author-markdown-import.md)。
+
+## 2026-11-05 视频上传反馈与平台入口
+
+- 作者 release `20261104T171716Z`，前版 `20261104T165017Z`；选定文件后立即展示准备、传输和校验保存状态，成片页可直接进入账号及文案配置，准备期间防重复请求。新成片限 MP4/MOV/M4V/WebM，MKV 原片继续可保存，历史 MKV 成片可读但准备投稿时提示转换。
+- 183 项测试及构建通过，Edge 隔离环境实际打开选择器、上传预览并带入发布中心。未真实投稿；COS/TOS 当前仍未配置启用。
+- 停写备份 `20261104T171838Z.tar.gz`，回执 `/var/backups/herong-dev-guides-author/20261104T171716Z-video-upload/`。165 个项目文件、认证、配置与公开站/执行器链接保持原样。详细范围见 [本轮记录](../../../docs/tasks/2026-11-05-video-selection-publishing.md)。

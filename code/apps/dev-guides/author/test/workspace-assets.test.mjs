@@ -165,6 +165,35 @@ test('real video probe, selected version switching and cross-content selection r
   const wrong = await f.upload(bytes, { filename: 'video.webm', category: 'video' }); assert.equal(wrong.status, 422);
 });
 
+test('MKV originals remain readable while new finished MKV is rejected before reserving upload space', async (t) => {
+  const f = await fixture(t, { chunkSize: 64 * 1024 }), path = join(f.root, 'recording.mkv');
+  execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-f', 'lavfi', '-i', 'color=c=blue:s=160x90:d=0.2', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', path]);
+  const bytes = await readFile(path);
+  const rejected = await f.request('/first/uploads', f.json({ filename: 'finish.MKV', category: 'video', size: bytes.length }));
+  assert.equal(rejected.status, 422);
+  assert.match(rejected.data.error, /MP4.*MOV.*M4V.*WebM/);
+  assert.match(rejected.data.error, /MKV.*原始录屏/);
+  assert.deepEqual((await f.workspace.read('first')).uploads, []);
+  assert.deepEqual(await readdir(join(f.root, '.content-workspace/uploads')), []);
+
+  const raw = await f.upload(bytes, { filename: 'recording.mkv', category: 'recording' });
+  assert.equal(raw.status, 201);
+  assert.equal(raw.data.asset.category, 'recording');
+  assert.equal(raw.data.asset.width, 160);
+  assert.equal(raw.data.workspace.currentVideo, null);
+  assert.deepEqual((await f.request(`/first/assets/${raw.data.asset.id}?download=1`)).bytes, bytes);
+
+  // A completed asset from the former policy must survive reads/restarts unchanged.
+  const statePath = join(f.root, '.content-workspace/state.json');
+  const state = JSON.parse(await readFile(statePath, 'utf8'));
+  state.contents.first.assets.find((asset) => asset.id === raw.data.asset.id).category = 'video';
+  state.contents.first.selectedVideoId = raw.data.asset.id;
+  await writeFile(statePath, JSON.stringify(state));
+  await f.restart();
+  assert.equal((await f.workspace.read('first')).currentVideo.id, raw.data.asset.id);
+  assert.deepEqual((await f.request(`/first/assets/${raw.data.asset.id}?download=1`)).bytes, bytes);
+});
+
 test('real image is decoded without recompressing original bytes', async (t) => {
   const f = await fixture(t, { chunkSize: 64 * 1024 });
   const { default: sharp } = await import('sharp'); const bytes = await sharp({ create: { width: 2, height: 3, channels: 4, background: '#ff000080' } }).png().toBuffer();
