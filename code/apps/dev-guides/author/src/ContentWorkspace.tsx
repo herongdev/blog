@@ -1,3 +1,4 @@
+import { useToast } from './AuthorToast';
 import IconButton from './IconButton';
 import AuthorDialogContent from './AuthorDialogContent';
 import AuthorSelect from './AuthorSelect';
@@ -69,7 +70,7 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
   const [publish, setPublish] = useState<PublishState | null>(null);
   const [platformJobs, setPlatformJobs] = useState<PlatformJob[]>([]);
   const [error, setError] = useState('');
-  const [notice, setNotice] = useState('');
+  const notify = useToast();
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [articleMode, setArticleMode] = useState<'working' | 'published' | 'history'>('working');
@@ -100,6 +101,7 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
   const controller = useRef<AbortController | null>(null);
   const workspaceRef = useRef<Workspace | null>(null);
   const metadataDirtyRef = useRef(false);
+  const announcedJobs = useRef(new Set<string>());
   const generation = useRef(0);
   const readSequence = useRef(0);
   const videoGroupRef = useRef<string | undefined>(undefined);
@@ -127,15 +129,15 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
     if (generation.current !== sequence) return;
     if (results[0].status === 'fulfilled') {
       const value = results[0].value; setPublish(value);
-      if (previewId && value.environments?.staging?.previewId === previewId && !value.active) { setPreviewReady(true); if (value.lastJob?.environment === 'staging' && value.lastJob.status === 'succeeded') setNotice('发布预览已生成'); }
+      if (previewId && value.environments?.staging?.previewId === previewId && !value.active) { setPreviewReady(true); if (value.lastJob?.environment === 'staging' && value.lastJob.status === 'succeeded' && value.lastJob.previewId === previewId && !announcedJobs.current.has(value.lastJob.id)) { announcedJobs.current.add(value.lastJob.id); notify('发布预览已生成'); } }
       if (value.lastJob?.previewId === previewId && value.lastJob?.status === 'failed') { setPreviewReady(false); setError(value.lastJob.error || '网站预览失败，请检查文章信息'); }
-      if (value.lastJob?.environment === 'production' && value.lastJob.status === 'succeeded' && value.lastJob.previewId === previewId) { setPreviewReady(false); setPreviewId(null); setNotice(value.localOnly ? '本地发布版本已更新' : '网站版本已更新'); void refresh(); }
+      if (previewId && value.lastJob?.environment === 'production' && value.lastJob.status === 'succeeded' && value.lastJob.previewId === previewId) { setPreviewReady(false); setPreviewId(null); if (!announcedJobs.current.has(value.lastJob.id)) { announcedJobs.current.add(value.lastJob.id); notify(value.localOnly ? '本地发布版本已更新' : '网站版本已更新'); } void refresh(); }
     }
     if (results[1].status === 'fulfilled') setPlatformJobs(results[1].value.jobs);
-  }, [request, previewId, refresh]);
+  }, [request, previewId, refresh, notify]);
 
   useEffect(() => {
-    generation.current += 1; readSequence.current += 1; controller.current?.abort(); setTab(initialTab); setArticleMode('working'); setSelectedHistory(null); setReadArticle(null); setWorkspace(null); setRevision(null); setLoading(true); setError(''); setNotice(''); setMetadataDirty(false); metadataDirtyRef.current = false; setProgress(null); setPendingFiles([]); setUploading(false); setPreviewId(null); setPreviewReady(false); setSelectedVideoPreview(null);
+    generation.current += 1; announcedJobs.current.clear(); readSequence.current += 1; controller.current?.abort(); setTab(initialTab); setArticleMode('working'); setSelectedHistory(null); setReadArticle(null); setWorkspace(null); setRevision(null); setLoading(true); setError(''); setMetadataDirty(false); metadataDirtyRef.current = false; setProgress(null); setPendingFiles([]); setUploading(false); setPreviewId(null); setPreviewReady(false); setSelectedVideoPreview(null);
     void refresh().catch((problem) => setError((problem as Error).message)).finally(() => setLoading(false));
     return () => { generation.current += 1; controller.current?.abort(); };
   }, [slug, kind, refresh]);
@@ -150,17 +152,17 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
   const openConfirm = (value: 'publish' | 'restore') => { dialogReturnRef.current = document.activeElement as HTMLElement; setConfirm(value); };
   const openFile = (value: Asset) => { dialogReturnRef.current = document.activeElement as HTMLElement; setPreviewAsset(value); };
   const restoreDialogFocus = (event: Event) => { event.preventDefault(); const target = dialogReturnRef.current; if (target?.isConnected) target.focus(); else if (headingRef.current?.classList.contains('sr-only')) headingRef.current.closest('.content-workspace')?.querySelector<HTMLButtonElement>('.cw-back')?.focus(); else headingRef.current?.focus(); };
-  const run = async (action: () => Promise<void>) => { if (busy) return; setBusy(true); setError(''); setNotice(''); try { await action(); } catch (problem) { setError((problem as Error).message); } finally { setBusy(false); } };
+  const run = async (action: () => Promise<void>) => { if (busy) return; setBusy(true); setError(''); try { await action(); } catch (problem) { setError((problem as Error).message); } finally { setBusy(false); } };
   const patch = async (value: Record<string, unknown>) => {
     const current = workspaceRef.current; if (!current) throw new Error('内容尚未加载，请刷新后再试');
     const result = await request<Workspace>(endpoint, json({ revision: current.revision, ...value }, 'PATCH'));
     acceptWorkspace(result); return result;
   };
-  const saveMetadata = () => void run(async () => { await patch({ notes, software, softwareVersion }); setMetadataDirty(false); metadataDirtyRef.current = false; setNotice('制作说明已保存'); });
-  const selectVideo = (asset: Asset) => void run(async () => { await patch({ selectedVideoId: asset.id }); setSelectedVideoPreview(asset.id); setNotice(`已选用 ${asset.filename}，已有发布记录保持原版本`); });
+  const saveMetadata = () => void run(async () => { await patch({ notes, software, softwareVersion }); setMetadataDirty(false); metadataDirtyRef.current = false; notify('制作说明已保存'); });
+  const selectVideo = (asset: Asset) => void run(async () => { await patch({ selectedVideoId: asset.id }); setSelectedVideoPreview(asset.id); notify(`已选用 ${asset.filename}，已有发布记录保持原版本`); });
   const uploadFiles = async (files: File[], forcedCategory?: Category, selectedCategory = uploadCategory) => {
     if (!files.length || uploadRef.current) return;
-    uploadRef.current = true; setUploading(true); setError(''); setNotice(''); setPendingFiles(files); pendingUploadOptions.current = { forcedCategory, selectedCategory };
+    uploadRef.current = true; setUploading(true); setError(''); setPendingFiles(files); pendingUploadOptions.current = { forcedCategory, selectedCategory };
     const activeController = new AbortController(); controller.current = activeController;
     const sequence = generation.current;
     let processed = 0;
@@ -182,7 +184,7 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
         acceptWorkspace(result.workspace); processed += 1;
         if (category === 'video') { videoGroupRef.current = result.asset.groupId; await patch({ selectedVideoId: result.asset.id }); setSelectedVideoPreview(result.asset.id); }
       }
-      setPendingFiles([]); setProgress(null); setNotice(`${files.length} 个文件已保存，可在其他设备继续使用`);
+      setPendingFiles([]); setProgress(null); notify(`${files.length} 个文件已保存，可在其他设备继续使用`);
     } catch (problem) {
       if (generation.current === sequence) { setPendingFiles(files.slice(processed)); setError(activeController.signal.aborted ? '上传已暂停，已传分片保留；可继续上传。' : (problem as Error).message); await refresh().catch(() => undefined); }
     } finally { uploadRef.current = false; if (generation.current === sequence) setUploading(false); }
@@ -201,16 +203,16 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
     let targetRevision = revision.workingRevision;
     if (dirty) { const saved = await onSave(); if (!saved) throw new Error('未能保存当前工作稿，请关闭弹窗检查后重试'); targetRevision = saved.revision; }
     const result = await request<WorkspaceArticle>(`${revisionEndpoint}/restore`, json({ revision: selectedHistory, targetRevision }));
-    onRestore?.(result); setConfirm(null); setArticleMode('working'); await refresh(); setNotice('历史版本已恢复为工作稿，线上文章尚未变更');
+    onRestore?.(result); setConfirm(null); setArticleMode('working'); await refresh(); notify('历史版本已恢复为工作稿，线上文章尚未变更');
   });
   const prepareWebsite = (action: 'publish' | 'unpublish') => void run(async () => {
     const saved = await onSave(); if (!saved) return;
     const result = await request<{ job: PublishJob }>('/api/publish', json({ environment: 'staging', selection: { kind: saved.kind, slug, revision: saved.revision, action } }));
-    setPreparedAction(action); setPreviewId(result.job.previewId || null); setPreviewReady(false); setNotice(action === 'publish' ? '正在生成本篇文章的发布预览' : '正在生成下架预览'); await refreshPublishing();
+    setPreparedAction(action); setPreviewId(result.job.previewId || null); setPreviewReady(false); notify(action === 'publish' ? '正在生成本篇文章的发布预览' : '正在生成下架预览', 'info'); await refreshPublishing();
   });
   const publishWebsite = () => void run(async () => {
     if (!previewId || !previewReady) return;
-    await request('/api/publish', json({ environment: 'production', previewId })); setConfirm(null); setPreviewReady(false); setNotice(publish?.localOnly ? '正在更新本地发布版本' : '正在发布已确认的版本'); await refreshPublishing();
+    await request('/api/publish', json({ environment: 'production', previewId })); setConfirm(null); setPreviewReady(false); notify(publish?.localOnly ? '正在更新本地发布版本' : '正在发布已确认的版本', 'info'); await refreshPublishing();
   });
   const leave = () => { if ((metadataDirty || uploading || filmingPending) && !window.confirm(uploading ? '离开会暂停当前上传，已传分片会保留。确定离开吗？' : '拍摄准备或制作说明有未保存的修改，确定离开吗？')) return; controller.current?.abort(); onBack(); };
   const videos = useMemo(() => (workspace?.assets || []).filter((asset) => asset.category === 'video').slice().reverse(), [workspace]);
@@ -221,14 +223,13 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
   const canPublish = Boolean(publish?.enabled && !busy && !isRunning(publish.active));
   const readonlyPlugins = useMemo(() => [gfm(), highlight(), revisionImagePreview(readArticle)], [readArticle]);
   const privateUrl = (asset: Asset, download = false) => apiUrl(`${endpoint}/assets/${asset.id}${download ? '?download=1' : ''}`);
-  const changeTab = (value: WorkspaceTab) => { setTab(value); setError(''); setNotice(''); if (value === 'video') videoGroupRef.current = workspace?.currentVideo?.groupId; };
+  const changeTab = (value: WorkspaceTab) => { setTab(value); setError(''); if (value === 'video') videoGroupRef.current = workspace?.currentVideo?.groupId; };
   const readonlyArticle = reading ? <div className="cw-loading"><LoaderCircle className="spin" size={20} aria-hidden="true" />正在加载版本…</div> : readArticle ? <article className="cw-readonly bytemd-preview"><h2>{articleTitle(readArticle)}</h2><Suspense fallback={<p>正在显示正文…</p>}><Viewer value={readArticle.body} plugins={readonlyPlugins} /></Suspense></article> : null;
 
   return <section className="content-workspace" aria-label="内容工作区">
     <header className="cw-header"><button className="cw-button cw-back" type="button" aria-label="返回" onClick={leave}><ArrowLeft size={17} aria-hidden="true" /><span>返回</span></button><nav className="cw-tabs" aria-label="当前内容"><button type="button" aria-current={tab === 'filming' ? 'page' : undefined} onClick={() => changeTab('filming')}><Clapperboard size={18} aria-hidden="true" />选题与拍摄</button><button type="button" aria-current={tab === 'article' ? 'page' : undefined} onClick={() => changeTab('article')}><FileText size={18} aria-hidden="true" />文章</button><button type="button" aria-current={tab === 'video' ? 'page' : undefined} onClick={() => changeTab('video')}><Film size={18} aria-hidden="true" />视频{videos.length > 0 && <span className="cw-count">{videos.length}</span>}</button><button type="button" aria-current={tab === 'assets' ? 'page' : undefined} onClick={() => changeTab('assets')}><FolderOpen size={18} aria-hidden="true" />制作素材{Boolean(workspace?.assets.length) && <span className="cw-count">{workspace?.assets.length}</span>}</button><button type="button" aria-current={tab === 'publish' ? 'page' : undefined} onClick={() => changeTab('publish')}><Send size={18} aria-hidden="true" />发布</button></nav><div className="cw-statusline"><span>{dirty ? '工作稿未保存' : revision ? articleStatus[revision.status] : '加载文章状态…'}</span><span>{workspace?.currentVideo ? '成片已就绪' : '暂无成片'}</span></div><IconButton className="cw-button cw-icon cw-refresh" type="button" aria-label="刷新内容状态" disabled={loading || busy || uploading} onClick={() => void run(refresh)}><RefreshCw size={17} aria-hidden="true" /></IconButton></header>
     <div className="cw-content-heading"><h1 ref={headingRef} tabIndex={-1} className={tab === 'article' && articleMode === 'working' ? 'sr-only' : 'cw-content-title'}>{tab === 'filming' ? savedTitle || title : title}</h1>{tab === 'filming' && <HelpTip label="选题标题说明">选题与文章共用这个已保存标题。在“文章”页修改标题并保存后，内容库和拍摄排期会一起更新。</HelpTip>}</div>
     {error && <div className="cw-message cw-message-error" role="alert"><CircleAlert size={17} aria-hidden="true" /><span>{error}</span><IconButton type="button" className="cw-button cw-icon" aria-label="关闭提示" onClick={() => setError('')}><X size={16} aria-hidden="true" /></IconButton></div>}
-    {notice && <div className="cw-message cw-message-success" role="status"><Check size={17} aria-hidden="true" /><span>{notice}</span></div>}
     {progress && <div className="cw-upload-progress" role="status"><div><span>{uploading ? '上传中' : '已暂停'} · {progress.filename}</span><span>{progress.fileIndex}/{progress.fileCount} · {bytes(progress.done)} / {bytes(progress.total)}</span></div><progress max={progress.total || 1} value={progress.done} aria-label={`${progress.filename} 上传进度`} /><button type="button" className="cw-button" onClick={() => uploading ? controller.current?.abort() : void uploadFiles(pendingFiles, pendingUploadOptions.current.forcedCategory, pendingUploadOptions.current.selectedCategory)}>{uploading ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}{uploading ? '暂停' : '继续上传'}</button></div>}
     {!uploading && pendingFiles.length > 0 && !progress && <button type="button" className="cw-button" onClick={() => void uploadFiles(pendingFiles, pendingUploadOptions.current.forcedCategory, pendingUploadOptions.current.selectedCategory)}><RefreshCw size={16} aria-hidden="true" />重试剩余 {pendingFiles.length} 个文件</button>}
     <div hidden={tab !== 'filming'}><FilmingPanel slug={slug} active={active && tab === 'filming'} request={request} onPendingChange={setFilmingPending} /></div>

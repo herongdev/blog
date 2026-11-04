@@ -17,7 +17,6 @@
 .schedule-icon-button > svg { width: var(--schedule-icon-size); height: var(--schedule-icon-size); }
 .schedule-icon-button:hover:not(:disabled), .schedule-icon-button[data-state='open'] { color: var(--color-accent); background: var(--color-accent-subtle); }
 .schedule-icon-button:disabled { opacity: .35; }
-.schedule-notice { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-success-badge); font-size: var(--font-size-sm); margin: 0 0 var(--space-4); }
 .schedule-week { min-width: 0; padding: var(--space-5); border: var(--border-width) solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
 .schedule-current { margin-bottom: var(--space-5); }
 .schedule-section-heading { margin-bottom: var(--space-3); flex-wrap: wrap; }

@@ -90,7 +90,6 @@ a, button, input, textarea, select, summary { -webkit-tap-highlight-color: trans
 .message span { flex: 1; }
 .message button { border: 0; background: transparent; color: inherit; min-height: 30px; text-decoration: underline; text-underline-offset: 3px; }
 .message-error { background: var(--color-warning-surface); color: var(--color-text-warning-strong); border: 1px solid var(--color-border-warning); }
-.message-success { background: var(--color-success-badge); color: var(--color-text-success-badge); border: 1px solid var(--color-border-panel); }
 .article-topline { flex: 1; min-width: 0; justify-content: flex-end; gap: var(--space-2); min-height: var(--author-control-height); }
 .article-location { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text-muted); font-size: var(--font-size-sm); overflow-wrap: anywhere; }
 .save-actions { flex: none; gap: var(--space-2); white-space: nowrap; }

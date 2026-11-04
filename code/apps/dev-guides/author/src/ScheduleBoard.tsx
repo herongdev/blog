@@ -1,3 +1,4 @@
+import { useToast } from './AuthorToast';
 import IconButton from './IconButton';
 import AuthorDialogContent from './AuthorDialogContent';
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from 'react';
@@ -60,7 +61,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
   const controlsBusy = busy || refreshingState || staleState || libraryBusy;
   const [directoriesOpen, setDirectoriesOpen] = useState(() => window.matchMedia('(min-width: 901px)').matches);
   const [folderDrag, setFolderDrag] = useState(''); const folderDragging = useRef(false); const directorySnapshot = useRef<LibraryState | null>(null); const [destination, setDestination] = useState<string | null>(null); const [archiveReason, setArchiveReason] = useState('');
-  const [error, setError] = useState(''); const [notice, setNotice] = useState('');
+  const [error, setError] = useState(''); const notify = useToast();
   const [query, setQuery] = useState(''); const [page, setPage] = useState(1);
   const [dragging, setDragging] = useState<ScheduleEntry | null>(null);
   const dragSnapshot = useRef<{ revision: string; current: ScheduleEntry[]; queue: ScheduleEntry[]; entry: ScheduleEntry; scope: Scope } | null>(null);
@@ -163,7 +164,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
   }, [data, busy, dragging]);
   const act = async (action: Action, revision = data?.revision): Promise<ScheduleState> => {
     if (!revision || lock.current || refreshing.current || revisionStale.current) throw new Error('排期正在更新，请稍后重试');
-    lock.current = true; setBusy(true); ++sequence.current; setError(''); setNotice('');
+    lock.current = true; setBusy(true); ++sequence.current; setError('');
     try {
       const result = await request<ScheduleState>('/api/schedule/actions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...action, revision }) });
       setData(result); return result;
@@ -175,7 +176,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
       throw problem;
     } finally { lock.current = false; setBusy(false); }
   };
-  const run = async (action: Action, message: string, revision?: string) => { try { await act(action, revision); setNotice(message); } catch (problem) { setError((problem as Error).message); } };
+  const run = async (action: Action, message: string, revision?: string) => { try { await act(action, revision); notify(message); } catch (problem) { setError((problem as Error).message); } };
   const queue = data?.queue ?? []; const current = data?.thisWeek.entries ?? [];
   const operationEntry = operation && 'entry' in operation ? [...current, ...queue].find((entry) => entry.slug === operation.entry.slug) ?? operation.entry : null;
   const search = query.trim().toLocaleLowerCase();
@@ -197,7 +198,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
     ++sequence.current;
     const startY = 'clientY' in activatorEvent ? Number(activatorEvent.clientY) : undefined;
     dragSnapshot.current = { revision: data.revision, current, queue, entry, scope: current.some((item) => item.slug === entry.slug) ? 'current' : 'queue' };
-    // Retain the notice/error until drop: removing it now would shift every
+    // Retain an inline error until drop: removing it now would shift every
     // measured droppable vertically just as a pointer/keyboard drag starts.
     pointerY.current = startY; setDragging(entry);
   };
@@ -206,7 +207,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
     const directory = directorySnapshot.current; directorySnapshot.current = null;
     if (directory && over?.data.current?.libraryKind === 'target') {
       dragSnapshot.current = null; setDragging(null); const action = libraryDropAction({ active, over }, directory);
-      if (action) void onLibraryAction(action, directory.revision).then(() => setNotice(action.action === 'assign' ? '目录已更新，本周顺序保持不变' : '目录顺序已更新')).catch((problem) => setError((problem as Error).message));
+      if (action) void onLibraryAction(action, directory.revision).catch((problem) => setError((problem as Error).message));
       return;
     }
     if (active.data.current?.libraryKind === 'folder') return;
@@ -263,22 +264,22 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
         const result = alreadyCurrent || alreadyQueued >= 0 ? fresh : await act({ action: 'enqueue', slug, ...(placement === 'front' ? { position: 1 } : {}) }, fresh.revision);
         const savedIndex = result.queue.findIndex((entry) => entry.slug === slug);
         setQuery(''); setPage(savedIndex >= 0 ? Math.floor(savedIndex / PAGE_SIZE) + 1 : 1);
-        setNotice(alreadyCurrent ? '素材已在本周安排中' : alreadyQueued >= 0 ? '素材已在候选选题中' : placement === 'front' ? '新选题已加入其它最前' : '新选题已加入其它末尾');
+        notify(alreadyCurrent ? '素材已在本周安排中' : alreadyQueued >= 0 ? '素材已在候选选题中' : placement === 'front' ? '新选题已加入其它最前' : '新选题已加入其它末尾');
       } else if (operation.type === 'move') {
         const target = Number(position); if (!Number.isInteger(target) || target < operation.minimum || target > operation.maximum) throw new Error(`位置应为 ${operation.minimum} 至 ${operation.maximum}`);
         await act({ action: 'move', scope: operation.scope, slug: operation.entry.slug, position: target });
         if (operation.scope === 'queue') { setQuery(''); setPage(Math.ceil(target / PAGE_SIZE)); }
-        setNotice('顺序已更新');
-      } else if (operation.type === 'assign') { await onLibraryAction({ action: 'assign', articleKey: `${operation.entry.kind}/${operation.entry.slug}`, folderId: destination }); setNotice('目录已更新，本周顺序保持不变');
-      } else if (operation.type === 'archive') { await onLibraryAction({ action: 'archive', articleKey: `${operation.entry.kind}/${operation.entry.slug}`, reason: archiveReason }); await refresh(true); setNotice('已归档，可从已归档入口恢复');
-      } else if (operation.type === 'remove') { await act({ action: 'remove', slug: operation.entry.slug }); setNotice('已移出候选选题，文章仍保留'); }
+        notify('顺序已更新');
+      } else if (operation.type === 'assign') { await onLibraryAction({ action: 'assign', articleKey: `${operation.entry.kind}/${operation.entry.slug}`, folderId: destination });
+      } else if (operation.type === 'archive') { await onLibraryAction({ action: 'archive', articleKey: `${operation.entry.kind}/${operation.entry.slug}`, reason: archiveReason }); await refresh(true);
+      } else if (operation.type === 'remove') { await act({ action: 'remove', slug: operation.entry.slug }); notify('已移出候选选题，文章仍保留'); }
       dialogOpening.current = false; setOperation(null);
     } catch (problem) { setDialogError((problem as Error).message); }
     finally { dialogLock.current = false; setSubmitting(false); }
   };
   const enqueueExisting = async (entry: ScheduleEntry) => {
     if (dialogLock.current || controlsBusy) return; dialogLock.current = true; setSubmitting(true); setDialogError('');
-    try { const result = await act({ action: 'enqueue', slug: entry.slug, ...(placement === 'front' ? { position: 1 } : {}) }); setQuery(''); setPage(placement === 'front' ? 1 : Math.max(1, Math.ceil(result.queue.length / PAGE_SIZE))); setNotice('文章已加入候选选题'); dialogOpening.current = false; setOperation(null); }
+    try { const result = await act({ action: 'enqueue', slug: entry.slug, ...(placement === 'front' ? { position: 1 } : {}) }); setQuery(''); setPage(placement === 'front' ? 1 : Math.max(1, Math.ceil(result.queue.length / PAGE_SIZE))); notify('文章已加入候选选题'); dialogOpening.current = false; setOperation(null); }
     catch (problem) { setDialogError((problem as Error).message); } finally { dialogLock.current = false; setSubmitting(false); }
   };
   const menu = (entry: ScheduleEntry, scope: Scope) => {
@@ -306,7 +307,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
   const dialogTitle = operation?.type === 'assign' ? '移动到目录' : operation?.type === 'archive' ? '归档选题' : operation?.type === 'create' ? '新建选题' : operation?.type === 'existing' ? '添加已有内容' : operation?.type === 'move' ? '调整位置' : operation?.type === 'remove' ? '移出拍摄排期' : '排期规则';
   return <main className="schedule-board" aria-label="拍摄排期">
     <div className="schedule-heading"><h1>拍摄排期</h1><div className="schedule-heading-actions"><IconButton type="button" className="schedule-icon-button" aria-label="查看排期规则" title="排期规则" onClick={(event) => start({ type: 'help' }, event.currentTarget)}><CircleHelp aria-hidden="true" /></IconButton><IconButton type="button" className="schedule-icon-button" aria-label="刷新排期" title="刷新排期" disabled={busy || refreshingState || loading || Boolean(dragging)} onClick={() => void refresh()}><RefreshCw className={refreshingState ? 'spin' : undefined} aria-hidden="true" /></IconButton><button ref={newButton} type="button" className="save-button" disabled={!data || controlsBusy} onClick={(event) => start({ type: 'create' }, event.currentTarget)}><FilePlus2 size={18} aria-hidden="true" />新建选题</button></div></div>
-    {error && <div className="message message-error" role="alert"><span>{error}</span><button type="button" onClick={() => void refresh()}>重试</button></div>}{notice && !error && <p className="schedule-notice" role="status"><Check size={16} aria-hidden="true" />{notice}</p>}
+    {error && <div className="message message-error" role="alert"><span>{error}</span><button type="button" onClick={() => void refresh()}>重试</button></div>}
     {loading && !data ? <div className="schedule-empty" role="status"><LoaderCircle className="spin" aria-hidden="true" />正在读取排期…</div> : !data ? <div className="schedule-empty"><p>暂时无法读取排期。</p><button type="button" className="secondary-button" onClick={() => void refresh()}>重新加载</button></div> : <>
       <DndContext sensors={sensors} collisionDetection={detectCollision} onDragStart={dragStart} onDragEnd={dragEnd} onDragCancel={() => { dragSnapshot.current = null; setDragging(null); folderDragging.current = false; directorySnapshot.current = null; setFolderDrag(''); }} accessibility={{ restoreFocus: false, screenReaderInstructions: { draggable: '按空格开始拖动，上下方向键调整位置或移到另一组，再按空格放下；Escape 取消。也可使用右侧按钮或更多操作中的移入本周、移回其它、上移、下移。' }, announcements: { onDragStart: ({ active }) => `开始拖动${String(active.data.current?.folder?.name ?? active.data.current?.entry?.title ?? '条目')}。`, onDragOver: ({ over }) => over?.data.current?.libraryKind === 'target' ? `移到${over.data.current.folderId ? folderPath(library?.folders ?? [], over.data.current.folderId) : '未分类或顶层目录'}${over.data.current.placement === 'before' ? '之前' : over.data.current.placement === 'after' ? '之后' : '内'}。` : over ? `移到${over.data.current?.scope === 'current' ? '本周' : '其它'}${over.data.current?.entry ? `，${over.data.current.entry.title}的位置` : '空区域'}。` : '当前不在放置区域。', onDragEnd: () => '拖动结束，正在确认安排。', onDragCancel: () => '已取消拖动。' } }}>
         <div className="schedule-layout"><aside className="schedule-directories" aria-label="共享内容目录"><button type="button" className="schedule-directory-toggle secondary-button" aria-expanded={directoriesOpen} onClick={() => setDirectoriesOpen((value) => !value)}><FolderOpen size={16} aria-hidden="true" />{['all', 'archived', 'unfiled'].includes(librarySelection) ? '共享目录' : folderPath(library?.folders ?? [], librarySelection)}<ChevronDown size={16} aria-hidden="true" /></button><div className={`schedule-directory-content ${directoriesOpen ? 'is-open' : ''}`}><ArticleLibrary library={library} items={articles} archivedItems={archivedItems} archiveLoading={archiveLoading} selection={librarySelection} onSelect={onLibrarySelect} busy={controlsBusy || submitting} onAction={onLibraryAction} onRefresh={onLibraryRefresh} onOpen={(item, tab) => onOpen(item, tab ?? 'filming')} foldersOnly externalDnd /></div></aside><div className="schedule-main">
@@ -315,7 +316,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
         </section>
         <section ref={queueSection} className="schedule-queue" aria-labelledby="schedule-queue-title"><header className="schedule-section-heading schedule-queue-toolbar"><div className="schedule-section-label"><h2 ref={queueHeading} tabIndex={-1} id="schedule-queue-title">{archivedView ? '已归档' : ['all', 'unfiled'].includes(librarySelection) ? librarySelection === 'unfiled' ? '未分类选题' : '候选选题' : folderPath(library?.folders ?? [], librarySelection)}</h2><span className="schedule-count">{archivedView ? archivedItems.length : filtered.length} 条</span><HelpTip label="候选选题与目录说明">目录筛选包含子目录，只影响候选列表；本周仍显示全部已安排选题。拖到目录只归类，不改变拍摄顺序。</HelpTip></div>
           <div className="schedule-search"><Search aria-hidden="true" /><input aria-label="搜索候选选题" placeholder="搜索标题或文章地址" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} />{query && <IconButton type="button" className="schedule-icon-button" aria-label="清空搜索" onClick={() => setQuery('')}><X aria-hidden="true" /></IconButton>}</div><button type="button" className="secondary-button" disabled={controlsBusy || archivedView} onClick={(event) => start({ type: 'existing' }, event.currentTarget)}><CirclePlus size={17} aria-hidden="true" />添加已有内容</button></header>
-          {archivedView ? archiveLoading ? <p className="schedule-empty" role="status">正在读取归档…</p> : <ul className="schedule-list">{archivedItems.filter((entry) => !search || `${entry.title} ${entry.slug}`.toLocaleLowerCase().includes(search)).map((entry) => <li className="schedule-row" key={entry.slug}><div className="schedule-row-content">{articleTitle(entry)}{entry.archiveReason && <span className="schedule-archive-reason">{entry.archiveReason}</span>}</div><button type="button" className="secondary-button" disabled={controlsBusy} onClick={() => void onLibraryAction({ action: 'restore', articleKey: `${entry.kind}/${entry.slug}` }).then(() => setNotice('已恢复到活动内容库，尚未加入排期')).catch((problem) => setError((problem as Error).message))}><ArchiveRestore size={16} aria-hidden="true" />恢复</button></li>)}</ul> : <SortableList entries={visible} scope="queue" disabled={controlsBusy || submitting} empty={search ? '没有匹配的选题。拖到这里会放在候选选题末尾。' : '暂时没有候选选题，可以从本周拖回，或添加文章。'} render={(entry) => row(entry, 'queue')} />}
+          {archivedView ? archiveLoading ? <p className="schedule-empty" role="status">正在读取归档…</p> : <ul className="schedule-list">{archivedItems.filter((entry) => !search || `${entry.title} ${entry.slug}`.toLocaleLowerCase().includes(search)).map((entry) => <li className="schedule-row" key={entry.slug}><div className="schedule-row-content">{articleTitle(entry)}{entry.archiveReason && <span className="schedule-archive-reason">{entry.archiveReason}</span>}</div><button type="button" className="secondary-button" disabled={controlsBusy} onClick={() => void onLibraryAction({ action: 'restore', articleKey: `${entry.kind}/${entry.slug}` }).catch((problem) => setError((problem as Error).message))}><ArchiveRestore size={16} aria-hidden="true" />恢复</button></li>)}</ul> : <SortableList entries={visible} scope="queue" disabled={controlsBusy || submitting} empty={search ? '没有匹配的选题。拖到这里会放在候选选题末尾。' : '暂时没有候选选题，可以从本周拖回，或添加文章。'} render={(entry) => row(entry, 'queue')} />}
           {!archivedView && (filtered.length > PAGE_SIZE || Boolean(search)) && <nav className="schedule-pagination" aria-label="候选选题分页"><span>{filtered.length ? `${(currentPage - 1) * PAGE_SIZE + 1}–${Math.min(currentPage * PAGE_SIZE, filtered.length)} / ${filtered.length} 条` : '0 条'}{search ? `（共 ${queue.length} 条）` : ''}</span><div><IconButton type="button" className="schedule-icon-button" aria-label="上一页" disabled={currentPage <= 1 || Boolean(dragging)} onClick={() => setPage(currentPage - 1)}><ChevronLeft aria-hidden="true" /></IconButton><span>第 {currentPage} / {pages} 页</span><IconButton type="button" className="schedule-icon-button" aria-label="下一页" disabled={currentPage >= pages || Boolean(dragging)} onClick={() => setPage(currentPage + 1)}><ChevronRight aria-hidden="true" /></IconButton></div></nav>}
         </section>
         <DragOverlay dropAnimation={null}>{folderDrag ? <div className="library-drag-preview">{folderDrag}</div> : dragging ? <div className="schedule-drag-preview"><GripVertical aria-hidden="true" /><span>{dragging.title}</span></div> : null}</DragOverlay>
