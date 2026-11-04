@@ -84,6 +84,66 @@ test('old articles remain unclassified without a migration; directory CRUD persi
   } finally { await app.close(); }
 });
 
+test('folder drag can atomically change parent and sibling order without moving articles', async () => {
+  const app = await fixture();
+  try {
+    const a = (await app.action({ action: 'create', name: '甲' })).data.createdId;
+    const b = (await app.action({ action: 'create', name: '乙' })).data.createdId;
+    const c = (await app.action({ action: 'create', name: '丙', position: 2 })).data.createdId;
+    const siblings = async (parentId) => (await app.state()).folders.filter((item) => item.parentId === parentId).map((item) => item.id);
+    assert.deepEqual(await siblings(null), [a, c, b]);
+    await app.action({ action: 'assign', articleKey: 'content/existing', folderId: c });
+    assert.equal((await app.action({ action: 'move', id: b, parentId: null, position: 1 })).status, 200);
+    assert.deepEqual(await siblings(null), [b, a, c]);
+    assert.equal((await app.action({ action: 'move', id: c, parentId: b, position: 1 })).status, 200);
+    assert.deepEqual(await siblings(b), [c]);
+    const before = await app.state();
+    assert.equal((await app.action({ action: 'move', id: b, parentId: c, position: 1 })).status, 400);
+    assert.deepEqual(await app.state(), before);
+    assert.equal(before.assignments['content/existing'], c);
+    await app.restart(); assert.deepEqual(await app.state(), before);
+  } finally { await app.close(); }
+});
+
+test('archive and immediate restore hide content reversibly without resurrecting its old schedule', async () => {
+  const app = await fixture();
+  try {
+    const original = await readFile(join(app.root, 'src/content/tutorials/existing.md'), 'utf8');
+    const plan = (await app.api('/api/schedule')).data;
+    assert.equal(plan.queue[0].slug, 'existing');
+    await app.action({ action: 'archive', articleKey: 'content/existing', reason: '暂不拍摄' });
+    assert.deepEqual((await app.api('/api/articles')).data.items, []);
+    assert.equal((await app.api('/api/articles?scope=archived')).data.items[0].slug, 'existing');
+    assert.equal((await app.api('/api/articles/content/existing')).status, 200);
+    // No schedule read between these mutations: the generation must still remove it.
+    await app.action({ action: 'restore', articleKey: 'content/existing' });
+    assert.equal((await app.api('/api/articles')).data.items[0].slug, 'existing');
+    const restored = (await app.api('/api/schedule')).data;
+    assert.deepEqual(restored.queue, []);
+    const enqueued = await app.api('/api/schedule/actions', { method: 'POST', data: { revision: restored.revision, action: 'enqueue', slug: 'existing' } });
+    assert.equal(enqueued.status, 200); assert.equal(enqueued.data.queue[0].slug, 'existing');
+    await app.restart(); assert.equal((await app.api('/api/schedule')).data.queue[0].slug, 'existing');
+    assert.equal(await readFile(join(app.root, 'src/content/tutorials/existing.md'), 'utf8'), original);
+  } finally { await app.close(); }
+});
+
+test('filming preparation uses its own revision and refuses source edits without changing article title or body', async () => {
+  const app = await fixture();
+  try {
+    const original = await readFile(join(app.root, 'src/content/tutorials/existing.md'), 'utf8');
+    const first = await app.api('/api/filming/existing');
+    assert.equal(first.status, 200); assert.deepEqual(first.data.sources, []);
+    const saved = await app.api('/api/filming/existing', { method: 'PATCH', data: { revision: first.data.revision, preparation: { goal: '演示真实失败', outline: '先复现，再排错', checklist: '- [ ] 亲测', notes: '私有准备' } } });
+    assert.equal(saved.status, 200);
+    assert.equal((await app.api('/api/filming/existing', { method: 'PATCH', data: { revision: first.data.revision, preparation: { notes: '旧窗口' } } })).status, 409);
+    assert.equal((await app.api('/api/filming/existing', { method: 'PATCH', data: { revision: saved.data.revision, preparation: {}, sources: [] } })).status, 400);
+    assert.equal((await app.api('/api/filming/missing')).status, 404);
+    await app.restart(); assert.deepEqual((await app.api('/api/filming/existing')).data, saved.data);
+    assert.equal(await readFile(join(app.root, 'src/content/tutorials/existing.md'), 'utf8'), original);
+    assert.equal((await stat(join(app.root, '.filming.json'))).mode & 0o777, 0o600);
+  } finally { await app.close(); }
+});
+
 test('nonempty folders cannot be deleted, and failed operations preserve the tree', async () => {
   const app = await fixture();
   try {
@@ -197,9 +257,12 @@ test('library APIs require login online and enforce Host, Origin and mutation to
   const online = await fixture({ online: true });
   try {
     assert.equal((await online.api('/api/library')).status, 401);
+    assert.equal((await online.api('/api/filming/existing')).status, 401);
+    assert.equal((await online.api('/api/filming/existing', { method: 'PATCH', data: { revision: 'none', preparation: { notes: 'unauthorized' } } })).status, 401);
     assert.equal((await online.api('/api/library/actions', { method: 'POST', data: { action: 'create', name: '不能创建' } })).status, 401);
     assert.equal((await online.api('/api/library', { headers: { Host: 'attacker.example' } })).status, 403);
     await assert.rejects(readFile(join(online.root, '.library.json')), { code: 'ENOENT' });
+    await assert.rejects(readFile(join(online.root, '.filming.json')), { code: 'ENOENT' });
   } finally { await online.close(); }
   const app = await fixture();
   try {
@@ -207,6 +270,7 @@ test('library APIs require login online and enforce Host, Origin and mutation to
     const data = { revision, action: 'create', name: '不能创建' };
     for (const headers of [{ Origin: 'https://attacker.example' }, { 'x-author-token': '' }, { Host: 'attacker.example' }]) {
       assert.equal((await app.api('/api/library/actions', { method: 'POST', data, headers })).status, 403);
+      assert.equal((await app.api('/api/filming/existing', { method: 'PATCH', data: { revision: 'none', preparation: {} }, headers })).status, 403);
     }
     assert.equal((await app.api('/.library.json')).status, 404);
     assert.deepEqual((await app.state()).folders, []);

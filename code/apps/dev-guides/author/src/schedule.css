@@ -6,7 +6,7 @@
   --schedule-overlay-width: 480px;
   --schedule-existing-height: 45dvh;
 }
-.schedule-board { width: 100%; max-width: var(--schedule-max-width); margin-inline: auto; padding: var(--space-6) var(--author-workspace-gutter) var(--space-12); min-width: 0; }
+.schedule-board { width: 100%; max-width: var(--schedule-max-width); margin-inline: auto; padding: var(--space-3) var(--author-workspace-gutter) var(--space-6); min-width: 0; }
 .schedule-board svg { flex: none; }
 .schedule-heading, .schedule-section-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
 .schedule-heading { margin-bottom: var(--space-4); flex-wrap: wrap; }
@@ -98,3 +98,19 @@
   .schedule-dialog .library-dialog-actions button { flex: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .schedule-row { transition: none !important; } }
+
+.schedule-layout { display: grid; grid-template-columns: 272px minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+.schedule-directories { position: sticky; top: var(--space-3); max-height: calc(100dvh - var(--space-6)); overflow-y: auto; min-width: 0; border-right: var(--border-width) solid var(--color-border); padding-right: var(--space-3); }
+.schedule-main { min-width: 0; }
+.schedule-directory-toggle { display: none; }
+.schedule-archive-reason { display: block; margin: 0 var(--space-2) var(--space-1); color: var(--color-text-muted); font-size: var(--font-size-xs); overflow-wrap: anywhere; }
+.schedule-queue-toolbar .schedule-section-label { min-width: 0; }
+.schedule-queue-toolbar h2 { overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .schedule-layout { grid-template-columns: minmax(0,1fr); gap: var(--space-3); }
+  .schedule-directories { position: static; max-height: none; border-right: 0; padding-right: 0; }
+  .schedule-directory-toggle { display: flex; width: 100%; justify-content: flex-start; text-align: left; }
+  .schedule-directory-toggle > svg:last-child { margin-left: auto; }
+  .schedule-directory-content { display: none; }
+  .schedule-directory-content.is-open { display: block; padding-block: var(--space-2); max-height: 320px; overflow-y: auto; }
+}

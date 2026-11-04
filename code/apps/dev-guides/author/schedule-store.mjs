@@ -58,7 +58,7 @@ function validate(state) {
   }
 }
 
-const snapshot = (entry) => ({ slug: entry.slug, title: entry.title, kind: entry.kind, status: entry.status });
+const snapshot = (entry) => ({ slug: entry.slug, title: entry.title, kind: entry.kind, status: entry.status, ...(entry.archiveRevision ? { archiveRevision: entry.archiveRevision } : {}) });
 const doneCount = (entries) => entries.filter((entry) => entry.done).length;
 // Three imported topics reuse older manuscripts without changing their frontmatter.
 const importedSourceIds = { 'codex-worktrees': 'DG004', 'apifox-actual-request': 'DG006', 'cursor-remote-control': 'DG125' };
@@ -135,7 +135,7 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
     let state = await readDisk();
     let changed = false;
     if (!state) {
-      const ordered = sortInitial(articles).map(snapshot);
+      const ordered = sortInitial(articles.filter((entry) => !entry.archived)).map(snapshot);
       state = { version: 2, current: { start: thisMonday, entries: [] }, queue: ordered, history: [] };
       changed = true;
     } else if (state.version === 1) {
@@ -144,6 +144,16 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
       state = { ...state, version: 2 };
       delete state.cadence;
       changed = true;
+    }
+    // A lifecycle generation survives restoration. Even archive -> restore
+    // before the next schedule read cannot resurrect an old active task.
+    const available = (entry) => {
+      const article = articles.find((item) => item.slug === entry.slug);
+      return !article || (!article.archived && article.archiveRevision === entry.archiveRevision);
+    };
+    const current = state.current.entries.filter(available), queue = state.queue.filter(available);
+    if (current.length !== state.current.entries.length || queue.length !== state.queue.length) {
+      state.current.entries = current; state.queue = queue; changed = true;
     }
     if (thisMonday > state.current.start) {
       const archived = { start: state.current.start, entries: state.current.entries.map((entry) => ({ ...snapshot(live(entry, articles)), done: entry.done })) };
@@ -197,6 +207,7 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
       const { state, articles } = await load();
       if (typeof input.revision !== 'string' || input.revision !== present(state, articles).revision) fail(409, '排期已在其他窗口或新一周更新，请刷新后重试');
       if (input.action !== 'cadence' && (typeof input.slug !== 'string' || !SLUG.test(input.slug))) fail(400, '文章地址无效');
+      if (articles.some((article) => article.slug === input.slug && article.archived)) fail(409, '内容已归档，请先恢复后再加入排期');
       switch (input.action) {
         case 'cadence':
           fail(410, '排期已改为手动安排，请将条目移入本周');

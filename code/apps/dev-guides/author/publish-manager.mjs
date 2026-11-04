@@ -127,6 +127,12 @@ async function sourceSnapshot(projectRoot, contentRoot, destination) {
   return digest.digest('hex');
 }
 
+/** Read-only maintenance check against a release's source_fingerprint. */
+export async function fingerprintPublishSource({ projectRoot, contentRoot }) {
+  if (!projectRoot || !contentRoot) throw new Error('Exact source and content roots are required');
+  return sourceSnapshot(resolve(projectRoot), resolve(contentRoot));
+}
+
 function profileOf(environment, profile) {
   if (!profile || typeof profile.root !== 'string') throw new Error('A release root is required for each environment');
   const origin = new URL(profile.site);

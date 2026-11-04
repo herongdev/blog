@@ -40,6 +40,7 @@ print(base)
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--stage-only', action='store_true', help='Upload and prepare dependencies without changing live data, units or current')
     parser.add_argument('--runtime-archive', type=Path)
     parser.add_argument('--identity-file', type=Path, default=Path('/Users/ronnie/.ssh/beszel_101_96_210_172'))
     args = parser.parse_args()
@@ -57,7 +58,7 @@ def main():
         archive = Path(temporary) / (release + '.tar.gz')
         def safe(member):
             parts = Path(member.name).parts
-            if any(part in {'node_modules', 'drafts', '.git', '.astro', '.vite', 'test-results', '.history', '.library.json', '.schedule.json', '.editorial-imports', '.publishing-private', '.content-workspace', '.article-revisions', '.vendor', '.venv', '__pycache__'} or part.startswith(('.env', '.schedule.json.', '.library.json.')) or part.endswith('.env') for part in parts):
+            if any(part in {'node_modules', 'drafts', '.git', '.astro', '.vite', 'test-results', '.history', '.library.json', '.schedule.json', '.filming.json', '.editorial-imports', '.editorial-curation', '.publishing-private', '.content-workspace', '.article-revisions', '.vendor', '.venv', '__pycache__'} or part.startswith(('.env', '.schedule.json.', '.library.json.', '.filming.json.')) or part.endswith('.env') for part in parts):
                 return None
             if not (member.isfile() or member.isdir()):
                 raise RuntimeError('Do not bundle symlinks or irregular source files')
@@ -78,8 +79,14 @@ def main():
         subprocess.run([*scp, str(archive), 'root@101.96.210.172:' + BASE + '/incoming/'], check=True)
         installer = BASE + '/incoming/install.py'
         subprocess.run([*scp, str(INFRA / 'install.py'), 'root@101.96.210.172:' + installer], check=True)
-        remote(shlex.join(['python3', installer, release, checksum]))
-    print('Author code deployed:', release)
+        command = ['python3', installer, release, checksum]
+        if args.stage_only:
+            command.append('--prepare-only')
+        remote(shlex.join(command))
+    print('Author code prepared:' if args.stage_only else 'Author code deployed:', release)
+    if args.stage_only:
+        print('After baseline and backup checks, activate on the server:')
+        print(shlex.join(['python3', BASE + '/releases/' + release + '/code/infra/dev-guides/author/install.py', release, checksum, '--activate-only']))
 
 if __name__ == '__main__':
     main()

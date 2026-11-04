@@ -458,6 +458,70 @@ test('schedule API reads editorial seed metadata without changing ordinary artic
   } finally { server.close(); await once(server, 'close'); await f.close(); }
 });
 
+test('saved article titles immediately project into active schedules and unassigned articles without rewriting schedule history', async () => {
+  const f = await fixture([]);
+  await mkdir(join(f.root, 'drafts'));
+  const topics = [
+    { slug: 'current-topic', title: '本周入排期旧标题', next: '本周保存后的新文章标题' },
+    { slug: 'queued-topic', title: '其它入排期旧标题', next: '其它保存后的新文章标题' },
+    { slug: 'unassigned-topic', title: '未分配文章旧标题', next: '未分配保存后的新文章标题' },
+  ];
+  for (const topic of topics) await writeFile(join(f.root, 'drafts', `${topic.slug}.md`), `---\ntitle: ${topic.title}\nstatus: lead\nsummary: 这是一段用于验证文章标题保存和排期关联的完整测试摘要。\n---\n\n正文原样保留。\n`);
+  const currentStart = weekStartShanghai(), previous = new Date(`${currentStart}T00:00:00Z`);
+  previous.setUTCDate(previous.getUTCDate() - 7);
+  const entry = (topic) => ({ slug: topic.slug, title: topic.title, kind: 'draft', status: 'lead' });
+  const savedSchedule = {
+    version: 2,
+    current: { start: currentStart, entries: [{ ...entry(topics[0]), done: true }] },
+    queue: [entry(topics[1])],
+    history: [{ start: previous.toISOString().slice(0, 10), entries: [{ ...entry(topics[0]), title: '历史周冻结标题', done: true }] }],
+  };
+  const schedulePath = join(f.root, '.schedule.json'), initialBytes = JSON.stringify(savedSchedule);
+  await writeFile(schedulePath, initialBytes);
+  const server = createAuthorServer({ projectRoot: f.root, mediaEnv: {} });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const origin = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const { token } = await (await fetch(origin + '/api/session')).json();
+    const headers = { Origin: origin, 'x-author-token': token, 'Content-Type': 'application/json' };
+    const before = await (await fetch(origin + '/api/schedule')).json();
+    const savedArticles = new Map();
+    for (const topic of topics) {
+      const path = `/api/articles/draft/${topic.slug}`, original = await (await fetch(origin + path)).json();
+      const response = await fetch(origin + path, { method: 'PUT', headers, body: JSON.stringify({ ...original, frontmatter: original.frontmatter.replace(topic.title, topic.next) }) });
+      assert.equal(response.status, 200);
+      const saved = await (await fetch(origin + path)).json();
+      assert.equal(saved.body, original.body);
+      savedArticles.set(topic.slug, saved);
+    }
+    const after = await (await fetch(origin + '/api/schedule')).json();
+    assert.equal(after.thisWeek.entries[0].title, topics[0].next);
+    assert.equal(after.thisWeek.entries[0].done, true);
+    assert.equal(after.queue[0].title, topics[1].next);
+    assert.equal(after.history[0].entries[0].title, '历史周冻结标题');
+    assert.notEqual(after.revision, before.revision);
+    const staleMove = await fetch(origin + '/api/schedule/actions', { method: 'POST', headers, body: JSON.stringify({ revision: before.revision, action: 'move', scope: 'queue', slug: topics[1].slug, position: 1 }) });
+    assert.equal(staleMove.status, 409);
+    const { items } = await (await fetch(origin + '/api/articles')).json();
+    assert.equal(items.find(({ slug }) => slug === topics[2].slug).title, topics[2].next);
+    assert.ok(![...after.thisWeek.entries, ...after.queue].some(({ slug }) => slug === topics[2].slug));
+    assert.equal(await readFile(schedulePath, 'utf8'), initialBytes, 'article saves and schedule reads do not need a second file write');
+
+    const promoted = await fetch(`${origin}/api/articles/draft/${topics[0].slug}/promote`, { method: 'POST', headers, body: JSON.stringify({ revision: savedArticles.get(topics[0].slug).revision }) });
+    assert.equal(promoted.status, 200);
+    await rm(join(f.root, 'drafts', `${topics[1].slug}.md`));
+    const final = await (await fetch(origin + '/api/schedule')).json();
+    assert.equal(final.thisWeek.entries[0].slug, topics[0].slug);
+    assert.equal(final.thisWeek.entries[0].kind, 'content');
+    assert.equal(final.thisWeek.entries[0].title, topics[0].next);
+    assert.equal(final.history[0].entries[0].kind, 'content');
+    assert.equal(final.history[0].entries[0].title, '历史周冻结标题');
+    assert.equal(final.queue[0].missing, true);
+    assert.equal(final.queue[0].title, topics[1].title);
+    assert.equal(await readFile(schedulePath, 'utf8'), initialBytes);
+  } finally { server.close(); await once(server, 'close'); await f.close(); }
+});
+
 test('unauthenticated online reads and writes cannot initialize or change the schedule', async () => {
   const f = await fixture([]);
   const server = createAuthorServer({ projectRoot: f.root, mediaEnv: {}, auth: { provider: 'wechat', origin: 'https://dev.herong.info', basePath: '/admin/', stateDirectory: join(f.root, 'auth'), bootstrapTokenFile: join(f.root, 'bootstrap') } });

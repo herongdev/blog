@@ -3,6 +3,7 @@ import { constants } from 'node:fs';
 import { chmod, lstat, mkdir, open, readdir, rename, rm, unlink, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { parseDocument } from 'yaml';
+import { verifyLegacyArticleBaseline } from './legacy-article-baseline.mjs';
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const HASH = /^[a-f0-9]{64}$/;
@@ -328,6 +329,32 @@ export async function createArticleRevisions({ projectRoot, clock = () => new Da
   await initialize({ seedPublished: bootstrapPublished });
   return {
     initialize, read, version, restore,
+    /** Offline maintenance only; no HTTP route and never writes working files. */
+    async importPublishedBaseline(options) {
+      return serialized(async () => {
+        const { evidence, articles } = await verifyLegacyArticleBaseline(options);
+        const state = await loadState();
+        if (state.baselineVerified || state.lastPlan || Object.keys(state.published).length || state.unpublished.length) {
+          if (!state.lastPlan && JSON.stringify(state.baselineImport) === JSON.stringify(evidence)) return { imported: false, evidence };
+          fail('文章发布基线已经建立，不能用旧版本覆盖', 409);
+        }
+        const importedAt = clock().toISOString();
+        for (const article of articles) {
+          await putObject(article.bytes);
+          const assets = [];
+          for (const asset of article.assets) { await putObject(asset.bytes); assets.push({ path: asset.path, revision: asset.revision }); }
+          state.history[article.slug] ??= {};
+          state.history[article.slug][article.revision] = { kind: 'content', createdAt: importedAt, assets };
+          // Preserve unknown historical publication dates; import time is not a
+          // first publication date and never changes the publication-date ledger.
+          state.published[article.slug] = { revision: article.revision, assets, publishedAt: null };
+        }
+        state.baselineVerified = true;
+        state.baselineImport = evidence;
+        await saveState(state);
+        return { imported: true, evidence };
+      });
+    },
     async baselineReady() { return (await loadState()).baselineVerified === true; },
     async recordBeforeSave(input) { return serialized(async () => { const state = await loadState(); const item = await capture(input, state); await saveState(state); return item.revision; }); },
     async listHistory(input) { return { items: (await read(input)).history }; },

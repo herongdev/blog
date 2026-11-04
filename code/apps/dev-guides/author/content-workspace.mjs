@@ -5,6 +5,7 @@ import { join, resolve, extname } from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { createWorkspaceS3Storage } from './workspace-s3.mjs';
+import { requirePrivateStorageSpace } from './private-storage.mjs';
 const exec = promisify(execFile);
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ID = /^[a-f0-9-]{36}$/;
@@ -89,7 +90,7 @@ async function verifyMedia(path, category, filename, env) {
     return { mime: types[extension], duration, ...(category === 'audio' ? {} : { width: stream.width, height: stream.height }) };
   }
   if (category === 'subtitle') {
-    if (!['.srt', '.vtt', '.ass', '.ssa', '.txt'].includes(extension)) throw fail(422, '字幕支持 SRT、VTT、ASS、SSA 或 TXT');
+    if (!['.srt', '.vtt', '.ass', '.ssa', '.txt', '.md'].includes(extension)) throw fail(422, '字幕与文稿支持 SRT、VTT、ASS、SSA、TXT 或 Markdown');
     if ((await safeFile(path)).size > 10 * 1024 ** 2) throw fail(413, '字幕超过大小限制');
     if ((await readFile(path)).includes(0)) throw fail(422, '字幕内容不是可读取文本'); return { mime: 'text/plain; charset=utf-8' };
   }
@@ -179,6 +180,7 @@ export async function createContentWorkspace({ projectRoot, resolveArticle, env 
     if (!CATEGORIES.has(category)) throw fail(422, '请选择素材类型');
     if (!Number.isSafeInteger(input.size) || input.size < 1 || input.size > fileLimit) throw fail(413, '文件超过大小限制或为空');
     if (usage() + reserved() + input.size > storageLimit) throw fail(413, '私有素材空间不足，请检查存储用量');
+    await requirePrivateStorageSpace(root, input.size * 2);
     if (Object.keys(state.uploads).length >= 2000 || value.assets.length >= 3000) throw fail(413, '素材或上传记录数量已达到当前限制');
     if (input.sha256 !== undefined && !/^[a-f0-9]{64}$/.test(input.sha256)) throw fail(422, '文件校验和无效');
     const prior = input.groupId && value.assets.find((asset) => asset.groupId === input.groupId && asset.category === category);
@@ -193,6 +195,7 @@ export async function createContentWorkspace({ projectRoot, resolveArticle, env 
     if (upload.status === 'completed') throw fail(409, '上传已经完成');
     if (!Number.isSafeInteger(number) || number < 1 || number > upload.totalParts) throw fail(422, '分片编号无效');
     const expected = number === upload.totalParts ? upload.size - (number - 1) * upload.chunkSize : upload.chunkSize;
+    await requirePrivateStorageSpace(root, expected);
     const directory = uploadPath(id); await safeDirectory(directory);
     const path = join(directory, `${number}.part`), temp = join(directory, `${randomUUID()}.incoming`);
     try {
@@ -206,16 +209,19 @@ export async function createContentWorkspace({ projectRoot, resolveArticle, env 
     if (upload.status === 'completed') return { asset: publicAsset(slug, value.assets.find((asset) => asset.id === upload.assetId)), workspace: present(value) };
     if (upload.receivedParts.length !== upload.totalParts) throw fail(409, '还有文件分片未上传完成');
     const directory = uploadPath(id), temporary = join(directory, 'combined.upload'); await rm(temporary, { force: true });
-    const file = await open(temporary, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | constants.O_NOFOLLOW, 0o600), hash = createHash('sha256'); let size = 0;
     try {
-      for (let part = 1; part <= upload.totalParts; part++) {
-        const path = join(directory, `${part}.part`), info = await safeFile(path), expected = part === upload.totalParts ? upload.size - (part - 1) * upload.chunkSize : upload.chunkSize;
-        if (info.size !== expected || await fileDigest(path) !== upload.partHashes[part]) throw fail(422, '已上传分片校验失败，请重新上传');
-        for await (const bytes of createReadStream(path)) { hash.update(bytes); size += bytes.length; await writeAll(file, bytes); }
-      } await file.sync();
-    } finally { await file.close(); }
-    const sha256 = hash.digest('hex');
-    try {
+      // Remove only this upload's disposable copy before checking free space.
+      // Every merge failure must leave the original parts available for retry.
+      await requirePrivateStorageSpace(root, upload.size);
+      const file = await open(temporary, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | constants.O_NOFOLLOW, 0o600), hash = createHash('sha256'); let size = 0;
+      try {
+        for (let part = 1; part <= upload.totalParts; part++) {
+          const path = join(directory, `${part}.part`), info = await safeFile(path), expected = part === upload.totalParts ? upload.size - (part - 1) * upload.chunkSize : upload.chunkSize;
+          if (info.size !== expected || await fileDigest(path) !== upload.partHashes[part]) throw fail(422, '已上传分片校验失败，请重新上传');
+          for await (const bytes of createReadStream(path)) { hash.update(bytes); size += bytes.length; await writeAll(file, bytes); }
+        } await file.sync();
+      } finally { await file.close(); }
+      const sha256 = hash.digest('hex');
       if (size !== upload.size || (upload.expectedSha256 && upload.expectedSha256 !== sha256)) throw fail(422, '完整文件校验失败，请重新选择原始文件');
       const media = await verifyMedia(temporary, upload.category, upload.filename, env);
       const known = Object.values(state.contents).some((item) => item.assets.some((asset) => asset.sha256 === sha256));
@@ -248,6 +254,7 @@ export async function createContentWorkspace({ projectRoot, resolveArticle, env 
       if (!existing) {
         const total = [...cached.values()].reduce((sum, size) => sum + size, 0);
         if (total + asset.size > cacheLimit) throw fail(413, '平台投稿临时缓存空间不足，请稍后重试或调整缓存额度');
+        await requirePrivateStorageSpace(root, asset.size);
         const incoming = `${path}.${randomUUID()}.tmp`;
         try {
           const source = await remote.openRead(asset); source.headers = { 'content-length': String(asset.size) };

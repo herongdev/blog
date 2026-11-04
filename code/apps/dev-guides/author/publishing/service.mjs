@@ -7,6 +7,7 @@ import { promisify } from 'node:util';
 import { dirname, extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createPublishingStore, fail, now, platforms, publicAsset } from './store.mjs';
+import { requirePrivateStorageSpace } from '../private-storage.mjs';
 
 const exec = promisify(execFile);
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
@@ -139,6 +140,8 @@ export async function createPublishingService({ dataRoot, env = process.env, run
       if (type === 'cover' && !['.png', '.jpg', '.jpeg', '.webp'].includes(extension)) throw fail(422, '封面支持 PNG、JPEG 和 WebP');
       const limit = type === 'video' ? maxVideo : 15 * 1024 ** 2;
       if (Number(request.headers['content-length']) > limit) throw fail(413, '素材超过大小限制');
+      const declaredSize = Number(request.headers['content-length']);
+      await requirePrivateStorageSpace(root, Number.isSafeInteger(declaredSize) && declaredSize > 0 ? declaredSize : limit);
       let size = 0;
       const file = await open(temp, 'wx', 0o600);
       try {

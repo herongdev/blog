@@ -18,6 +18,9 @@
 /.library.json.*.tmp
 /.schedule.json
 /.schedule.json.*.tmp
+/.filming.json
+/.filming.json.*.tmp
+/.editorial-curation/
 /.editorial-imports/
 .publishing-private/
 /.content-workspace/

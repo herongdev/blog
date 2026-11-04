@@ -41,6 +41,8 @@
 | 持久文章与草稿 | `/var/lib/herong-dev-guides-author/project/` |
 | 私有目录树与文章归属 | `/var/lib/herong-dev-guides-author/project/.library.json` |
 | 本周/其它拍摄队列与历史 | `/var/lib/herong-dev-guides-author/project/.schedule.json` |
+| 私有拍摄准备与只读调研来源 | 上述目录中的 `.filming.json` |
+| 选题整理预检、原数据与恢复回执 | 上述目录中的 `.editorial-curation/` |
 | 旧稿历史 | 上述目录中的 `.history/` |
 | 不可变文章修订、线上指针与预览计划 | 上述目录中的 `.article-revisions/` |
 | 私有制作素材、分片与版本关系 | 上述目录中的 `.content-workspace/` |
@@ -67,9 +69,9 @@ python3 infra/dev-guides/author/deploy.py
 
 启用线上写作后，服务器持久内容是发文内容源。本地 `src/content/tutorials/` 不会随网页编辑自动更新；原静态部署工具检测到 `.author-managed` 时拒绝新发布，防止本地旧稿覆盖线上文章。代码升级与文章发布分开执行。
 
-日备份 timer 为 `herong-dev-guides-author-backup.timer`，默认保留全部备份。备份递归包含整个 `project`，因此包含文章、草稿、历史、`.library.json`、`.schedule.json`、`.content-workspace/` 和 `.article-revisions/`；另包含认证、发布状态、首发账本，以及视频发布数据库的一致 SQLite 快照、素材与账号会话。权限为 root 专用，不进入 Git、不由 Nginx 提供访问。普通在线 tar 不能保证项目内多个文件处于同一时点；工作区、修订和文章的完整恢复基线须在停写或一致文件系统快照下备份，不能仅凭日备份成功宣称已完成恢复演练。私有云对象另需独立副本，项目归档不包含其远端字节。
+日备份 timer 为 `herong-dev-guides-author-backup.timer`，默认保留全部备份。备份递归包含整个 `project`，因此包含文章、草稿、历史、`.library.json`、`.schedule.json`、`.filming.json`、`.editorial-curation/`、`.content-workspace/` 和 `.article-revisions/`；另包含认证、发布状态、首发账本，以及视频发布数据库的一致 SQLite 快照、素材与账号会话。权限为 root 专用，不进入 Git、不由 Nginx 提供访问。普通在线 tar 不能保证项目内多个文件处于同一时点；工作区、修订和文章的完整恢复基线须在停写或一致文件系统快照下备份，不能仅凭日备份成功宣称已完成恢复演练。私有云对象另需独立副本，项目归档不包含其远端字节。
 
-目录、排期、工作区和修订应随对应文章一起恢复。发布队列恢复时先禁用执行器，并逐项核对备份后可能已经投稿的任务，不能直接重新跑旧队列；详见[发布中心说明](../../../docs/dev-guides/publishing-integration.md)。当前备份在同一服务器，需按实际运维要求另做异地保管。可用 SSH 将备份下载到本机 Git 忽略的 `code/secrets/`；恢复前先停写作服务并保留当前数据副本。
+目录、排期、拍摄准备、调研来源、整理回执、工作区和修订应随对应文章一起恢复。发布队列恢复时先禁用执行器，并逐项核对备份后可能已经投稿的任务，不能直接重新跑旧队列；详见[发布中心说明](../../../docs/dev-guides/publishing-integration.md)。当前备份在同一服务器，需按实际运维要求另做异地保管。可用 SSH 将备份下载到本机 Git 忽略的 `code/secrets/`；恢复前先停写作服务并保留当前数据副本。
 
 私有制作素材默认本地存储。需要 S3 兼容存储时，按 `apps/dev-guides/author/workspace.env.example` 创建 `/etc/herong-dev-guides-author/workspace.env`（root 所有、0600）；service 可选读取该文件，不复用公开图片凭据。模板只是配置说明，不创建桶或改变桶策略。本轮仅修订代码与模板，未更改线上配置。
 
@@ -133,3 +135,23 @@ python3 infra/dev-guides/author/deploy.py
 - 部署回执、配置备份与代码回滚脚本：`/var/backups/herong-dev-guides-author/20261102T134248Z-before-publishing/`。原始回滚基线为 `20261030T080026Z-committed`；`previous` 指向本次中间版，完整回滚应使用保存的 `rollback-code.py`。不还原历史任务队列，不删除发布私有数据。
 
 详细运行版本、来源摘要、边界与验收见 [发布中心集成说明](../../../docs/dev-guides/publishing-integration.md)。
+
+
+## 2026-11-04 内容入口与工作区升级
+
+- 当前作者 release `20261104T084824Z`，上版 `20261103T164143Z-brand`。源码包 SHA256 `f9fcff26df62aac1e4991b8cade1631a131d14d0a08192277faa7578e5e22171`。已启用文章/视频/资源直接添加入口与内容工作区；146 项回归在服务器的服务账号与 systemd 约束下通过。Edge 原生控制连续超时/采集错误，本轮未完成实际视觉与交互验收，不将接口或 SSR 检查当成 Edge 验收。
+- 原正式网站仍为 `20261103T165200Z-10631a44`。通过历史源码、发布前归档和正式 manifest 的全部哈希建立准确四篇已发布基线，未把当前工作稿当成线上版，也未重发公开站。
+- 152 个原项目文件及 3 个认证文件内容摘要全部保持一致。停写全备为 `20261104T090838Z.tar.gz`，上线后验证备份为 `20261104T091128Z.tar.gz`；配置、链接、基线回执和维护模式回滚脚本在 `/var/backups/herong-dev-guides-author/20261104T085306Z-content-entries/`。
+- 生产使用本地私有存储，`workspace.env` 设置单文件 256 MiB、工作区 512 MiB；投稿器同为 256 MiB / 512 MiB。剩余磁盘约 2.9 GiB，上传、分片合并、私有云缓存及投稿导入加入实际文件系统可用空间检查，保留 512 MiB。没有删除历史版本或其他项目数据。全量日备份仍保留所有归档，应在大规模素材使用前落实扩容、异地备份与留存策略。
+- Python 执行器切为 `20261104T085306Z-content-entries`，修复私有运行目录下 Stealth 脚本定位。新源码锁的 8 文件摘要核验；依赖锁完全一致后，通过指向旧 release 的绝对链接复用只读 venv/浏览器/FFmpeg/biliup。旧运行版本不得清理，不运行新 setup 改写共用依赖；服务配置下四个平台组件 ready，未运行真实登录或投稿。
+- 两阶段部署：`deploy.py --stage-only` 只准备候选代码/依赖；迁移与停写备份完成后，执行输出的候选 installer `--activate-only`。回滚使用保存的 `rollback-code.py`，保留当前私有数据并禁用旧版网站/平台发布，待修订与任务核对完成后恢复；不能直接让旧发布器批量发布新工作稿，也不能回放历史任务数据库。
+
+完整证据见 [本次上线记录](../../../docs/tasks/2026-11-04-content-entry-release.md)。
+
+
+## 2026-11-04 工作型选题整理与共享组件
+
+- 作者服务当前 release `20261104T140757Z`，上版 `20261104T101219Z`。原 138 条导入选题保留 10、可恢复归档 128；另 3 条非本批内容保留，活动内容 13。按工作用途组织为改动管理、排错定位、交付验收三个共享目录，排期与内容库共用。
+- 新增独立拍摄准备与只读来源；不覆盖文章正文或已发布版。12 处下拉共用 Radix `AuthorSelect`，7 个弹窗复用 `AuthorDialogContent`，图标按钮复用 `IconButton`，统一开关动效。
+- 停写备份 `20261104T140903Z.tar.gz`，激活后备份 `20261104T140905Z.tar.gz`；回执在 `/var/backups/herong-dev-guides-author/20261104T140757Z-work-curation/`。157 个原有非目标文件、认证、环境配置和公开站/执行器链接保持原样。165 项测试、类型检查和构建通过；Edge 部分桌面画面已看，最终动画、拖动全过程和窄屏主题视觉验收未完成。
+- 具体选题、验证及数据回滚限制见 [本次整理记录](../../../docs/tasks/2026-11-04-work-focused-content-curation.md)。代码回滚本身不撤销归档数据，也不能覆盖上线后的作者编辑。

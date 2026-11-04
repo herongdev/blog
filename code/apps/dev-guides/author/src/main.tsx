@@ -4,6 +4,7 @@ import App from './App';
 import 'bytemd/dist/index.css';
 import './styles.css';
 import './library.css';
+import './primitives.css';
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

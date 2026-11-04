@@ -6,6 +6,7 @@ import { parseDocument } from 'yaml';
 import { createAuthorAuth } from './auth.mjs';
 import { createLibraryStore } from './library-store.mjs';
 import { createScheduleStore } from './schedule-store.mjs';
+import { createFilmingStore } from './filming-store.mjs';
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const IMAGE_NAME = /^[a-zA-Z0-9][a-zA-Z0-9._-]*\.(?:png|jpg|webp)$/i;
@@ -187,6 +188,7 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
     listArticleKeys: async () => (await listArticles()).map(({ kind, slug }) => `${kind}/${slug}`),
   });
   const schedule = createScheduleStore({ projectRoot, listArticles: () => listArticles(true) });
+  const filming = createFilmingStore({ projectRoot, listArticleKeys: async () => (await listArticles()).map(({ kind, slug }) => `${kind}/${slug}`) });
 
   function articlePath(kind, slug) {
     if (!Object.hasOwn(roots, kind) || !SLUG.test(slug)) throw httpError(400, '文章地址只能使用英文小写、数字和连字符');
@@ -251,6 +253,11 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
         } catch { /* A malformed Markdown file is not an article. */ }
       }
     }
+    const lifecycle = await library.lifecycle();
+    for (const item of items) {
+      const value = lifecycle[item.slug];
+      if (value) Object.assign(item, { archived: value.archived, archivedAt: value.archived ? value.changedAt : null, archiveRevision: value.revision, archiveReason: value.reason });
+    }
     items.sort((a, b) => a.kind.localeCompare(b.kind) || a.title.localeCompare(b.title, 'zh-CN'));
     return items;
   }
@@ -292,7 +299,10 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
       }
 
       if (url.pathname === '/api/articles' && method === 'GET') {
-        return sendJson(response, 200, { items: await library.withArticlesMutation(listArticles) });
+        const scope = url.searchParams.get('scope') ?? 'active';
+        if (!['active', 'archived', 'all'].includes(scope)) throw httpError(400, '内容范围无效');
+        const items = await library.withArticlesMutation(listArticles);
+        return sendJson(response, 200, { items: items.filter((item) => scope === 'all' || Boolean(item.archived) === (scope === 'archived')) });
       }
 
       if (url.pathname === '/api/schedule' && method === 'GET') {
@@ -311,6 +321,12 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
       if (url.pathname === '/api/library/actions' && method === 'POST') {
         const input = await readJson(request, 8 * 1024);
         return sendJson(response, 200, await library.apply(input));
+      }
+
+      const filmingMatch = /^\/api\/filming\/([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(url.pathname);
+      if (filmingMatch && ['GET', 'PATCH'].includes(method)) {
+        const input = method === 'PATCH' ? await readJson(request, 256 * 1024) : null;
+        return sendJson(response, 200, await library.withArticlesMutation(() => input ? filming.patch(filmingMatch[1], input) : filming.read(filmingMatch[1])));
       }
 
       if (url.pathname === '/api/drafts' && method === 'POST') {

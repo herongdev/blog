@@ -53,6 +53,16 @@ test('notes and software metadata use revision conflict protection', async (t) =
   assert.equal((await f.workspace.read('first')).notes, '字幕需重录');
 });
 
+test('Markdown production notes use the document category without needing an article body', async (t) => {
+  const f = await fixture(t);
+  await writeFile(join(f.root, 'drafts/first.md'), '---\ntitle: video-only topic\nstatus: draft\n---\n\n');
+  const bytes = Buffer.from('# 剪辑说明\n\n保留原始文件，不需要先写文章。\n');
+  const result = await f.upload(bytes, { filename: 'notes.md', category: 'subtitle' });
+  assert.equal(result.status, 201);
+  assert.equal(result.data.asset.category, 'subtitle');
+  assert.deepEqual((await f.request(`/first/assets/${result.data.asset.id}`)).bytes, bytes);
+});
+
 test('resumable parts, idempotent part replay, final hash and repeat completion', async (t) => {
   const f = await fixture(t), bytes = Buffer.from('a-b-c-d-e');
   const started = await f.request('/first/uploads', f.json({ filename: 'note.txt', category: 'other', relativePath: 'project/docs/note.txt', size: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') }));
@@ -68,6 +78,24 @@ test('resumable parts, idempotent part replay, final hash and repeat completion'
   const repeat = await f.request(`/first/uploads/${id}/complete`, { method: 'POST' }); assert.equal(repeat.data.asset.id, complete.data.asset.id);
   assert.deepEqual((await f.request(`/first/assets/${complete.data.asset.id}`)).bytes, bytes);
   assert.equal((await f.request(`/second/assets/${complete.data.asset.id}`)).status, 404);
+});
+
+test('failed part verification removes only the partial merge and can retry with preserved parts', async (t) => {
+  const f = await fixture(t), bytes = Buffer.from('original-notes');
+  const started = await f.request('/first/uploads', f.json({ filename: 'notes.txt', category: 'other', size: bytes.length }));
+  const upload = started.data, directory = join(f.root, '.content-workspace/uploads', upload.id);
+  for (let part = 1; part <= upload.totalParts; part++) await f.request(`/first/uploads/${upload.id}/parts/${part}`, { method: 'PUT', body: bytes.subarray((part - 1) * 4, part * 4) });
+  await writeFile(join(directory, '2.part'), 'xxxx');
+  await writeFile(join(directory, 'combined.upload'), 'discarded previous interrupted merge');
+  const failed = await f.request(`/first/uploads/${upload.id}/complete`, { method: 'POST' });
+  assert.equal(failed.status, 422);
+  await assert.rejects(readFile(join(directory, 'combined.upload')), { code: 'ENOENT' });
+  assert.deepEqual(await readFile(join(directory, '1.part')), bytes.subarray(0, 4));
+  assert.equal((await f.workspace.read('first')).assets.length, 0);
+  await writeFile(join(directory, '2.part'), bytes.subarray(4, 8));
+  const retried = await f.request(`/first/uploads/${upload.id}/complete`, { method: 'POST' });
+  assert.equal(retried.status, 201);
+  assert.deepEqual((await f.request(`/first/assets/${retried.data.asset.id}`)).bytes, bytes);
 });
 
 test('immutable original bytes, physical dedup, version grouping and private Range', async (t) => {

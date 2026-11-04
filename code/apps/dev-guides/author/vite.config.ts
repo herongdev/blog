@@ -14,7 +14,7 @@ export default defineConfig({
     fs: {
       strict: true,
       allow: [authorRoot, stylesRoot, dataRoot, brandStylesRoot],
-      deny: ['.env', '.env.*', '**/.publishing-private/**', '**/.content-workspace/**', '**/.article-revisions/**', '**/.history/**', '**/drafts/**', '**/src/content/**', '**/templates/**'],
+      deny: ['.env', '.env.*', '**/.library.json*', '**/.schedule.json*', '**/.filming.json*', '**/.editorial-imports/**', '**/.editorial-curation/**', '**/.publishing-private/**', '**/.content-workspace/**', '**/.article-revisions/**', '**/.history/**', '**/drafts/**', '**/src/content/**', '**/templates/**'],
     },
   },
   build: {

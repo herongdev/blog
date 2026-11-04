@@ -22,7 +22,7 @@ function folderName(value) {
   return name;
 }
 
-function validate(state) {
+export function validateLibraryState(state) {
   if (!record(state) || state.version !== 1 || !Array.isArray(state.folders) || state.folders.length > MAX_FOLDERS || !record(state.assignmentsBySlug)) {
     fail(400, '目录数据格式错误');
   }
@@ -48,6 +48,13 @@ function validate(state) {
   }
   for (const [slug, folderId] of Object.entries(state.assignmentsBySlug)) {
     if (!SLUG.test(slug) || !ids.has(folderId)) fail(400, '文章所属目录无效');
+  }
+  if (state.lifecycleBySlug !== undefined) {
+    if (!record(state.lifecycleBySlug)) fail(400, '内容归档数据无效');
+    for (const [slug, value] of Object.entries(state.lifecycleBySlug)) {
+      if (!SLUG.test(slug) || !record(value) || typeof value.archived !== 'boolean' || !UUID.test(value.revision) ||
+          typeof value.changedAt !== 'string' || !Number.isFinite(Date.parse(value.changedAt)) || typeof value.reason !== 'string' || value.reason.length > 1000) fail(400, '内容归档数据无效');
+    }
   }
 }
 
@@ -85,7 +92,7 @@ export function createLibraryStore({ projectRoot, listArticleKeys }) {
       if (Buffer.byteLength(text) > MAX_BYTES) fail(413, '目录数据超过大小限制');
       try {
         const state = JSON.parse(text);
-        validate(state);
+        validateLibraryState(state);
         return state;
       } catch {
         fail(500, '目录数据损坏，请从私有备份恢复');
@@ -102,7 +109,7 @@ export function createLibraryStore({ projectRoot, listArticleKeys }) {
     // Include the current article keys so a tab cannot unknowingly act on a
     // classification view from before a draft was promoted or created.
     const revision = hash(JSON.stringify([state, [...articleKeys].sort()]));
-    return { revision, folders: state.folders, assignments };
+    return { revision, folders: state.folders, assignments, lifecycleBySlug: state.lifecycleBySlug ?? {} };
   }
 
   async function write(state) {
@@ -127,6 +134,9 @@ export function createLibraryStore({ projectRoot, listArticleKeys }) {
 
   return {
     withArticlesMutation: serialize,
+    // Read inside the host's existing article/library serialization; never call
+    // the queued read() recursively while presenting the article list.
+    lifecycle: async () => (await load()).lifecycleBySlug ?? {},
     read: () => serialize(async () => present(await load(), await listArticleKeys())),
     apply: (input) => serialize(async () => {
       if (!record(input)) fail(400, '目录操作格式错误');
@@ -144,15 +154,37 @@ export function createLibraryStore({ projectRoot, listArticleKeys }) {
         return getFolder(value).id;
       };
       let createdId;
+      const place = (folder, destination, requested) => {
+        const siblings = state.folders.filter((item) => item.id !== folder.id && item.parentId === destination);
+        const position = requested ?? siblings.length + 1;
+        if (!Number.isInteger(position) || position < 1 || position > siblings.length + 1) fail(400, '目录位置无效');
+        state.folders = state.folders.filter((item) => item.id !== folder.id);
+        folder.parentId = destination;
+        const before = siblings[position - 1];
+        const index = before ? state.folders.findIndex((item) => item.id === before.id) : siblings.length ? state.folders.findIndex((item) => item.id === siblings.at(-1).id) + 1 : state.folders.length;
+        state.folders.splice(index, 0, folder);
+      };
       switch (input.action) {
         case 'create': {
           if (state.folders.length >= MAX_FOLDERS) fail(400, '目录数量已达 500 个上限');
           createdId = randomUUID();
-          state.folders.push({ id: createdId, name: folderName(input.name), parentId: parentId(input.parentId) });
+          place({ id: createdId, name: folderName(input.name), parentId: null }, parentId(input.parentId), input.position);
           break;
         }
         case 'rename': getFolder(input.id).name = folderName(input.name); break;
-        case 'move': getFolder(input.id).parentId = parentId(input.parentId); break;
+        case 'move': place(getFolder(input.id), parentId(input.parentId), input.position); break;
+        case 'archive':
+        case 'restore': {
+          const match = typeof input.articleKey === 'string' && ARTICLE_KEY.exec(input.articleKey);
+          if (!match || !keys.includes(input.articleKey)) fail(404, '内容不存在，请刷新目录');
+          if (input.reason !== undefined && (typeof input.reason !== 'string' || input.reason.length > 1000 || input.reason.includes('\0'))) fail(400, '归档说明无效');
+          const archived = input.action === 'archive';
+          state.lifecycleBySlug ??= {};
+          if ((state.lifecycleBySlug[match[2]]?.archived ?? false) !== archived) {
+            state.lifecycleBySlug[match[2]] = { archived, changedAt: new Date().toISOString(), revision: randomUUID(), reason: input.reason?.trim() ?? '' };
+          }
+          break;
+        }
         case 'delete': {
           const folder = getFolder(input.id);
           const activeSlugs = new Set(keys.map((key) => ARTICLE_KEY.exec(key)[2]));
@@ -176,7 +208,7 @@ export function createLibraryStore({ projectRoot, listArticleKeys }) {
         }
         default: fail(400, '不支持的目录操作');
       }
-      validate(state);
+      validateLibraryState(state);
       await write(state);
       return { ...present(state, keys), ...(createdId ? { createdId } : {}) };
     }),
