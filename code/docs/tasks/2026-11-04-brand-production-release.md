@@ -2,7 +2,7 @@
 
 日期：2026-11-04（北京时间；版本 ID 中的时间沿用 UTC）。
 
-状态：主站、历史文章、教程、写作台、文件工具与政企 favicon 已正式发布，线上 HTTP、资源与文件工具 FFmpeg 实测通过。Mac 锁屏导致正式域 Edge 最终视觉复核未完成；原 CI 的重复上传和 GitHub Pages 备份仍在后台继续，二者不影响已激活的正式站。
+状态：主站、历史文章、教程、写作台、文件工具与政企 favicon 已正式发布，线上 HTTP、资源与文件工具 FFmpeg 实测通过。CI 与 GitHub Pages 备份已成功完成。正式域 Edge 桌面明暗主题复核已完成，实际查看范围与未覆盖项见下文。
 
 ## 范围与源码
 
@@ -24,7 +24,8 @@
 | --- | --- |
 | 源码提交 | `57903ab47296720834cca30ef3923ba9db725206` |
 | buildId | `54b5df33968f1537` |
-| 已激活 release | `57903ab47296720834cca30ef3923ba9db725206-20261103170015-1` |
+| 已激活 release | `57903ab47296720834cca30ef3923ba9db725206-41678122569-1` |
+| 首次加速 release | `57903ab47296720834cca30ef3923ba9db725206-20261103170015-1` |
 | 上一可回滚 release | `4a77bd2b1387a8e1ee3ba43418dfd9a980a3b901-41581261297-1` |
 | 来源 GitHub Actions run | `41678122569` |
 | 来源 artifact | `13252386007` |
@@ -33,9 +34,9 @@
 
 本次采用加速发布：取用同一 CI run 的构建 artifact，经 SHA 校验后用于正式激活，没有另外使用工作区脏文件重建一套主站内容。容器健康与正式健康接口均返回目标 buildId。产物包含 9,210 文件、3,041 HTML，其中 3,025 为历史页面，正式 sitemap 为 3,039 条 URL。
 
-**CI 状态：**截至 2026-11-03 17:11:37 UTC，[原 run `41678122569`](https://github.com/herongdev/blog/actions/runs/41678122569) 仍在上传同一目标归档，进度为 `31,334,400 / 58,100,679` 字节，GitHub Pages 备份步骤尚未执行。工作流在后台继续，尚无最终成功结论。正式主域已运行上述加速 release。原工作流后续使用正常 release ID `57903ab47296720834cca30ef3923ba9db725206-41678122569-1` 发布同一构建时，buildId 应保持相同；保留上一有效旧版本作为显式回滚目标，不将同一构建的两次发布误当成旧版回滚。
+**CI 最终状态：**2026-11-04 01:33:16 UTC（北京时间 09:33:16），[run `41678122569`](https://github.com/herongdev/blog/actions/runs/41678122569) 的 build-deploy 作业为 completed/success，正式站上传、GitHub Pages 构建和 Deploy to gh-pages 均成功。01:34:23 UTC 的只读回查确认，正式主站已切换到正常 CI release，buildId 仍为 `54b5df33968f1537`，发布归档 SHA 与首次加速版完全相同。实际 previous 指向同一构建的加速版；真正上一版 `4a77bd2...-41581261297-1` 仍存在，回滚旧代码时必须显式指定它。
 
-证据：[artifact 回执](../../output/brand-release-20261104/site-artifact-receipt.json)、[发布版本](../../output/brand-release-20261104/main-release.json)、[激活日志](../../output/brand-release-20261104/main-activation.log)、[正式健康回执](../../output/brand-release-20261104/main-health-poll.json)。[CI 状态快照](../../output/brand-release-20261104/ci-status.json) 在 17:16:04 UTC 再次确认上传仍在进行。
+证据：[artifact 回执](../../output/brand-release-20261104/site-artifact-receipt.json)、[首次发布版本](../../output/brand-release-20261104/main-release.json)、[首次激活日志](../../output/brand-release-20261104/main-activation.log)、[CI 最终状态](../../output/brand-release-20261104/ci-final-status.json)、[正式 current/previous 与健康状态](../../output/brand-release-20261104/production-final-status.json)。
 
 ## 教程与写作台
 
@@ -98,15 +99,27 @@
 
 ## Edge 与实际视觉范围
 
-- 此前已在本地原生 Microsoft Edge 实际查看主站、教程首页、工具目录各自深浅主题，Logo、按钮、选中态与中性色正常；范围和限制见 [品牌配色任务](2026-11-03-brand-color-tokens.md)。
-- 本轮已实际查看线上测试入口 `test-dev.herong.info` 的深浅主题；这是测试站的视觉记录，不替代正式教程域或其他正式应用的最终复核。
-- **正式域 Edge 最终检查未完成：**Mac 当前锁屏，已提示用户手动解锁，正式域最终浏览器复核尚未完成，不能写为 Edge 通过。
-- 本会话中的 CUA 截图及 AX 可访问性状态为实际界面证据；不编造未保存的本地 Edge PNG。此前 Chromium 的 176 个状态检查不能冒充 Edge 记录，也没有完成 iOS/Android 手机真机验收。
+用户解锁并让 Edge 空闲后，使用原生 Microsoft Edge 的独立验收窗口查看正式页面，与此前已确认的本地品牌预览对照；仅使用 CUA 操作，没有换用 Chrome。
+
+| 正式页面 | 实际主题 | 结果 |
+| --- | --- | --- |
+| `https://herong.info/` | 深色、浅色 | Logo 无重复或拉伸，搜索框、筛选、主按钮和页脚正常 |
+| `https://dev.herong.info/` | 深色、浅色 | 品牌、导航、按钮、筛选和真实空状态正常 |
+| `https://herong.info/file-tools/tools` | 浅色、深色 | 品牌、导航、搜索、分类与功能条目正常 |
+| `https://herong.info/posts/` | 深色 | 历史目录、共享头部正常 |
+| `/posts/onenote教程总览` | 深色、浅色 | 历史文章正文、链接、表格和共享头部正常 |
+| `https://dev.herong.info/admin/` | 深色、浅色 | 浏览器已有登录会话，实际进入拍摄排期页；Logo、导航、主按钮正常，结束后恢复原深色主题 |
+
+通过实际菜单完成主站→教程→工具→文章跳转，并从真实目录链接进入历史文章。写作台仅查看界面及切换客户端主题，没有执行登录、退出、内容修改、排期或发布；私有正文与截图不写入公共索引、预加载数据或本仓库文档。
+
+途中出现其他窗口切换引起的“user changed”保护和一次 CUA 读取超时，恢复后完成上述范围。证据是本会话实际 CUA 截图与 AX 状态，以及 [正式 Edge 视觉记录](../../output/brand-release-20261104/edge-production-visual.json)；没有保存或编造本地 Edge PNG。
+
+本轮是桌面原生窗口检查，未测量 CSS 视口尺寸，未新增窄屏专项或 iOS/Android 真机验收。已有登录会话使本轮未查看正式登录页；搜索完整交互、写作台发布、支付、PNG→JPG 等也不属于本次视觉结论。此前 Chromium 的 176 个状态和本地 Edge 检查仍按原任务记录保留，不能冒充本轮正式域全站或手机验收。
 
 ## 最终服务状态与回滚
 
-2026-11-03 17:13:10 UTC（北京时间 11 月 4 日 01:13:10），主站和文件工具容器均为 healthy，写作台服务 active，正式主站 buildId 为 `54b5df33968f1537`；新服务器磁盘余量为 `3,197,177,856` 字节（约 2.98 GiB），高于发布预留的 768 MiB。工具独立最终数据核验随后再次确认摘要不变。
+首次发布结束时主站和文件工具容器均为 healthy，写作台服务 active，工具独立最终数据核验确认摘要不变。CI 收尾后，2026-11-04 01:34:23 UTC（北京时间 09:34:23）的只读回查确认主站 healthy、正式 buildId 为 `54b5df33968f1537`，新服务器磁盘余量为 `3,141,013,504` 字节（约 2.93 GiB），高于发布预留的 768 MiB。
 
-各应用 current/previous 的最终读取见 [服务与磁盘回执](../../output/brand-release-20261104/production-final-state.json)。主站、教程、写作台、工具和政企的旧版均保留；写作台回滚必须以 `20261103T-manual-schedule` 为前版，保留已上线的排期功能，不能退到更早实现。主站使用既有 `infra/site/rollback.sh`，其他应用使用各自既有发布/激活机制。
+首次各应用 current/previous 的读取见 [服务与磁盘回执](../../output/brand-release-20261104/production-final-state.json)，CI 收尾后的主站版本与磁盘见 [最终状态](../../output/brand-release-20261104/production-final-status.json)。主站、教程、写作台、工具和政企的旧版均保留；写作台回滚必须以 `20261103T-manual-schedule` 为前版，保留已上线的排期功能，不能退到更早实现。主站使用既有 `infra/site/rollback.sh`，并显式指定真正旧版 `4a77bd2b1387a8e1ee3ba43418dfd9a980a3b901-41581261297-1`；默认 previous 是同构建加速版。其他应用使用各自既有发布/激活机制。
 
-本轮仅移除自身已验证的远端工具传输归档与临时候选，未清理历史版本、运行数据或其他项目缓存。回滚只切换应用版本，不能用旧数据覆盖发布后新增的业务记录；本轮未执行线上回滚演练。正式 Edge 视觉与 CI 备份的未完成范围已在上文单列，不能与本次正式域发布状态混淆。
+本轮仅移除自身已验证的远端工具传输归档与临时候选，未清理历史版本、运行数据或其他项目缓存。回滚只切换应用版本，不能用旧数据覆盖发布后新增的业务记录；本轮未执行线上回滚演练。正式 Edge 视觉的实际完成范围在上文单列，不能将 CI/HTTP 通过当成浏览器或手机真机验收。
