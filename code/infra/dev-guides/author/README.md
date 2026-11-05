@@ -200,3 +200,9 @@ python3 infra/dev-guides/author/deploy.py
 - 用户再次实测失败后，执行器更新到 `20261105T091836Z-douyin-verification-evidence`，作者仍 `20261105T075037Z`。修复旁支 iframe 阻断主页面识别的问题；未知验证方式仍不猜测操作，增加仅服务端保存的固定字段与输入遮盖截图。
 - 102 项 Python 全量与服务器无账号真实 DOM/截图遮盖 fixture 通过。真实平台页面尚待下一次扫码捕获，未完成真实登录与成功关窗验收。
 - 停写备份 `20261105T092703Z.tar.gz`，回执 `20261105T075037Z-douyin-verification-evidence/`；166 个项目文件、认证、配置、公开站与资源限额不变，剩余约 641 MiB。诊断 PNG/JSON 位于私有 `publishing/diagnostics/`，不提供公共路由、不进入 Git。详见 [确认链路记录](../../../docs/tasks/2026-11-05-douyin-confirmation.md)。
+
+## 2026-11-05 现场短信入口文案修复
+
+- 私有现场图确认实际按钮为“接收短信验证码”，原精确匹配少一个字、未进入短信步骤；执行器更新到 `20261105T100033Z-douyin-verification-sms-choice`，保留旧文案兼容，仍仅允许身份验证菜单中的唯一选项点击一次。
+- 104 项 Python 与服务器真实 DOM 新菜单到短信表单流程通过；真实账号短信接收与登录成功仍待新一次扫码验收。作者代码、前端及依赖未再更新。
+- 停写备份 `20261105T100835Z.tar.gz`，回执 `20261105T075037Z-douyin-verification-sms-choice/`，167 个项目文件、认证、配置、公开站及限额保持。完整证据见 [确认链路记录](../../../docs/tasks/2026-11-05-douyin-confirmation.md)。

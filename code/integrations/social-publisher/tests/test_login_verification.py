@@ -67,7 +67,7 @@ class Scope:
 
 
 class Frame:
-    def __init__(self, *, sms=False, choice=False, generic=False, scoped=None,
+    def __init__(self, *, sms=False, choice=False, generic=False, scoped=None, choice_label='接收短信验证',
                  url='https://creator.douyin.com/', visible=True):
         self.url, self.visible = url, visible
         self.scoped = sms if scoped is None else scoped
@@ -78,6 +78,7 @@ class Frame:
         self.buttons = [Element(self, 'verify')] if sms else []
         self.identity = Element(self, 'identity') if choice else None
         self.choice = Element(self, 'choice') if choice else None
+        self.choice_label = choice_label
         self.main_frame = self
         self.frames = [self]
 
@@ -94,7 +95,9 @@ class Frame:
     def get_by_text(self, text, exact=False):
         if text == '身份验证':
             return Locator([self.identity] if self.identity else [])
-        if text == '接收短信验证':
+        if text == self.choice_label:
+            if not exact:
+                raise AssertionError('The identity menu choice must match exactly')
             return Locator([self.choice] if self.choice else [])
         return Locator([Element(self, 'error')] if text in self.errors else [])
 
@@ -134,6 +137,26 @@ class LoginVerificationTests(unittest.IsolatedAsyncioTestCase):
         await second.handle(another)
         await second.handle(another)
         self.assertEqual(another.choice.clicks, 1)
+
+    async def test_live_and_legacy_receive_sms_labels_require_visible_identity_and_click_once(self):
+        for text in ('接收短信验证码', '接收短信验证'):
+            with self.subTest(label=text):
+                page = Frame(choice=True, choice_label=text)
+                flow = DouyinLoginVerification(Bridge())
+                self.assertEqual(await flow.handle(page), 'pending')
+                self.assertEqual(await flow.handle(page), 'pending')
+                self.assertEqual(page.choice.clicks, 1)
+                page = Frame(choice=True, choice_label=text)
+                page.identity.visible = False
+                self.assertEqual(await DouyinLoginVerification(Bridge()).handle(page), 'unsupported')
+                self.assertEqual(page.choice.clicks, 0)
+
+    async def test_other_verification_choices_are_not_automatically_selected(self):
+        for text in ('手机刷脸验证', '发送短信验证'):
+            with self.subTest(label=text):
+                page = Frame(choice=True, choice_label=text)
+                self.assertEqual(await DouyinLoginVerification(Bridge()).handle(page), 'unsupported')
+                self.assertEqual(page.choice.clicks, 0)
 
     async def test_real_sms_uses_normal_dom_and_waits_for_result(self):
         page = Frame(sms=True)

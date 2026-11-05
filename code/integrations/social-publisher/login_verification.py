@@ -13,6 +13,7 @@ CODE_INPUT = 'input[placeholder*="验证码"], input[autocomplete="one-time-code
 SMS_SCOPE = 'xpath=ancestor::*[contains(@class,"uc-ui-verify_sms") and .//input][1]'
 ERROR_TEXTS = ('验证码错误', '验证码不正确', '验证码已过期')
 SMS_MESSAGE = '抖音需要身份验证，请输入平台发送的短信验证码'
+SMS_CHOICES = ('接收短信验证码', '接收短信验证')
 FIND_TIMEOUT = 4
 FRAME_SEARCH_TIMEOUT = 1
 FRAME_VISIBILITY_TIMEOUT = 0.25
@@ -92,7 +93,11 @@ class DouyinLoginVerification:
                 if len(inputs) == 1:
                     return (inputs[0], button, scope), None
         identity = await _visible(frame.get_by_text('身份验证', exact=True), 2)
-        options = await _visible(frame.get_by_text('接收短信验证', exact=True), 2)
+        options = []
+        # The live identity menu uses “接收短信验证码”; older versions omit
+        # the final “码”. Accept only these exact receive-SMS choices.
+        for text in SMS_CHOICES:
+            options.extend(await _visible(frame.get_by_text(text, exact=True), 2))
         choice = options[0] if len(identity) == 1 and len(options) == 1 else None
         return None, choice
 
