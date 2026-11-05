@@ -62,7 +62,7 @@ async function checkRuntime(python, runnerPath, cwd, env) {
 }
 function publicSession(value) {
   if (!value) throw fail(404, '登录会话不存在');
-  const { qr_path, owner, pid, process_start, challenge_image_path, ...rest } = value;
+  const { qr_path, owner, pid, process_start, challenge_image_path, auth_observation, ...rest } = value;
   return { ...rest, qrcode_url: hasCurrentLoginQr(value) ? `${PREFIX}/login-sessions/${value.id}/qrcode?v=${value.qr_version}` : null };
 }
 function publicRecord(value) {
@@ -289,6 +289,8 @@ export async function createPublishingService({ dataRoot, env = process.env, run
             if (typeof qr !== 'string' || !resolve(qr).startsWith(workDirectory + sep)) { stop(); break; }
             const current = store.get('sessions', value.id);
             store.updateOperation(operation, { status: 'waiting_user', stage: 'waiting_scan', qr_path: qr, qr_version: current.qr_version + 1, qr_expires_at: loginQrExpiresAt(current, event) }, owner);
+          } else if (event.type === 'auth_observation' && operation.kind === 'session' && value.platform === 'douyin' && value.operation === 'login') {
+            store.updateOperation(operation, { auth_observation: event.observation }, owner);
           } else if (event.type === 'challenge') {
             if (typeof event.challenge_id !== 'string' || !/^[a-zA-Z0-9_-]{1,100}$/.test(event.challenge_id)) { stop(); break; }
             const expires = Math.min(Date.now() + 5 * 60_000, Date.parse(event.expires_at) || Date.now() + 5 * 60_000);

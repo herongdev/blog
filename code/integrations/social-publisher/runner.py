@@ -15,6 +15,7 @@ import sys
 import uuid
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent
 PROTOCOL_OUT = sys.stdout
@@ -247,6 +248,76 @@ def auth_failure_result(bridge, detail=None, error=None):
     return {"status": "failed", "auth_status": "unknown", "error_code": code, "message": AUTH_FAILURE_MESSAGES[code], "checked_at": now()}
 
 
+async def _any_visible(locator):
+    for index in range(min(8, await locator.count())):
+        if await locator.nth(index).is_visible():
+            return True
+    return False
+
+
+async def _douyin_auth_observation(page, checker_result):
+    # Only enum/bool/count values leave this function. Never serialize page
+    # text, URLs, cookie objects, screenshots, or authentication material.
+    pages = [page]
+    for candidate in page.context.pages:
+        if all(candidate is not existing for existing in pages):
+            pages.append(candidate)
+        if len(pages) >= 3:
+            break
+    cookies = await page.context.cookies("https://creator.douyin.com/")
+    has_session = any(cookie.get("name") == "sessionid" and bool(cookie.get("value")) for cookie in cookies)
+    observations = []
+    for candidate in pages:
+        url = urlsplit(candidate.url)
+        route = "other"
+        if url.scheme == "https" and url.hostname == "creator.douyin.com":
+            if url.path in ("", "/"):
+                route = "creator_root"
+            elif url.path == "/creator-micro" or url.path.startswith("/creator-micro/"):
+                route = "creator_micro"
+        login_markers = [candidate.get_by_text(text, exact=True) for text in ("扫码登录", "手机号登录", "二维码失效")]
+        login_markers.append(candidate.get_by_role("img", name="二维码", exact=True))
+        # These are independent reads. Run together so diagnostics fit their
+        # budget even on a busy creator page instead of delaying normal login.
+        flags = await asyncio.gather(
+            *(_any_visible(marker) for marker in login_markers),
+            _any_visible(candidate.get_by_role("button", name="发布视频", exact=True)),
+            _any_visible(candidate.get_by_role("link", name="发布视频", exact=True)),
+            _any_visible(candidate.get_by_text(re.compile("已扫码|扫码成功|请在手机确认"))),
+            _any_visible(candidate.locator('input[autocomplete="one-time-code"], input[placeholder*="验证码"], input[placeholder*="短信"]')),
+            _any_visible(candidate.locator('iframe[src*="captcha"], iframe[title*="验证码"], [class*="captcha"], [id*="captcha"]')),
+        )
+        observations.append({
+            "route": route,
+            "hasSessionCookie": bool(has_session),
+            "any_visible_login_marker": any(flags[:4]),
+            "scan_confirmation_visible": flags[6],
+            "visible_code_input": flags[7],
+            "captcha_visible": flags[8],
+            "creator_publish_control": flags[4] or flags[5],
+        })
+    return {"checkerResult": bool(checker_result), "pageCount": len(pages), "pages": observations, "observationUnavailable": False}
+
+
+def _observed_douyin_checker(bridge, original):
+    previous = None
+    async def observed(page):
+        nonlocal previous
+        result = await original(page)
+        try:
+            observation = await asyncio.wait_for(_douyin_auth_observation(page, result), timeout=2)
+        except Exception:
+            observation = {"checkerResult": bool(result), "pageCount": 0, "pages": [], "observationUnavailable": True}
+        if observation != previous:
+            try:
+                bridge.emit("auth_observation", observation=observation)
+                previous = observation
+            except Exception:
+                pass  # Diagnostics must not change the platform's result.
+        return result
+    return observed
+
+
 async def browser_operation(bridge):
     request = bridge.request
     platform, operation = request["platform"], request["operation"]
@@ -257,7 +328,14 @@ async def browser_operation(bridge):
             return {"status": "completed", "auth_status": "invalid", "message": "账号尚未登录，请先扫码登录", "checked_at": now()}
         try:
             module = importlib.import_module(f"uploader.{platform}_uploader.main")
-            result = await getattr(module, PLATFORMS[platform][1])(account, handle=operation == "login", return_detail=True, qrcode_callback=bridge.qrcode, headless=True)
+            original_checker = getattr(module, "_is_douyin_login_completed", None) if platform == "douyin" and operation == "login" else None
+            if callable(original_checker):
+                module._is_douyin_login_completed = _observed_douyin_checker(bridge, original_checker)
+            try:
+                result = await getattr(module, PLATFORMS[platform][1])(account, handle=operation == "login", return_detail=True, qrcode_callback=bridge.qrcode, headless=True)
+            finally:
+                if callable(original_checker):
+                    module._is_douyin_login_completed = original_checker
         except Exception as error:
             return auth_failure_result(bridge, error=error)
         if isinstance(result, dict) and result.get("success") is True:

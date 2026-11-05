@@ -11,6 +11,13 @@ export type LoginSessionSnapshot = {
 };
 
 export const isClosedLoginSession = (status: string) => ['success', 'succeeded', 'completed', 'failed', 'canceled', 'expired', 'timeout', 'valid', 'invalid'].includes(status);
+export const isSuccessfulLoginSession = (session: LoginSessionSnapshot) => session.operation === 'login' && session.auth_status === 'valid' && !session.error_code && ['success', 'succeeded', 'completed', 'valid'].includes(session.status);
+export function loginSuccessNotice(current: LoginSessionSnapshot | null, next: LoginSessionSnapshot, expectedId: string, epochsMatch: boolean, announced: Set<string>): 'ignore' | 'first' | 'seen' {
+  if (!epochsMatch || current?.id !== expectedId || next.id !== expectedId || !isSuccessfulLoginSession(next)) return 'ignore';
+  if (announced.has(next.id)) return 'seen';
+  announced.add(next.id);
+  return 'first';
+}
 export const loginQrKey = (session: LoginSessionSnapshot) => `${session.id}-${session.qr_version ?? 0}`;
 
 // The runner's deadline is only a conservative display limit, not the platform's promised QR lifetime.
@@ -63,7 +70,7 @@ export async function renewLoginSession<T extends LoginSessionSnapshot>(previous
     current = accept(await transport.get(previous.id));
   }
   // The user may have finished scanning while cancellation was in flight. Keep that successful login.
-  if (current.auth_status === 'valid' || ['success', 'succeeded', 'completed', 'valid'].includes(current.status)) return current;
+  if (isSuccessfulLoginSession(current)) return current;
   // Only the server's terminal state releases the account and proves the old process has stopped.
   return transport.create(previous.account_id);
 }

@@ -1,9 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { applyLoginSessionUpdate, loginQrKey, loginQrState, renewLoginSession } from '../src/login-session.ts';
+import { applyLoginSessionUpdate, isSuccessfulLoginSession, loginQrKey, loginQrState, loginSuccessNotice, renewLoginSession } from '../src/login-session.ts';
 
 const start = Date.parse('2026-11-05T00:00:00Z');
 const qr = Object.freeze({ id: 'old', account_id: 'account', operation: 'login', status: 'waiting_user', qr_version: 1, qr_expires_at: new Date(start + 45_000).toISOString(), qrcode_url: '/api/publishing/login-sessions/old/qrcode?v=1' });
+
+test('only a confirmed valid login completes; stale results cannot consume its one-time notice', () => {
+  const completed = { ...qr, status: 'completed', auth_status: 'valid' };
+  const announced = new Set();
+  for (const candidate of [{ ...completed, auth_status: 'unknown' }, { ...completed, auth_status: undefined }, { ...completed, operation: 'check' }, { ...completed, status: 'waiting_user' }, { ...completed, status: 'failed' }]) assert.equal(isSuccessfulLoginSession(candidate), false);
+  assert.equal(isSuccessfulLoginSession(completed), true);
+  assert.equal(loginSuccessNotice({ ...qr, id: 'new' }, completed, qr.id, true, announced), 'ignore');
+  assert.equal(loginSuccessNotice(qr, completed, qr.id, false, announced), 'ignore');
+  assert.equal(announced.size, 0);
+  assert.equal(loginSuccessNotice(qr, completed, qr.id, true, announced), 'first');
+  assert.equal(loginSuccessNotice(completed, completed, qr.id, true, announced), 'seen');
+  assert.equal(announced.size, 1);
+});
 
 test('the display deadline hides an already-loaded QR without another network response', () => {
   assert.equal(loginQrState(qr, start + 44_999), 'ready');

@@ -76,6 +76,25 @@ async function fixture(options = {}) {
   return { service, origin, api, root, account, job, async close() { await service.close(); server.close(); await once(server, 'close'); await rm(root, { recursive: true, force: true }); } };
 }
 
+test('real login observation is private, strictly filtered and cannot declare authentication', async () => {
+  const observation = { checkerResult: false, pageCount: 1, pages: [{ route: 'creator_root', hasSessionCookie: true, any_visible_login_marker: false, scan_confirmation_visible: true, visible_code_input: false, captcha_visible: false, creator_publish_control: false }], observationUnavailable: false };
+  const source = fake.replace(" event('result',auth_status='valid',status='completed')", ` event('auth_observation',observation=json.loads(${JSON.stringify(JSON.stringify(observation))}))\n event('auth_observation',observation=dict(url='PRIVATE_URL',cookie='PRIVATE_COOKIE'))\n event('result',auth_status='unknown',status='failed',error_code='LOGIN_TIMEOUT')`);
+  const f = await fixture({ runnerSource: source });
+  try {
+    const account = f.service.store.createAccount({ platform: 'douyin', alias: '观测账号' });
+    const session = f.service.store.newSession(account.id, 'login');
+    await f.service.tick();
+    const stored = f.service.store.get('sessions', session.id);
+    assert.deepEqual(stored.auth_observation, observation);
+    assert.equal(stored.auth_status, 'unknown');
+    assert.equal(stored.status, 'failed');
+    assert.equal(JSON.stringify(stored).includes('PRIVATE_'), false);
+    const response = await f.api(`/login-sessions/${session.id}`);
+    assert.equal(response.status, 200);
+    assert.equal('auth_observation' in response.data.session, false);
+  } finally { await f.close(); }
+});
+
 test('real subprocess protocol distinguishes before-submit failure, acceptance, and lost result', async () => {
   const f = await fixture();
   try {

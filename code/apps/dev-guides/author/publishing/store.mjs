@@ -1,5 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
 import { createHash, randomUUID } from 'node:crypto';
+import { safeAuthObservation } from './auth-observation.mjs';
 
 export const fail = (status, message) => Object.assign(new Error(message), { status });
 export const now = () => new Date().toISOString();
@@ -187,6 +188,11 @@ export function createPublishingStore(path) {
     const value = get(table, operation.value.id);
     if (!value || !['running', 'waiting_user'].includes(value.status)) return false;
     if (operation.kind === 'target' && value.current_attempt_id !== operation.attempt.id) return false;
+    if (Object.hasOwn(update, 'auth_observation')) {
+      const observation = operation.kind === 'session' && value.platform === 'douyin' && value.operation === 'login' ? safeAuthObservation(update.auth_observation) : null;
+      update = { ...update }; delete update.auth_observation;
+      if (observation) update.auth_observation = observation;
+    }
     put(table, { ...value, ...update }); return true;
   }
   function finish(operation, result, owner) {

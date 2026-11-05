@@ -1,7 +1,7 @@
 import { useToast } from './AuthorToast';
 import AuthorDialogContent from './AuthorDialogContent';
 import AuthorSelect from './AuthorSelect';
-import { applyLoginSessionUpdate, isClosedLoginSession as closedSession, loginQrKey, loginQrState, renewLoginSession, type LoginSessionSnapshot } from './login-session';
+import { applyLoginSessionUpdate, isClosedLoginSession as closedSession, isSuccessfulLoginSession, loginQrKey, loginQrState, loginSuccessNotice, renewLoginSession, type LoginSessionSnapshot } from './login-session';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { BookOpenText, Check, ChevronDown, CircleAlert, ExternalLink, Film, History, ImagePlus, LoaderCircle, Plus, QrCode, RefreshCw, Send, Unplug, Upload, Users, X } from 'lucide-react';
@@ -76,13 +76,27 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
   const [alias, setAlias] = useState(''); const [platformId, setPlatformId] = useState('');
   const [session, setSession] = useState<Session | null>(null); const [sessionOpen, setSessionOpen] = useState(false);
   const sessionRef = useRef<Session | null>(null); const sessionEpoch = useRef(0);
+  const notifiedLogins = useRef(new Set<string>());
   const [sessionClock, setSessionClock] = useState(Date.now); const [failedQrKey, setFailedQrKey] = useState(''); const [sessionReadFailedId, setSessionReadFailedId] = useState('');
+  const refreshAccounts = useCallback(async () => { const result = await request<{ accounts: Account[] }>(`${API}/accounts`, { signal: AbortSignal.timeout(10_000) }); setAccounts(result.accounts); }, [request]);
+  const completeLogin = useCallback((next: Session, expectedId: string, epoch: number) => {
+    const notice = loginSuccessNotice(sessionRef.current, next, expectedId, epoch === sessionEpoch.current, notifiedLogins.current);
+    if (notice === 'ignore') return false;
+    setSessionOpen(false); setError(''); setSessionReadFailedId('');
+    if (notice === 'first') {
+      notify('账号已连接。');
+      setAccounts(current => current.map(account => account.id === next.account_id ? { ...account, auth_status: 'valid' } : account));
+      void refreshAccounts().catch(() => { if (epoch === sessionEpoch.current && sessionRef.current?.id === expectedId) setError('账号已连接，账号列表暂时无法刷新，请稍后刷新。'); });
+    }
+    return true;
+  }, [notify, refreshAccounts]);
   const selectSession = (next: Session) => { sessionRef.current = next; setSession(next); setFailedQrKey(''); setSessionReadFailedId(''); setSessionClock(Date.now()); };
-  const updateSession = (next: Session, expectedId: string, epoch: number) => {
+  const updateSession = useCallback((next: Session, expectedId: string, epoch: number) => {
     if (sessionEpoch.current !== epoch) return;
     const current = applyLoginSessionUpdate(sessionRef.current, next, expectedId);
     if (current !== sessionRef.current) { sessionRef.current = current; setSession(current); }
-  };
+    if (current === next) completeLogin(next, expectedId, epoch);
+  }, [completeLogin]);
   // Expire an already-loaded image even when the network fails or polling is paused in a hidden tab.
   useEffect(() => {
     if (!sessionOpen || !session || closedSession(session.status)) return;
@@ -111,29 +125,39 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
   useEffect(() => { let active = true; refresh().catch(e => { if (active) setError(e.message); }).finally(() => { if (active) setLoading(false); }); return () => { active = false; }; }, [refresh]);
   useEffect(() => {
     let active = true; let inFlight = false;
+    const poll = async () => {
+      if (inFlight || document.hidden) return;
+      const current = sessionRef.current;
+      if (!current || closedSession(current.status) || lock.current) return;
+      const epoch = sessionEpoch.current; inFlight = true;
+      try {
+        const result = await request<{ session: Session }>(`${API}/login-sessions/${current.id}`, { signal: AbortSignal.timeout(10_000) });
+        if (active && epoch === sessionEpoch.current && sessionRef.current?.id === current.id) {
+          updateSession(result.session, current.id, epoch); setSessionReadFailedId('');
+          if (closedSession(result.session.status) && !isSuccessfulLoginSession(result.session)) await refreshAccounts();
+        }
+      } catch (e) {
+        if (active && epoch === sessionEpoch.current && sessionRef.current?.id === current.id) { setSessionReadFailedId(current.id); setError((e as Error).message); }
+      } finally { inFlight = false; }
+    };
+    const resume = () => { if (!document.hidden) void poll(); };
+    const timer = window.setInterval(() => void poll(), 3500);
+    window.addEventListener('focus', resume); document.addEventListener('visibilitychange', resume);
+    void poll();
+    return () => { active = false; clearInterval(timer); window.removeEventListener('focus', resume); document.removeEventListener('visibilitychange', resume); };
+  }, [request, refreshAccounts, updateSession, session?.id, session?.status]);
+  useEffect(() => {
+    let active = true; let inFlight = false;
     const timer = window.setInterval(async () => {
       if (inFlight || document.hidden) return;
       inFlight = true;
       try {
-        const current = sessionRef.current;
-        if (current && !closedSession(current.status) && !lock.current) {
-          const epoch = sessionEpoch.current;
-          try {
-            const result = await request<{ session: Session }>(`${API}/login-sessions/${current.id}`, { signal: AbortSignal.timeout(10_000) });
-            if (active && epoch === sessionEpoch.current && sessionRef.current?.id === current.id) {
-              updateSession(result.session, current.id, epoch); setSessionReadFailedId('');
-              if (closedSession(result.session.status)) await refresh();
-            }
-          } catch (e) {
-            if (active && epoch === sessionEpoch.current && sessionRef.current?.id === current.id) { setSessionReadFailedId(current.id); setError((e as Error).message); }
-          }
-        }
         if (selectedJob) { const result = await request<{ job: Job }>(`${API}/jobs/${selectedJob.id}`); if (active) setSelectedJob(result.job); }
         if (tab === 'records') { const result = await request<{ jobs: Job[] }>(`${API}/jobs`); if (active) setJobs(contentContext ? result.jobs.filter(job => job.content_ref?.id === contentContext.contentId || job.content_ref?.slug === contentContext.slug) : result.jobs); }
       } catch (e) { if (active) setError((e as Error).message); } finally { inFlight = false; }
     }, 3500);
     return () => { active = false; clearInterval(timer); };
-  }, [request, refresh, session?.id, session?.status, selectedJob?.id, tab]);
+  }, [request, selectedJob?.id, tab]);
   const act = async (name: string, fn: () => Promise<void>) => {
     if (lock.current) return; lock.current = true; setBusy(name); setError('');
     try { await fn(); } catch (e) { setError((e as Error).message); } finally { lock.current = false; setBusy(''); }
@@ -174,11 +198,12 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
       const result = await request<{ session: Session }>(`${API}/login-sessions/${previous.id}`, { signal: AbortSignal.timeout(10_000) });
       if (epoch !== sessionEpoch.current) return;
       selectSession({ ...result.session, account_id: account.id });
+      if (!closedSession(previous.status) && completeLogin(result.session, previous.id, epoch)) return;
       if (!closedSession(result.session.status)) { setSessionOpen(true); return; }
     }
     const result = await request<{ session: Session }>(`${API}/accounts/${account.id}/${action}`, json({}));
     if (epoch !== sessionEpoch.current) return;
-    selectSession({ ...result.session, account_id: account.id }); setSessionOpen(true); await refresh();
+    selectSession({ ...result.session, account_id: account.id }); setSessionOpen(true); await refreshAccounts();
   });
   const renewQr = () => act('refresh-login', async () => {
     const previous = sessionRef.current;
@@ -190,14 +215,14 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
       create: async accountId => (await request<{ session: Session }>(`${API}/accounts/${accountId}/login-sessions`, { ...json({}), signal: AbortSignal.timeout(10_000) })).session,
     }, { onCurrent: current => { updateSession(current, previous.id, epoch); if (epoch === sessionEpoch.current) setSessionReadFailedId(''); } });
     if (epoch !== sessionEpoch.current) return;
-    selectSession(next); await refresh();
+    selectSession(next); if (!completeLogin(next, next.id, epoch)) await refreshAccounts();
   });
   const cancelLogin = () => act('cancel-login', async () => {
     const current = sessionRef.current;
     if (!current) return;
     const epoch = ++sessionEpoch.current;
     const result = await request<{ session: Session }>(`${API}/login-sessions/${current.id}/cancel`, json({}));
-    updateSession(result.session, current.id, epoch); await refresh();
+    updateSession(result.session, current.id, epoch); await refreshAccounts();
   });
   const targetAction = (target: Target, action: 'retry' | 'cancel') => act(target.id, async () => { await request(`${API}/targets/${target.id}/${action}`, json({})); if (selectedJob) { const { job } = await request<{ job: Job }>(`${API}/jobs/${selectedJob.id}`); setSelectedJob(job); } await refresh(); });
   const coverSelector = (value: string | null | undefined, onChange: (value: string | null) => void) => <AuthorSelect value={value ?? ''} onValueChange={value => onChange(value || null)} label="选择封面" disabled={!!busy} options={[{ value: '', label: '使用平台默认封面' }, ...assets.filter(item => item.type === 'cover').map(item => ({ value: item.id, label: fileName(item) }))]} />;
