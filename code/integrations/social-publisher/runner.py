@@ -16,6 +16,8 @@ import uuid
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import urlsplit
+from auth_network import LoginNetworkObservation
+from login_verification import DouyinLoginVerification
 
 ROOT = Path(__file__).resolve().parent
 PROTOCOL_OUT = sys.stdout
@@ -222,6 +224,8 @@ AUTH_FAILURE_MESSAGES = {
     "QR_UNAVAILABLE": "未能获取平台登录二维码，请重新发起扫码登录",
     "LOGIN_TIMEOUT": "等待扫码登录超时，请重新获取二维码",
     "LOGIN_NOT_COMPLETED": "扫码登录尚未完成，请重试；若平台要求验证，请按提示处理",
+    "LOGIN_VERIFICATION_REQUIRED": "抖音要求额外身份验证，当前验证方式尚未完成，请检查平台验证要求",
+    "LOGIN_VERIFICATION_FAILED": "抖音身份验证未通过，请核对验证码后重新登录",
     "AUTH_CHECK_FAILED": "暂时无法检查账号会话，请稍后重试",
 }
 # SAU can return a caught browser exception as a failed result. Inspect it only
@@ -240,7 +244,10 @@ def auth_failure_result(bridge, detail=None, error=None):
         code = "AUTH_CHECK_FAILED"
     else:
         message = str(error) if error is not None else str(detail.get("message", ""))
-        if bridge.qrcode_seen:
+        verification_code = getattr(bridge, 'login_failure_code', None)
+        if verification_code in {'LOGIN_VERIFICATION_REQUIRED', 'LOGIN_VERIFICATION_FAILED'}:
+            code = verification_code
+        elif bridge.qrcode_seen:
             timed_out = detail.get("status") == "timeout" or type(error).__name__ == "TimeoutError"
             code = "LOGIN_TIMEOUT" if timed_out else "LOGIN_NOT_COMPLETED"
         else:
@@ -301,9 +308,16 @@ async def _douyin_auth_observation(page, checker_result):
 
 def _observed_douyin_checker(bridge, original):
     previous = None
+    network = LoginNetworkObservation(bridge)
+    verification = DouyinLoginVerification(bridge)
+    verification_since = None
     async def observed(page):
-        nonlocal previous
+        nonlocal previous, verification_since
         result = await original(page)
+        try:
+            network.attach(page)
+        except Exception:
+            pass
         try:
             observation = await asyncio.wait_for(_douyin_auth_observation(page, result), timeout=2)
         except Exception:
@@ -314,8 +328,38 @@ def _observed_douyin_checker(bridge, original):
                 previous = observation
             except Exception:
                 pass  # Diagnostics must not change the platform's result.
+        if not result and network.failure and network.failure['state'] == 'verification_required':
+            # The official page handles error 2046 through its identity dialog.
+            # Keep that browser alive; bridge only normal SMS form interaction.
+            loop = asyncio.get_running_loop()
+            if verification_since is None:
+                verification_since = loop.time()
+                bridge.emit('stage', stage='waiting_challenge')
+            bridge.login_failure_code = 'LOGIN_VERIFICATION_REQUIRED'
+            deadline = getattr(bridge, 'login_deadline', verification_since + 240)
+            # The QR behind the verification dialog may expire. Keep control
+            # here so the uploader cannot click/renew it mid-verification.
+            while loop.time() < deadline:
+                await verification.handle(page)
+                if await original(page):
+                    return True
+                if verification.status == 'failed':
+                    bridge.login_failure_code = 'LOGIN_VERIFICATION_FAILED'
+                    break
+                if verification.status == 'unsupported' and loop.time() - verification_since > 25:
+                    break
+                await asyncio.sleep(2)
+            raise SafeError(bridge.login_failure_code, AUTH_FAILURE_MESSAGES[bridge.login_failure_code])
         return result
     return observed
+
+
+def _interactive_douyin_login(original):
+    async def generate(*args, **kwargs):
+        # Keep the browser alive for a human to finish mobile confirmation.
+        # QR rotation and the host's ten-minute process limit remain in force.
+        return await original(*args, **{**kwargs, 'poll_interval': 2, 'max_checks': 240})
+    return generate
 
 
 async def browser_operation(bridge):
@@ -323,19 +367,26 @@ async def browser_operation(bridge):
     platform, operation = request["platform"], request["operation"]
     account = request["account_file"]
     bridge.emit("stage", stage="checking" if operation != "login" else "logging_in")
+    if platform == 'douyin' and operation == 'login':
+        bridge.login_deadline = asyncio.get_running_loop().time() + 480
     if operation != "publish":
         if operation == "check" and not Path(account).is_file():
             return {"status": "completed", "auth_status": "invalid", "message": "账号尚未登录，请先扫码登录", "checked_at": now()}
         try:
             module = importlib.import_module(f"uploader.{platform}_uploader.main")
             original_checker = getattr(module, "_is_douyin_login_completed", None) if platform == "douyin" and operation == "login" else None
+            original_generator = getattr(module, 'douyin_cookie_gen', None) if platform == 'douyin' and operation == 'login' else None
             if callable(original_checker):
                 module._is_douyin_login_completed = _observed_douyin_checker(bridge, original_checker)
+            if callable(original_generator):
+                module.douyin_cookie_gen = _interactive_douyin_login(original_generator)
             try:
                 result = await getattr(module, PLATFORMS[platform][1])(account, handle=operation == "login", return_detail=True, qrcode_callback=bridge.qrcode, headless=True)
             finally:
                 if callable(original_checker):
                     module._is_douyin_login_completed = original_checker
+                if callable(original_generator):
+                    module.douyin_cookie_gen = original_generator
         except Exception as error:
             return auth_failure_result(bridge, error=error)
         if isinstance(result, dict) and result.get("success") is True:

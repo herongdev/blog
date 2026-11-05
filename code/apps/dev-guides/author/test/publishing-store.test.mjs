@@ -130,6 +130,8 @@ test('session failures retain only controlled error codes and never publish raw 
       ['QR_UNAVAILABLE', '未取得登录二维码，请重试'],
       ['LOGIN_TIMEOUT', '扫码登录超时，请重新扫码'],
       ['LOGIN_NOT_COMPLETED', '登录尚未完成，请重新扫码'],
+      ['LOGIN_VERIFICATION_REQUIRED', '抖音要求额外身份验证，当前验证方式尚未完成，请检查平台验证要求'],
+      ['LOGIN_VERIFICATION_FAILED', '抖音身份验证未通过，请核对验证码后重新登录'],
       ['AUTH_CHECK_FAILED', '暂时无法检查账号会话，请稍后重试'],
     ]) {
       const session = f.store.newSession(f.account.id, 'login'); const operation = f.store.claim('login-worker');

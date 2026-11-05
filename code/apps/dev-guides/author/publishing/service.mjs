@@ -282,7 +282,7 @@ export async function createPublishingService({ dataRoot, env = process.env, run
             const authorized = operation.kind === 'target' && typeof event.request_id === 'string' && store.beforeSubmit(value.id, operation.attempt.id, owner);
             send({ type: 'submit_authorized', request_id: event.request_id, authorized: Boolean(authorized) });
           } else if (event.type === 'stage') {
-            const known = new Set(['checking', 'logging_in', 'uploading', 'filling', 'preparing', 'submitting', 'verifying', 'waiting_scan', 'waiting_confirmation', 'login', 'done']);
+            const known = new Set(['checking', 'logging_in', 'uploading', 'filling', 'preparing', 'submitting', 'verifying', 'waiting_scan', 'waiting_confirmation', 'waiting_challenge', 'login', 'done']);
             store.updateOperation(operation, { stage: known.has(event.stage) ? event.stage : 'working' }, owner);
           } else if (event.type === 'qrcode' && operation.kind === 'session') {
             const qr = event.image_path ?? event.qrcode?.image_path;

@@ -285,15 +285,16 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
         {session && <>
           <Status value={session.status} />
           {session.message && <p>{session.message}</p>}
-          {busy === 'refresh-login' ? <div className="publishing-empty"><LoaderCircle className="spin" size={24} /><p>正在停止上次登录并重新获取二维码…</p></div>
+          {session.challenge ? <ChallengeForm key={session.challenge.id ?? session.challenge.challenge_id} challenge={session.challenge} request={request} onDone={() => notify('验证响应已发送。')} />
+            : busy === 'refresh-login' ? <div className="publishing-empty"><LoaderCircle className="spin" size={24} /><p>正在停止上次登录并重新获取二维码…</p></div>
+            : !closedSession(session.status) && session.stage === 'waiting_challenge' ? <div className="publishing-empty"><LoaderCircle className="spin" size={24} /><p>正在完成抖音身份验证…</p></div>
             : qrState === 'ready' && session.qrcode_url ? <><img key={loginQrKey(session)} className="publishing-qr" src={mediaUrl(session.qrcode_url)} alt="当前平台账号登录二维码，请用平台手机应用扫码" onError={() => setFailedQrKey(loginQrKey(session))} /><p className="publishing-muted">请尽快扫码，平台提示失效时请重新获取。</p></>
             : qrState === 'expired' ? <div className="publishing-empty"><QrCode size={28} /><strong>{session.error_code === 'LOGIN_TIMEOUT' || session.status === 'timeout' ? '本次扫码登录已超时' : '二维码需要更新，请重新获取'}</strong></div>
             : qrState === 'image_error' || qrState === 'state_error' ? <div className="publishing-empty"><CircleAlert size={26} /><strong>{qrState === 'image_error' ? '二维码加载失败' : '暂时无法读取登录状态'}</strong><p>请重新获取二维码后扫码。</p></div>
             : !closedSession(session.status) && <div className="publishing-empty"><LoaderCircle className="spin" size={24} /><p>{session.status === 'queued' ? '正在排队，稍后开始。' : session.stage === 'waiting_confirmation' || session.stage === 'waiting_confirm' ? '请在手机上确认登录。' : '正在等待平台响应…'}</p></div>}
-          {session.challenge && <ChallengeForm key={session.challenge.id ?? session.challenge.challenge_id} challenge={session.challenge} request={request} onDone={() => notify('验证响应已发送。')} />}
           {session.local_login_command && <code className="publishing-local-command">{session.local_login_command}</code>}
           <div className="publishing-row-actions">
-            {canRenewQr && <button className="secondary-button" disabled={!!busy} onClick={() => void renewQr()}><RefreshCw size={16} />重新获取二维码</button>}
+            {canRenewQr && !session.challenge && (closedSession(session.status) || session.stage !== 'waiting_challenge') && <button className="secondary-button" disabled={!!busy} onClick={() => void renewQr()}><RefreshCw size={16} />重新获取二维码</button>}
             {!closedSession(session.status) && <button className="secondary-button" disabled={!!busy} onClick={() => void cancelLogin()}>取消本次操作</button>}
           </div>
         </>}

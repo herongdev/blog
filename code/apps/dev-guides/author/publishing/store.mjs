@@ -20,6 +20,8 @@ const errorMessages = {
   OPERATION_STOPPED: '操作超时或已停止，请检查后重试', QR_UNAVAILABLE: '未取得登录二维码，请重试',
   LOGIN_PAGE_UNAVAILABLE: '抖音登录页暂时无法打开，请稍后重试', LOGIN_TIMEOUT: '扫码登录超时，请重新扫码',
   LOGIN_NOT_COMPLETED: '登录尚未完成，请重新扫码', AUTH_CHECK_FAILED: '暂时无法检查账号会话，请稍后重试',
+  LOGIN_VERIFICATION_REQUIRED: '抖音要求额外身份验证，当前验证方式尚未完成，请检查平台验证要求',
+  LOGIN_VERIFICATION_FAILED: '抖音身份验证未通过，请核对验证码后重新登录',
   BROWSER_NOT_INSTALLED: '发布服务尚未准备好，请联系维护者', BILIUP_NOT_INSTALLED: 'B站发布服务尚未准备好，请联系维护者',
   FORK_PATCH_MISMATCH: '发布服务版本不一致，请联系维护者', BILIUP_VERSION_MISMATCH: 'B站发布服务版本不一致，请联系维护者',
   COVER_NOT_APPLIED: '指定封面未确认保存，已在提交前停止，请检查封面要求',

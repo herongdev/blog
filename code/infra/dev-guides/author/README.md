@@ -187,3 +187,10 @@ python3 infra/dev-guides/author/deploy.py
 
 - 用户已明确手机点过确认，但服务端尚未保存会话。作者 `20261105T034159Z`、执行器 `20261105T034253Z-douyin-confirm` 已上线成功关窗提示、独立登录轮询及不含凭据的受控观测；尚未放宽原成功判定。
 - 201 项 Node、59 项选择性 Python 测试及构建通过。备份 `20261105T034351Z.tar.gz`，回执 `/var/backups/herong-dev-guides-author/20261105T034159Z-douyin-confirm/`；165 个项目文件、认证、配置和公开站不变。真实登录与成功关窗待实际扫码确认结果，见 [确认链路记录](../../../docs/tasks/2026-11-05-douyin-confirmation.md)。
+
+## 2026-11-05 抖音额外身份验证
+
+- 当前作者 `20261105T075037Z`、执行器 `20261105T082306Z-douyin-verification-scope`。原生平台轮询已实际收到 scanned 后的 2046；核对原应用与抖音公共 JS 后，补上登录路径原先只提示去浏览器操作的短信身份验证，使用现有 challenge/control 通道，不放宽成功与会话校验。验证码仅匹配专用验证组件，2046 状态保持至本次登录结束。
+- 88 项完整 Python 测试、202 项完整 Node 回归与构建通过；服务器无账号真实 DOM fixture 通过。Edge 新标签已打开发布中心，真实账号额外验证、保存会话及成功关窗仍待用户验收。
+- 停写备份 `20261105T080316Z.tar.gz`，回执 `/var/backups/herong-dev-guides-author/20261105T075037Z-douyin-verification/`。166 个项目文件、认证、配置和公开站不变。无依赖变更，复用经锁一致性校验的不可变依赖；被引用旧 release 必须保留。
+- 执行器边界补强的停写备份 `20261105T082511Z.tar.gz`，回执后缀为 `-douyin-verification-scope/`。清理可重下载 pip HTTP 缓存约 173.5 MB 与 DNF 仓库元数据，未清理内容、账号和备份；最终剩余空间约 718 MiB，上传保留空间仍为 512 MiB。版本摘要与未完成范围见 [确认链路记录](../../../docs/tasks/2026-11-05-douyin-confirmation.md)。

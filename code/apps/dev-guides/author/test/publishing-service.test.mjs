@@ -124,6 +124,61 @@ test('challenge control bypasses execution slot; invalid/expired response reject
   } finally { await f.close(); }
 });
 
+test('login SMS challenge stays on its session and accepts control while the execution slot is occupied', async () => {
+  const source = fake.replace(" event('result',auth_status='valid',status='completed')", ` if request['operation']=='login':
+  event('stage',stage='waiting_challenge')
+  event('challenge',challenge_id='test_login_sms',kind='sms')
+  reply=json.loads(sys.stdin.readline())
+  if reply.get('type')!='challenge_response' or reply.get('challenge_id')!='test_login_sms' or reply.get('value')!='123456': sys.exit(2)
+  time.sleep(0.25)
+ event('result',auth_status='valid',status='completed')`);
+  const f = await fixture({ runnerSource: source });
+  try {
+    const account = f.service.store.createAccount({ platform: 'douyin', alias: '短信验证账号' });
+    const created = await f.api(`/accounts/${account.id}/login-sessions`, {});
+    assert.equal(created.status, 202);
+    const sessionId = created.data.session.id;
+    // tick owns the execution slot until the subprocess receives its control
+    // reply. API requests must remain independent of that pending promise.
+    const running = f.service.tick();
+    await waitFor(() => f.service.store.get('sessions', sessionId)?.challenge);
+    const waiting = (await f.api(`/login-sessions/${sessionId}`)).data.session;
+    assert.equal(waiting.stage, 'waiting_challenge');
+    assert.equal(waiting.status, 'waiting_user');
+    assert.equal(waiting.challenge.id, 'test_login_sms');
+    assert.equal(waiting.challenge.type, 'sms');
+    assert.equal('value' in waiting.challenge, false);
+    assert.doesNotMatch(JSON.stringify(waiting), /123456/);
+    const other = f.service.store.newSession(f.account.id, 'login');
+    const otherSession = (await f.api(`/login-sessions/${other.id}`)).data.session;
+    assert.equal(otherSession.status, 'queued');
+    assert.equal(otherSession.challenge, null);
+    assert.doesNotMatch(JSON.stringify(otherSession), /test_login_sms|123456/);
+    const accounts = await f.api('/accounts');
+    assert.doesNotMatch(JSON.stringify(accounts.data), /test_login_sms|123456/);
+
+    const reply = await f.api('/challenges/test_login_sms/respond', { value: '123456' });
+    assert.equal(reply.status, 200);
+    assert.equal(reply.data.accepted, true);
+    const checking = (await f.api(`/login-sessions/${sessionId}`)).data.session;
+    assert.equal(checking.stage, 'waiting_challenge');
+    assert.equal(checking.challenge, null);
+    await running;
+    const completed = (await f.api(`/login-sessions/${sessionId}`)).data.session;
+    assert.equal(completed.status, 'completed');
+    assert.equal(completed.auth_status, 'valid');
+    assert.equal(completed.challenge, null);
+    assert.equal((await f.api('/challenges/test_login_sms/respond', { value: '123456' })).status, 410);
+    for (const table of ['accounts', 'assets', 'jobs', 'targets', 'attempts', 'sessions']) {
+      assert.doesNotMatch(JSON.stringify(f.service.store.all(table)), /123456/);
+    }
+    // Check both the database and its live journal, including superseded rows.
+    for (const filename of ['publishing.sqlite', 'publishing.sqlite-wal']) {
+      assert.equal((await readFile(join(f.root, 'data', filename))).includes(Buffer.from('123456')), false);
+    }
+  } finally { await f.close(); }
+});
+
 test('timeout and cancel stop subprocess before allowing safe retry', async () => {
   const f = await fixture({ env: { PUBLISHER_TASK_TIMEOUT_MS: '200' } });
   try {

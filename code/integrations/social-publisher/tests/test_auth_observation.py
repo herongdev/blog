@@ -1,4 +1,5 @@
-"""Read-only auth diagnostics: strict metadata, unchanged login decisions."""
+"""Auth diagnostics and the normal identity-verification integration boundary."""
+import asyncio
 import io
 import json
 from pathlib import Path
@@ -11,6 +12,7 @@ from unittest.mock import AsyncMock, patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import runner
+from test_login_verification import Frame as VerificationFrame
 
 
 class Locator:
@@ -161,6 +163,170 @@ class AuthObservationTests(unittest.IsolatedAsyncioTestCase):
                     await runner.browser_operation(self.bridge)
                 self.assertIs(module._is_douyin_login_completed, original)
         self.assertEqual(self.observations(), [])
+
+    async def test_mobile_confirmation_window_is_eight_minutes_and_generator_is_restored(self):
+        for fail in (False, True):
+            with self.subTest(fail=fail):
+                generator = AsyncMock(return_value={'success': False, 'status': 'timeout'})
+                module = SimpleNamespace(douyin_cookie_gen=generator)
+                async def setup(*args, **kwargs):
+                    await module.douyin_cookie_gen('fixture-account', max_checks=90)
+                    if fail:
+                        raise RuntimeError('fixture failure')
+                    return {'success': False, 'status': 'timeout'}
+                module.douyin_setup = setup
+                with patch.object(runner.importlib, 'import_module', return_value=module):
+                    await runner.browser_operation(self.bridge)
+                generator.assert_awaited_once_with('fixture-account', max_checks=240, poll_interval=2)
+                self.assertIs(module.douyin_cookie_gen, generator)
+
+    async def verification_network(self):
+        # Exercise the real sanitized 2046 response classification rather than
+        # only stubbing the branch condition in the runner.
+        network = runner.LoginNetworkObservation(self.bridge)
+        response = SimpleNamespace(
+            url='https://sso.douyin.com/passport/web/check_qrconnect/?token=PRIVATE_TOKEN',
+            status=200,
+            json=AsyncMock(return_value={'data': {'error_code': 2046, 'description': 'PRIVATE_DESCRIPTION'}}),
+        )
+        await network.response(response)
+        self.assertEqual(network.failure['state'], 'verification_required')
+        return network
+
+    def observation_stub(self):
+        return AsyncMock(return_value={'checkerResult': False, 'pageCount': 0, 'pages': [], 'observationUnavailable': True})
+
+    async def test_2046_normal_sms_flow_requires_the_original_checker_to_succeed(self):
+        network = await self.verification_network()
+        page = VerificationFrame(sms=True)
+        self.bridge.hook = AsyncMock(return_value='123456')
+        async def actually_logged_in(current):
+            return current.buttons[0].clicks == 1
+        original = AsyncMock(side_effect=actually_logged_in)
+        module = SimpleNamespace(_is_douyin_login_completed=original)
+        async def setup(*args, **kwargs):
+            return {'success': await module._is_douyin_login_completed(page)}
+        module.douyin_setup = setup
+        with patch.object(runner, 'LoginNetworkObservation', return_value=network), \
+             patch.object(runner, '_douyin_auth_observation', new=self.observation_stub()), \
+             patch.object(runner.importlib, 'import_module', return_value=module):
+            result = await runner.browser_operation(self.bridge)
+        self.assertEqual(result['auth_status'], 'valid')
+        self.assertEqual(result['status'], 'completed')
+        self.assertEqual(page.fields[0].fills, ['123456'])
+        self.assertEqual(page.buttons[0].clicks, 1)
+        self.assertEqual(original.await_count, 2)
+        self.assertIs(module._is_douyin_login_completed, original)
+        for secret in ('123456', 'PRIVATE_TOKEN', 'PRIVATE_DESCRIPTION'):
+            self.assertNotIn(secret, self.output.getvalue())
+
+    async def test_verification_loop_keeps_control_until_actual_login(self):
+        network = await self.verification_network()
+        verification = SimpleNamespace(status='pending', handle=AsyncMock())
+        original = AsyncMock(side_effect=[False, False, False, True])
+        upstream_qr_refresh = AsyncMock()
+        with patch.object(runner, 'LoginNetworkObservation', return_value=network), \
+             patch.object(runner, 'DouyinLoginVerification', return_value=verification), \
+             patch.object(runner, '_douyin_auth_observation', new=self.observation_stub()), \
+             patch.object(runner.asyncio, 'sleep', new=AsyncMock()) as sleep:
+            checker = runner._observed_douyin_checker(self.bridge, original)
+            # This represents the upstream QR-wait loop's continuation. It
+            # must never receive False while identity verification is active.
+            if not await checker(Page()):
+                await upstream_qr_refresh()
+        self.assertEqual(verification.handle.await_count, 3)
+        self.assertEqual(sleep.await_count, 2)
+        upstream_qr_refresh.assert_not_awaited()
+
+    async def test_unsupported_and_failed_verification_return_fixed_unknown_results(self):
+        for helper_status, expected in (('unsupported', 'LOGIN_VERIFICATION_REQUIRED'), ('failed', 'LOGIN_VERIFICATION_FAILED')):
+            with self.subTest(status=helper_status):
+                network = await self.verification_network()
+                verification = SimpleNamespace(status=helper_status, handle=AsyncMock())
+                original = AsyncMock(return_value=False)
+                generator = AsyncMock()
+                module = SimpleNamespace(_is_douyin_login_completed=original, douyin_cookie_gen=generator)
+                async def setup(*args, **kwargs):
+                    try:
+                        return {'success': await module._is_douyin_login_completed(Page())}
+                    except runner.SafeError:
+                        # SAU catches browser/helper exceptions itself. The
+                        # safe bridge code must survive that lossy boundary.
+                        return {'success': False, 'status': 'failed', 'message': 'PRIVATE_PLATFORM_RESPONSE'}
+                module.douyin_setup = setup
+                clock = SimpleNamespace(now=0)
+                async def advance(seconds):
+                    clock.now += seconds
+                loop = SimpleNamespace(time=lambda: clock.now)
+                with patch.object(runner, 'LoginNetworkObservation', return_value=network), \
+                     patch.object(runner, 'DouyinLoginVerification', return_value=verification), \
+                     patch.object(runner, '_douyin_auth_observation', new=self.observation_stub()), \
+                     patch.object(runner.importlib, 'import_module', return_value=module), \
+                     patch.object(runner.asyncio, 'get_running_loop', return_value=loop), \
+                     patch.object(runner.asyncio, 'sleep', new=advance):
+                    result = await runner.browser_operation(self.bridge)
+                self.assertEqual(result['error_code'], expected)
+                self.assertEqual(result['message'], runner.AUTH_FAILURE_MESSAGES[expected])
+                self.assertEqual(result['auth_status'], 'unknown')
+                self.assertEqual(result['status'], 'failed')
+                self.assertNotIn('PRIVATE_', json.dumps(result))
+                self.assertIs(module._is_douyin_login_completed, original)
+                self.assertIs(module.douyin_cookie_gen, generator)
+
+    async def test_handled_form_is_not_success_if_original_checker_never_succeeds(self):
+        network = await self.verification_network()
+        verification = SimpleNamespace(status='handled', handle=AsyncMock())
+        original = AsyncMock(return_value=False)
+        clock = SimpleNamespace(now=0)
+        self.bridge.login_deadline = 3
+        async def advance(seconds):
+            clock.now += seconds
+        loop = SimpleNamespace(time=lambda: clock.now)
+        with patch.object(runner, 'LoginNetworkObservation', return_value=network), \
+             patch.object(runner, 'DouyinLoginVerification', return_value=verification), \
+             patch.object(runner, '_douyin_auth_observation', new=self.observation_stub()), \
+             patch.object(runner.asyncio, 'get_running_loop', return_value=loop), \
+             patch.object(runner.asyncio, 'sleep', new=advance):
+            checker = runner._observed_douyin_checker(self.bridge, original)
+            with self.assertRaises(runner.SafeError) as error:
+                await checker(Page())
+        self.assertEqual(error.exception.code, 'LOGIN_VERIFICATION_REQUIRED')
+        self.assertEqual(original.await_count, 3)
+        self.assertEqual(verification.handle.await_count, 2)
+
+    async def test_actual_success_has_priority_over_verification_failure(self):
+        for answers in ([True], [False, True]):
+            with self.subTest(answers=answers):
+                network = await self.verification_network()
+                verification = SimpleNamespace(status='failed', handle=AsyncMock())
+                original = AsyncMock(side_effect=answers)
+                with patch.object(runner, 'LoginNetworkObservation', return_value=network), \
+                     patch.object(runner, 'DouyinLoginVerification', return_value=verification), \
+                     patch.object(runner, '_douyin_auth_observation', new=self.observation_stub()):
+                    checker = runner._observed_douyin_checker(self.bridge, original)
+                    self.assertIs(await checker(Page()), True)
+                self.assertEqual(verification.handle.await_count, len(answers) - 1)
+
+    async def test_cancelled_sms_propagates_and_restores_upstream_functions(self):
+        network = await self.verification_network()
+        page = VerificationFrame(sms=True)
+        self.bridge.hook = AsyncMock(side_effect=asyncio.CancelledError())
+        original = AsyncMock(return_value=False)
+        generator = AsyncMock()
+        module = SimpleNamespace(_is_douyin_login_completed=original, douyin_cookie_gen=generator)
+        async def setup(*args, **kwargs):
+            return {'success': await module._is_douyin_login_completed(page)}
+        module.douyin_setup = setup
+        with patch.object(runner, 'LoginNetworkObservation', return_value=network), \
+             patch.object(runner, '_douyin_auth_observation', new=self.observation_stub()), \
+             patch.object(runner.importlib, 'import_module', return_value=module):
+            with self.assertRaises(asyncio.CancelledError):
+                await runner.browser_operation(self.bridge)
+        self.assertEqual(page.fields[0].fills, [])
+        self.assertEqual(page.buttons[0].clicks, 0)
+        self.assertIs(module._is_douyin_login_completed, original)
+        self.assertIs(module.douyin_cookie_gen, generator)
+        self.assertNotIn('auth_status', self.output.getvalue())
 
 
 if __name__ == '__main__':
