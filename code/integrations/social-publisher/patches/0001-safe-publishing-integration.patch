@@ -4,20 +4,20 @@ Date: Mon, 2 Nov 2026 21:10:44 +0800
 Subject: [PATCH] Add guarded publishing hooks for host integration
 
 Original patch commit: 5b0a0b9f328c9cd890dd7757b6563494abfcbb87.
-Includes the 2026-11-04 source-relative static-resource fix below; the From
-commit identifies the original patch, not a new commit for this amendment.
+Includes the 2026-11-04 source-relative static-resource fix and 2026-11-05
+Douyin visible-QR synchronization fix. The From commit identifies the
+original patch, not a new commit for these amendments.
 
 ---
  conf.example.py                       |   3 +-
- uploader/douyin_uploader/main.py      |  76 +++++---------------
- uploader/tencent_uploader/main.py     | 100 ++++++++------------------
- uploader/xiaohongshu_uploader/main.py |  48 ++++++-------
+ uploader/douyin_uploader/main.py      | 293 ++++++++++++++++++----------------
+ uploader/tencent_uploader/main.py     | 100 ++++--------
+ uploader/xiaohongshu_uploader/main.py |  48 +++---
+ utils/base_social_media.py            |   4 +-
  utils/log.py                          |   5 +-
- utils/login_qrcode.py                 |   8 ++-
- utils/publishing_hooks.py             |  85 ++++++++++++++++++++++
- utils/base_social_media.py            |   4 +---
- 8 files changed, 167 insertions(+), 162 deletions(-)
- create mode 100644 utils/publishing_hooks.py
+ utils/login_qrcode.py                 |   8 +-
+ utils/publishing_hooks.py             |  85 ++++++++++
+ 8 files changed, 308 insertions(+), 238 deletions(-)
 
 diff --git a/conf.example.py b/conf.example.py
 index cf2e942..82dad49 100644
@@ -33,7 +33,7 @@ index cf2e942..82dad49 100644
  LOCAL_CHROME_PATH = ""  # optional, e.g. C:/Program Files/Google/Chrome/Application/chrome.exe
  LOCAL_CHROME_HEADLESS = True  # default headless behavior for uploader/examples
 diff --git a/uploader/douyin_uploader/main.py b/uploader/douyin_uploader/main.py
-index f6ac2be..d352e88 100644
+index f6ac2be..eb23648 100644
 --- a/uploader/douyin_uploader/main.py
 +++ b/uploader/douyin_uploader/main.py
 @@ -19,6 +19,7 @@ from utils.login_qrcode import decode_qrcode_from_path
@@ -44,7 +44,252 @@ index f6ac2be..d352e88 100644
  from utils.log import douyin_logger
  
  DOUYIN_PUBLISH_STRATEGY_IMMEDIATE = "immediate"
-@@ -298,7 +299,7 @@ async def douyin_cookie_gen(
+@@ -147,64 +148,104 @@ async def douyin_setup(account_file, handle=False, return_detail=False, qrcode_c
+     return result if return_detail else True
+ 
+ 
+-async def _extract_douyin_qrcode_src(page: Page) -> str:
+-    # 等 SPA 加载完成（不只等"扫码登录"文字，否则抖音慢加载时 30s 就超时）。
+-    # 给 domcontentloaded 后足够时间让客户端 JS 注入登录卡。
+-    try:
+-        await page.wait_for_load_state("networkidle", timeout=15000)
+-    except Exception:
+-        pass
+-    scan_login_tab = page.get_by_text("扫码登录", exact=True).first
+-    # attached 状态：DOM 里出现即可，不要求 visible/渲染完整，避免 race
+-    await scan_login_tab.wait_for(state="attached", timeout=60000)
++class DouyinQrcodeUnavailable(RuntimeError):
++    pass
++
++
++async def _douyin_expired_qrcode_control(page: Page):
++    labels = page.get_by_text("二维码失效", exact=True)
++    for index in range(await labels.count()):
++        label = labels.nth(index)
++        if await label.is_visible():
++            return label.locator("..")
++    return None
++
+ 
+-    # 新版抖音创作者中心 (single_tab + animate_qrcode_container) 不再用 aria-label="二维码"。
+-    # 按优先级兜底多个 selector，至少一个能命中即可。
+-    qrcode_selectors = [
++async def _visible_douyin_qrcode_src(page: Page) -> str:
++    # A hidden/attached image can retain an old login token. Read only the
++    # currently rendered, loaded QR image and never include its src in logs.
++    if await _douyin_expired_qrcode_control(page):
++        return ""
++    selectors = (
+         'div#animate_qrcode_container img[src^="data:image"]',
+         'div[class*="animate_qrcode_container"] img[src^="data:image"]',
+         'div[class*="scan_qrcode_login_content"] img[src^="data:image"]',
+         'img[aria-label="二维码"]',
+-    ]
+-    last_err: Exception | None = None
+-    for sel in qrcode_selectors:
+-        qrcode_img = page.locator(sel).first
+-        try:
+-            await qrcode_img.wait_for(state="attached", timeout=10000)
+-        except Exception as e:
+-            last_err = e
+-            continue
+-        src = await qrcode_img.get_attribute("src")
+-        if src:
+-            return src
+-        last_err = RuntimeError(f"selector {sel} 命中但 src 为空")
+-
+-    raise RuntimeError(f"未获取到抖音登录二维码地址 (last_err={last_err})")
++    )
++    for selector in selectors:
++        images = page.locator(selector)
++        for index in range(await images.count()):
++            image = images.nth(index)
++            if not await image.is_visible():
++                continue
++            # Check dimensions and src in one DOM read, not separate requests
++            # that could combine the old image with a newly assigned src.
++            src = await image.evaluate("""image => {
++                const box = image.getBoundingClientRect();
++                return image.complete && image.naturalWidth >= 48 && image.naturalHeight >= 48
++                    && box.width >= 48 && box.height >= 48 && image.src.startsWith('data:image/')
++                    ? image.src : '';
++            }""")
++            if src:
++                return src
++    return ""
++
++
++async def _extract_douyin_qrcode_src(page: Page, previous_src: str | None = None, timeout: float = 60) -> str:
++    # Do not wait for networkidle: creator pages can keep background requests
++    # open while the QR is already live. Require a stable visible image instead.
++    loop = asyncio.get_running_loop()
++    deadline = loop.time() + timeout
++    candidate, stable_since = "", 0.0
++    while loop.time() < deadline:
++        src = await _visible_douyin_qrcode_src(page)
++        if src and src != previous_src:
++            if src != candidate:
++                candidate, stable_since = src, loop.time()
++            elif loop.time() - stable_since >= 0.5:
++                return src
++        else:
++            candidate, stable_since = "", 0.0
++        await asyncio.sleep(min(0.1, max(0, deadline - loop.time())))
++    raise DouyinQrcodeUnavailable("未获取到更新且可用的抖音登录二维码")
+ 
+ 
+-async def _save_douyin_qrcode(page: Page, account_file: str, previous_qrcode_path: Path | None = None, qrcode_callback=None) -> dict:
+-    # 提取二维码 src 仅为了保存/终端显示；定位不到时不致命——有头浏览器里二维码可见，直接扫码即可
+-    try:
+-        qrcode_src = await _extract_douyin_qrcode_src(page)
+-    except Exception as exc:
+-        douyin_logger.warning(_msg("😵", f"没定位到二维码元素（{str(exc)[:50]}）——请直接在弹出的浏览器里扫码，小人继续等登录跳转"))
+-        return {"image_path": "", "image_data_url": ""}
+-    qrcode_path = save_data_url_image(qrcode_src, build_login_qrcode_path(account_file))
+-    if previous_qrcode_path and previous_qrcode_path != qrcode_path:
+-        if remove_qrcode_file(previous_qrcode_path):
+-            douyin_logger.info(_msg("🧹", f"临时二维码文件已清理: {previous_qrcode_path}"))
+-    douyin_logger.info(_msg("🖼️", f"二维码已经准备好啦，已保存到: {qrcode_path}"))
+-    qrcode_content = decode_qrcode_from_path(qrcode_path)
+-    if qrcode_content:
+-        print_terminal_qrcode(qrcode_content, qrcode_path, "抖音APP")
+-    else:
+-        douyin_logger.warning(_msg("😵", f"终端没法完整显示二维码，请打开 {qrcode_path} 扫码"))
+-    qrcode_info = {
+-        "image_path": str(qrcode_path),
+-        "image_data_url": qrcode_src,
+-    }
+-    await _emit_qrcode_callback(qrcode_callback, qrcode_info)
+-    return qrcode_info
++async def _save_douyin_qrcode(page: Page, account_file: str, previous_qrcode_path: Path | None = None, qrcode_callback=None, previous_src: str | None = None, timeout: float = 60) -> dict:
++    loop = asyncio.get_running_loop()
++    deadline = loop.time() + timeout
++    while loop.time() < deadline:
++        try:
++            qrcode_src = await _extract_douyin_qrcode_src(page, previous_src=previous_src, timeout=max(0, deadline - loop.time()))
++        except Exception:
++            if qrcode_callback is not None or os.environ.get("PUBLISHER_INTEGRATION"):
++                raise
++            douyin_logger.warning(_msg("😵", "未获取到可用二维码，请在弹出的浏览器里扫码"))
++            return {"image_path": "", "image_data_url": ""}
++        qrcode_path = save_data_url_image(qrcode_src, build_login_qrcode_path(account_file))
++        try:
++            # Integration sends the original bytes; terminal-only decoding is
++            # unnecessary work while a short-lived platform token is live.
++            if not os.environ.get("PUBLISHER_INTEGRATION"):
++                qrcode_content = decode_qrcode_from_path(qrcode_path)
++                if qrcode_content:
++                    print_terminal_qrcode(qrcode_content, qrcode_path, "抖音APP")
++            if await _visible_douyin_qrcode_src(page) != qrcode_src:
++                remove_qrcode_file(qrcode_path)
++                continue
++            qrcode_info = {
++                "image_path": str(qrcode_path),
++                "image_data_url": qrcode_src,
++                # Host display-refresh window; NOT an assertion of platform TTL.
++                "refresh_after_seconds": 45,
++            }
++            await _emit_qrcode_callback(qrcode_callback, qrcode_info)
++        except BaseException:
++            remove_qrcode_file(qrcode_path)
++            raise
++        if previous_qrcode_path and previous_qrcode_path != qrcode_path:
++            remove_qrcode_file(previous_qrcode_path)
++        return qrcode_info
++    raise DouyinQrcodeUnavailable("抖音二维码变化中，请重新获取")
+ 
+ 
+ async def _is_douyin_login_completed(page: Page) -> bool:
+@@ -235,38 +276,63 @@ async def _wait_for_douyin_login(page: Page, account_file: str, qrcode_info: dic
+     qrcode_path = Path(qrcode_info["image_path"]) if qrcode_info.get("image_path") else None
+     original_url = page.url
+     saw_2fa = False
+-    for _ in range(max_checks):
+-        if await _is_douyin_login_completed(page):
+-            douyin_logger.info(_msg("🥳", f"扫码成功，已经跳转到登录后页面: {page.url}"))
+-            return _build_login_result(True, "success", "抖音扫码登录成功", account_file, qrcode_info, page.url)
+-
+-        # URL 变化 + sessionid 未到位 → 二验流程，继续等
+-        if page.url != original_url and not await _is_douyin_login_completed(page):
+-            sms_input = page.locator('input[placeholder*="验证码"], input[type="tel"], input[placeholder*="短信"], input[placeholder*="手机号"]')
+-            if await sms_input.count() > 0:
++    loop = asyncio.get_running_loop()
++    deadline = loop.time() + poll_interval * max_checks
++    try:
++        for _ in range(max_checks):
++            if await _is_douyin_login_completed(page):
++                douyin_logger.info(_msg("🥳", "抖音扫码登录完成"))
++                return _build_login_result(True, "success", "抖音扫码登录成功", account_file, qrcode_info, page.url)
++            remaining = deadline - loop.time()
++            if remaining <= 0:
++                break
++
++            # URL changes alone do not establish a security challenge. Keep QR
++            # synchronization active unless an actual visible SMS field exists.
++            sms_fields = page.locator('input[placeholder*="验证码"], input[type="tel"], input[placeholder*="短信"], input[placeholder*="手机号"]')
++            sms_visible = False
++            if page.url != original_url:
++                for index in range(await sms_fields.count()):
++                    if await sms_fields.nth(index).is_visible():
++                        sms_visible = True
++                        break
++            if sms_visible:
+                 if not saw_2fa:
+-                    douyin_logger.warning(_msg("⚠️", f"检测到抖音短信/安全二次验证，请在弹出的浏览器中手动输入。等待 sessionid ({_}/{max_checks})"))
++                    douyin_logger.warning(_msg("⚠️", "检测到抖音短信/安全二次验证，请在平台要求的页面完成验证"))
+                     saw_2fa = True
+-            await asyncio.sleep(poll_interval)
+-            continue
+-
+-        expired_box = page.get_by_text("二维码失效", exact=True).locator("..").first
+-        if await expired_box.count() and await expired_box.is_visible():
+-            douyin_logger.warning(_msg("😵", "二维码失效了，小人马上去刷新"))
+-            await expired_box.click()
+-            await asyncio.sleep(1)
+-            qrcode_info = await _save_douyin_qrcode(page, account_file, qrcode_path, qrcode_callback=qrcode_callback)
+-            qrcode_path = Path(qrcode_info["image_path"]) if qrcode_info.get("image_path") else None
+-
+-        await asyncio.sleep(poll_interval)
+-
+-    return _build_login_result(False, "timeout", "等待抖音扫码登录超时", account_file, qrcode_info, page.url)
++            else:
++                expired_control = await _douyin_expired_qrcode_control(page)
++                if expired_control:
++                    await expired_control.click(timeout=min(5000, max(1, remaining * 1000)))
++                current_src = await _visible_douyin_qrcode_src(page)
++                previous_src = qrcode_info.get("image_data_url")
++                # Douyin can rotate the image automatically without rendering
++                # the expired marker. Send every new visible QR, never old src.
++                if expired_control or (current_src and current_src != previous_src):
++                    try:
++                        updated = await _save_douyin_qrcode(
++                            page, account_file, qrcode_path,
++                            qrcode_callback=qrcode_callback, previous_src=previous_src,
++                            timeout=min(8, max(0, deadline - loop.time())),
++                        )
++                    except DouyinQrcodeUnavailable:
++                        # A click does not guarantee a new image. Do not emit
++                        # another version or extend the old image's window.
++                        pass
++                    else:
++                        qrcode_info = updated
++                        qrcode_path = Path(updated["image_path"]) if updated.get("image_path") else None
++            await asyncio.sleep(min(poll_interval, max(0, deadline - loop.time())))
++        return _build_login_result(False, "timeout", "等待抖音扫码登录超时", account_file, qrcode_info, page.url)
++    finally:
++        # Refresh may have replaced the initial file referenced by the caller.
++        remove_qrcode_file(qrcode_path)
+ 
+ async def douyin_cookie_gen(
+     account_file,
+     qrcode_callback=None,
+     poll_interval: int = 2,
+-    max_checks: int = 60,
++    max_checks: int = 90,
+     headless: bool = LOCAL_CHROME_HEADLESS,
+     cdp_url: str | None = None,
+ ):
+@@ -298,7 +364,7 @@ async def douyin_cookie_gen(
              )
              if result["success"]:
                  await asyncio.sleep(2)
@@ -53,7 +298,7 @@ index f6ac2be..d352e88 100644
                  # 登录已通过"发布视频"确认成功、storage_state 刚从已登录浏览器抓下来，
                  # 不再用 flaky 的浏览器重检（那正是导致成功被误判为失败的老 bug）。
                  # 只轻量确认文件里有 sessionid。
-@@ -746,7 +747,7 @@ class DouYinVideo(DouYinBaseUploader):
+@@ -746,7 +812,7 @@ class DouYinVideo(DouYinBaseUploader):
                  pass
  
      async def _submit_sms_verify_code(self, page: Page, sms_input, code: str, code_file: str) -> bool:
@@ -62,7 +307,7 @@ index f6ac2be..d352e88 100644
          await sms_input.click()
          await sms_input.fill(code)
          douyin_logger.info(_msg("✅", "验证码已填入输入框"))
-@@ -867,8 +868,7 @@ class DouYinVideo(DouYinBaseUploader):
+@@ -867,8 +933,7 @@ class DouYinVideo(DouYinBaseUploader):
              except Exception:
                  continue
          if not opened:
@@ -72,7 +317,7 @@ index f6ac2be..d352e88 100644
  
          await page.wait_for_timeout(1500)
  
-@@ -954,18 +954,12 @@ class DouYinVideo(DouYinBaseUploader):
+@@ -954,18 +1019,12 @@ class DouYinVideo(DouYinBaseUploader):
                  closed = True
                  break
  
@@ -93,7 +338,7 @@ index f6ac2be..d352e88 100644
  
  
      async def upload(self, playwright: Playwright) -> None:
-@@ -1001,7 +995,10 @@ class DouYinVideo(DouYinBaseUploader):
+@@ -1001,7 +1060,10 @@ class DouYinVideo(DouYinBaseUploader):
          await upload_input.wait_for(state="attached", timeout=60000)
          await upload_input.set_input_files(self.file_path)
  
@@ -104,7 +349,7 @@ index f6ac2be..d352e88 100644
              try:
                  await page.wait_for_url(
                      "https://creator.douyin.com/creator-micro/content/publish?enter_from=publish_page",
-@@ -1026,7 +1023,10 @@ class DouYinVideo(DouYinBaseUploader):
+@@ -1026,7 +1088,10 @@ class DouYinVideo(DouYinBaseUploader):
          await self.fill_title_and_description(page, self.title, self.desc, self.tags)
          douyin_logger.info(_msg("🏷️", f"小人一共贴了 {len(self.tags)} 个话题"))
  
@@ -115,7 +360,7 @@ index f6ac2be..d352e88 100644
              try:
                  number = await page.locator('[class^="long-card"] div:has-text("重新上传")').count()
                  if number > 0:
-@@ -1046,10 +1046,7 @@ class DouYinVideo(DouYinBaseUploader):
+@@ -1046,10 +1111,7 @@ class DouYinVideo(DouYinBaseUploader):
              await self.set_product_link(page, self.productLink, self.productTitle)
              douyin_logger.info(_msg("🥳", "商品链接设置完成"))
  
@@ -127,7 +372,7 @@ index f6ac2be..d352e88 100644
          await self.apply_self_declaration(page)
  
          # 先归集：此时尚未打开封面弹窗，避免 dy-creator-content-portal 封面浮层拦截合集下拉
-@@ -1067,49 +1064,10 @@ class DouYinVideo(DouYinBaseUploader):
+@@ -1067,49 +1129,10 @@ class DouYinVideo(DouYinBaseUploader):
          if self.publish_strategy == DOUYIN_PUBLISH_STRATEGY_SCHEDULED and self.publish_date != 0:
              await self.set_schedule_time_douyin(page, self.publish_date)
  
@@ -180,7 +425,7 @@ index f6ac2be..d352e88 100644
          douyin_logger.success(_msg("🥳", "cookie 更新完毕"))
          await asyncio.sleep(2)
          await context.close()
-@@ -1250,7 +1208,7 @@ class DouYinNote(DouYinBaseUploader):
+@@ -1250,7 +1273,7 @@ class DouYinNote(DouYinBaseUploader):
              upload_success = True
          finally:
              if upload_success:
@@ -510,6 +755,27 @@ index 7ca7163..b320586 100644
              xiaohongshu_logger.success(_msg("🥳", "cookie 更新完毕"))
          finally:
              await context.close()
+diff --git a/utils/base_social_media.py b/utils/base_social_media.py
+index 7697875..12960f1 100644
+--- a/utils/base_social_media.py
++++ b/utils/base_social_media.py
+@@ -1,8 +1,6 @@
+ from pathlib import Path
+ from typing import List
+ 
+-from conf import BASE_DIR
+-
+ SOCIAL_MEDIA_DOUYIN = "douyin"
+ SOCIAL_MEDIA_TENCENT = "tencent"
+ SOCIAL_MEDIA_TIKTOK = "tiktok"
+@@ -19,6 +17,6 @@ def get_cli_action() -> List[str]:
+ 
+ 
+ async def set_init_script(context):
+-    stealth_js_path = Path(BASE_DIR / "utils/stealth.min.js")
++    stealth_js_path = Path(__file__).resolve().with_name("stealth.min.js")
+     await context.add_init_script(path=stealth_js_path)
+     return context
 diff --git a/utils/log.py b/utils/log.py
 index 3f7d180..687dba5 100644
 --- a/utils/log.py
@@ -662,26 +928,3 @@ index 0000000..8a60426
 +        await handle_sms(uploader, page)
 +        await asyncio.sleep(1)
 +    raise RuntimeError("SUBMISSION_UNKNOWN: 未获取平台受理证据，请人工核对")
-diff --git a/utils/base_social_media.py b/utils/base_social_media.py
-index 7697875..12960f1 100644
---- a/utils/base_social_media.py
-+++ b/utils/base_social_media.py
-@@ -1,7 +1,5 @@
- from pathlib import Path
- from typing import List
--
--from conf import BASE_DIR
- 
- SOCIAL_MEDIA_DOUYIN = "douyin"
- SOCIAL_MEDIA_TENCENT = "tencent"
-@@ -19,6 +17,6 @@
- 
- 
- async def set_init_script(context):
--    stealth_js_path = Path(BASE_DIR / "utils/stealth.min.js")
-+    stealth_js_path = Path(__file__).resolve().with_name("stealth.min.js")
-     await context.add_init_script(path=stealth_js_path)
-     return context
--- 
-2.50.1 (Apple Git-155)
-

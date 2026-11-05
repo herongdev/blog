@@ -6,6 +6,7 @@ import asyncio
 import hashlib
 import importlib
 import json
+import math
 import os
 import re
 import shutil
@@ -58,6 +59,7 @@ class Bridge:
         self.qr_version = 0
         self.qr_files = []
         self.qrcode_seen = False
+        self.qrcode_digest = None
     def emit(self, event_type, **fields):
         self.seq += 1
         event = {"type": event_type, "seq": self.seq, "at": now(), **{k: self.request[k] for k in ("session_id", "target_id", "attempt_id", "account_id") if k in self.request}, **fields}
@@ -117,8 +119,21 @@ class Bridge:
     async def qrcode(self, payload):
         if not payload.get("image_path"):
             raise SafeError("QR_UNAVAILABLE", "平台未提供可用的二维码")
+        douyin = self.request.get("platform") == "douyin"
+        digest = hashlib.sha256(Path(payload["image_path"]).read_bytes()).hexdigest() if douyin else None
+        if douyin and digest == self.qrcode_digest:
+            return  # Re-sending the same image must not renew its display window.
         path = self.copy_qr(payload["image_path"])
-        self.emit("qrcode", image_path=str(path), version=self.qr_version, expires_at=(datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat())
+        if douyin:
+            seconds = payload.get("refresh_after_seconds", 45)
+            if type(seconds) not in (int, float) or (isinstance(seconds, float) and not math.isfinite(seconds)) or seconds <= 0:
+                seconds = 45
+            # This is a host display-refresh window, not the platform's TTL.
+            timing = {"refresh_after_seconds": min(45, max(1, seconds))}
+        else:
+            timing = {"expires_at": (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()}
+        self.emit("qrcode", image_path=str(path), version=self.qr_version, **timing)
+        self.qrcode_digest = digest
         self.qrcode_seen = True
         self.emit("stage", stage="waiting_scan")
     def cleanup(self):

@@ -182,12 +182,35 @@ test('QR versions and per-code expiry are enforced, session API never exposes fi
     f.service.store.updateOperation(operation, { status: 'waiting_user', qr_path: qr, qr_version: 2, qr_expires_at: new Date(Date.now() + 60_000).toISOString() }, 'qr-worker');
     const current = await f.api(`/login-sessions/${session.id}`);
     assert.equal(JSON.stringify(current.data).includes(f.root), false);
+    assert.equal(current.data.session.qrcode_url, `/api/publishing/login-sessions/${session.id}/qrcode?v=2`);
     assert.equal((await fetch(`${f.origin}/api/publishing/login-sessions/${session.id}/qrcode?v=1`)).status, 410);
-    assert.equal((await fetch(`${f.origin}/api/publishing/login-sessions/${session.id}/qrcode?v=2`)).status, 200);
+    const image = await fetch(`${f.origin}/api/publishing/login-sessions/${session.id}/qrcode?v=2`);
+    assert.equal(image.status, 200); assert.equal(image.headers.get('cache-control'), 'no-store');
     f.service.store.updateOperation(operation, { qr_expires_at: new Date(Date.now() - 1).toISOString() }, 'qr-worker');
+    assert.equal((await f.api(`/login-sessions/${session.id}`)).data.session.qrcode_url, null);
     assert.equal((await fetch(`${f.origin}/api/publishing/login-sessions/${session.id}/qrcode?v=2`)).status, 410);
     f.service.store.finish(operation, { auth_status: 'valid' }, 'qr-worker');
     assert.equal((await f.api(`/login-sessions/${session.id}`)).data.session.qrcode_url, null);
+  } finally { await f.close(); }
+});
+
+test('Douyin QR events use the bounded refresh budget instead of an unverified platform expiry', async () => {
+  const source = fake.replace("event('result',auth_status='valid',status='completed')", `qr=os.path.join(request['data_dir'],'qr.png')
+ open(qr,'wb').write(b'private qr fixture')
+ event('qrcode',image_path=qr,refresh_after_seconds=5,expires_at='2099-01-01T00:00:00Z')
+ time.sleep(0.5)
+ event('result',auth_status='valid',status='completed')`);
+  const f = await fixture({ runnerSource: source });
+  try {
+    const account = f.service.store.createAccount({ platform: 'douyin', alias: '抖音测试' });
+    const created = await f.api(`/accounts/${account.id}/login-sessions`, {});
+    const running = f.service.tick();
+    await waitFor(() => f.service.store.get('sessions', created.data.session.id)?.qr_version === 1);
+    const current = (await f.api(`/login-sessions/${created.data.session.id}`)).data.session;
+    const remaining = Date.parse(current.qr_expires_at) - Date.now();
+    assert.ok(remaining > 0 && remaining <= 5_000);
+    assert.equal(current.qrcode_url, `/api/publishing/login-sessions/${current.id}/qrcode?v=1`);
+    await running;
   } finally { await f.close(); }
 });
 

@@ -8,6 +8,7 @@ import { dirname, extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createPublishingStore, fail, now, platforms, publicAsset } from './store.mjs';
 import { requirePrivateStorageSpace } from '../private-storage.mjs';
+import { hasCurrentLoginQr, loginQrExpiresAt } from './login-qr.mjs';
 
 const exec = promisify(execFile);
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
@@ -62,7 +63,7 @@ async function checkRuntime(python, runnerPath, cwd, env) {
 function publicSession(value) {
   if (!value) throw fail(404, '登录会话不存在');
   const { qr_path, owner, pid, process_start, challenge_image_path, ...rest } = value;
-  return { ...rest, qrcode_url: qr_path && ACTIVE.has(value.status) ? `${PREFIX}/login-sessions/${value.id}/qrcode?v=${value.qr_version}` : null };
+  return { ...rest, qrcode_url: hasCurrentLoginQr(value) ? `${PREFIX}/login-sessions/${value.id}/qrcode?v=${value.qr_version}` : null };
 }
 function publicRecord(value) {
   return JSON.parse(JSON.stringify(value, (key, item) => ['owner', 'pid', 'process_start', 'challenge_image_path', 'qr_path'].includes(key) ? undefined : item));
@@ -287,8 +288,7 @@ export async function createPublishingService({ dataRoot, env = process.env, run
             const qr = event.image_path ?? event.qrcode?.image_path;
             if (typeof qr !== 'string' || !resolve(qr).startsWith(workDirectory + sep)) { stop(); break; }
             const current = store.get('sessions', value.id);
-            const qrExpires = Math.min(Date.parse(current.expires_at), Date.parse(event.expires_at) || Date.now() + 5 * 60_000);
-            store.updateOperation(operation, { status: 'waiting_user', stage: 'waiting_scan', qr_path: qr, qr_version: current.qr_version + 1, qr_expires_at: new Date(qrExpires).toISOString() }, owner);
+            store.updateOperation(operation, { status: 'waiting_user', stage: 'waiting_scan', qr_path: qr, qr_version: current.qr_version + 1, qr_expires_at: loginQrExpiresAt(current, event) }, owner);
           } else if (event.type === 'challenge') {
             if (typeof event.challenge_id !== 'string' || !/^[a-zA-Z0-9_-]{1,100}$/.test(event.challenge_id)) { stop(); break; }
             const expires = Math.min(Date.now() + 5 * 60_000, Date.parse(event.expires_at) || Date.now() + 5 * 60_000);
@@ -391,7 +391,7 @@ export async function createPublishingService({ dataRoot, env = process.env, run
       const value = store.get('sessions', match[1]); if (!value) throw fail(404, '登录会话不存在');
       if (!match[2] && method === 'GET') return json(200, { session: publicSession(value) });
       if (match[2] === 'qrcode' && method === 'GET') {
-        if (!ACTIVE.has(value.status) || Date.parse(value.qr_expires_at ?? value.expires_at) <= Date.now() || Number(url.searchParams.get('v')) !== value.qr_version) throw fail(410, '二维码已更新或失效');
+        if (!hasCurrentLoginQr(value) || Number(url.searchParams.get('v')) !== value.qr_version) throw fail(410, '二维码已更新或失效');
         await privateImage(response, value.qr_path, join(root, 'runtime', value.id)); return true;
       }
       if (match[2] === 'cancel' && method === 'POST') {

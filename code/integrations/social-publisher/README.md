@@ -53,6 +53,8 @@ export PUBLISHER_DATA_DIR=/absolute/private/publishing
 
 stdout 仅逐行 JSON，事件有严格递增 `seq`、UTC `at` 和请求身份。事件包括 `stage/qrcode/challenge/before_submit/result/heartbeat`；普通日志走 stderr 并移除私有路径。健康检查请求只需 `{"operation":"health"}`，验证补丁文件摘要、Python 入口和浏览器可执行文件，不登录、不启动浏览器；成功返回 `status:ready, protocol_version:1, platforms:[...]`。
 
+抖音二维码跟随平台当前可见图片变化，同图不重复发送或延长展示窗口；事件只提供最长 45 秒的 `refresh_after_seconds`，这是宿主的保守更新窗口，不能显示为平台承诺的有效期。宿主定时隐藏旧图，重新获取先取消并确认旧进程终止；扫码成功竞态保留成功会话。原始二维码内容及 data URL 不进入事件或日志。
+
 执行器发出 `before_submit{request_id}`，等待 stdin `submit_authorized{request_id,authorized:true}`。宿主必须先在同一事务中核对活动尝试、租约、执行代次、取消标记并记录提交意图。拒绝或超时不能点击发布。点击发生后只核查证据，不重复点击。控制连接丢失导致授权不确定时按结果待核实处理。
 
 人工验证发出 `challenge{challenge_id,kind,message,expires_at,image_path?}`，响应为 `challenge_response{challenge_id,value}`。短信 kind 为 `sms`；视频号管理员验证为 `qrcode`，扫码后用户点“已完成”仅唤醒核对，随后仍等待真实平台验证完成。过期或类型/ID 不匹配的响应无效。二维码不是验证码已通过的证明。

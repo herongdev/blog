@@ -4,7 +4,7 @@
   "branch": "codex/publishing-integration",
   "patch_file": "patches/0001-safe-publishing-integration.patch",
   "patched_sha": "5b0a0b9f328c9cd890dd7757b6563494abfcbb87",
-  "patch_revision_note": "patched_sha identifies the original reviewed patch commit; patch_file also includes the 2026-11-04 source-relative static-resource amendment. patched_files defines the complete current source projection.",
+  "patch_revision_note": "patched_sha identifies the original reviewed patch commit; patch_file also includes the 2026-11-04 source-relative static-resource amendment and 2026-11-05 visible-QR synchronization amendment. patched_files defines the complete current eight-file source projection.",
   "biliup": {
     "version": "v1.3.4",
     "assets": {
@@ -44,7 +44,7 @@
   },
   "patched_files": {
     "conf.example.py": "0ead35a0a5da2592f767f51863f7dfadfe231af2da2375da71d555207f6a785a",
-    "uploader/douyin_uploader/main.py": "9ff395c12673c493e5f31e129e70ccb22c2c01736e51c4680ad10ff33fb58687",
+    "uploader/douyin_uploader/main.py": "4753b7746fff4220756269980c81b48f492580b7fb050dcb307d07189bd8a9a8",
     "uploader/tencent_uploader/main.py": "dd67d94c2328177beb5a69e153c7358c9c1950f8edfc903c181f79b485017828",
     "uploader/xiaohongshu_uploader/main.py": "77d0da3b76d02a693c6812880153fb617f9f130dc845dbf88ed4d582ae8074aa",
     "utils/log.py": "499e7933606dcea6094159718c37d493c3afa041cdea579715415f92d483d208",

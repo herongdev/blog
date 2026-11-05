@@ -1,6 +1,7 @@
 import { useToast } from './AuthorToast';
 import AuthorDialogContent from './AuthorDialogContent';
 import AuthorSelect from './AuthorSelect';
+import { applyLoginSessionUpdate, isClosedLoginSession as closedSession, loginQrKey, loginQrState, renewLoginSession, type LoginSessionSnapshot } from './login-session';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { BookOpenText, Check, ChevronDown, CircleAlert, ExternalLink, Film, History, ImagePlus, LoaderCircle, Plus, QrCode, RefreshCw, Send, Unplug, Upload, Users, X } from 'lucide-react';
@@ -14,7 +15,7 @@ type Content = { title: string; description: string; tags: string[]; cover_asset
 type Options = { content_origin: string; source?: string; ai_declaration?: string; tid?: number };
 type Choice = { edited: boolean; overrides: Content; platform_options: Options };
 type Challenge = { id?: string; challenge_id?: string; type: string; message?: string; expires_at?: string; image_url?: string };
-type Session = { id: string; account_id?: string; status: string; message?: string; expires_at?: string; qr_version?: number; qr_expires_at?: string; qrcode_url?: string; challenge?: Challenge | null; local_login_command?: string };
+type Session = LoginSessionSnapshot & { message?: string; stage?: string; expires_at?: string; challenge?: Challenge | null; local_login_command?: string };
 type Target = { id: string; status: string; stage?: string; submission_intent_at?: string | null; platform_status?: string; post_url?: string; message?: string; error?: string; error_code?: string; overrides?: Partial<Content>; snapshot: Content & { video_asset_id?: string; platform_options?: Options }; account_snapshot: { alias?: string; platform?: string }; account_id?: string; challenge?: Challenge; evidence?: { summary?: string }; attempts?: { id: string; status?: string; result?: { message?: string; evidence?: { summary?: string } }; submission_intent_at?: string; started_at?: string; finished_at?: string }[] };
 type Job = { id: string; content_ref?: {id:string;slug:string}; state?: string; status?: string; created_at?: string; video_asset_id?: string; defaults?: Content; targets: Target[] };
 type Precheck = { ok: boolean; issues: (string | { message: string; account_id?: string })[]; checked_at?: string };
@@ -43,7 +44,6 @@ const size = (bytes?: number) => bytes === undefined ? '' : bytes >= 1024 * 1024
 const tags = (value: string) => value.split(/[,，\n]/).map(item => item.trim().replace(/^#/, '')).filter(Boolean);
 const originLabel = (value?: string) => ({ original: '原创', repost: '转载', unspecified: '未声明' })[value ?? 'unspecified'] ?? '未声明';
 const jobSummary = (job: Job) => Object.entries(job.targets.reduce<Record<string, number>>((counts, target) => ({ ...counts, [target.status]: (counts[target.status] ?? 0) + 1 }), {})).map(([status, count]) => `${count} 个${label(status)}`).join(' · ');
-const closedSession = (status: string) => ['success', 'succeeded', 'completed', 'failed', 'canceled', 'expired', 'timeout', 'valid', 'invalid'].includes(status);
 const externalUrl = (url?: string) => url && /^https:\/\//i.test(url) ? url : undefined;
 
 function Status({ value }: { value?: string }) { return <span className={`publishing-status state-${value ?? 'unknown'}`}>{label(value)}</span>; }
@@ -75,6 +75,27 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
   const savedDraft = useRef<{ fingerprint: string; job: Job } | null>(null); const submitKeys = useRef(new Map<string, string>());
   const [alias, setAlias] = useState(''); const [platformId, setPlatformId] = useState('');
   const [session, setSession] = useState<Session | null>(null); const [sessionOpen, setSessionOpen] = useState(false);
+  const sessionRef = useRef<Session | null>(null); const sessionEpoch = useRef(0);
+  const [sessionClock, setSessionClock] = useState(Date.now); const [failedQrKey, setFailedQrKey] = useState(''); const [sessionReadFailedId, setSessionReadFailedId] = useState('');
+  const selectSession = (next: Session) => { sessionRef.current = next; setSession(next); setFailedQrKey(''); setSessionReadFailedId(''); setSessionClock(Date.now()); };
+  const updateSession = (next: Session, expectedId: string, epoch: number) => {
+    if (sessionEpoch.current !== epoch) return;
+    const current = applyLoginSessionUpdate(sessionRef.current, next, expectedId);
+    if (current !== sessionRef.current) { sessionRef.current = current; setSession(current); }
+  };
+  // Expire an already-loaded image even when the network fails or polling is paused in a hidden tab.
+  useEffect(() => {
+    if (!sessionOpen || !session || closedSession(session.status)) return;
+    const tick = () => setSessionClock(Date.now());
+    tick();
+    const timer = window.setInterval(tick, 1000);
+    const untilExpiry = Date.parse(session.qr_expires_at ?? '') - Date.now();
+    const expiryTimer = Number.isFinite(untilExpiry) && untilExpiry > 0 ? window.setTimeout(tick, Math.min(untilExpiry + 1, 2_147_483_647)) : undefined;
+    window.addEventListener('focus', tick); document.addEventListener('visibilitychange', tick);
+    return () => { clearInterval(timer); clearTimeout(expiryTimer); window.removeEventListener('focus', tick); document.removeEventListener('visibilitychange', tick); };
+  }, [sessionOpen, session?.id, session?.status, session?.qr_expires_at]);
+  const qrState = session?.operation === 'login' ? loginQrState(session, sessionClock, failedQrKey, sessionReadFailedId) : 'none';
+  const canRenewQr = session?.operation === 'login' && !session.local_login_command && (qrState !== 'none' || ['failed', 'canceled', 'expired', 'timeout', 'invalid'].includes(session.status));
   const [selectedJob, setSelectedJob] = useState<Job | null>(null); const [resolution, setResolution] = useState<Target | null>(null);
   const [resolutionKind, setResolutionKind] = useState('found'); const [resolutionNote, setResolutionNote] = useState(''); const [resolutionUrl, setResolutionUrl] = useState('');
   const fileInput = useRef<HTMLInputElement>(null); const coverInput = useRef<HTMLInputElement>(null);
@@ -94,7 +115,19 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
       if (inFlight || document.hidden) return;
       inFlight = true;
       try {
-        if (session && !closedSession(session.status)) { const result = await request<{ session: Session }>(`${API}/login-sessions/${session.id}`); if (active) { setSession(result.session); if (closedSession(result.session.status)) await refresh(); } }
+        const current = sessionRef.current;
+        if (current && !closedSession(current.status) && !lock.current) {
+          const epoch = sessionEpoch.current;
+          try {
+            const result = await request<{ session: Session }>(`${API}/login-sessions/${current.id}`, { signal: AbortSignal.timeout(10_000) });
+            if (active && epoch === sessionEpoch.current && sessionRef.current?.id === current.id) {
+              updateSession(result.session, current.id, epoch); setSessionReadFailedId('');
+              if (closedSession(result.session.status)) await refresh();
+            }
+          } catch (e) {
+            if (active && epoch === sessionEpoch.current && sessionRef.current?.id === current.id) { setSessionReadFailedId(current.id); setError((e as Error).message); }
+          }
+        }
         if (selectedJob) { const result = await request<{ job: Job }>(`${API}/jobs/${selectedJob.id}`); if (active) setSelectedJob(result.job); }
         if (tab === 'records') { const result = await request<{ jobs: Job[] }>(`${API}/jobs`); if (active) setJobs(contentContext ? result.jobs.filter(job => job.content_ref?.id === contentContext.contentId || job.content_ref?.slug === contentContext.slug) : result.jobs); }
       } catch (e) { if (active) setError((e as Error).message); } finally { inFlight = false; }
@@ -134,7 +167,38 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
     if (!review?.check.ok) return;
     const { job } = await request<{ job: Job }>(`${API}/jobs/${review.job.id}/submit`, json({ idempotency_key: review.key })); setSelectedJob(job); setReview(null); savedDraft.current = null; persistedJob.current = null; saveLocal(jobKey, null); setVideoId(''); setDefaults(emptyContent()); setTagText(''); setChoices({}); setTab('records'); notify('任务已保存，正在依次处理各目标。'); await refresh();
   });
-  const accountAction = (account: Account, action: 'login-sessions' | 'check') => act(account.id, async () => { if (session?.account_id === account.id && !closedSession(session.status)) { setSessionOpen(true); return; } const result = await request<{ session: Session }>(`${API}/accounts/${account.id}/${action}`, json({})); setSession({ ...result.session, account_id: account.id }); setSessionOpen(true); await refresh(); });
+  const accountAction = (account: Account, action: 'login-sessions' | 'check') => act(account.id, async () => {
+    const epoch = ++sessionEpoch.current;
+    const previous = sessionRef.current;
+    if (previous?.account_id === account.id) {
+      const result = await request<{ session: Session }>(`${API}/login-sessions/${previous.id}`, { signal: AbortSignal.timeout(10_000) });
+      if (epoch !== sessionEpoch.current) return;
+      selectSession({ ...result.session, account_id: account.id });
+      if (!closedSession(result.session.status)) { setSessionOpen(true); return; }
+    }
+    const result = await request<{ session: Session }>(`${API}/accounts/${account.id}/${action}`, json({}));
+    if (epoch !== sessionEpoch.current) return;
+    selectSession({ ...result.session, account_id: account.id }); setSessionOpen(true); await refresh();
+  });
+  const renewQr = () => act('refresh-login', async () => {
+    const previous = sessionRef.current;
+    if (!previous) return;
+    const epoch = ++sessionEpoch.current;
+    const next = await renewLoginSession(previous, {
+      get: async id => (await request<{ session: Session }>(`${API}/login-sessions/${id}`, { signal: AbortSignal.timeout(10_000) })).session,
+      cancel: async id => (await request<{ session: Session }>(`${API}/login-sessions/${id}/cancel`, { ...json({}), signal: AbortSignal.timeout(10_000) })).session,
+      create: async accountId => (await request<{ session: Session }>(`${API}/accounts/${accountId}/login-sessions`, { ...json({}), signal: AbortSignal.timeout(10_000) })).session,
+    }, { onCurrent: current => { updateSession(current, previous.id, epoch); if (epoch === sessionEpoch.current) setSessionReadFailedId(''); } });
+    if (epoch !== sessionEpoch.current) return;
+    selectSession(next); await refresh();
+  });
+  const cancelLogin = () => act('cancel-login', async () => {
+    const current = sessionRef.current;
+    if (!current) return;
+    const epoch = ++sessionEpoch.current;
+    const result = await request<{ session: Session }>(`${API}/login-sessions/${current.id}/cancel`, json({}));
+    updateSession(result.session, current.id, epoch); await refresh();
+  });
   const targetAction = (target: Target, action: 'retry' | 'cancel') => act(target.id, async () => { await request(`${API}/targets/${target.id}/${action}`, json({})); if (selectedJob) { const { job } = await request<{ job: Job }>(`${API}/jobs/${selectedJob.id}`); setSelectedJob(job); } await refresh(); });
   const coverSelector = (value: string | null | undefined, onChange: (value: string | null) => void) => <AuthorSelect value={value ?? ''} onValueChange={value => onChange(value || null)} label="选择封面" disabled={!!busy} options={[{ value: '', label: '使用平台默认封面' }, ...assets.filter(item => item.type === 'cover').map(item => ({ value: item.id, label: fileName(item) }))]} />;
 
@@ -190,7 +254,26 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
         {!jobs.length ? <div className="publishing-empty"><History size={30} /><h3>还没有发布记录</h3><p>保存草稿或确认发布后，记录会保留在这里。</p><button className="secondary-button" onClick={() => setTab('new')}>新建发布</button></div> : <div className="publishing-record-layout"><ul className="publishing-jobs">{jobs.map(job => <li key={job.id}><button className={selectedJob?.id === job.id ? 'is-selected' : ''} onClick={() => void act('job', async () => { const result = await request<{ job: Job }>(`${API}/jobs/${job.id}`); setSelectedJob(result.job); })}><strong>{job.defaults?.title || job.targets?.[0]?.snapshot?.title || '未命名发布'}</strong><span>{date(job.created_at)}</span><div><Status value={job.status ?? job.state} /><span>{job.targets?.length ?? 0} 个目标</span></div><span>{jobSummary(job)}</span></button></li>)}</ul><div className="publishing-job-detail">{selectedJob ? <><header><h3>{selectedJob.defaults?.title || selectedJob.targets[0]?.snapshot?.title || '发布详情'}</h3><p className="publishing-muted">{date(selectedJob.created_at)}</p>{(selectedJob.status ?? selectedJob.state) === 'draft' && <button className="secondary-button" disabled={!!busy} onClick={() => { const job = selectedJob; const content = job.defaults ?? job.targets[0]?.snapshot ?? { title: '', description: '', tags: [] }; setVideoId(job.video_asset_id ?? job.targets[0]?.snapshot.video_asset_id ?? ''); setDefaults(content); setTagText(content.tags.join(', ')); const next: Record<string, Choice> = {}; for (const target of job.targets) if (target.account_id && accounts.some(account => account.id === target.account_id)) next[target.account_id] = { edited: target.overrides ? Object.keys(target.overrides).length > 0 : true, overrides: { title: target.snapshot.title, description: target.snapshot.description, tags: target.snapshot.tags, cover_asset_id: target.snapshot.cover_asset_id }, platform_options: target.snapshot.platform_options ?? { content_origin: 'unspecified' } }; setChoices(next); savedDraft.current = null; setReview(null); setTab('new'); notify('已载入草稿内容，可调整后重新预检查。'); }}>继续编辑</button>}</header>{selectedJob.targets.map(target => <article className="publishing-record-target" key={target.id}><div className="publishing-section-heading"><h4>{target.account_snapshot?.alias ?? '目标账号'} <small>{platform(target.account_snapshot?.platform ?? '')?.name}</small></h4><Status value={target.status} /></div><p className="publishing-muted">阶段：{label(target.stage)} · {target.submission_intent_at ? '已进入可能提交阶段' : '尚未进入提交阶段'}</p><p className="publishing-muted">平台状态：{target.platform_status === 'unknown' ? '尚未确认' : label(target.platform_status)}</p>{(target.message || target.error || target.evidence?.summary) && <p className="publishing-content-copy">{target.message || target.error || target.evidence?.summary}</p>}{target.challenge && <ChallengeForm challenge={target.challenge} request={request} onDone={() => notify('验证响应已发送。')} />}<details><summary><ChevronDown size={16} />最终内容与执行记录</summary><h4>{target.snapshot.title}</h4><p className="publishing-content-copy">{target.snapshot.description || '未填写简介'}</p><p className="publishing-muted">{target.snapshot.tags?.map(item => `#${item}`).join(' ') || '未填写话题'}</p><p className="publishing-muted">内容来源：{originLabel(target.snapshot.platform_options?.content_origin)}{target.snapshot.platform_options?.source ? ` · ${target.snapshot.platform_options.source}` : ''}{target.snapshot.platform_options?.ai_declaration === 'ai_generated' ? ' · 含 AI 生成内容' : ''}</p>{target.snapshot.cover_asset_id ? <img className="publishing-cover" src={assetUrl(target.snapshot.cover_asset_id)} alt="本目标最终封面" /> : <p className="publishing-muted">使用平台默认封面</p>}{target.attempts?.map((attempt, index) => <p className="publishing-muted" key={attempt.id}>第 {index + 1} 次尝试 · {date(attempt.started_at)} · {label(attempt.status)}{attempt.submission_intent_at ? ' · 曾进入可能提交阶段' : ' · 未记录提交意图'}{attempt.result?.message ? ` · ${attempt.result.message}` : ''}{attempt.result?.evidence?.summary ? ` · ${attempt.result.evidence.summary}` : ''}</p>)}</details><div className="publishing-row-actions">{externalUrl(target.post_url) ? <a className="publishing-text-button" href={externalUrl(target.post_url)} target="_blank" rel="noreferrer">查看作品<ExternalLink size={15} /></a> : target.status === 'submitted' || target.status === 'submission_unknown' ? <span className="publishing-muted">未获取作品链接</span> : null}{target.status === 'failed' && !target.submission_intent_at && <button className="secondary-button" disabled={!!busy || !executorReady} onClick={() => void targetAction(target, 'retry')}><RefreshCw size={15} />重试此目标</button>}{['queued', 'running', 'waiting_user'].includes(target.status) && <button className="secondary-button" disabled={!!busy} onClick={() => void targetAction(target, 'cancel')}>{target.submission_intent_at ? '请求停止并核对' : '取消此目标'}</button>}{target.status === 'submission_unknown' && <button className="secondary-button" onClick={() => { setResolution(target); setResolutionKind('found'); setResolutionNote(''); setResolutionUrl(''); }}>人工核对</button>}</div></article>)}</> : <div className="publishing-empty"><p>选择一条记录，查看各目标的内容和结果。</p></div>}</div></div>}
       </div>
     </>}
-    <Dialog.Root open={sessionOpen} onOpenChange={setSessionOpen}><AuthorDialogContent surface="publishing" title="账号登录与检查" description={<>{accounts.find(account => account.id === session?.account_id)?.alias || '当前账号'} · 关闭窗口不会取消正在进行的操作。</>}  closeLabel="关闭登录窗口">{error && <p role="alert" className="field-error">{error}</p>}{session && <><Status value={session.status} />{session.message && <p>{session.message}</p>}{session.qrcode_url && !closedSession(session.status) && (!session.qr_expires_at || Date.parse(session.qr_expires_at) > Date.now()) && session.qrcode_url.startsWith(API) ? <img key={`${session.id}-${session.qr_version}`} className="publishing-qr" src={mediaUrl(session.qrcode_url)} alt="当前平台账号登录二维码，请用平台手机应用扫码" /> : !closedSession(session.status) && <div className="publishing-empty"><LoaderCircle className="spin" size={24} /><p>{session.status === 'queued' ? '正在排队，稍后开始。' : '正在等待平台响应…'}</p></div>}{session.challenge && <ChallengeForm key={session.challenge.id ?? session.challenge.challenge_id} challenge={session.challenge} request={request} onDone={() => notify('验证响应已发送。')} />}{session.expires_at && !closedSession(session.status) && <p className="publishing-muted">有效至 {date(session.expires_at)}</p>}{session.local_login_command && <code className="publishing-local-command">{session.local_login_command}</code>}{!closedSession(session.status) && <button className="secondary-button" disabled={!!busy} onClick={() => void act('cancel-login', async () => { const result = await request<{ session: Session }>(`${API}/login-sessions/${session.id}/cancel`, json({})); setSession(result.session); await refresh(); })}>取消本次操作</button>}</>}</AuthorDialogContent></Dialog.Root>
+    <Dialog.Root open={sessionOpen} onOpenChange={setSessionOpen}>
+      <AuthorDialogContent surface="publishing" title="账号登录与检查" description={<>{accounts.find(account => account.id === session?.account_id)?.alias || '当前账号'} · 关闭窗口不会取消正在进行的操作。</>} closeLabel="关闭登录窗口">
+        {error && <p role="alert" className="field-error">{error}</p>}
+        {session && <>
+          <Status value={session.status} />
+          {session.message && <p>{session.message}</p>}
+          {busy === 'refresh-login' ? <div className="publishing-empty"><LoaderCircle className="spin" size={24} /><p>正在停止上次登录并重新获取二维码…</p></div>
+            : qrState === 'ready' && session.qrcode_url ? <><img key={loginQrKey(session)} className="publishing-qr" src={mediaUrl(session.qrcode_url)} alt="当前平台账号登录二维码，请用平台手机应用扫码" onError={() => setFailedQrKey(loginQrKey(session))} /><p className="publishing-muted">请尽快扫码，平台提示失效时请重新获取。</p></>
+            : qrState === 'expired' ? <div className="publishing-empty"><QrCode size={28} /><strong>{session.error_code === 'LOGIN_TIMEOUT' || session.status === 'timeout' ? '本次扫码登录已超时' : '二维码需要更新，请重新获取'}</strong></div>
+            : qrState === 'image_error' || qrState === 'state_error' ? <div className="publishing-empty"><CircleAlert size={26} /><strong>{qrState === 'image_error' ? '二维码加载失败' : '暂时无法读取登录状态'}</strong><p>请重新获取二维码后扫码。</p></div>
+            : !closedSession(session.status) && <div className="publishing-empty"><LoaderCircle className="spin" size={24} /><p>{session.status === 'queued' ? '正在排队，稍后开始。' : session.stage === 'waiting_confirmation' || session.stage === 'waiting_confirm' ? '请在手机上确认登录。' : '正在等待平台响应…'}</p></div>}
+          {session.challenge && <ChallengeForm key={session.challenge.id ?? session.challenge.challenge_id} challenge={session.challenge} request={request} onDone={() => notify('验证响应已发送。')} />}
+          {session.local_login_command && <code className="publishing-local-command">{session.local_login_command}</code>}
+          <div className="publishing-row-actions">
+            {canRenewQr && <button className="secondary-button" disabled={!!busy} onClick={() => void renewQr()}><RefreshCw size={16} />重新获取二维码</button>}
+            {!closedSession(session.status) && <button className="secondary-button" disabled={!!busy} onClick={() => void cancelLogin()}>取消本次操作</button>}
+          </div>
+        </>}
+      </AuthorDialogContent>
+    </Dialog.Root>
     <Dialog.Root open={!!resolution} onOpenChange={open => { if (!open) setResolution(null); }}><AuthorDialogContent surface="publishing" title="核对发布结果" description="先到平台创作者后台检查本次作品，再记录你的核对结果。"  closeLabel="关闭结果核对">{resolution && creatorUrls[resolution.account_snapshot.platform ?? ''] && <a className="publishing-text-button" href={creatorUrls[resolution.account_snapshot.platform ?? '']} target="_blank" rel="noreferrer">打开平台创作者后台<ExternalLink size={15} /></a>}{error && <p role="alert" className="field-error">{error}</p>}{resolution && <form onSubmit={event => { event.preventDefault(); void act('resolve', async () => { await request(`${API}/targets/${resolution.id}/resolve`, json({ outcome: resolutionKind === 'found' ? 'found' : 'not_published', basis: resolutionNote.trim(), post_url: resolutionUrl.trim() || undefined })); if (selectedJob) { const result = await request<{ job: Job }>(`${API}/jobs/${selectedJob.id}`); setSelectedJob(result.job); } setResolution(null); await refresh(); notify('核对结果已记录。确认未发布的目标可另行点击重试。'); }); }}><label className="publishing-field"><span>核对结果</span><AuthorSelect value={resolutionKind} onValueChange={setResolutionKind} label="人工核对结果" disabled={!!busy} options={[{ value: 'found', label: '已找到本次作品' }, { value: 'missing', label: '确认本次未发布' }]} /></label>{resolutionKind === 'found' && <label className="publishing-field"><span>作品链接 <small>选填</small></span><input type="url" value={resolutionUrl} onChange={event => setResolutionUrl(event.target.value)} placeholder="https://…" /></label>}<label className="publishing-field"><span>核对依据</span><textarea required rows={3} value={resolutionNote} onChange={event => setResolutionNote(event.target.value)} placeholder="说明检查了哪个账号、作品列表和时间" /></label><button className="save-button" disabled={!!busy || !resolutionNote.trim()}>保存核对结果</button></form>}</AuthorDialogContent></Dialog.Root>
   </section>;
 }
