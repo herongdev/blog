@@ -4,9 +4,11 @@ import io
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from login_verification import CODE_INPUT, SMS_BUTTON, SMS_MESSAGE, SMS_SCOPE, DouyinLoginVerification
+import login_verification
 
 
 class Locator:
@@ -153,6 +155,62 @@ class LoginVerificationTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await flow.handle(page), 'handled')
         self.assertEqual(page.fields[0].fills, [])
         self.assertEqual(child.fields[0].fills, ['123456'])
+
+    async def test_main_document_form_does_not_wait_for_slow_or_broken_sibling_iframes(self):
+        class UnavailableFrame(Frame):
+            calls = 0
+            async def frame_element(self):
+                self.calls += 1
+                raise RuntimeError('PRIVATE_DETACHED_FRAME')
+        class SlowFrame(UnavailableFrame):
+            async def frame_element(self):
+                self.calls += 1
+                await asyncio.Event().wait()
+        for sibling in (UnavailableFrame(), SlowFrame()):
+            with self.subTest(frame=type(sibling).__name__):
+                page = Frame(sms=True)
+                page.frames.append(sibling)
+                bridge = Bridge(['123456'])
+                self.assertEqual(await DouyinLoginVerification(bridge).handle(page), 'handled')
+                self.assertEqual(sibling.calls, 0)
+                self.assertEqual(page.fields[0].fills, ['123456'])
+                self.assertEqual(len(bridge.events), 1)
+
+    async def test_unavailable_iframe_is_skipped_before_a_live_verification_frame(self):
+        class UnavailableFrame(Frame):
+            async def frame_element(self):
+                raise RuntimeError('PRIVATE_DETACHED_FRAME')
+        class SlowFrame(Frame):
+            async def frame_element(self):
+                await asyncio.Event().wait()
+        for unavailable in (UnavailableFrame(), SlowFrame()):
+            with self.subTest(frame=type(unavailable).__name__):
+                page = Frame(generic=True)
+                verification = Frame(sms=True, url='https://sso.douyin.com/verification/')
+                page.frames.extend([unavailable, verification])
+                bridge = Bridge(['123456'])
+                with patch.object(login_verification, 'FRAME_VISIBILITY_TIMEOUT', 0.01):
+                    self.assertEqual(await DouyinLoginVerification(bridge).handle(page), 'handled')
+                self.assertEqual(page.fields[0].fills, [])
+                self.assertEqual(verification.fields[0].fills, ['123456'])
+                self.assertEqual(len(bridge.events), 1)
+
+    async def test_search_has_a_global_budget_when_frames_stop_responding(self):
+        class StalledLocator:
+            async def count(self):
+                await asyncio.Event().wait()
+        class StalledFrame(Frame):
+            def locator(self, selector):
+                return StalledLocator()
+        page = StalledFrame()
+        page.frames.extend(StalledFrame() for _ in range(8))
+        bridge = Bridge()
+        loop = asyncio.get_running_loop()
+        started = loop.time()
+        with patch.multiple(login_verification, FIND_TIMEOUT=0.03, FRAME_SEARCH_TIMEOUT=0.02, FRAME_VISIBILITY_TIMEOUT=0.005):
+            self.assertEqual(await DouyinLoginVerification(bridge).handle(page), 'unsupported')
+        self.assertLess(loop.time() - started, 0.15)
+        self.assertEqual(bridge.events, [])
 
     async def test_unknown_hidden_and_excess_iframes_are_not_read(self):
         for child in (Frame(sms=True, url='https://douyin.com.attacker.invalid/'),

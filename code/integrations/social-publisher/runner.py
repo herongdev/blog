@@ -18,6 +18,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from auth_network import LoginNetworkObservation
 from login_verification import DouyinLoginVerification
+from verification_evidence import VerificationEvidence
 
 ROOT = Path(__file__).resolve().parent
 PROTOCOL_OUT = sys.stdout
@@ -310,6 +311,7 @@ def _observed_douyin_checker(bridge, original):
     previous = None
     network = LoginNetworkObservation(bridge)
     verification = DouyinLoginVerification(bridge)
+    evidence = VerificationEvidence(bridge)
     verification_since = None
     async def observed(page):
         nonlocal previous, verification_since
@@ -335,6 +337,7 @@ def _observed_douyin_checker(bridge, original):
             if verification_since is None:
                 verification_since = loop.time()
                 bridge.emit('stage', stage='waiting_challenge')
+                await evidence.capture(page, 'start')
             bridge.login_failure_code = 'LOGIN_VERIFICATION_REQUIRED'
             deadline = getattr(bridge, 'login_deadline', verification_since + 240)
             # The QR behind the verification dialog may expire. Keep control
@@ -343,6 +346,8 @@ def _observed_douyin_checker(bridge, original):
                 await verification.handle(page)
                 if await original(page):
                     return True
+                if getattr(verification, 'attempts', 0) == 0 and loop.time() - verification_since >= 8:
+                    await evidence.capture(page, 'unmatched')
                 if verification.status == 'failed':
                     bridge.login_failure_code = 'LOGIN_VERIFICATION_FAILED'
                     break

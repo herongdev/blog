@@ -61,3 +61,18 @@
 - 服务器既有执行组件在隔离无账号的真实浏览器 DOM fixture 中完成验证输入、正常提交与第二 tick 不重复索码，普通登录验证码框保持空白。初版 fixture 缺 UTF-8 声明导致中文选择器不匹配，补正 fixture 编码后，同一候选代码通过；这不等于真实抖音账号已验收。
 - 公网新前端 HTML 200，未授权文章与发布账号 API 401。只在既有 Edge 窗口新开标签，已看见发布中心主界面；手机确认后的真实验证表单、会话保存与成功关窗仍待用户本次账号结果，不声称已通过完整视觉或真实账号验收。
 - 为完成备份与代码切换，清理了 root 的可重下载 pip HTTP 缓存（189 个文件，约 173.5 MB）和系统 DNF 仓库元数据缓存（52 个文件）；已安装依赖不变，没有删除文章、账号、历史备份或旧发布版本。最终剩余 753,049,600 字节（约 718 MiB），仍需留意现有 512 MiB 视频上传保留空间；本次没有降低应用上传保护。
+
+## 用户再次确认失败：识别限时与现场证据
+
+用户实测仍显示 `LOGIN_VERIFICATION_REQUIRED`。真实会话 `c8b9d8fe-0818-4937-b0f2-38d1ffed6bd0` 于 08:43:22 UTC 创建，约 21.5 秒 received scanned、22.9 秒 received 2046，08:44:14 UTC 失败；没有取得已登录会话。这不是完成真实登录的交付结果。
+
+已离线复现一个独立代码缺陷：原 `_find` 在主页面查找前完整读取 iframe，整个过程只有一秒预算；一个慢或失效的旁支 iframe 即可使已经可用的主页面短信表单被判 unsupported。修复为主页面先找、iframe 懒读取、单帧异常跳过；可见性每帧 0.25 秒、表单每帧 1 秒、整次查找最多 4 秒。专用组件 scope 与严格域名限制保持原样，未放宽到普通登录验证码框。
+
+另外检查官网实际加载的 [VerifyCenter SDK](https://lf-rc1.yhgfb-cn-static.com/obj/rc-verifycenter/verifycenter/@latest/index.js)（当次 SHA-256 `434a80bf568a89879308f29eee1a630b805cbfd7ab4f6a514dcf14b03597e7e2`）：其按 decision 根对象 `code` 分流；20000 无 MFA 分支的 [SecondVerifyWeb 1.3.2](https://lf-cdn-tos.bytescm.com/obj/rc-verifycenter/second-valid-web/1.3.2/index.js) 使用 `vc-second-valid`，并非当前 `uc-ui-verify_sms`。不能据 2046 推断用户一定遇到已支持的短信组件，也不能把官方 captcha 使用的 `rmc.bytedance.com` 当成此次短信 iframe 的已证域名。因此本次没有猜测新增点击步骤或放行新域。
+
+新增 `verification_evidence.py`：仅在 2046 后私有采集 `start` 与未识别时 `unmatched` 两次。每次 metadata 最多三个页面、各十二个 frame；只保留 HTTPS hostname、可见标志、固定验证词布尔和数量。未知 frame 不读 DOM。PNG 为当前 viewport，遮盖全部 frame 的输入、文本框和二维码图片，遮盖失败不保存 PNG；文件 0600、目录 0700，拒绝 symlink 与非固定 tag。没有公共 API、事件或图片 URL。取消传播，诊断失败不改变登录判定。原生响应只额外保存 decision 分支码的固定枚举及配置/票据是否存在的布尔，绝不保存配置、票据或短信 key。
+
+- 当前执行器 `20261105T091836Z-douyin-verification-evidence`，源码包 SHA-256 `b14cda8c11f16c75abe0e81ff63f614cfff660501850f481ba175f3e7b784a16`；上一版 `20261105T082306Z-douyin-verification-scope`。作者仍为 `20261105T075037Z`。
+- 停写备份 `20261105T092703Z.tar.gz`，回执 `/var/backups/herong-dev-guides-author/20261105T075037Z-douyin-verification-evidence/`。166 个项目文件、认证、配置与公开站未变；服务、备份 timer active，依赖/SAU 补丁、512 TasksMax、2 GiB 限额不变。复核剩余 672,886,784 字节（约 641 MiB），没有清理其他内容或降低上传保留空间。
+- 完整 102 项 Python 测试通过；服务器隔离真实 DOM fixture 的普通输入不受影响、专用验证码提交、一次 challenge、第二 tick 不重复，以及私有截图遮盖均通过。已实际查看测试 PNG，两处输入内容均被遮盖。没有变更 Node/前端，本轮没有把旧 Node 构建当作新增视觉验收。
+- 上次实际平台浏览器已随失败关闭，不能事后还原该页面。已明确说明重扫原因并请用户刷新、扫码确认；下一次实际平台类型、验证画面和真实成功仍待该次结果，不宣称故障已经解决。

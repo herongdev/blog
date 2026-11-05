@@ -13,6 +13,9 @@ CODE_INPUT = 'input[placeholder*="验证码"], input[autocomplete="one-time-code
 SMS_SCOPE = 'xpath=ancestor::*[contains(@class,"uc-ui-verify_sms") and .//input][1]'
 ERROR_TEXTS = ('验证码错误', '验证码不正确', '验证码已过期')
 SMS_MESSAGE = '抖音需要身份验证，请输入平台发送的短信验证码'
+FIND_TIMEOUT = 4
+FRAME_SEARCH_TIMEOUT = 1
+FRAME_VISIBILITY_TIMEOUT = 0.25
 
 
 def _trusted_url(url):
@@ -47,45 +50,67 @@ class DouyinLoginVerification:
         self._old_errors = ()
         self._blocked = False
 
-    async def _candidates(self, page):
+    async def _candidates(self, page, deadline):
         if not _trusted_url(page.url):
-            return []
-        candidates = [page]
+            return
+        # Search the main document before reading any sibling iframe. Ads and
+        # detached frames cannot block a form already available on that page.
+        yield page
         main = page.main_frame
         for frame in list(page.frames)[:9]:
             if frame is main or frame is page:
                 continue
-            if len(candidates) >= 9:
-                break
             # Do not read arbitrary third-party iframe contents. Checking the
             # iframe element itself also excludes hidden verification frames.
             if not _trusted_url(frame.url):
                 continue
-            element = await frame.frame_element()
-            if not await element.is_visible():
+            remaining = deadline - asyncio.get_running_loop().time()
+            if remaining <= 0:
+                return
+            async def visible_frame():
+                element = await frame.frame_element()
+                return await element.is_visible()
+            try:
+                visible = await asyncio.wait_for(visible_frame(), min(FRAME_VISIBILITY_TIMEOUT, remaining))
+            except Exception:
+                continue  # One stale or slow iframe must not hide the next one.
+            if not visible:
                 continue
-            candidates.append(frame)
-        return candidates
+            yield frame
+
+    async def _find_in_frame(self, frame):
+        buttons = await _visible(frame.locator(SMS_BUTTON), 4)
+        if len(buttons) == 1:
+            button = buttons[0]
+            scopes = await _visible(button.locator(SMS_SCOPE), 1)
+            if len(scopes) == 1:
+                scope = scopes[0]
+                inputs = await _visible(scope.locator(CODE_INPUT))
+                # Both controls must belong to the known identity SMS
+                # component. A unique input elsewhere in the frame can be
+                # the ordinary phone-login form while this one is loading.
+                if len(inputs) == 1:
+                    return (inputs[0], button, scope), None
+        identity = await _visible(frame.get_by_text('身份验证', exact=True), 2)
+        options = await _visible(frame.get_by_text('接收短信验证', exact=True), 2)
+        choice = options[0] if len(identity) == 1 and len(options) == 1 else None
+        return None, choice
 
     async def _find(self, page):
+        deadline = asyncio.get_running_loop().time() + FIND_TIMEOUT
         choice = None
-        for frame in await self._candidates(page):
-            buttons = await _visible(frame.locator(SMS_BUTTON), 4)
-            if len(buttons) == 1:
-                button = buttons[0]
-                scopes = await _visible(button.locator(SMS_SCOPE), 1)
-                if len(scopes) == 1:
-                    scope = scopes[0]
-                    inputs = await _visible(scope.locator(CODE_INPUT))
-                    # Both controls must belong to the known identity SMS
-                    # component. A unique input elsewhere in the frame can be
-                    # the ordinary phone-login form while this one is loading.
-                    if len(inputs) == 1:
-                        return (inputs[0], button, scope), choice
-            identity = await _visible(frame.get_by_text('身份验证', exact=True), 2)
-            options = await _visible(frame.get_by_text('接收短信验证', exact=True), 2)
-            if len(identity) == 1 and len(options) == 1:
-                choice = options[0]
+        async for frame in self._candidates(page, deadline):
+            remaining = deadline - asyncio.get_running_loop().time()
+            if remaining <= 0:
+                break
+            try:
+                form, candidate_choice = await asyncio.wait_for(self._find_in_frame(frame), min(FRAME_SEARCH_TIMEOUT, remaining))
+            except Exception:
+                continue
+            if form is not None:
+                return form, choice
+            if candidate_choice is not None:
+                choice = candidate_choice
         return None, choice
 
     async def _errors(self, scope):
@@ -100,7 +125,7 @@ class DouyinLoginVerification:
             self.status = 'unsupported'
             return self.status
         try:
-            form, choice = await asyncio.wait_for(self._find(page), 1)
+            form, choice = await asyncio.wait_for(self._find(page), FIND_TIMEOUT + 0.1)
             if form is None:
                 if choice is not None and not self._choice_clicked:
                     # A click timeout may still mean the click happened. Never
@@ -136,7 +161,7 @@ class DouyinLoginVerification:
                     return self.status
                 # The user may take time to respond. Recheck the actual form
                 # before filling; do not retain a stale iframe/input locator.
-                current, _ = await asyncio.wait_for(self._find(page), 1)
+                current, _ = await asyncio.wait_for(self._find(page), FIND_TIMEOUT + 0.1)
                 if current is None:
                     self.status = 'unsupported'
                     self._blocked = True

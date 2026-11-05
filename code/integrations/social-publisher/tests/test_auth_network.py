@@ -11,13 +11,38 @@ from unittest.mock import AsyncMock
 from uuid import uuid4
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from auth_network import LoginNetworkObservation, polling_failure, polling_state
+from auth_network import LoginNetworkObservation, polling_failure, polling_state, verification_hints
 from runner import Bridge
 
 URL = 'https://sso.douyin.com/passport/web/check_qrconnect/?token=PRIVATE_TOKEN'
 
 
 class AuthNetworkTests(unittest.IsolatedAsyncioTestCase):
+    async def test_verification_config_is_reduced_to_presence_flags(self):
+        with tempfile.TemporaryDirectory() as directory:
+            bridge = Bridge({'data_dir': directory, 'account_file': directory + '/accounts/' + str(uuid4()) + '.json', 'session_id': str(uuid4())}, io.StringIO())
+            network = LoginNetworkObservation(bridge)
+            response = SimpleNamespace(url=URL, status=200, json=AsyncMock(return_value={'data': {
+                'error_code': 2046, 'verify_center_decision_conf': 'PRIVATE_DECISION',
+                'sms_code_key': 'PRIVATE_SMS_KEY', 'description': 'PRIVATE_PHONE',
+            }}))
+            await network.response(response)
+            saved = json.loads(network.path.read_text())
+            self.assertEqual(saved['verificationHints'], {'hasDecision': True, 'hasSecondaryDecision': False, 'hasSmsCodeKey': True, 'decisionCode': None, 'hasMfaDecision': False, 'hasVerifyTicket': False})
+            self.assertNotIn('PRIVATE_', network.path.read_text())
+            self.assertEqual(bridge.output.getvalue(), '')
+
+    def test_only_known_official_branch_codes_survive_decision_parsing(self):
+        for code in [10000, 20000, 30000, 40000, 99999, '20000', True]:
+            body = {'data': {}, 'verify_center_decision_conf': json.dumps({'code': code, 'mfa_decision': 'PRIVATE_MFA', 'verify_ticket': 'PRIVATE_TICKET', 'phone': 'PRIVATE_PHONE'})}
+            hints = verification_hints(body)
+            expected = int(code) if str(code) in {'10000', '20000', '30000', '40000'} else None
+            self.assertEqual(hints['decisionCode'], expected)
+            self.assertTrue(hints['hasMfaDecision'])
+            self.assertTrue(hints['hasVerifyTicket'])
+            self.assertNotIn('PRIVATE_', json.dumps(hints))
+        self.assertIsNone(verification_hints({'data': {'verify_center_secondary_decision_conf': 'x' * 65537}})['decisionCode'])
+
     async def test_platform_code_is_advisory_not_an_authentication_decision(self):
         for code in (2046, 1, -1):
             with self.subTest(code=code):

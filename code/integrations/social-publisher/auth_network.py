@@ -51,6 +51,32 @@ def polling_failure(value):
     }
 
 
+def verification_hints(body):
+    """Keep only the official widget's bounded branch code and presence flags."""
+    data = body.get('data', {})
+    decision = data.get('verify_center_decision_conf') or body.get('verify_center_decision_conf')
+    secondary = data.get('verify_center_secondary_decision_conf') or body.get('verify_center_secondary_decision_conf')
+    value = decision or secondary
+    if isinstance(value, str) and len(value) <= 65536:
+        try:
+            value = json.loads(value)
+        except (ValueError, TypeError):
+            value = None
+    if not isinstance(value, dict):
+        value = {}
+    code = value.get('code')
+    if isinstance(code, str) and code in {'10000', '20000', '30000', '40000'}:
+        code = int(code)
+    return {
+        'hasDecision': bool(decision),
+        'hasSecondaryDecision': bool(secondary),
+        'hasSmsCodeKey': bool(data.get('sms_code_key') or body.get('sms_code_key')),
+        'decisionCode': code if type(code) is int and code in {10000, 20000, 30000, 40000} else None,
+        'hasMfaDecision': bool(value.get('mfa_decision')),
+        'hasVerifyTicket': bool(value.get('verify_ticket')),
+    }
+
+
 class LoginNetworkObservation:
     def __init__(self, bridge):
         self.bridge = bridge
@@ -59,6 +85,7 @@ class LoginNetworkObservation:
         # Advisory only. Observation callbacks never stop the live browser,
         # decide authentication status, or cancel the login task.
         self.failure = None
+        self.verification_hints = None
         self.started = time.monotonic()
         self.path = None
         session = bridge.request.get('session_id', '')
@@ -82,9 +109,14 @@ class LoginNetworkObservation:
             parsed = urlsplit(response.url)
             if not parsed.path.rstrip('/').endswith('/check_qrconnect'):
                 return
-            value = polling_state(response.url, response.status, await asyncio.wait_for(response.json(), 2))
+            body = await asyncio.wait_for(response.json(), 2)
+            value = polling_state(response.url, response.status, body)
             if value is None:
                 return
+            if value['errorCode'] == 2046:
+                # Presence only: never retain decision config, SMS keys, or
+                # the response needed by the platform's verification widget.
+                self.verification_hints = verification_hints(body)
             failure = polling_failure(value)
             # Once the platform starts identity verification, later QR errors
             # belong to the QR behind that dialog. They must not unlock its UI
@@ -118,7 +150,7 @@ class LoginNetworkObservation:
         try:
             fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
             with os.fdopen(fd, 'w') as output:
-                json.dump({'version': 1, 'transitions': self.transitions}, output)
+                json.dump({'version': 1, 'transitions': self.transitions, 'verificationHints': self.verification_hints}, output)
             os.replace(temporary, self.path)
         finally:
             temporary.unlink(missing_ok=True)
