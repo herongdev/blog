@@ -181,7 +181,7 @@ export default function App() {
     if (library && !['all', 'unfiled', 'archived'].includes(librarySelection) && !library.folders.some((folder) => folder.id === librarySelection)) setLibrarySelection('all');
   }, [library, librarySelection]);
   const loadArchived = useCallback(async () => { const sequence = ++archiveSequence.current; setArchiveLoading(true); try { const result = await request<{ items: ArticleItem[] }>('/api/articles?scope=archived'); if (sequence === archiveSequence.current) setArchivedItems(result.items); } finally { if (sequence === archiveSequence.current) setArchiveLoading(false); } }, [request]);
-  useEffect(() => { if (auth === 'ready' && librarySelection === 'archived') void loadArchived().catch((problem) => setError((problem as Error).message)); }, [auth, librarySelection, loadArchived]);
+  useEffect(() => { if (auth === 'ready') void loadArchived().catch((problem) => setError((problem as Error).message)); }, [auth, loadArchived]);
   const loadLibrary = useCallback(async () => { const sequence = ++librarySequence.current; const result = await request<LibraryState>('/api/library'); if (sequence === librarySequence.current) setLibrary(result); return result; }, [request]);
   const changeLibrary = useCallback(async (action: LibraryAction, revision = library?.revision, announce = true): Promise<LibraryState> => {
     if (!library || libraryLock.current) throw new Error('目录正在更新，请稍后重试');
@@ -198,7 +198,7 @@ export default function App() {
       throw problem;
     } finally { libraryLock.current = false; setLibraryBusy(false); }
   }, [library, request, loadLibrary, loadItems, loadArchived, dirty, workspacePending, notify]);
-  const refreshLibrary = useCallback(async () => { try { await Promise.all([loadItems(), loadLibrary(), ...(librarySelection === 'archived' ? [loadArchived()] : [])]); } catch (problem) { setError((problem as Error).message); } }, [loadItems, loadLibrary, loadArchived, librarySelection]);
+  const refreshLibrary = useCallback(async () => { try { await Promise.all([loadItems(), loadLibrary(), loadArchived()]); } catch (problem) { setError((problem as Error).message); } }, [loadItems, loadLibrary, loadArchived, librarySelection]);
   const refreshPublish = useCallback(async () => { try { const result = await request<PublishState>('/api/publish'); setPublish(result); } catch (problem) { if ((problem as Error).message === '请重新登录后继续') return; /* Local writing does not require publishing service. */ } }, [request]);
 
   const openArticle = useCallback(async (item: ArticleItem, skipConfirm = false, tab: ContentTab = 'article') => {
@@ -367,7 +367,7 @@ export default function App() {
     if (!article || !['lead', 'published'].includes(metadata.status)) { setError('先在发布信息中选择“功能线索”或“实测教程”'); return; }
     if (!window.confirm('将这篇文章加入网站发布内容？网站更新后，读者可以看到它。')) return;
     const saved = await save(); if (!saved) return; setPromoting(true); setError('');
-    try { const result = await request<Article>(`/api/articles/draft/${saved.slug}/promote`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ revision: saved.revision }) }); setArticle(result); setSavedSnapshots((previous) => ({ ...previous, [articleKey(result)]: snapshot(result) })); await Promise.all([loadItems(), loadLibrary(), ...(librarySelection === 'archived' ? [loadArchived()] : [])]); notify('已加入发布内容，请先更新测试环境查看效果'); }
+    try { const result = await request<Article>(`/api/articles/draft/${saved.slug}/promote`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ revision: saved.revision }) }); setArticle(result); setSavedSnapshots((previous) => ({ ...previous, [articleKey(result)]: snapshot(result) })); await Promise.all([loadItems(), loadLibrary(), loadArchived()]); notify('已加入发布内容，请先更新测试环境查看效果'); }
     catch (problem) { setError((problem as Error).message); }
     finally { setPromoting(false); }
   };
