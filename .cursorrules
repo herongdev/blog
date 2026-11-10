@@ -45,3 +45,9 @@ chore: 更新 GitHub Actions 部署环境变量
 
 - 确认改动与提交说明一致
 - 遵循仓库既有 hook，失败则修复后**新 commit**，不要随意 `--amend`（除非用户要求且符合安全条件）
+
+## 本机 Gradle 公共缓存约束
+
+- 本机所有项目的 Gradle User Home 统一使用 `~/.gradle`。默认遵循 Gradle 的公共目录；需要显式设置时，只使用 `GRADLE_USER_HOME="$HOME/.gradle"`。普通开发、构建与故障排查不得新建项目专属、仓库内或 `/tmp` 下的 Gradle User Home。
+- 此约束仅针对 Gradle User Home；项目自己的 `android/.gradle`、`build`、`.cxx` 等仍是项目本地构建产物，不得将它们混入公共缓存。
+- 公共缓存异常时，先检查磁盘空间、活动构建和具体损坏条目，再定点恢复；保留其他项目依赖及公共配置，不自动清空整个公共缓存，也不改用独立缓存绕过问题。现有文档或示例中与本条冲突的本机 Gradle 缓存约定，以本条为准。
