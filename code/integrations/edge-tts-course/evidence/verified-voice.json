@@ -1,0 +1,18 @@
+{
+  "verified": true,
+  "voice": "zh-CN-YunxiNeural",
+  "pitch": "+0Hz",
+  "volume": "+0%",
+  "opening_rate": "-3%",
+  "body_rate": "-5%",
+  "source_bundle": "Codex图标微课-贴题片尾制作包.zip",
+  "bundle_sha256": "49b21644b7e285af6b0a47aaa036111245299fb7c9c3e8906e347113c66722c0",
+  "evidence": [
+    "generate_narration.py:32-34",
+    "narration/*.raw.metadata.json",
+    "narration/manifest.json"
+  ],
+  "current_network_test": "Could not resolve host: speech.platform.bing.com",
+  "new_narration_generated": false,
+  "paid_plugins_used": false
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>微课视频 · 一页操作说明</title>
+<style>
+  :root {color-scheme:light; --ink:#302b27; --muted:#665d56; --accent:#b45e40; --paper:#fffdfc; --line:#dbd2c8;}
+  * {box-sizing:border-box} body {margin:0;background:#f8f4ed;color:var(--ink);font:15px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+  main {max-width:1020px;margin:24px auto;padding:30px 40px;background:var(--paper)}
+  header {display:flex;align-items:center;gap:18px;border-bottom:1px solid var(--line);padding-bottom:14px}
+  header img {width:76px;height:auto} h1 {font-size:27px;margin:0} header p {margin:3px 0;color:var(--muted)}
+  figure {margin:20px 0 10px} figure img {display:block;width:100%;border:1px solid var(--line);border-radius:5px} figcaption {font-size:12px;color:var(--muted);margin-top:4px}
+  .steps {display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;margin:16px 0} h2 {font-size:18px;margin:0 0 5px;color:var(--accent)} p {margin:5px 0 10px} strong {font-weight:650}
+  .paths {border-top:1px solid var(--line);padding-top:12px;font-size:13px} code {overflow-wrap:anywhere;font:12px/1.65 ui-monospace,monospace} .note {font-size:13px;color:var(--muted)}
+  @page {size:A4;margin:10mm} @media print {body{background:white;font-size:10pt}main{margin:0;padding:0;max-width:none}h1{font-size:20pt}header p{font-size:10pt}figure{margin-top:12px}figure img{max-height:82mm;object-fit:contain}figcaption{font-size:8pt}.steps{gap:8px 18px;margin:10px 0}h2{font-size:12pt}p{margin:3px 0 6px}.paths,.note{font-size:8.5pt}code{font-size:8pt}}
+  @media(max-width:680px){main{margin:0;padding:20px}.steps{grid-template-columns:1fr}h1{font-size:23px}}
+</style>
+<main>
+  <header><img src="assets/hr-elephant.png" alt="HR 小象"><div><h1>微课视频 · 一页操作说明</h1><p>双击“微课视频.app”即可使用，无需启动 Codex。</p></div></header>
+  <p>第一次打开时，选择当前 <strong>edge-tts-course</strong> 工程文件夹，再点“打开工程”。以后双击应用即可进入。</p>
+  <figure><img src="docs/editor-guide.png" alt="本机微课视频软件的真实界面，标出场景、台词与停顿、生成、结果四个区域"><figcaption>本机实际软件界面。① 选场景　② 改台词与停顿　③ 生成　④ 查看结果</figcaption></figure>
+  <div class="steps">
+    <section><h2>① 选场景，改台词</h2><p>左侧选场景，直接修改中间的台词，点<strong>“保存修改”</strong>。整篇新稿点<strong>“导入新文本”</strong>，粘贴全文，段落之间留一个空行；原文稿会自动备份。</p></section>
+    <section><h2>② 调整每句后停多久</h2><p>在<strong>“句后最少停顿”</strong>输入秒数，如 <strong>0.75</strong> 或 <strong>2</strong>，然后保存。它是最少停顿；原声里更长的自然停顿会保留，语音不会被加速或压缩。</p></section>
+    <section><h2>③ 选择生成方式</h2><p><strong>改过台词：</strong>点“生成视频”。<br><strong>只改停顿或画面：</strong>点“仅更新画面”。未改场景复用原声；改某一句会重配其所在的完整场景。画面入口遇到没有匹配配音的新稿会停止。</p></section>
+    <section><h2>④ 看结果，遇错看日志</h2><p>生成并核验成功后自动打开 MP4；也可点<strong>“打开成片”</strong>。失败时看<strong>“查看生成日志”</strong>，修正后再生成。旧视频仍会保留，不代表这次成功。</p></section>
+  </div>
+  <div class="paths">
+    <p><strong>不打开界面也能生成：</strong>双击“生成视频.command”执行完整流程；双击“仅更新画面.command”复用配音。两个入口都不会安装或升级环境。</p>
+    <p><strong>输出：</strong><code>output/full-course-original-voice.mp4</code>；完整字幕在 <code>output/subtitles.srt</code>。用“打开输出文件夹”直接找到。</p>
+    <p><strong>文稿：</strong><code>lesson.json</code>，界面修改会自动同步台词与字幕。备份在 <code>projects/history/</code>；原始配音与缓存在 <code>narration/</code>，请保留。</p>
+    <p><strong>工程目录：</strong><code>/Users/ronnie/Documents/my-project/blog/code/integrations/edge-tts-course</code></p>
+  </div>
+  <p class="note">声音固定为云希 zh-CN-YunxiNeural：开场 −3%，正文 −5%，音高 +0Hz，音量 +0%。首次配音和改稿配音需要连接微软；复用缓存与画面更新可离线完成。ChatGPT 本机 MCP 配合见 <a href="integrations/MCP说明.md">MCP 接入说明</a>。</p>
+</main>
+</html>

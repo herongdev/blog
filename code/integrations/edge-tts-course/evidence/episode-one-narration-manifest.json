@@ -1,0 +1,326 @@
+{
+  "status": "complete",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "per-scene: hook -3%, other scenes -5%",
+  "boundary": "WordBoundary",
+  "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts",
+  "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+  "network": "existing proxy with normal system CA verification",
+  "original_audio_preserved": true,
+  "original_word_events_preserved": true,
+  "raw_mp3_is_not_the_paced_program_audio": true,
+  "variant_duration_seconds_before_frame_padding": {
+    "trial": 115.58764583333334
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "text": "等 Codex 出结果时，这些小图标，你也见过吧？它们能告诉你什么？图标帮你找到线索，具体做了什么，看旁边文字。",
+      "captions": [
+        "等 Codex 出结果时，",
+        "这些小图标，你也见过吧？",
+        "它们能告诉你什么？",
+        "图标帮你找到线索，",
+        "具体做了什么，看旁边文字。"
+      ],
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "-3%",
+      "request_sha256": "f496746ee804a00ae762b5c157cc848cb3625ae558e5ff7b0bd1f2cda5c69cae",
+      "status": "complete",
+      "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+      "audio": "hook.wav",
+      "words": "hook.words.json",
+      "pause_table": "hook.pauses.json",
+      "duration": 11.337208333333333,
+      "boundaries": 30,
+      "sha256": "3905377e393a729807194e520fb01d7ca3c6df005ec210c30a1054cd8f8a1929",
+      "raw_audio": "hook.raw.mp3",
+      "raw_words": "hook.raw.words.json",
+      "raw_pcm": "hook.raw.wav",
+      "raw_duration": 11.28,
+      "added_silence_seconds": 0.05720833333333353,
+      "streams": [
+        {
+          "codec_name": "pcm_s16le",
+          "sample_rate": "48000",
+          "channels": 1
+        }
+      ],
+      "all_minimum_pauses_verified": true,
+      "full_audio_decode_verified": true,
+      "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts"
+    },
+    {
+      "id": "agents",
+      "text": "先看这些彩色图案。它们是子代理的头像。子代理，就是分出去的助手。比如修登录，一个检查接口，一个修改页面。同一条子代理对话里，头像通常保持不变。不同助手，也可能撞头像。所以，分工看任务名。看到“已完成”，还要核对结果。",
+      "captions": [
+        "先看这些彩色图案。",
+        "它们是子代理的头像。",
+        "子代理，就是分出去的助手。",
+        "比如修登录，",
+        "一个检查接口，",
+        "一个修改页面。",
+        "同一条子代理对话里，",
+        "头像通常保持不变。",
+        "不同助手，也可能撞头像。",
+        "所以，分工看任务名。",
+        "看到“已完成”，",
+        "还要核对结果。"
+      ],
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "-5%",
+      "request_sha256": "8a100550c93321fbfc02e95d3e7e89afd7a1d448c9e002fbf6cccf11cec7e991",
+      "status": "complete",
+      "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+      "audio": "agents.wav",
+      "words": "agents.words.json",
+      "pause_table": "agents.pauses.json",
+      "duration": 25.384666666666668,
+      "boundaries": 54,
+      "sha256": "6df63c49fc96e476ab9e8a973a9a24b7497d20c7b9704ebbd22049911ae683c8",
+      "raw_audio": "agents.raw.mp3",
+      "raw_words": "agents.raw.words.json",
+      "raw_pcm": "agents.raw.wav",
+      "raw_duration": 25.032,
+      "added_silence_seconds": 0.3526666666666678,
+      "streams": [
+        {
+          "codec_name": "pcm_s16le",
+          "sample_rate": "48000",
+          "channels": 1
+        }
+      ],
+      "all_minimum_pauses_verified": true,
+      "full_audio_decode_verified": true,
+      "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts"
+    },
+    {
+      "id": "load",
+      "text": "再看扳手：加载了工具。在这次核对的版本里，它可以表示读了技能说明。技能，可以理解成做事指南。就像读完菜谱，饭就做好了吗？还没有。读过规范后，还要看实际修改，有没有照着规范做。",
+      "captions": [
+        "再看扳手：加载了工具。",
+        "在这次核对的版本里，",
+        "它可以表示读了技能说明。",
+        "技能，可以理解成做事指南。",
+        "就像读完菜谱，",
+        "饭就做好了吗？",
+        "还没有。",
+        "读过规范后，",
+        "还要看实际修改，",
+        "有没有照着规范做。"
+      ],
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "-5%",
+      "request_sha256": "e4214167e848e4b15ae64fd30e0eebd94a3e63a8b6727510d2010866c0909fe6",
+      "status": "complete",
+      "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+      "audio": "load.wav",
+      "words": "load.words.json",
+      "pause_table": "load.pauses.json",
+      "duration": 21.431916666666666,
+      "boundaries": 47,
+      "sha256": "4f4b30a3732d469b94e9a87b69d58e517adc3fd0382bfb97382d9ee5d52de200",
+      "raw_audio": "load.raw.mp3",
+      "raw_words": "load.raw.words.json",
+      "raw_pcm": "load.raw.wav",
+      "raw_duration": 20.424,
+      "added_silence_seconds": 1.0079166666666666,
+      "streams": [
+        {
+          "codec_name": "pcm_s16le",
+          "sample_rate": "48000",
+          "channels": 1
+        }
+      ],
+      "all_minimum_pauses_verified": true,
+      "full_audio_decode_verified": true,
+      "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts"
+    },
+    {
+      "id": "integration",
+      "text": "接着是四个小环：集成。它表示用过接入的工具。比如获取登录页设计稿。先看取回来的是哪一页，再对照实际页面，看看有没有符合设计。",
+      "captions": [
+        "接着是四个小环：集成。",
+        "它表示用过接入的工具。",
+        "比如获取登录页设计稿。",
+        "先看取回来的是哪一页，",
+        "再对照实际页面，",
+        "看看有没有符合设计。"
+      ],
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "-5%",
+      "request_sha256": "234f09a307efcfeacaf4319e560520e218bff4c73b67dbdcbcf9f929a8cc4d15",
+      "status": "complete",
+      "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+      "audio": "integration.wav",
+      "words": "integration.words.json",
+      "pause_table": "integration.pauses.json",
+      "duration": 15.612416666666666,
+      "boundaries": 34,
+      "sha256": "a7f832e3ec42f3384cc63c7349ad25018e5130f673155dc9b5c9bfca1d9afbdf",
+      "raw_audio": "integration.raw.mp3",
+      "raw_words": "integration.raw.words.json",
+      "raw_pcm": "integration.raw.wav",
+      "raw_duration": 15.144,
+      "added_silence_seconds": 0.46841666666666626,
+      "streams": [
+        {
+          "codec_name": "pcm_s16le",
+          "sample_rate": "48000",
+          "channels": 1
+        }
+      ],
+      "all_minimum_pauses_verified": true,
+      "full_audio_decode_verified": true,
+      "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts"
+    },
+    {
+      "id": "compact",
+      "text": "如果出现上下文自动压缩，它在整理较早的对话，让任务继续往下做。你先看后面做得怎么样。如果漏了登录失败提示，你就补上这个要求，再检查修改有没有落实。",
+      "captions": [
+        "如果出现上下文自动压缩，",
+        "它在整理较早的对话，",
+        "让任务继续往下做。",
+        "你先看后面做得怎么样。",
+        "如果漏了登录失败提示，",
+        "你就补上这个要求，",
+        "再检查修改有没有落实。"
+      ],
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "-5%",
+      "request_sha256": "05e1bba23e678660843010c64f90b054e7aed71f99e6252ea106dcb98c1db960",
+      "status": "complete",
+      "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+      "audio": "compact.wav",
+      "words": "compact.words.json",
+      "pause_table": "compact.pauses.json",
+      "duration": 15.513958333333333,
+      "boundaries": 40,
+      "sha256": "e575672f76e25f910bc6f059f7e12800a3fb23cacb4667621c79597c00b76642",
+      "raw_audio": "compact.raw.mp3",
+      "raw_words": "compact.raw.words.json",
+      "raw_pcm": "compact.raw.wav",
+      "raw_duration": 14.856,
+      "added_silence_seconds": 0.6579583333333332,
+      "streams": [
+        {
+          "codec_name": "pcm_s16le",
+          "sample_rate": "48000",
+          "channels": 1
+        }
+      ],
+      "all_minimum_pauses_verified": true,
+      "full_audio_decode_verified": true,
+      "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts"
+    },
+    {
+      "id": "categories",
+      "text": "其他图标，可以分三组看：谁在做，做了什么，过程怎样。",
+      "captions": [
+        "其他图标，可以分三组看：",
+        "谁在做，",
+        "做了什么，",
+        "过程怎样。"
+      ],
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "-5%",
+      "request_sha256": "5b1b303b95aa27eff1e7820dee812848d173e1b5613eff530df8e93efd39d303",
+      "status": "complete",
+      "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+      "audio": "categories.wav",
+      "words": "categories.words.json",
+      "pause_table": "categories.pauses.json",
+      "duration": 6.578791666666667,
+      "boundaries": 15,
+      "sha256": "66d0f59d0b378ae28d3b068db13b401ab08310514c6f7ceb8f9e224cd39270c7",
+      "raw_audio": "categories.raw.mp3",
+      "raw_words": "categories.raw.words.json",
+      "raw_pcm": "categories.raw.wav",
+      "raw_duration": 6.192,
+      "added_silence_seconds": 0.3867916666666664,
+      "streams": [
+        {
+          "codec_name": "pcm_s16le",
+          "sample_rate": "48000",
+          "channels": 1
+        }
+      ],
+      "all_minimum_pauses_verified": true,
+      "full_audio_decode_verified": true,
+      "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts"
+    },
+    {
+      "id": "atlas",
+      "text": "这是本期核实的图标总览。二十八种头像，都是帮你辨认子代理。外形不代表固定分工。",
+      "captions": [
+        "这是本期核实的图标总览。",
+        "二十八种头像，",
+        "都是帮你辨认子代理。",
+        "外形不代表固定分工。"
+      ],
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "-5%",
+      "request_sha256": "7317785e40aceb5527495f5fb265104dc73701badff54640bc8a351fd9a73d48",
+      "status": "complete",
+      "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+      "audio": "atlas.wav",
+      "words": "atlas.words.json",
+      "pause_table": "atlas.pauses.json",
+      "duration": 8.976,
+      "boundaries": 20,
+      "sha256": "14abc0be09721efd4c4b5330302ec14e1b34d03f87497f8cd1199207ebf7a873",
+      "raw_audio": "atlas.raw.mp3",
+      "raw_words": "atlas.raw.words.json",
+      "raw_pcm": "atlas.raw.wav",
+      "raw_duration": 8.976,
+      "added_silence_seconds": 0.0,
+      "streams": [
+        {
+          "codec_name": "pcm_s16le",
+          "sample_rate": "48000",
+          "channels": 1
+        }
+      ],
+      "all_minimum_pauses_verified": true,
+      "full_audio_decode_verified": true,
+      "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts"
+    },
+    {
+      "id": "outro",
+      "text": "分工看任务名，验收看实际结果。至于这些小花，就让它们好好当头像吧。关注我，下回见。",
+      "captions": [
+        "分工看任务名，",
+        "验收看实际结果。",
+        "至于这些小花，",
+        "就让它们好好当头像吧。",
+        "关注我，下回见。"
+      ],
+      "voice": "zh-CN-YunxiNeural",
+      "rate": "-5%",
+      "request_sha256": "3717fefded378876e91b42632726a587283d6add55ba3b61e11bb56f3f41cc1e",
+      "status": "complete",
+      "processing_version": "whole-scene-real-word-boundaries-minimum-semantic-pauses-v1",
+      "audio": "outro.wav",
+      "words": "outro.words.json",
+      "pause_table": "outro.pauses.json",
+      "duration": 10.7526875,
+      "boundaries": 22,
+      "sha256": "be25c117bf87b25373e586789be15ed26cdd1d4f81da6f4eefa28589822f8ade",
+      "raw_audio": "outro.raw.mp3",
+      "raw_words": "outro.raw.words.json",
+      "raw_pcm": "outro.raw.wav",
+      "raw_duration": 10.32,
+      "added_silence_seconds": 0.4326875000000001,
+      "streams": [
+        {
+          "codec_name": "pcm_s16le",
+          "sample_rate": "48000",
+          "channels": 1
+        }
+      ],
+      "all_minimum_pauses_verified": true,
+      "full_audio_decode_verified": true,
+      "timing_source": "original_tts_word_boundaries_plus_exact_inserted_silence_sample_shifts"
+    }
+  ]
+}

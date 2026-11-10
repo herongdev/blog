@@ -1,0 +1,11 @@
+{
+  "test": "offline restoration pipeline with original episode-one hook audio",
+  "duration": 11.337208333333333,
+  "new_script_audio_generated": false,
+  "voice_config_verified": true,
+  "syntax_check": "passed",
+  "word_alignment_and_preservation": "passed",
+  "audio_video_encode_decode": "passed",
+  "network_generation": "not completed: network unavailable",
+  "source_audio": "original episode-one voice, not newly generated audio"
+}
