@@ -9,6 +9,7 @@ import { createPublishingService } from './publishing/service.mjs';
 import { createArticleRevisions } from './article-revisions.mjs';
 import { createContentWorkspace } from './content-workspace.mjs';
 import { createWorkspaceHandler } from './workspace-api.mjs';
+import { createUpdateTasks } from './update-tasks.mjs';
 
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const frontendRoot = resolve(appRoot, 'author/dist');
@@ -29,6 +30,7 @@ const publishing = await createPublishingService({
 });
 const revisions = await createArticleRevisions({ projectRoot: resolve(dataRoot, 'project') });
 const workspace = await createContentWorkspace({ projectRoot: resolve(dataRoot, 'project') });
+const updates = await createUpdateTasks({ projectRoot: resolve(dataRoot, 'project'), revisions, workspace, publishing });
 const manager = await createPublishManager({
   projectRoot: appRoot,
   contentRoot: resolve(dataRoot, 'project/src/content/tutorials'),
@@ -54,7 +56,7 @@ const server = createAuthorServer({
     stateDirectory: resolve(dataRoot, 'auth'),
     bootstrapTokenFile: resolve(dataRoot, 'auth/bootstrap-token'),
   },
-  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager }),
+  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager, updates }),
   frontend: async (request, response) => {
     try {
       const url = new URL(request.url, origin);

@@ -4,6 +4,12 @@ import { lstat, open, rename, unlink } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const UPDATE_ID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+const UPDATE_REASONS = new Set(['correction', 'adapt', 'supplement']);
+const UPDATE_SCOPES = new Set(['article', 'video', 'both']);
+const entryKey = (entry) => entry.updateTaskId ? `update:${entry.updateTaskId}` : `article:${entry.slug}`;
+const sameEntry = (entry, target) => entry.slug === target.slug && entry.updateTaskId === target.updateTaskId;
+const updateFields = (entry) => entry.updateTaskId ? { updateTaskId: entry.updateTaskId, updateReason: entry.updateReason, updateScope: entry.updateScope, taskTitle: entry.taskTitle } : {};
 const MAX_BYTES = 8 * 1024 * 1024;
 const MAX_ITEMS = 10000;
 const ZONE = 'Asia/Shanghai';
@@ -37,28 +43,34 @@ function validEntry(entry, withDone = false) {
   return record(entry) && typeof entry.slug === 'string' && SLUG.test(entry.slug) && entry.slug.length <= 250 &&
     typeof entry.title === 'string' && entry.title.length > 0 && entry.title.length <= 1000 &&
     ['draft', 'content'].includes(entry.kind) && typeof entry.status === 'string' && entry.status.length <= 80 &&
-    (!withDone || typeof entry.done === 'boolean');
+    (!withDone || typeof entry.done === 'boolean') &&
+    (entry.updateTaskId === undefined ? ['updateReason', 'updateScope', 'taskTitle'].every((key) => entry[key] === undefined) :
+      typeof entry.updateTaskId === 'string' && UPDATE_ID.test(entry.updateTaskId) && UPDATE_REASONS.has(entry.updateReason) && UPDATE_SCOPES.has(entry.updateScope) &&
+      typeof entry.taskTitle === 'string' && entry.taskTitle.length > 0 && entry.taskTitle.length <= 1000);
 }
 
 function validate(state) {
-  if (!record(state) || ![1, 2].includes(state.version) ||
+  if (!record(state) || ![1, 2, 3].includes(state.version) ||
       (state.version === 1 && (!Number.isInteger(state.cadence) || state.cadence < 1 || state.cadence > 21)) ||
       !record(state.current) || !validMonday(state.current.start) || !Array.isArray(state.current.entries) ||
       !Array.isArray(state.queue) || !Array.isArray(state.history) || state.history.length > 2000 ||
       state.queue.length + state.current.entries.length > MAX_ITEMS) fail(500, '排期数据格式错误，请从私有备份恢复');
+  if (state.closedUpdates !== undefined && (!record(state.closedUpdates) || Object.keys(state.closedUpdates).length > MAX_ITEMS * 2 ||
+      Object.entries(state.closedUpdates).some(([id, outcome]) => !UPDATE_ID.test(id) || !['completed', 'canceled'].includes(outcome)))) fail(500, '更新任务结项记录无效');
   const active = [...state.current.entries, ...state.queue];
   if (!state.current.entries.every((entry) => validEntry(entry, true)) || !state.queue.every((entry) => validEntry(entry)) ||
-      new Set(active.map((entry) => entry.slug)).size !== active.length) fail(500, '排期中有无效或重复文章');
+      new Set(active.map(entryKey)).size !== active.length) fail(500, '排期中有无效或重复文章');
+  if (state.version < 3 && (state.closedUpdates !== undefined || [...active, ...state.history.flatMap((week) => week?.entries ?? [])].some((entry) => entry?.updateTaskId !== undefined))) fail(500, '更新任务排期版本无效');
   let previous;
   for (const week of state.history) {
     if (!record(week) || !validMonday(week.start) || week.start >= state.current.start || (previous && week.start <= previous) ||
         !Array.isArray(week.entries) || week.entries.length > MAX_ITEMS || !week.entries.every((entry) => validEntry(entry, true)) ||
-        new Set(week.entries.map((entry) => entry.slug)).size !== week.entries.length) fail(500, '历史排期数据无效');
+        new Set(week.entries.map(entryKey)).size !== week.entries.length) fail(500, '历史排期数据无效');
     previous = week.start;
   }
 }
 
-const snapshot = (entry) => ({ slug: entry.slug, title: entry.title, kind: entry.kind, status: entry.status, ...(entry.archiveRevision ? { archiveRevision: entry.archiveRevision } : {}) });
+const snapshot = (entry) => ({ slug: entry.slug, title: entry.title, kind: entry.kind, status: entry.status, ...updateFields(entry), ...(entry.archiveRevision ? { archiveRevision: entry.archiveRevision } : {}) });
 const doneCount = (entries) => entries.filter((entry) => entry.done).length;
 // Three imported topics reuse older manuscripts without changing their frontmatter.
 const importedSourceIds = { 'codex-worktrees': 'DG004', 'apifox-actual-request': 'DG006', 'cursor-remote-control': 'DG125' };
@@ -126,7 +138,7 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
   }
   function live(entry, articles, withDone = false) {
     const current = articles.find((article) => article.slug === entry.slug);
-    return { ...snapshot(current ?? entry), ...(withDone ? { done: entry.done } : {}), ...(!current ? { missing: true } : {}) };
+    return { ...snapshot(current ?? entry), ...updateFields(entry), ...(withDone ? { done: entry.done } : {}), ...(!current ? { missing: true } : {}) };
   }
   async function load() {
     const articles = await listArticles();
@@ -195,26 +207,91 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
     if (!Number.isInteger(value) || value < 1 || value > maximum) fail(400, `位置应为 1 至 ${maximum} 的整数`);
     return value - 1;
   }
-  function take(list, slug, message) {
-    const index = list.findIndex((entry) => entry.slug === slug);
+  function take(list, target, message) {
+    const index = list.findIndex((entry) => sameEntry(entry, target));
     if (index === -1) fail(404, message);
     return list.splice(index, 1)[0];
   }
+  function assertUpdateTarget(state, articles, task) {
+    if (!record(task) || typeof task.id !== 'string' || !UPDATE_ID.test(task.id) || typeof task.slug !== 'string' || !SLUG.test(task.slug) ||
+        typeof task.title !== 'string' || !task.title.trim() || task.title.length > 1000 || !UPDATE_REASONS.has(task.reason) || !UPDATE_SCOPES.has(task.scope)) fail(400, '更新任务信息无效');
+    if (state.closedUpdates?.[task.id]) return null;
+    const prior = [...state.current.entries, ...state.queue, ...state.history.flatMap((week) => week.entries)].find((entry) => entry.updateTaskId === task.id);
+    if (prior) {
+      if (prior.slug !== task.slug || prior.updateReason !== task.reason || prior.updateScope !== task.scope || prior.taskTitle !== task.title) fail(409, '更新任务排期关联不一致');
+      return null;
+    }
+    const article = articles.find((entry) => entry.slug === task.slug);
+    if (!article) fail(404, '文章不存在，请刷新后重试');
+    if (article.archived) fail(409, '内容已归档，请先恢复后再创建更新');
+    if ([...state.current.entries, ...state.queue].some((entry) => entry.slug === task.slug && entry.updateTaskId && !entry.done)) fail(409, '这篇内容已有进行中的更新任务');
+    return article;
+  }
   return {
+    assertCanEnqueueUpdate: (task) => serialize(async () => {
+      const { state, articles } = await load();
+      assertUpdateTarget(state, articles, task);
+    }),
+    // Called only by the update-task service after it durably journals its
+    // intent. Replays do not move an existing entry or reset old outcomes.
+    enqueueUpdate: (task) => serialize(async () => {
+      const { state, articles } = await load();
+      const article = assertUpdateTarget(state, articles, task);
+      if (!article) return present(state, articles);
+      const entry = { ...snapshot(article), updateTaskId: task.id, updateReason: task.reason, updateScope: task.scope, taskTitle: task.title };
+      state.version = 3;
+      state.queue.unshift(entry);
+      await write(state);
+      return present(state, articles);
+    }),
+    finishUpdate: (id, outcome) => serialize(async () => {
+      if (typeof id !== 'string' || !UPDATE_ID.test(id) || !record(outcome) || (outcome.done === true) === (outcome.canceled === true)) fail(400, '更新任务结果无效');
+      const { state, articles } = await load();
+      const result = outcome.done ? 'completed' : 'canceled';
+      if (state.closedUpdates?.[id]) {
+        if (state.closedUpdates[id] !== result) fail(409, '更新任务已结项，不能改写原结果');
+        return present(state, articles);
+      }
+      const currentIndex = state.current.entries.findIndex((entry) => entry.updateTaskId === id);
+      const queueIndex = state.queue.findIndex((entry) => entry.updateTaskId === id);
+      const entry = currentIndex >= 0 ? state.current.entries[currentIndex] : queueIndex >= 0 ? state.queue[queueIndex] : null;
+      // A completed historic entry or an entry removed by content archiving
+      // must never be resurrected by journal replay.
+      if (!entry) {
+        const historic = state.history.flatMap((week) => week.entries).find((item) => item.updateTaskId === id && item.done);
+        if (historic && outcome.canceled) fail(409, '已完成的更新记录不能取消，请创建新更新');
+        state.version = 3;
+        state.closedUpdates = { ...state.closedUpdates, [id]: result };
+        await write(state);
+        return present(state, articles);
+      }
+      if (entry.done) {
+        if (outcome.canceled) fail(409, '已完成的更新记录不能取消，请创建新更新');
+        return present(state, articles);
+      }
+      if (currentIndex >= 0) state.current.entries.splice(currentIndex, 1);
+      else state.queue.splice(queueIndex, 1);
+      if (outcome.done) state.current.entries.splice(doneCount(state.current.entries), 0, { ...snapshot(live(entry, articles)), done: true });
+      state.closedUpdates = { ...state.closedUpdates, [id]: result };
+      await write(state);
+      return present(state, articles);
+    }),
     read: () => serialize(async () => { const { state, articles } = await load(); return present(state, articles); }),
     apply: (input) => serialize(async () => {
       if (!record(input)) fail(400, '排期操作格式错误');
       const { state, articles } = await load();
       if (typeof input.revision !== 'string' || input.revision !== present(state, articles).revision) fail(409, '排期已在其他窗口或新一周更新，请刷新后重试');
       if (input.action !== 'cadence' && (typeof input.slug !== 'string' || !SLUG.test(input.slug))) fail(400, '文章地址无效');
+      if (input.updateTaskId !== undefined && (typeof input.updateTaskId !== 'string' || !UPDATE_ID.test(input.updateTaskId))) fail(400, '更新任务标识无效');
+      if (input.updateTaskId && ['enqueue', 'complete', 'remove'].includes(input.action)) fail(409, '请打开更新任务，完成或取消本次更新；原版本和发布记录会保留');
       if (articles.some((article) => article.slug === input.slug && article.archived)) fail(409, '内容已归档，请先恢复后再加入排期');
       switch (input.action) {
         case 'cadence':
           fail(410, '排期已改为手动安排，请将条目移入本周');
         case 'transfer': {
           if (!['queue', 'current'].includes(input.scope)) fail(400, '只可移到本周或其它');
-          const source = state.current.entries.some((entry) => entry.slug === input.slug) ? state.current.entries : state.queue;
-          const sourceIndex = source.findIndex((entry) => entry.slug === input.slug);
+          const source = state.current.entries.some((entry) => sameEntry(entry, input)) ? state.current.entries : state.queue;
+          const sourceIndex = source.findIndex((entry) => sameEntry(entry, input));
           if (sourceIndex === -1) fail(404, '这篇文章不在排期中，请刷新后重试');
           const target = input.scope === 'current' ? state.current.entries : state.queue;
           const entry = source[sourceIndex];
@@ -234,13 +311,13 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
           if (!['queue', 'current'].includes(input.scope)) fail(400, '只可调整本周或待拍队列');
           const list = input.scope === 'queue' ? state.queue : state.current.entries;
           const requested = position(input.position, list.length);
-          if (input.scope === 'current' && list.some((entry) => entry.slug === input.slug && entry.done)) fail(400, '已拍条目固定在顶部，请先撤销已拍再调整位置');
+          if (input.scope === 'current' && list.some((entry) => sameEntry(entry, input) && entry.done)) fail(400, '已拍条目固定在顶部，请先撤销已拍再调整位置');
           const destination = input.scope === 'current' ? Math.max(requested, doneCount(list)) : requested;
-          const entry = take(list, input.slug, '这篇文章不在所选队列，请刷新后重试');
+          const entry = take(list, input, '这篇文章不在所选队列，请刷新后重试');
           list.splice(destination, 0, entry); break;
         }
         case 'enqueue': {
-          if (state.queue.some((entry) => entry.slug === input.slug) || state.current.entries.some((entry) => entry.slug === input.slug)) fail(409, '这篇文章已在排期中');
+          if (state.queue.some((entry) => sameEntry(entry, input)) || state.current.entries.some((entry) => sameEntry(entry, input))) fail(409, '这篇文章已在排期中');
           const article = articles.find((entry) => entry.slug === input.slug);
           if (!article) fail(404, '文章不存在，请刷新后重试');
           const destination = position(input.position, state.queue.length + 1, state.queue.length);
@@ -248,19 +325,19 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
         }
         case 'pull': {
           const destination = Math.max(position(input.position, state.current.entries.length + 1, state.current.entries.length), doneCount(state.current.entries));
-          const entry = take(state.queue, input.slug, '文章不在待拍队列');
+          const entry = take(state.queue, input, '文章不在待拍队列');
           if (!articles.some((article) => article.slug === entry.slug)) fail(404, '文章已不存在，请先移出队列');
           state.current.entries.splice(destination, 0, { ...snapshot(live(entry, articles)), done: false }); break;
         }
         case 'defer': {
           const destination = position(input.position, state.queue.length + 1, state.queue.length);
-          const entry = take(state.current.entries, input.slug, '文章不在本周排期');
+          const entry = take(state.current.entries, input, '文章不在本周排期');
           if (entry.done) fail(409, '已拍条目请先撤销已拍，再移回其它');
           state.queue.splice(destination, 0, snapshot(live(entry, articles))); break;
         }
         case 'complete': {
           if (typeof input.done !== 'boolean') fail(400, '完成状态无效');
-          const entry = state.current.entries.find((item) => item.slug === input.slug);
+          const entry = state.current.entries.find((item) => sameEntry(item, input));
           if (!entry) fail(404, '只可修改本周文章的完成状态');
           if (!articles.some((article) => article.slug === entry.slug)) fail(404, '文章不存在，不能标记已拍');
           if (entry.done !== input.done) {
@@ -272,7 +349,7 @@ export function createScheduleStore({ projectRoot, listArticles, now = () => new
           }
           break;
         }
-        case 'remove': take(state.queue, input.slug, '文章不在待拍队列'); break;
+        case 'remove': take(state.queue, input, '文章不在待拍队列'); break;
         default: fail(400, '不支持的排期操作');
       }
       await write(state);

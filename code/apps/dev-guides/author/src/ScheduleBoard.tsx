@@ -13,31 +13,33 @@ import ArticleLibrary, { FolderPicker, descendants, folderPath, type LibraryActi
 import { directoryKeyboardCoordinates, libraryDropAction } from './library-dnd';
 import HelpTip from './HelpTip';
 import ScheduleLookup from './ScheduleLookup';
+import CreateUpdateDialog from './CreateUpdateDialog';
+import { scheduleEntryKey, updateReasons, updateScopes, type ContentUpdate, type UpdateReason, type UpdateScope } from './content-updates';
 import './schedule.css';
 
-export type ScheduleEntry = { slug: string; title: string; kind: 'draft' | 'content'; status: string; done?: boolean; missing?: boolean };
+export type ScheduleEntry = { slug: string; title: string; kind: 'draft' | 'content'; status: string; done?: boolean; missing?: boolean; updateTaskId?: string; updateReason?: UpdateReason; updateScope?: UpdateScope; taskTitle?: string };
 export type ScheduleWeek = { start: string; end: string; entries: ScheduleEntry[] };
 export type ScheduleState = { revision: string; timezone: string; thisWeek: ScheduleWeek; queue: ScheduleEntry[]; history: ScheduleWeek[] };
 type Scope = 'queue' | 'current';
-type Action = { action: 'move' | 'transfer'; slug: string; scope: Scope; position: number } | { action: 'enqueue'; slug: string; position?: number } | { action: 'complete'; slug: string; done: boolean } | { action: 'remove'; slug: string };
+type Action = ({ action: 'move' | 'transfer'; slug: string; scope: Scope; position: number } | { action: 'enqueue'; slug: string; position?: number } | { action: 'complete'; slug: string; done: boolean } | { action: 'remove'; slug: string }) & { updateTaskId?: string };
 type Operation = { type: 'create' } | { type: 'existing' } | { type: 'help' } | { type: 'move'; entry: ScheduleEntry; scope: Scope; minimum: number; maximum: number } | { type: 'remove' | 'assign' | 'archive'; entry: ScheduleEntry };
-type Props = { request: <T>(path: string, options?: RequestInit) => Promise<T>; onOpen: (entry: ScheduleEntry, tab?: 'filming'|'article'|'video'|'assets'|'publish') => void; onCreate: (title: string, placement: 'front' | 'end') => Promise<{ slug: string }>; articles: ScheduleEntry[]; active?: boolean; library: LibraryState | null; librarySelection: LibrarySelection; onLibrarySelect: (selection: LibrarySelection) => void; libraryBusy: boolean; onLibraryAction: (action: LibraryAction, revision?: string) => Promise<LibraryState>; onLibraryRefresh: () => Promise<void>; archivedItems: LibraryArticle[]; archiveLoading: boolean };
+type Props = { request: <T>(path: string, options?: RequestInit) => Promise<T>; onOpen: (entry: ScheduleEntry, tab?: 'filming'|'article'|'video'|'assets'|'publish'|'updates') => void; onCreate: (title: string, placement: 'front' | 'end') => Promise<{ slug: string }>; articles: ScheduleEntry[]; active?: boolean; library: LibraryState | null; librarySelection: LibrarySelection; onLibrarySelect: (selection: LibrarySelection) => void; libraryBusy: boolean; onLibraryAction: (action: LibraryAction, revision?: string) => Promise<LibraryState>; onLibraryRefresh: () => Promise<void>; archivedItems: LibraryArticle[]; archiveLoading: boolean };
 const PAGE_SIZE = 20;
 const range = (week: ScheduleWeek) => `${week.start.slice(5).replace('-', '/')} – ${week.end.slice(5).replace('-', '/')}`;
 
 function SortableRow({ entry, scope, disabled, children }: { entry: ScheduleEntry; scope: Scope; disabled: boolean; children: ReactNode }) {
   const fixed = scope === 'current' && Boolean(entry.done);
-  const { setNodeRef, setActivatorNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({ id: entry.slug, disabled: { draggable: disabled || fixed, droppable: disabled }, data: { scope, entry } });
+  const { setNodeRef, setActivatorNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({ id: scheduleEntryKey(entry), disabled: { draggable: disabled || fixed, droppable: disabled }, data: { scope, entry } });
   const style: CSSProperties = { transform: fixed ? undefined : CSS.Transform.toString(transform), transition };
   return <li ref={setNodeRef} style={style} className={`schedule-row ${isDragging ? 'is-dragging' : ''} ${entry.done ? 'is-done' : ''}`}>
-    <IconButton ref={setActivatorNodeRef} type="button" className="schedule-icon-button schedule-grip" data-schedule-slug={entry.slug} {...attributes} {...listeners} aria-label={fixed ? `已拍条目固定在顶部：${entry.title}` : `拖动排序：${entry.title}`} title={fixed ? '已拍固定在顶部；撤销已拍后可调整' : '拖动排序或移到另一组；也可用右侧按钮'} disabled={disabled || fixed}><GripVertical aria-hidden="true" /></IconButton>{children}
+    <IconButton ref={setActivatorNodeRef} type="button" className="schedule-icon-button schedule-grip" data-schedule-key={scheduleEntryKey(entry)} {...attributes} {...listeners} aria-label={fixed ? `${entry.updateTaskId ? '已完成更新' : '已拍条目'}固定在顶部：${entry.title}` : `拖动排序：${entry.title}`} title={fixed ? entry.updateTaskId ? '已完成更新固定在顶部；可从更新记录创建新任务' : '已拍固定在顶部；撤销已拍后可调整' : '拖动排序或移到另一组；也可用右侧按钮'} disabled={disabled || fixed}><GripVertical aria-hidden="true" /></IconButton>{children}
   </li>;
 }
 function SortableList({ entries, scope, disabled, empty, render }: { entries: ScheduleEntry[]; scope: Scope; disabled: boolean; empty: string; render: (entry: ScheduleEntry) => ReactNode }) {
   const { setNodeRef, isOver } = useDroppable({ id: `schedule-zone-${scope}`, disabled: disabled || entries.length > 0, data: { scope, zone: true, empty: entries.length === 0 } });
   return <div ref={setNodeRef} className={`schedule-drop-zone ${isOver ? 'is-over' : ''}`}>
-    <SortableContext id={scope} items={entries.map((entry) => entry.slug)} strategy={verticalListSortingStrategy}>
-      {entries.length ? <ol className="schedule-list">{entries.map((entry) => <SortableRow key={entry.slug} entry={entry} scope={scope} disabled={disabled}>{render(entry)}</SortableRow>)}</ol> : <p className="schedule-empty">{empty}</p>}
+    <SortableContext id={scope} items={entries.map(scheduleEntryKey)} strategy={verticalListSortingStrategy}>
+      {entries.length ? <ol className="schedule-list">{entries.map((entry) => <SortableRow key={scheduleEntryKey(entry)} entry={entry} scope={scope} disabled={disabled}>{render(entry)}</SortableRow>)}</ol> : <p className="schedule-empty">{empty}</p>}
     </SortableContext>
   </div>;
 }
@@ -65,9 +67,10 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
   const [error, setError] = useState(''); const notify = useToast();
   const [query, setQuery] = useState(''); const [page, setPage] = useState(1);
   const [boardView, setBoardView] = useState<'schedule' | 'history'>('schedule');
+  const [updateSource, setUpdateSource] = useState<{ entry: ScheduleEntry; week?: string } | null>(null);
   const [dragging, setDragging] = useState<ScheduleEntry | null>(null);
   const dragSnapshot = useRef<{ revision: string; current: ScheduleEntry[]; queue: ScheduleEntry[]; entry: ScheduleEntry; scope: Scope } | null>(null);
-  const focusAfterDrop = useRef<{ slug: string; scope: Scope } | null>(null);
+  const focusAfterDrop = useRef<{ key: string; scope: Scope } | null>(null);
   const currentSection = useRef<HTMLElement>(null); const queueSection = useRef<HTMLElement>(null);
   const currentHeading = useRef<HTMLHeadingElement>(null); const queueHeading = useRef<HTMLHeadingElement>(null);
   const pointerY = useRef<number | undefined>(undefined);
@@ -159,7 +162,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
     if (!target || busy || dragging || lock.current) return;
     const section = target.scope === 'current' ? currentSection.current : queueSection.current;
     const heading = target.scope === 'current' ? currentHeading.current : queueHeading.current;
-    const handle = Array.from(section?.querySelectorAll<HTMLButtonElement>('.schedule-grip') ?? []).find((button) => button.dataset.scheduleSlug === target.slug);
+    const handle = Array.from(section?.querySelectorAll<HTMLButtonElement>('.schedule-grip') ?? []).find((button) => button.dataset.scheduleKey === target.key);
     // Cross-section updates remount the active row. Preserve the user's filter
     // and page; if the new row is hidden, return keyboard focus to its heading.
     (handle ?? heading)?.focus(); focusAfterDrop.current = null;
@@ -178,9 +181,9 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
       throw problem;
     } finally { lock.current = false; setBusy(false); }
   };
-  const run = async (action: Action, message: string, revision?: string) => { try { await act(action, revision); notify(message); } catch (problem) { setError((problem as Error).message); } };
+  const run = async (action: Action, message: string, revision?: string) => { if (action.updateTaskId && (action.action === 'complete' || action.action === 'remove')) { const entry = [...(data?.thisWeek.entries ?? []), ...(data?.queue ?? [])].find((item) => item.updateTaskId === action.updateTaskId); if (entry) onOpen(entry, 'updates'); return; } try { await act(action, revision); notify(message); } catch (problem) { setError((problem as Error).message); } };
   const queue = data?.queue ?? []; const current = data?.thisWeek.entries ?? [];
-  const operationEntry = operation && 'entry' in operation ? [...current, ...queue].find((entry) => entry.slug === operation.entry.slug) ?? operation.entry : null;
+  const operationEntry = operation && 'entry' in operation ? [...current, ...queue].find((entry) => scheduleEntryKey(entry) === scheduleEntryKey(operation.entry)) ?? operation.entry : null;
   const search = query.trim().toLocaleLowerCase();
   const archivedView = librarySelection === 'archived';
   const filtered = useMemo(() => { const scope = !['all', 'unfiled', 'archived'].includes(librarySelection) ? descendants(library?.folders ?? [], librarySelection) : null; return queue.filter((entry) => { const folder = library?.assignments[`${entry.kind}/${entry.slug}`]; return (!scope || scope.has(folder ?? '')) && (librarySelection !== 'unfiled' || !folder) && (!search || `${entry.title} ${entry.slug}`.toLocaleLowerCase().includes(search)); }); }, [queue, search, library, librarySelection]);
@@ -193,13 +196,13 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
     if (!data || busy || submitting || libraryBusy || refreshing.current || revisionStale.current) return;
     directorySnapshot.current = library;
     if (active.data.current?.libraryKind === 'folder') { folderDragging.current = true; setFolderDrag(active.data.current.folder.name); return; }
-    const entry = [...current, ...queue].find((item) => item.slug === active.id);
+    const entry = [...current, ...queue].find((item) => scheduleEntryKey(item) === active.id);
     if (!entry || entry.done) return;
     // Keep position and revision from the same snapshot even if a refresh was
     // already in flight or another author window saves while this drag is active.
     ++sequence.current;
     const startY = 'clientY' in activatorEvent ? Number(activatorEvent.clientY) : undefined;
-    dragSnapshot.current = { revision: data.revision, current, queue, entry, scope: current.some((item) => item.slug === entry.slug) ? 'current' : 'queue' };
+    dragSnapshot.current = { revision: data.revision, current, queue, entry, scope: current.some((item) => scheduleEntryKey(item) === scheduleEntryKey(entry)) ? 'current' : 'queue' };
     // Retain an inline error until drop: removing it now would shift every
     // measured droppable vertically just as a pointer/keyboard drag starts.
     pointerY.current = startY; setDragging(entry);
@@ -220,18 +223,18 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
     if (scope !== 'current' && scope !== 'queue') return;
     if (snapshot.entry.done && scope === 'queue') { setError('已拍条目请先撤销已拍，再移回其它。'); return; }
     if (snapshot.entry.missing && scope === 'current' && snapshot.scope !== 'current') { setError('文章已不存在，无法移入本周。'); return; }
-    const target = snapshot[scope].filter((entry) => entry.slug !== snapshot.entry.slug);
+    const target = snapshot[scope].filter((entry) => scheduleEntryKey(entry) !== scheduleEntryKey(snapshot.entry));
     let position = target.length + 1;
     if (!over.data.current?.zone) {
       // Resolve a visible target by slug in the complete snapshot, never by its
       // filtered/page-local index. Hidden rows retain their relative order.
-      const index = target.findIndex((entry) => entry.slug === over.id);
+      const index = target.findIndex((entry) => scheduleEntryKey(entry) === over.id);
       if (index < 0) return;
       if (pointerY.current === undefined && scope === snapshot.scope) {
         // Keyboard coordinates refer to the target row's original position.
         // Resolve arrayMove's final position, independent of the path taken
         // (e.g. Down, Down, Up must not undo the first move).
-        position = snapshot[scope].findIndex((entry) => entry.slug === over.id) + 1;
+        position = snapshot[scope].findIndex((entry) => scheduleEntryKey(entry) === over.id) + 1;
       } else {
         const after = pointerY.current === undefined
           ? snapshot.scope === 'queue'
@@ -241,15 +244,16 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
     }
     if (scope === 'current') position = Math.max(position, snapshot.current.filter((entry) => entry.done).length + 1);
     if (scope === 'current' && hitCompleted.current) position = snapshot.current.filter((entry) => entry.done).length + 1;
-    const previousPosition = snapshot[snapshot.scope].findIndex((entry) => entry.slug === snapshot.entry.slug) + 1;
+    const previousPosition = snapshot[snapshot.scope].findIndex((entry) => scheduleEntryKey(entry) === scheduleEntryKey(snapshot.entry)) + 1;
     if (scope === snapshot.scope && position === previousPosition) return;
-    if (pointerY.current === undefined) focusAfterDrop.current = { slug: snapshot.entry.slug, scope };
-    void run({ action: scope === snapshot.scope ? 'move' : 'transfer', slug: snapshot.entry.slug, scope, position }, scope === snapshot.scope ? '顺序已更新' : scope === 'current' ? '已移入本周' : '已移回其它', snapshot.revision);
+    if (pointerY.current === undefined) focusAfterDrop.current = { key: scheduleEntryKey(snapshot.entry), scope };
+    void run({ action: scope === snapshot.scope ? 'move' : 'transfer', slug: snapshot.entry.slug, updateTaskId: snapshot.entry.updateTaskId, scope, position }, scope === snapshot.scope ? '顺序已更新' : scope === 'current' ? '已移入本周' : '已移回其它', snapshot.revision);
   };
   const start = (next: Operation, source?: HTMLElement | null) => {
+    if (next.type === 'remove' && next.entry.updateTaskId) { onOpen(next.entry, 'updates'); return; }
     returnFocus.current = source ?? document.activeElement as HTMLElement; dialogOpening.current = true;
     setOperation(next); setDialogError(''); setArchiveReason(''); if ('entry' in next) setDestination(library?.assignments[`${next.entry.kind}/${next.entry.slug}`] ?? null); setTitle(''); setPlacement('front'); setCreatedSlug(null); setExistingQuery('');
-    if (next.type === 'move') setPosition(String((next.scope === 'current' ? current : queue).findIndex((entry) => entry.slug === next.entry.slug) + 1));
+    if (next.type === 'move') setPosition(String((next.scope === 'current' ? current : queue).findIndex((entry) => scheduleEntryKey(entry) === scheduleEntryKey(next.entry)) + 1));
   };
   const close = () => { if (dialogLock.current) return; dialogOpening.current = false; setOperation(null); };
   const submit = async (event: FormEvent) => {
@@ -270,12 +274,12 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
         notify(alreadyCurrent ? '素材已在本周安排中' : alreadyQueued >= 0 ? '素材已在候选选题中' : placement === 'front' ? '新选题已加入其它最前' : '新选题已加入其它末尾');
       } else if (operation.type === 'move') {
         const target = Number(position); if (!Number.isInteger(target) || target < operation.minimum || target > operation.maximum) throw new Error(`位置应为 ${operation.minimum} 至 ${operation.maximum}`);
-        await act({ action: 'move', scope: operation.scope, slug: operation.entry.slug, position: target });
+        await act({ action: 'move', scope: operation.scope, slug: operation.entry.slug, updateTaskId: operation.entry.updateTaskId, position: target });
         if (operation.scope === 'queue') { setQuery(''); setPage(Math.ceil(target / PAGE_SIZE)); }
         notify('顺序已更新');
       } else if (operation.type === 'assign') { await onLibraryAction({ action: 'assign', articleKey: `${operation.entry.kind}/${operation.entry.slug}`, folderId: destination });
       } else if (operation.type === 'archive') { await onLibraryAction({ action: 'archive', articleKey: `${operation.entry.kind}/${operation.entry.slug}`, reason: archiveReason }); await refresh(true);
-      } else if (operation.type === 'remove') { await act({ action: 'remove', slug: operation.entry.slug }); notify('已移出候选选题，文章仍保留'); }
+      } else if (operation.type === 'remove') { await act({ action: 'remove', slug: operation.entry.slug, updateTaskId: operation.entry.updateTaskId }); notify('已移出候选选题，文章仍保留'); }
       dialogOpening.current = false; setOperation(null);
     } catch (problem) { setDialogError((problem as Error).message); }
     finally { dialogLock.current = false; setSubmitting(false); }
@@ -286,25 +290,25 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
     catch (problem) { setDialogError((problem as Error).message); } finally { dialogLock.current = false; setSubmitting(false); }
   };
   const menu = (entry: ScheduleEntry, scope: Scope) => {
-    const key = `${scope}/${entry.slug}`; const list = scope === 'current' ? current : queue; const index = list.findIndex((item) => item.slug === entry.slug);
+    const key = `${scope}/${scheduleEntryKey(entry)}`; const list = scope === 'current' ? current : queue; const index = list.findIndex((item) => scheduleEntryKey(item) === scheduleEntryKey(entry));
     const minimum = scope === 'current' ? current.filter((item) => item.done).length + 1 : 1;
     return <Menu.Root><Menu.Trigger asChild><IconButton ref={(node) => { if (node) menuButtons.current.set(key, node); else menuButtons.current.delete(key); }} type="button" className="schedule-icon-button" aria-label={`更多操作：${entry.title}`} disabled={controlsBusy || submitting}><MoreHorizontal aria-hidden="true" /></IconButton></Menu.Trigger><Menu.Portal><Menu.Content className="library-menu" sideOffset={4} align="end" collisionPadding={12} onCloseAutoFocus={(event) => { if (dialogOpening.current) event.preventDefault(); }}>
       {([{tab:'filming',label:'选题与拍摄',Icon:Clapperboard},{tab:'article',label:'写文章',Icon:BookOpenText},{tab:'video',label:'添加视频',Icon:Film},{tab:'assets',label:'添加资源',Icon:FolderOpen},{tab:'publish',label:'发布与记录',Icon:Send}] as const).map(({tab,label,Icon}) => <Menu.Item key={tab} className="library-menu-item" disabled={entry.missing} onSelect={() => onOpen(entry,tab)}><Icon size={16} aria-hidden="true" />{label}</Menu.Item>)}<Menu.Separator className="library-menu-separator" />
       <Menu.Item className="library-menu-item" disabled={entry.missing} onSelect={() => start({ type: 'assign', entry }, menuButtons.current.get(key))}><FolderInput size={16} aria-hidden="true" />移动到目录</Menu.Item><Menu.Item className="library-menu-item" disabled={entry.missing} onSelect={() => start({ type: 'archive', entry }, menuButtons.current.get(key))}><Archive size={16} aria-hidden="true" />归档选题</Menu.Item><Menu.Separator className="library-menu-separator" />
-      {!(scope === 'current' && entry.done) && <><Menu.Item className="library-menu-item" disabled={index + 1 <= minimum} onSelect={() => void run({ action: 'move', slug: entry.slug, scope, position: minimum }, scope === 'current' ? '已移到待拍最前' : '已移到最前')}><MoveUp size={16} aria-hidden="true" />{scope === 'current' ? '移到待拍最前' : '移到最前'}</Menu.Item>
-      <Menu.Item className="library-menu-item" disabled={index + 1 <= minimum} onSelect={() => void run({ action: 'move', slug: entry.slug, scope, position: index }, '顺序已更新')}><ArrowUp size={16} aria-hidden="true" />上移一条</Menu.Item>
-      <Menu.Item className="library-menu-item" disabled={index === list.length - 1} onSelect={() => void run({ action: 'move', slug: entry.slug, scope, position: index + 2 }, '顺序已更新')}><ArrowDown size={16} aria-hidden="true" />下移一条</Menu.Item>
+      {!(scope === 'current' && entry.done) && <><Menu.Item className="library-menu-item" disabled={index + 1 <= minimum} onSelect={() => void run({ action: 'move', slug: entry.slug, updateTaskId: entry.updateTaskId, scope, position: minimum }, scope === 'current' ? '已移到待拍最前' : '已移到最前')}><MoveUp size={16} aria-hidden="true" />{scope === 'current' ? '移到待拍最前' : '移到最前'}</Menu.Item>
+      <Menu.Item className="library-menu-item" disabled={index + 1 <= minimum} onSelect={() => void run({ action: 'move', slug: entry.slug, updateTaskId: entry.updateTaskId, scope, position: index }, '顺序已更新')}><ArrowUp size={16} aria-hidden="true" />上移一条</Menu.Item>
+      <Menu.Item className="library-menu-item" disabled={index === list.length - 1} onSelect={() => void run({ action: 'move', slug: entry.slug, updateTaskId: entry.updateTaskId, scope, position: index + 2 }, '顺序已更新')}><ArrowDown size={16} aria-hidden="true" />下移一条</Menu.Item>
       <Menu.Item className="library-menu-item" onSelect={() => start({ type: 'move', entry, scope, minimum, maximum: list.length }, menuButtons.current.get(key))}><ListOrdered size={16} aria-hidden="true" />移到指定位置</Menu.Item>
       <Menu.Separator className="library-menu-separator" /></>}
-      {scope === 'queue' ? <><Menu.Item className="library-menu-item" disabled={entry.missing} onSelect={() => void run({ action: 'transfer', slug: entry.slug, scope: 'current', position: current.length + 1 }, '已移入本周')}><ArrowUp size={16} aria-hidden="true" />移入本周</Menu.Item><Menu.Item className="library-menu-item" disabled={entry.missing} onSelect={() => void run({ action: 'transfer', slug: entry.slug, scope: 'current', position: current.filter((item) => item.done).length + 1 }, '已移入本周待拍最前')}><MoveUp size={16} aria-hidden="true" />移入本周待拍最前</Menu.Item><Menu.Item className="library-menu-item" onSelect={() => start({ type: 'remove', entry }, menuButtons.current.get(key))}><X size={16} aria-hidden="true" />移出拍摄排期</Menu.Item></> : <><Menu.Item className="library-menu-item" disabled={entry.missing} onSelect={() => void run({ action: 'complete', slug: entry.slug, done: !entry.done }, entry.done ? '已撤销已拍，回到待拍最前' : '已标记已拍，固定在顶部')}>{entry.done ? <Undo2 size={16} aria-hidden="true" /> : <Check size={16} aria-hidden="true" />}{entry.done ? '撤销已拍' : '标记已拍'}</Menu.Item>{!entry.done && <Menu.Item className="library-menu-item" onSelect={() => void run({ action: 'transfer', slug: entry.slug, scope: 'queue', position: 1 }, '已移回其它最前')}><ArrowDown size={16} aria-hidden="true" />移回其它最前</Menu.Item>}</>}
+      {scope === 'queue' ? <><Menu.Item className="library-menu-item" disabled={entry.missing} onSelect={() => void run({ action: 'transfer', slug: entry.slug, updateTaskId: entry.updateTaskId, scope: 'current', position: current.length + 1 }, '已移入本周')}><ArrowUp size={16} aria-hidden="true" />移入本周</Menu.Item><Menu.Item className="library-menu-item" disabled={entry.missing} onSelect={() => void run({ action: 'transfer', slug: entry.slug, updateTaskId: entry.updateTaskId, scope: 'current', position: current.filter((item) => item.done).length + 1 }, '已移入本周待拍最前')}><MoveUp size={16} aria-hidden="true" />移入本周待拍最前</Menu.Item><Menu.Item className="library-menu-item" onSelect={() => start({ type: 'remove', entry }, menuButtons.current.get(key))}><X size={16} aria-hidden="true" />{entry.updateTaskId ? '更新详情与取消' : '移出拍摄排期'}</Menu.Item></> : <><Menu.Item className="library-menu-item" disabled={entry.missing} onSelect={() => void run({ action: 'complete', slug: entry.slug, updateTaskId: entry.updateTaskId, done: !entry.done }, entry.done ? '已撤销已拍，回到待拍最前' : '已标记已拍，固定在顶部')}>{entry.done ? entry.updateTaskId ? <History size={16} aria-hidden="true" /> : <Undo2 size={16} aria-hidden="true" /> : <Check size={16} aria-hidden="true" />}{entry.updateTaskId ? entry.done ? '查看更新记录' : '完成本次更新' : entry.done ? '撤销已拍' : '标记已拍'}</Menu.Item>{!entry.done && <Menu.Item className="library-menu-item" onSelect={() => void run({ action: 'transfer', slug: entry.slug, updateTaskId: entry.updateTaskId, scope: 'queue', position: 1 }, '已移回其它最前')}><ArrowDown size={16} aria-hidden="true" />移回其它最前</Menu.Item>}</>}
     </Menu.Content></Menu.Portal></Menu.Root>;
   };
-  const articleTitle = (entry: ScheduleEntry) => <button type="button" className="schedule-title" title={entry.title} onClick={() => onOpen(entry, 'filming')} disabled={Boolean(entry.missing)}>{entry.title}{entry.missing && <span className="schedule-missing">文章已不存在</span>}</button>;
+  const articleTitle = (entry: ScheduleEntry) => <button type="button" className="schedule-title" title={entry.title} onClick={() => onOpen(entry, entry.updateTaskId ? 'article' : 'filming')} disabled={Boolean(entry.missing)}>{entry.title}{entry.missing && <span className="schedule-missing">文章已不存在</span>}</button>;
   const row = (entry: ScheduleEntry, scope: Scope) => {
-    const list = scope === 'current' ? current : queue; const index = list.findIndex((item) => item.slug === entry.slug);
-    return <><span className="schedule-position">{index + 1}</span><div className="schedule-row-content">{articleTitle(entry)}</div>{entry.done && <span className="schedule-complete-label is-complete">已拍</span>}<div className="schedule-row-actions"><IconButton type="button" className="schedule-icon-button" aria-label={`选题与拍摄：${entry.title}`} title="选题与拍摄" disabled={entry.missing} onClick={() => onOpen(entry, 'filming')}><Clapperboard aria-hidden="true" /></IconButton>
-      {scope === 'current' && <IconButton type="button" className={`schedule-icon-button schedule-done ${entry.done ? 'is-checked' : ''}`} aria-label={`${entry.done ? '撤销已拍' : '标记已拍'}：${entry.title}`} title={entry.done ? '撤销已拍' : '标记已拍'} aria-pressed={Boolean(entry.done)} disabled={controlsBusy || entry.missing} onClick={() => void run({ action: 'complete', slug: entry.slug, done: !entry.done }, entry.done ? '已撤销已拍，回到待拍最前' : '已标记已拍，固定在顶部')}><Check aria-hidden="true" /></IconButton>}
-      <IconButton type="button" className="schedule-icon-button schedule-transfer" aria-label={`${scope === 'current' ? '移回其它' : '移入本周'}：${entry.title}`} title={entry.done ? '先撤销已拍，再移回其它' : scope === 'current' ? '移回其它最前' : '移入本周末尾'} disabled={controlsBusy || submitting || (scope === 'current' ? entry.done : entry.missing)} onClick={() => void run({ action: 'transfer', slug: entry.slug, scope: scope === 'current' ? 'queue' : 'current', position: scope === 'current' ? 1 : current.length + 1 }, scope === 'current' ? '已移回其它最前' : '已移入本周')}>{scope === 'current' ? <ArrowDown aria-hidden="true" /> : <ArrowUp aria-hidden="true" />}</IconButton>{menu(entry, scope)}</div></>;
+    const list = scope === 'current' ? current : queue; const index = list.findIndex((item) => scheduleEntryKey(item) === scheduleEntryKey(entry));
+    return <><span className="schedule-position">{index + 1}</span><div className="schedule-row-content">{articleTitle(entry)}{entry.updateTaskId && <span className="schedule-update-label">更新 · {entry.updateReason && updateReasons[entry.updateReason]} · {entry.updateScope && updateScopes[entry.updateScope]}</span>}</div>{entry.done && <span className="schedule-complete-label is-complete">{entry.updateTaskId ? '更新完成' : '已拍'}</span>}<div className="schedule-row-actions"><IconButton type="button" className="schedule-icon-button" aria-label={`选题与拍摄：${entry.title}`} title="选题与拍摄" disabled={entry.missing} onClick={() => onOpen(entry, 'filming')}><Clapperboard aria-hidden="true" /></IconButton>
+      {scope === 'current' && <IconButton type="button" className={`schedule-icon-button schedule-done ${entry.done ? 'is-checked' : ''}`} aria-label={`${entry.updateTaskId ? entry.done ? '查看更新记录' : '完成本次更新' : entry.done ? '撤销已拍' : '标记已拍'}：${entry.title}`} title={entry.updateTaskId ? '查看更新详情' : entry.done ? '撤销已拍' : '标记已拍'} aria-pressed={entry.updateTaskId ? undefined : Boolean(entry.done)} disabled={controlsBusy || entry.missing} onClick={() => void run({ action: 'complete', slug: entry.slug, updateTaskId: entry.updateTaskId, done: !entry.done }, entry.done ? '已撤销已拍，回到待拍最前' : '已标记已拍，固定在顶部')}><Check aria-hidden="true" /></IconButton>}
+      <IconButton type="button" className="schedule-icon-button schedule-transfer" aria-label={`${scope === 'current' ? '移回其它' : '移入本周'}：${entry.title}`} title={entry.done ? entry.updateTaskId ? '更新已完成，历史记录保留' : '先撤销已拍，再移回其它' : scope === 'current' ? '移回其它最前' : '移入本周末尾'} disabled={controlsBusy || submitting || (scope === 'current' ? entry.done : entry.missing)} onClick={() => void run({ action: 'transfer', slug: entry.slug, updateTaskId: entry.updateTaskId, scope: scope === 'current' ? 'queue' : 'current', position: scope === 'current' ? 1 : current.length + 1 }, scope === 'current' ? '已移回其它最前' : '已移入本周')}>{scope === 'current' ? <ArrowDown aria-hidden="true" /> : <ArrowUp aria-hidden="true" />}</IconButton>{menu(entry, scope)}</div></>;
   };
   const placementField = <label className="schedule-field"><span>加入位置</span><AuthorSelect value={placement} onValueChange={(value) => setPlacement(value as 'front' | 'end')} disabled={submitting} label="加入候选选题的位置" options={[{ value: 'front', label: '候选最前' }, { value: 'end', label: '候选末尾' }]} /></label>;
   const dialogTitle = operation?.type === 'assign' ? '移动到目录' : operation?.type === 'archive' ? '归档选题' : operation?.type === 'create' ? '新建选题' : operation?.type === 'existing' ? '添加已有内容' : operation?.type === 'move' ? '调整位置' : operation?.type === 'remove' ? '移出拍摄排期' : '排期规则';
@@ -315,9 +319,9 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
     </div>
     {error && <div className="message message-error" role="alert"><span>{error}</span><button type="button" onClick={() => void refresh()}>重试</button></div>}
     {loading && !data ? <div className="schedule-empty" role="status"><LoaderCircle className="spin" aria-hidden="true" />正在读取排期…</div> : !data ? <div className="schedule-empty"><p>暂时无法读取排期。</p><button type="button" className="secondary-button" onClick={() => void refresh()}>重新加载</button></div> : <>
-      {search || boardView === 'history' ? <ScheduleLookup data={data} articles={articles} archivedItems={archivedItems} archiveLoading={archiveLoading} query={query} onOpen={onOpen} /> : <DndContext sensors={sensors} collisionDetection={detectCollision} onDragStart={dragStart} onDragEnd={dragEnd} onDragCancel={() => { dragSnapshot.current = null; setDragging(null); folderDragging.current = false; directorySnapshot.current = null; setFolderDrag(''); }} accessibility={{ restoreFocus: false, screenReaderInstructions: { draggable: '按空格开始拖动，上下方向键调整位置或移到另一组，再按空格放下；Escape 取消。也可使用右侧按钮或更多操作中的移入本周、移回其它、上移、下移。' }, announcements: { onDragStart: ({ active }) => `开始拖动${String(active.data.current?.folder?.name ?? active.data.current?.entry?.title ?? '条目')}。`, onDragOver: ({ over }) => over?.data.current?.libraryKind === 'target' ? `移到${over.data.current.folderId ? folderPath(library?.folders ?? [], over.data.current.folderId) : '未分类或顶层目录'}${over.data.current.placement === 'before' ? '之前' : over.data.current.placement === 'after' ? '之后' : '内'}。` : over ? `移到${over.data.current?.scope === 'current' ? '本周' : '其它'}${over.data.current?.entry ? `，${over.data.current.entry.title}的位置` : '空区域'}。` : '当前不在放置区域。', onDragEnd: () => '拖动结束，正在确认安排。', onDragCancel: () => '已取消拖动。' } }}>
+      {search || boardView === 'history' ? <ScheduleLookup data={data} articles={articles} archivedItems={archivedItems} archiveLoading={archiveLoading} query={query} onOpen={onOpen} onCreateUpdate={(entry, week) => setUpdateSource({ entry, week })} /> : <DndContext sensors={sensors} collisionDetection={detectCollision} onDragStart={dragStart} onDragEnd={dragEnd} onDragCancel={() => { dragSnapshot.current = null; setDragging(null); folderDragging.current = false; directorySnapshot.current = null; setFolderDrag(''); }} accessibility={{ restoreFocus: false, screenReaderInstructions: { draggable: '按空格开始拖动，上下方向键调整位置或移到另一组，再按空格放下；Escape 取消。也可使用右侧按钮或更多操作中的移入本周、移回其它、上移、下移。' }, announcements: { onDragStart: ({ active }) => `开始拖动${String(active.data.current?.folder?.name ?? active.data.current?.entry?.title ?? '条目')}。`, onDragOver: ({ over }) => over?.data.current?.libraryKind === 'target' ? `移到${over.data.current.folderId ? folderPath(library?.folders ?? [], over.data.current.folderId) : '未分类或顶层目录'}${over.data.current.placement === 'before' ? '之前' : over.data.current.placement === 'after' ? '之后' : '内'}。` : over ? `移到${over.data.current?.scope === 'current' ? '本周' : '其它'}${over.data.current?.entry ? `，${over.data.current.entry.title}的位置` : '空区域'}。` : '当前不在放置区域。', onDragEnd: () => '拖动结束，正在确认安排。', onDragCancel: () => '已取消拖动。' } }}>
         <div className="schedule-layout"><aside className="schedule-directories" aria-label="共享内容目录"><button type="button" className="schedule-directory-toggle secondary-button" aria-expanded={directoriesOpen} onClick={() => setDirectoriesOpen((value) => !value)}><FolderOpen size={16} aria-hidden="true" />{['all', 'archived', 'unfiled'].includes(librarySelection) ? '共享目录' : folderPath(library?.folders ?? [], librarySelection)}<ChevronDown size={16} aria-hidden="true" /></button><div className={`schedule-directory-content ${directoriesOpen ? 'is-open' : ''}`}><ArticleLibrary library={library} items={articles} archivedItems={archivedItems} archiveLoading={archiveLoading} selection={librarySelection} onSelect={onLibrarySelect} busy={controlsBusy || submitting} onAction={onLibraryAction} onRefresh={onLibraryRefresh} onOpen={(item, tab) => onOpen(item, tab ?? 'filming')} foldersOnly externalDnd /></div></aside><div className="schedule-main">
-        <section ref={currentSection} className="schedule-week schedule-current" aria-labelledby="schedule-current-title"><header className="schedule-section-heading"><div className="schedule-section-label"><h2 ref={currentHeading} tabIndex={-1} id="schedule-current-title">本周</h2><span className="schedule-date">{range(data.thisWeek)}</span><span className="schedule-count">{current.length} 条 · 已拍 {current.filter((entry) => entry.done).length} 条</span></div></header>
+        <section ref={currentSection} className="schedule-week schedule-current" aria-labelledby="schedule-current-title"><header className="schedule-section-heading"><div className="schedule-section-label"><h2 ref={currentHeading} tabIndex={-1} id="schedule-current-title">本周</h2><span className="schedule-date">{range(data.thisWeek)}</span><span className="schedule-count">{current.length} 条 · 已完成 {current.filter((entry) => entry.done).length} 条</span></div></header>
           <SortableList entries={current} scope="current" disabled={controlsBusy || submitting} empty="从下方拖入本周，想拍几条就安排几条。" render={(entry) => row(entry, 'current')} />
         </section>
         <section ref={queueSection} className="schedule-queue" aria-labelledby="schedule-queue-title"><header className="schedule-section-heading schedule-queue-toolbar"><div className="schedule-section-label"><h2 ref={queueHeading} tabIndex={-1} id="schedule-queue-title">{archivedView ? '已归档' : ['all', 'unfiled'].includes(librarySelection) ? librarySelection === 'unfiled' ? '未分类选题' : '候选选题' : folderPath(library?.folders ?? [], librarySelection)}</h2><span className="schedule-count">{archivedView ? archivedItems.length : filtered.length} 条</span><HelpTip label="候选选题与目录说明">目录筛选包含子目录，只影响候选列表；本周仍显示全部已安排选题。拖到目录只归类，不改变拍摄顺序。</HelpTip></div>
@@ -329,6 +333,7 @@ export default function ScheduleBoard({ request, onOpen, onCreate, articles, act
       </div></div>
       </DndContext>}
     </>}
+    <CreateUpdateDialog entry={updateSource?.entry ?? null} sourceWeek={updateSource?.week} request={request} onClose={() => setUpdateSource(null)} onCreated={(task) => { void refresh(true); setBoardView('schedule'); setQuery(''); setPage(1); onLibrarySelect('all'); notify('更新任务已加入候选最前，原教程和历史记录保留'); onOpen({ slug: task.slug, title: task.title, kind: task.kind, status: '', updateTaskId: task.id }, task.scope === 'video' ? 'video' : 'article'); }} onContinue={(task: ContentUpdate) => onOpen({ slug: task.slug, title: task.title, kind: task.kind, status: '', updateTaskId: task.id }, 'updates')} />
     <Dialog.Root open={operation !== null} onOpenChange={(open) => { if (!open) close(); }}><AuthorDialogContent onOpenAutoFocus={(event) => { if (operation && ['create', 'move', 'existing'].includes(operation.type)) { event.preventDefault(); dialogInput.current?.focus(); if (operation.type === 'move') dialogInput.current?.select(); } }} onEscapeKeyDown={(event) => { if (submitting) event.preventDefault(); }} onPointerDownOutside={(event) => { if (submitting) event.preventDefault(); }} onCloseAutoFocus={(event) => { event.preventDefault(); (returnFocus.current?.isConnected ? returnFocus.current : newButton.current)?.focus(); }} className="schedule-dialog" title={dialogTitle} description={operation?.type === 'assign' ? '目录归属会同步到内容库，本周拍摄顺序保持不变。' : operation?.type === 'archive' ? '归档后从活动内容和拍摄排期隐藏；可随时恢复，恢复不会自动加入旧排期。' : operation?.type === 'create' ? '填好标题即可加入候选选题，随时点开继续写。' : operation?.type === 'existing' ? '把尚未进入本周或候选选题的文章加入排期。' : operation?.type === 'move' ? `在${operation.scope === 'current' ? '本周' : '全部候选选题'}内移动，范围 ${operation.minimum} 至 ${operation.maximum}。` : operation?.type === 'remove' ? '只移出拍摄排期，文章及正文仍保留。' : '每周从周一开始，日期按北京时间计算。'}  closeLabel="关闭排期操作" closeDisabled={submitting}>
       {operation?.type === 'help' ? <><ul className="schedule-help"><li>上面是本周要拍的内容，下面是候选选题。本周条数由你决定，可以暂时不安排。</li><li>拖动左侧手柄可在两组之间移动，也可调整组内顺序；右侧按钮或更多操作中的移入本周、移回其它提供相同操作。</li><li>搜索会查找全部内容；清空搜索后可继续拖动排期。翻页后仍按完整列表的位置保存，更多操作可指定跨页位置。</li><li>已拍条目固定在本周顶部，待拍只能排在后面。撤销已拍后回到待拍最前，才能调整或移回其它。</li><li>跨周后，未拍完的条目按原顺序回到其它最前，本周留空，由你重新安排；拍摄历史保留。</li><li>“已拍”只记录拍摄进度，不会发布文章或视频。</li></ul><div className="library-dialog-actions"><Dialog.Close asChild><button type="button" className="save-button">知道了</button></Dialog.Close></div></> : operation?.type === 'existing' ? <>{placementField}<label className="schedule-field"><span>查找文章</span><input ref={dialogInput} autoFocus value={existingQuery} onChange={(event) => setExistingQuery(event.target.value)} placeholder="输入标题或文章地址" /></label><ul className="schedule-existing-list">{existing.map((entry) => <li key={entry.slug}><span>{entry.title}</span><button type="button" className="secondary-button" disabled={submitting || controlsBusy} onClick={() => void enqueueExisting(entry)}>加入</button></li>)}</ul>{!existing.length && <p className="schedule-empty">没有可添加的文章，可以先新建选题。</p>}{dialogError && <p className="field-error" role="alert">{dialogError}</p>}</> : <form onSubmit={(event) => void submit(event)}>
         {operation?.type === 'create' && <><label className="schedule-field"><span>选题标题</span><input ref={dialogInput} autoFocus value={title} onChange={(event) => setTitle(event.target.value)} minLength={2} maxLength={160} required disabled={submitting || Boolean(createdSlug)} placeholder="例如：临时发现的一个实用功能" /></label>{placementField}{createdSlug && <p className="schedule-created" role="status">草稿已创建。重试只会加入候选选题，不会再建一份。</p>}</>}

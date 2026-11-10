@@ -1,0 +1,12 @@
+export type UpdateReason = 'correction' | 'adapt' | 'supplement';
+export type UpdateScope = 'article' | 'video' | 'both';
+export type UpdateAsset = { id: string; filename: string; relativePath?: string; category: string; version: number; size: number; sha256: string; createdAt?: string };
+export type UpdateSnapshot = { articleRevision: string; workspaceRevision?: string; articleImages?: Record<string, string>; publishedRevision: string | null; assets: UpdateAsset[]; selectedVideoId: string | null; notes: string; software: string; softwareVersion: string };
+export type ContentUpdate = { id: string; slug: string; contentId: string; title: string; kind: 'draft' | 'content'; reason: UpdateReason; scope: UpdateScope; note: string; sourceWeek?: string; status: 'active' | 'completed' | 'canceled'; createdAt: string; updatedAt: string; revision: string; syncError?: string; base: UpdateSnapshot; result?: UpdateSnapshot };
+export type ContentPublications = { website: { id: string; slug: string; revision: string; action: 'publish' | 'unpublish'; publishedAt: string | null; updateTaskId?: string; legacy?: boolean }[]; channels: { id: string; status: string; createdAt: string; updateTaskId?: string; video?: { id: string; sha256: string }; targets: { platform: string; status: string; platformStatus?: string; postUrl?: string | null }[] }[] };
+export type ContentUpdates = { tasks: ContentUpdate[]; activeTask: ContentUpdate | null; publications: ContentPublications };
+export const updateReasons: Record<UpdateReason, string> = { correction: '纠错', adapt: '适配新版', supplement: '补充内容' };
+export const updateScopes: Record<UpdateScope, string> = { article: '文章', video: '视频', both: '文章和视频' };
+export const updateStatuses: Record<ContentUpdate['status'], string> = { active: '进行中', completed: '制作完成', canceled: '已取消' };
+export const scheduleEntryKey = (entry: { slug: string; updateTaskId?: string }) => entry.updateTaskId ? `update:${entry.updateTaskId}` : `article:${entry.slug}`;
+export const updateDate = (value?: string | null) => value && Number.isFinite(new Date(value).getTime()) ? new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(value)) : '时间未记录';

@@ -11,12 +11,14 @@ import { Clapperboard, ArrowLeft, AudioLines, Check, CheckCheck, CircleAlert, Do
 import { parseDocument } from 'yaml';
 import HelpTip from './HelpTip';
 import FilmingPanel from './FilmingPanel';
+import ContentUpdatesPanel from './ContentUpdatesPanel';
+import { updateReasons, updateScopes, updateStatuses, type ContentUpdate, type ContentUpdates } from './content-updates';
 import './workspace.css';
 
 type Request = <T>(path: string, options?: RequestInit) => Promise<T>;
 export type WorkspaceArticle = { kind: 'draft' | 'content'; slug: string; frontmatter: string; body: string; revision: string; images?: Record<string, string> };
-export type WorkspaceTab = 'filming' | 'article' | 'video' | 'assets' | 'publish';
-export type WorkspacePublishingContext = { slug: string; title: string; contentId?: string; videoAssetId?: string };
+export type WorkspaceTab = 'filming' | 'article' | 'video' | 'assets' | 'publish' | 'updates';
+export type WorkspacePublishingContext = { slug: string; title: string; contentId?: string; videoAssetId?: string; updateTaskId?: string };
 type Category = 'video' | 'recording' | 'image' | 'audio' | 'project' | 'subtitle' | 'other';
 type Asset = { id: string; filename: string; relativePath: string; category: Category; groupId: string; version: number; size: number; mime: string; sha256: string; createdAt: string; width?: number; height?: number; duration?: number };
 type UploadIntent = { id: string; filename: string; category: Category; size: number; relativePath?: string; chunkSize: number; totalParts: number; receivedParts: number[] };
@@ -28,7 +30,7 @@ type PublishRelease = { url: string; release?: string; previewId?: string; selec
 type PublishState = { enabled: boolean; localOnly?: boolean; active: PublishJob | null; lastJob: PublishJob | null; environments: { staging: PublishRelease | null; production: PublishRelease | null } };
 type PlatformTarget = { id: string; status: string; post_url?: string; message?: string; account_snapshot?: { alias?: string; platform?: string }; snapshot?: { title?: string } };
 type PlatformJob = { id: string; content_ref?: { id?: string; slug?: string }; created_at?: string; targets: PlatformTarget[] };
-type Props = { slug: string; title: string; savedTitle?: string; kind: 'draft' | 'content'; request: Request; onBack: () => void; children: ReactNode; articleToolbar?: ReactNode; dirty: boolean; onSave: () => Promise<WorkspaceArticle | null>; onRestore?: (article: WorkspaceArticle) => void; onOpenPublishing?: (context: WorkspacePublishingContext) => void | Promise<void>; onPendingChange?: (pending: boolean) => void; articleRevision?: string; initialTab?: WorkspaceTab; active?: boolean };
+type Props = { slug: string; title: string; savedTitle?: string; kind: 'draft' | 'content'; request: Request; onBack: () => void; children: ReactNode; articleToolbar?: ReactNode; dirty: boolean; onSave: () => Promise<WorkspaceArticle | null>; onRestore?: (article: WorkspaceArticle) => void; onOpenPublishing?: (context: WorkspacePublishingContext) => void | Promise<void>; onPendingChange?: (pending: boolean) => void; articleRevision?: string; initialTab?: WorkspaceTab; active?: boolean; updateTaskId?: string | null; onUpdateTaskSelect: (id: string | null) => void };
 const Viewer = lazy(() => import('@bytemd/react').then((module) => ({ default: module.Viewer })));
 const categories: Record<Category, string> = { video: '成片', recording: '原始录屏', image: '图片与封面', audio: '音频', project: '剪辑工程', subtitle: '字幕与文稿', other: '其它文件' };
 const articleStatus: Record<string, string> = { draft: '文章草稿', published: '文章已发布', modified: '有未发布修改', unpublished: '文章已下架' };
@@ -62,13 +64,17 @@ function revisionImagePreview(article: WorkspaceArticle | null): BytemdPlugin {
   };
 }
 
-export default function ContentWorkspace({ slug, title, savedTitle, kind, request, onBack, children, articleToolbar, dirty, onSave, onRestore, onOpenPublishing, onPendingChange, articleRevision, initialTab = 'article', active = true }: Props) {
+export default function ContentWorkspace({ slug, title, savedTitle, kind, request, onBack, children, articleToolbar, dirty, onSave, onRestore, onOpenPublishing, onPendingChange, articleRevision, initialTab = 'article', active = true, updateTaskId, onUpdateTaskSelect }: Props) {
   const [filmingPending, setFilmingPending] = useState(false);
   const [tab, setTab] = useState<WorkspaceTab>(initialTab);
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   const [revision, setRevision] = useState<RevisionState | null>(null);
   const [publish, setPublish] = useState<PublishState | null>(null);
   const [platformJobs, setPlatformJobs] = useState<PlatformJob[]>([]);
+  const [updates, setUpdates] = useState<ContentUpdates | null>(null);
+  const [updatesLoading, setUpdatesLoading] = useState(false);
+  const [updatesError, setUpdatesError] = useState('');
+  const updatesSequence = useRef(0);
   const [error, setError] = useState('');
   const notify = useToast();
   const [loading, setLoading] = useState(true);
@@ -124,6 +130,27 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
     if (results[0].status === 'fulfilled') acceptWorkspace(results[0].value); else throw results[0].reason;
     if (results[1].status === 'fulfilled') setRevision(results[1].value); else throw results[1].reason;
   }, [request, endpoint, revisionEndpoint, acceptWorkspace]);
+  const refreshUpdates = useCallback(async () => {
+    const sequence = ++updatesSequence.current; setUpdatesLoading(true);
+    try { const result = await request<ContentUpdates>(`/api/content-updates?slug=${encodeURIComponent(slug)}`); if (sequence === updatesSequence.current) { setUpdates(result); setUpdatesError(''); } }
+    catch (problem) { if (sequence === updatesSequence.current) setUpdatesError((problem as Error).message); }
+    finally { if (sequence === updatesSequence.current) setUpdatesLoading(false); }
+  }, [request, slug]);
+  useEffect(() => { setUpdates(null); void refreshUpdates(); return () => { ++updatesSequence.current; }; }, [refreshUpdates]);
+  useEffect(() => { if (active && (tab === 'updates' || tab === 'publish')) void refreshUpdates(); }, [active, tab, articleRevision, refreshUpdates]);
+  const selectedUpdate = updates?.tasks.find((item) => item.id === updateTaskId) ?? null;
+  const linkedUpdate = selectedUpdate?.status === 'canceled' ? null : selectedUpdate;
+  const completeUpdate = async (task: ContentUpdate) => {
+    if (dirty || metadataDirty || filmingPending || uploading) throw new Error('请先保存所有修改并等待上传完成');
+    if (!articleRevision || !workspace) throw new Error('请先刷新正文和素材版本');
+    await request(`/api/content-updates/${task.id}`, json({ action: 'complete', revision: task.revision, expectedRevision: articleRevision, expectedWorkspaceRevision: workspace.revision }, 'PATCH'));
+    await refreshUpdates(); notify('本次制作已完成，版本已保留；文章和视频尚未自动发布');
+  };
+  const cancelUpdate = async (task: ContentUpdate) => {
+    await request(`/api/content-updates/${task.id}`, json({ action: 'cancel', revision: task.revision }, 'PATCH'));
+    await refreshUpdates(); notify('已取消本次更新，正文和素材保留');
+  };
+  const updateCreated = (task: ContentUpdate) => { onUpdateTaskSelect(task.id); void refreshUpdates(); setTab(task.scope === 'video' ? 'video' : 'article'); setArticleMode('working'); notify('更新任务已加入候选最前，可以继续编辑'); };
   const refreshPublishing = useCallback(async () => {
     const sequence = generation.current;
     const results = await Promise.allSettled([request<PublishState>('/api/publish'), request<{ jobs: PlatformJob[] }>('/api/publishing/jobs')]);
@@ -164,7 +191,10 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
   const prepareVideoPublishing = () => void run(async () => {
     const current = workspaceRef.current;
     if (!current?.currentVideo || !onOpenPublishing) return;
-    await onOpenPublishing({ slug, title, contentId: current.id, videoAssetId: current.currentVideo.id });
+    if (updateTaskId && !selectedUpdate) throw new Error('请先刷新更新记录，再准备发布');
+    if (selectedUpdate?.status === 'canceled') throw new Error('这次更新已取消，请先切回当前内容或创建新的更新任务');
+    if (linkedUpdate?.scope === 'article') throw new Error('这次更新仅包含文章；发布视频前，请先切回当前内容');
+    await onOpenPublishing({ slug, title, contentId: current.id, videoAssetId: current.currentVideo.id, ...(linkedUpdate ? { updateTaskId: linkedUpdate.id } : {}) });
   });
   const uploadFiles = async (files: File[], forcedCategory?: Category, selectedCategory = uploadCategory) => {
     if (!files.length || uploadRef.current) return;
@@ -219,8 +249,11 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
     onRestore?.(result); setConfirm(null); setArticleMode('working'); await refresh(); notify('历史版本已恢复为工作稿，线上文章尚未变更');
   });
   const prepareWebsite = (action: 'publish' | 'unpublish') => void run(async () => {
+    if (updateTaskId && !selectedUpdate) throw new Error('请先刷新更新记录，再生成预览');
+    if (action === 'publish' && selectedUpdate?.status === 'canceled') throw new Error('这次更新已取消，请先切回当前内容或创建新的更新任务');
+    if (action === 'publish' && linkedUpdate?.scope === 'video') throw new Error('这次更新仅包含视频；发布文章前，请先切回当前内容');
     const saved = await onSave(); if (!saved) return;
-    const result = await request<{ job: PublishJob }>('/api/publish', json({ environment: 'staging', selection: { kind: saved.kind, slug, revision: saved.revision, action } }));
+    const result = await request<{ job: PublishJob }>('/api/publish', json({ environment: 'staging', selection: { kind: saved.kind, slug, revision: saved.revision, action, ...(action === 'publish' && linkedUpdate && linkedUpdate.scope !== 'video' ? { updateTaskId: linkedUpdate.id } : {}) } }));
     setPreparedAction(action); setPreviewId(result.job.previewId || null); setPreviewReady(false); notify(action === 'publish' ? '正在生成本篇文章的发布预览' : '正在生成下架预览', 'info'); await refreshPublishing();
   });
   const publishWebsite = () => void run(async () => {
@@ -240,8 +273,10 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
   const readonlyArticle = reading ? <div className="cw-loading"><LoaderCircle className="spin" size={20} aria-hidden="true" />正在加载版本…</div> : readArticle ? <article className="cw-readonly bytemd-preview"><h2>{articleTitle(readArticle)}</h2><Suspense fallback={<p>正在显示正文…</p>}><Viewer value={readArticle.body} plugins={readonlyPlugins} /></Suspense></article> : null;
 
   return <section className="content-workspace" aria-label="内容工作区">
-    <header className="cw-header"><button className="cw-button cw-back" type="button" aria-label="返回" onClick={leave}><ArrowLeft size={17} aria-hidden="true" /><span>返回</span></button><nav className="cw-tabs" aria-label="当前内容"><button type="button" aria-current={tab === 'filming' ? 'page' : undefined} onClick={() => changeTab('filming')}><Clapperboard size={18} aria-hidden="true" />选题与拍摄</button><button type="button" aria-current={tab === 'article' ? 'page' : undefined} onClick={() => changeTab('article')}><FileText size={18} aria-hidden="true" />文章</button><button type="button" aria-current={tab === 'video' ? 'page' : undefined} onClick={() => changeTab('video')}><Film size={18} aria-hidden="true" />视频{videos.length > 0 && <span className="cw-count">{videos.length}</span>}</button><button type="button" aria-current={tab === 'assets' ? 'page' : undefined} onClick={() => changeTab('assets')}><FolderOpen size={18} aria-hidden="true" />制作素材{Boolean(workspace?.assets.length) && <span className="cw-count">{workspace?.assets.length}</span>}</button><button type="button" aria-current={tab === 'publish' ? 'page' : undefined} onClick={() => changeTab('publish')}><Send size={18} aria-hidden="true" />发布</button></nav><div className="cw-statusline"><span>{dirty ? '工作稿未保存' : revision ? articleStatus[revision.status] : '加载文章状态…'}</span><span>{workspace?.currentVideo ? '成片已就绪' : '暂无成片'}</span></div><IconButton className="cw-button cw-icon cw-refresh" type="button" aria-label="刷新内容状态" disabled={loading || busy || uploading} onClick={() => void run(refresh)}><RefreshCw size={17} aria-hidden="true" /></IconButton></header>
+    <header className="cw-header"><button className="cw-button cw-back" type="button" aria-label="返回" onClick={leave}><ArrowLeft size={17} aria-hidden="true" /><span>返回</span></button><nav className="cw-tabs" aria-label="当前内容"><button type="button" aria-current={tab === 'filming' ? 'page' : undefined} onClick={() => changeTab('filming')}><Clapperboard size={18} aria-hidden="true" />选题与拍摄</button><button type="button" aria-current={tab === 'article' ? 'page' : undefined} onClick={() => changeTab('article')}><FileText size={18} aria-hidden="true" />文章</button><button type="button" aria-current={tab === 'video' ? 'page' : undefined} onClick={() => changeTab('video')}><Film size={18} aria-hidden="true" />视频{videos.length > 0 && <span className="cw-count">{videos.length}</span>}</button><button type="button" aria-current={tab === 'assets' ? 'page' : undefined} onClick={() => changeTab('assets')}><FolderOpen size={18} aria-hidden="true" />制作素材{Boolean(workspace?.assets.length) && <span className="cw-count">{workspace?.assets.length}</span>}</button><button type="button" aria-current={tab === 'publish' ? 'page' : undefined} onClick={() => changeTab('publish')}><Send size={18} aria-hidden="true" />发布</button><button type="button" aria-current={tab === 'updates' ? 'page' : undefined} onClick={() => changeTab('updates')}><History size={18} aria-hidden="true" />更新记录</button></nav><div className="cw-statusline"><span>{dirty ? '工作稿未保存' : revision ? articleStatus[revision.status] : '加载文章状态…'}</span><span>{workspace?.currentVideo ? '成片已就绪' : '暂无成片'}</span></div><IconButton className="cw-button cw-icon cw-refresh" type="button" aria-label="刷新内容状态" disabled={loading || busy || uploading} onClick={() => void run(refresh)}><RefreshCw size={17} aria-hidden="true" /></IconButton></header>
     <div className="cw-content-heading"><h1 ref={headingRef} tabIndex={-1} className={tab === 'article' && articleMode === 'working' ? 'sr-only' : 'cw-content-title'}>{tab === 'filming' ? savedTitle || title : title}</h1>{tab === 'filming' && <HelpTip label="选题标题说明">选题与文章共用这个已保存标题。在“文章”页修改标题并保存后，内容库和拍摄排期会一起更新。</HelpTip>}</div>
+    {tab !== 'updates' && (selectedUpdate || updates?.activeTask) && <div className="update-context"><RefreshCw size={16} aria-hidden="true" /><strong>{selectedUpdate ? `${updateReasons[selectedUpdate.reason]} · ${updateScopes[selectedUpdate.scope]} · ${updateStatuses[selectedUpdate.status]}` : '这篇教程有进行中的更新'}</strong>{selectedUpdate?.status === 'completed' && <span>完成版本已保留；再次加工可创建新的更新任务。</span>}<button className="cw-text-button" type="button" onClick={() => { if (!selectedUpdate) onUpdateTaskSelect(updates!.activeTask!.id); changeTab('updates'); }}>查看更新记录</button>{selectedUpdate && <button className="cw-text-button" type="button" onClick={() => onUpdateTaskSelect(null)}>切回当前内容</button>}</div>}
+    {updateTaskId && !selectedUpdate && !updatesLoading && <p className="cw-dialog-error" role="alert">{updatesError || '暂时无法读取这次更新，请到更新记录刷新后再发布。'}</p>}
     {error && <div className="cw-message cw-message-error" role="alert"><CircleAlert size={17} aria-hidden="true" /><span>{error}</span><IconButton type="button" className="cw-button cw-icon" aria-label="关闭提示" onClick={() => setError('')}><X size={16} aria-hidden="true" /></IconButton></div>}
     {progress && <div className="cw-upload-progress" role="status">
       <div><span>{uploading ? progress.phase === 'preparing' ? '准备上传' : progress.phase === 'saving' ? '校验并保存中' : '上传中' : '已暂停'} · {progress.filename}</span><span>{progress.fileIndex}/{progress.fileCount} · {bytes(progress.done)} / {bytes(progress.total)}</span></div>
@@ -250,6 +285,7 @@ export default function ContentWorkspace({ slug, title, savedTitle, kind, reques
     </div>}
     {!uploading && pendingFiles.length > 0 && !progress && <button type="button" className="cw-button" onClick={() => void uploadFiles(pendingFiles, pendingUploadOptions.current.forcedCategory, pendingUploadOptions.current.selectedCategory)}><RefreshCw size={16} aria-hidden="true" />重试剩余 {pendingFiles.length} 个文件</button>}
     <div hidden={tab !== 'filming'}><FilmingPanel slug={slug} active={active && tab === 'filming'} request={request} onPendingChange={setFilmingPending} /></div>
+    {tab === 'updates' && <ContentUpdatesPanel slug={slug} title={savedTitle || title} kind={kind} request={request} data={updates} selectedId={updateTaskId} loading={updatesLoading} error={updatesError} pending={metadataDirty || filmingPending || uploading || busy} dirty={dirty} onSelect={onUpdateTaskSelect} onRefresh={refreshUpdates} onCreated={updateCreated} onRead={(digest) => { setTab('article'); void readVersion('history', digest); }} onEdit={(task) => { onUpdateTaskSelect(task.id); setArticleMode('working'); setTab(task.scope === 'video' ? 'video' : 'article'); }} onAssets={() => setTab('assets')} onComplete={completeUpdate} onCancel={cancelUpdate} />}
     <div hidden={tab !== 'article'} className="cw-article-tab">
       <div className="cw-article-toolbar"><nav className="cw-subnav" aria-label="文章版本"><button type="button" aria-current={articleMode === 'working' ? 'page' : undefined} onClick={() => setArticleMode('working')}>工作稿</button><button type="button" disabled={!revision?.publishedRevision} aria-current={articleMode === 'published' ? 'page' : undefined} onClick={() => void readVersion('published')}>线上版</button><button type="button" aria-current={articleMode === 'history' ? 'page' : undefined} onClick={() => void readVersion('history')}><History size={15} aria-hidden="true" />历史版本{revision && <span>{revision.history.length}</span>}</button><HelpTip label="文章版本说明">保存后，标题同步到内容库和拍摄排期；保存工作稿不会发布。{revision?.publishedAt ? `最近发布于 ${date(revision.publishedAt)}；线上版显示已公开的内容。` : '发布后可在“线上版”查看已公开的内容。'}</HelpTip></nav>{articleMode === 'working' && articleToolbar}</div>
       <div hidden={articleMode !== 'working'}>{children}</div>

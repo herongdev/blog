@@ -7,6 +7,7 @@ import { createPublishingService } from './publishing/service.mjs';
 import { createArticleRevisions } from './article-revisions.mjs';
 import { createContentWorkspace } from './content-workspace.mjs';
 import { createWorkspaceHandler } from './workspace-api.mjs';
+import { createUpdateTasks } from './update-tasks.mjs';
 import { createPublishManager } from './publish-manager.mjs';
 import { createLocalSitePreview } from './local-site-preview.mjs';
 
@@ -27,6 +28,7 @@ const publishing = await createPublishingService({
 });
 const revisions = await createArticleRevisions({ projectRoot });
 const workspace = await createContentWorkspace({ projectRoot });
+const updates = await createUpdateTasks({ projectRoot, revisions, workspace, publishing });
 let manager, sitePreview;
 if (process.env.DEV_GUIDES_AUTHOR_ENABLE_SITE_PREVIEW === 'true') {
   if (!process.env.DEV_GUIDES_AUTHOR_PROJECT_ROOT) throw new Error('网站预览必须使用独立的数据副本');
@@ -41,7 +43,7 @@ if (process.env.DEV_GUIDES_AUTHOR_ENABLE_SITE_PREVIEW === 'true') {
 const server = createAuthorServer({
   projectRoot,
   articleRevisions: revisions,
-  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager, localOnly: true, previewOrigins: sitePreview?.origins }),
+  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager, updates, localOnly: true, previewOrigins: sitePreview?.origins }),
   frontend: (request, response) => vite.middlewares(request, response, () => {
     if (!response.headersSent) {
       response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });

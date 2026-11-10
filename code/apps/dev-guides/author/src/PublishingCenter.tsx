@@ -54,10 +54,10 @@ function ChallengeForm({ challenge, request, onDone }: { challenge: Challenge; r
   return <div className="publishing-challenge"><p>{challenge.message || (textInput ? '请输入本次验证收到的验证码。' : '请按平台要求完成验证。')}</p>{challenge.expires_at && <p className="publishing-muted">有效至 {date(challenge.expires_at)}</p>}{challenge.image_url && challenge.image_url.startsWith(API) && <img className="publishing-qr" src={mediaUrl(challenge.image_url)} alt="本次平台验证二维码" />}{textInput && id && <form onSubmit={async event => { event.preventDefault(); if (busy || !value.trim()) return; setBusy(true); setError(''); try { await request(`${API}/challenges/${encodeURIComponent(id)}/respond`, json({ value })); setValue(''); onDone(); } catch (e) { setError((e as Error).message); } finally { setBusy(false); } }}><label className="publishing-field"><span>验证码</span><input autoComplete="one-time-code" inputMode="numeric" value={value} onChange={event => setValue(event.target.value)} /></label><button className="secondary-button" disabled={busy || !value.trim()}>提交验证码</button></form>}{!textInput && id && <button className="secondary-button" disabled={busy} onClick={async () => { if (busy) return; setBusy(true); setError(''); try { await request(`${API}/challenges/${encodeURIComponent(id)}/respond`, json({ value: 'confirmed' })); onDone(); } catch (e) { setError((e as Error).message); } finally { setBusy(false); } }}>已完成验证，继续核对</button>}{error && <p role="alert" className="field-error">{error}</p>}</div>;
 }
 
-type ContentContext = { slug: string; title: string; contentId?: string; videoAssetId?: string };
+type ContentContext = { slug: string; title: string; contentId?: string; videoAssetId?: string; updateTaskId?: string };
 export default function PublishingCenter({ request, contentContext, onBack }: { request: Request; contentContext?: ContentContext; onBack?: () => void }) {
-  const draftKey = contentContext ? `${DRAFT_KEY}:${contentContext.slug}` : DRAFT_KEY;
-  const jobKey = contentContext ? `${DRAFT_JOB_KEY}:${contentContext.slug}` : DRAFT_JOB_KEY;
+  const draftKey = contentContext ? `${DRAFT_KEY}:${contentContext.slug}:${contentContext.updateTaskId ?? 'original'}` : DRAFT_KEY;
+  const jobKey = contentContext ? `${DRAFT_JOB_KEY}:${contentContext.slug}:${contentContext.updateTaskId ?? 'original'}` : DRAFT_JOB_KEY;
   const [tab, setTab] = useState<'new' | 'accounts' | 'records'>('new');
   const [platforms, setPlatforms] = useState<Platform[]>([]); const [executorReady, setExecutorReady] = useState(false);
   const [accounts, setAccounts] = useState<Account[]>([]); const [assets, setAssets] = useState<Asset[]>([]); const [jobs, setJobs] = useState<Job[]>([]);
@@ -170,7 +170,7 @@ export default function PublishingCenter({ request, contentContext, onBack }: { 
     const result = await request<{ asset: Asset }>(`${API}/assets?filename=${encodeURIComponent(file.name)}&type=${type}`, { method: 'POST', headers: { 'content-type': file.type || 'application/octet-stream' }, body: file });
     setAssets(current => [result.asset, ...current.filter(item => item.id !== result.asset.id)]); changed(); onAsset(result.asset); notify(type === 'video' ? '视频已保存，可以继续填写发布内容。' : '封面已保存。');
   });
-  const payload = () => ({ ...(contentContext?.contentId ? { content_ref: { id: contentContext.contentId, slug: contentContext.slug } } : {}), video_asset_id: videoId, defaults, targets: Object.entries(choices).map(([account_id, choice]) => ({ account_id, overrides: choice.edited ? choice.overrides : {}, platform_options: choice.platform_options })) });
+  const payload = () => ({ ...(contentContext?.contentId ? { content_ref: { id: contentContext.contentId, slug: contentContext.slug, ...(contentContext.updateTaskId ? { updateTaskId: contentContext.updateTaskId } : {}) } } : {}), video_asset_id: videoId, defaults, targets: Object.entries(choices).map(([account_id, choice]) => ({ account_id, overrides: choice.edited ? choice.overrides : {}, platform_options: choice.platform_options })) });
   const saveDraft = async () => {
     if (!videoId) throw new Error('请先选择一个视频。');
     if (!Object.keys(choices).length) throw new Error('请至少选择一个目标账号。');

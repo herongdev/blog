@@ -490,7 +490,7 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
       }
 
       if (url.pathname.startsWith('/api/') && apiHandler && await apiHandler(request, response, {
-        url, projectRoot, roots, templatePath, session: currentSession,
+        url, projectRoot, roots, templatePath, session: currentSession, schedule,
         readJson, sendJson, httpError, digest, splitMarkdown, composeMarkdown,
         articlePath, withLock, withArticleLock: withLock, regularFile, safeDirectory, writeAtomic, saveRevision,
       })) return;

@@ -45,6 +45,7 @@
 | 选题整理预检、原数据与恢复回执 | 上述目录中的 `.editorial-curation/` |
 | 旧稿历史 | 上述目录中的 `.history/` |
 | 不可变文章修订、线上指针与预览计划 | 上述目录中的 `.article-revisions/` |
+| 内容更新任务、更新前后版本及素材引用 | 上述目录中的 `.content-updates/` |
 | 私有制作素材、分片与版本关系 | 上述目录中的 `.content-workspace/` |
 | 视频发布队列、私有账号会话与投稿素材 | `/var/lib/herong-dev-guides-author/publishing/`（可由 `PUBLISHER_DATA_DIR` 配置） |
 | 微信管理员身份、私有会话与首次绑定证明 | `/var/lib/herong-dev-guides-author/auth/` |
@@ -84,6 +85,8 @@ python3 infra/dev-guides/author/deploy.py
 若后台提示“网站已发布；发布日期已保存在当前版本，私有历史备份将在下次发布前恢复”，说明公开版本已经生效，不能当作发布失败盲目重发或直接回滚。**先保留当前 release 的元数据和私有数据备份，排除账本写入故障，使用当前版本的恢复逻辑补齐并核对 `publication-history.json`，再执行公开版本回滚。** 未恢复就切回旧 `current`，可能失去尚未落入私有账本的那次首发记录；不能从未激活目录或文件更新时间猜测补回。代码回滚同样保留累计账本，避免以后重新上线把旧教程归到新周。
 
 ## 回滚与验证
+
+更新任务启用后，排期可升级为 v3，并增加独立任务标识及结项记录。回滚代码必须使用兼容 v3 的版本；不能直接切到只识别 v1/v2 的旧后台，也不能为兼容旧代码将线上排期恢复成旧备份，覆盖上线后的任务和编辑。任务目录随整个 `project` 的一致备份保留，不进入 Git、源码包或公开站。具体本次版本与验证见 [历史教程更新任务](../../../docs/tasks/2026-11-10-content-update-tasks.md)。
 
 代码回滚：检查 `/opt/herong-dev-guides-author/previous`，将 `current` 原子切回对应已验证版本并重启本服务；持久内容保持原样。公开站仍保留分环境的 release、`current` 和 `previous`，具体静态版本回滚见 [部署说明](../DEPLOYMENT.md)。应先停止网页发布任务再做运维回滚。
 

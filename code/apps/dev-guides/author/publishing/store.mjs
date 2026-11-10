@@ -108,8 +108,10 @@ export function createPublishingStore(path) {
       const contentRef = input.content_ref == null ? null : {
         id: text(input.content_ref.id, 100, '内容标识', true),
         slug: text(input.content_ref.slug, 160, '内容地址', true),
+        ...(input.content_ref.updateTaskId !== undefined ? { updateTaskId: text(input.content_ref.updateTaskId, 36, '更新任务标识', true) } : {}),
       };
       if (contentRef && (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(contentRef.slug) || !/^[a-z0-9-]+$/.test(contentRef.id))) throw fail(422, '内容关联无效');
+      if (contentRef?.updateTaskId !== undefined && !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(contentRef.updateTaskId)) throw fail(422, '更新任务关联无效');
       if (asset(input.video_asset_id).type !== 'video') throw fail(422, '请选择视频');
       if (!Array.isArray(input.targets) || !input.targets.length || input.targets.length > 20) throw fail(422, '请选择 1 至 20 个目标账号');
       const ids = new Set();

@@ -43,3 +43,25 @@ test('a stale draft list cannot override the promoted target returned by the sch
   promoted.history[1].entries[0].missing = true;
   assert.equal(scheduleLookup(promoted, [icon], [], '图标')[0].entry.missing, true);
 });
+
+
+test('separate update rounds keep identity through live article promotion and search', () => {
+  const first = { ...icon, updateTaskId: 'first-update', updateReason: 'correction', updateScope: 'article', done: true };
+  const next = { ...icon, updateTaskId: 'next-update', updateReason: 'adapt', updateScope: 'both' };
+  const value = structuredClone(schedule);
+  value.history[1].entries.push(first);
+  value.queue.unshift(next);
+  const promoted = { ...icon, kind: 'content', status: 'published', title: '新版图标教程' };
+  const rows = scheduleLookup(value, [promoted, pending], [], '图标');
+  const hits = rows.filter((row) => row.entry.slug === icon.slug);
+  assert.equal(hits.length, 3);
+  assert.deepEqual(hits.map((row) => row.entry.updateTaskId), ['next-update', undefined, 'first-update']);
+  assert.ok(hits.every((row) => row.entry.kind === 'content'));
+  const history = scheduleLookup(value, [promoted], [], '', true).filter((row) => row.entry.slug === icon.slug);
+  assert.equal(history.length, 2);
+  assert.equal(history[1].entry.updateTaskId, 'first-update');
+  assert.equal(history[1].done, true);
+  assert.equal(history[1].title, icon.title);
+  assert.equal(scheduleLookup(value, [promoted], [], '适配新版 文章')[0].entry.updateTaskId, 'next-update');
+  assert.equal(scheduleLookup(value, [promoted], [], '纠错')[0].entry.updateTaskId, 'first-update');
+});

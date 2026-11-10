@@ -12,7 +12,7 @@ const MAX_DOCUMENT = 2 * 1024 * 1024;
 const MAX_ASSET = 32 * 1024 * 1024;
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const fail = (message, status = 422) => { throw Object.assign(new Error(message), { status }); };
-const empty = () => ({ version: 1, baselineVerified: false, published: Object.create(null), unpublished: [], history: Object.create(null), lastPlan: null });
+const empty = () => ({ version: 1, baselineVerified: false, published: Object.create(null), unpublished: [], history: Object.create(null), publicationHistory: [], lastPlan: null });
 const baselineHash = (state) => hash(JSON.stringify({ published: state.published, unpublished: state.unpublished }));
 
 async function directory(path) {
@@ -92,6 +92,18 @@ export async function createArticleRevisions({ projectRoot, clock = () => new Da
     return state;
   }
   const saveState = (state) => atomic(statePath, `${JSON.stringify(state, null, 2)}\n`);
+  function publicationHistory(state) {
+    state.publicationHistory ??= [];
+    if (!Array.isArray(state.publicationHistory)) fail('文章发布记录格式无效', 500);
+    // Only the confirmed current baseline is evidence for legacy publication.
+    // Old preview plans are not publication events and must never be inferred.
+    for (const [slug, item] of Object.entries(state.published)) {
+      if (!state.publicationHistory.some(event => event.slug === slug && event.revision === item.revision && event.action === 'publish')) {
+        state.publicationHistory.push({ id: `legacy-${slug}-${item.revision}`, slug, revision: item.revision, action: 'publish', publishedAt: item.publishedAt ?? null, legacy: true });
+      }
+    }
+    return state.publicationHistory;
+  }
   async function putObject(bytes) {
     const revision = hash(bytes);
     const path = join(objects, revision);
@@ -244,13 +256,15 @@ export async function createArticleRevisions({ projectRoot, clock = () => new Da
         const data = metadata(working.bytes.toString('utf8')).data;
         if (!['lead', 'published'].includes(data.status) || (data.visibility !== undefined && data.visibility !== 'public') || [data.private, data.draft, data.unlisted].some((value) => value === true || value === 'true')) fail('请先在文章发布信息中设置允许公开的内容状态');
         const assets = await assetSnapshots(selection, working.bytes.toString('utf8'), true);
-        state.history[selection.slug][working.revision].assets = assets;
+        const frozenAssets = state.history[selection.slug][working.revision].assets ?? [];
+        const assetKey = values => JSON.stringify([...values].sort((a, b) => a.path.localeCompare(b.path)));
+        if (assetKey(frozenAssets) !== assetKey(assets)) fail('文章图片已变化，请使用新文件名并更新正文地址，以保留旧版图片', 409);
         selected[selection.slug] = { revision: working.revision, assets, publishedAt: null };
       }
     }
     const id = randomUUID();
     const planRoot = join(plans, id);
-    const plan = { version: 1, id, createdAt: clock().toISOString(), baseline: baselineHash(state), selected, selection: selection ? { kind: selection.kind, slug: selection.slug, revision: selection.revision, action: selection.action } : null };
+    const plan = { version: 1, id, createdAt: clock().toISOString(), baseline: baselineHash(state), selected, selection: selection ? { kind: selection.kind, slug: selection.slug, revision: selection.revision, action: selection.action, ...(selection.updateTaskId ? { updateTaskId: selection.updateTaskId } : {}) } : null };
     await atomic(join(planRoot, 'plan.json'), `${JSON.stringify(plan)}\n`);
     await saveState(state);
     return { ...plan, contentRoot: await projection(plan) };
@@ -295,6 +309,12 @@ export async function createArticleRevisions({ projectRoot, clock = () => new Da
       const state = await loadState();
       if (state.lastPlan === value.id) return;
       if (value.baseline !== baselineHash(state)) fail('网站发布基线已变化，请联系维护者核对', 409);
+      const events = publicationHistory(state);
+      if (value.selection && !events.some(event => event.id === value.id)) {
+        events.push({ id: value.id, slug: value.selection.slug, action: value.selection.action,
+          revision: value.selection.action === 'unpublish' ? state.published[value.selection.slug]?.revision ?? null : value.selection.revision,
+          publishedAt, ...(value.selection.updateTaskId ? { updateTaskId: value.selection.updateTaskId } : {}) });
+      }
       state.published = structuredClone(value.selected);
       if (value.selection?.action === 'unpublish') state.unpublished = [...new Set([...state.unpublished, value.selection.slug])];
       if (value.selection?.action === 'publish') {
@@ -356,6 +376,10 @@ export async function createArticleRevisions({ projectRoot, clock = () => new Da
       });
     },
     async baselineReady() { return (await loadState()).baselineVerified === true; },
+    async publications(slug) {
+      if (!SLUG.test(slug ?? '')) fail('文章地址无效', 400);
+      return serialized(async () => publicationHistory(await loadState()).filter(event => event.slug === slug).reverse());
+    },
     async recordBeforeSave(input) { return serialized(async () => { const state = await loadState(); const item = await capture(input, state); await saveState(state); return item.revision; }); },
     async listHistory(input) { return { items: (await read(input)).history }; },
     async published(input) {
@@ -367,6 +391,7 @@ export async function createArticleRevisions({ projectRoot, clock = () => new Da
     },
     async prepareSelection(input) {
       if (input && (!['publish', 'unpublish'].includes(input.action ?? 'publish') || !['draft', 'content'].includes(input.kind) || !SLUG.test(input.slug))) fail('文章发布选择无效', 400);
+      if (input?.updateTaskId !== undefined && !PLAN.test(input.updateTaskId)) fail('更新任务关联无效', 400);
       return serialized(async () => freeze(await loadState(), input ? { ...input, action: input.action ?? 'publish' } : null));
     },
     plan, assertBaseline, commit,
