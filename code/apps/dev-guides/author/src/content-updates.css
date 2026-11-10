@@ -1,13 +1,12 @@
 :root { --update-list-width: 250px; --update-form-columns: 2; }
 .update-content-title { margin-block: var(--space-4); color: var(--color-text-primary); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); line-height: var(--leading-compact); overflow-wrap: anywhere; }
 .update-create-fields { display: grid; grid-template-columns: repeat(var(--update-form-columns), minmax(0, 1fr)); gap: var(--space-3); }
-.update-create-fields .schedule-field { margin-block: var(--space-2); }
-.update-create-dialog textarea { min-width: 0; width: 100%; resize: vertical; padding: var(--space-2) var(--space-3); border: var(--border-width) solid var(--color-border-control); border-radius: var(--radius-md); background: var(--color-surface-control); color: var(--color-text-primary); font: inherit; line-height: var(--leading-body); }
+.update-create-fields .update-field { margin-block: var(--space-2); }
 .update-muted { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); font-size: var(--font-size-sm); }
 .update-existing p { line-height: var(--leading-body); }
 .update-context { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-3); padding: var(--space-2) var(--space-3); border-left: var(--border-width-accent) solid var(--color-accent); background: var(--color-accent-subtle); font-size: var(--font-size-sm); }
 .update-context strong { font-weight: var(--font-weight-medium); }
-.update-context > .cw-text-button { margin-left: auto; }
+.update-context > .cw-text-action { margin-left: auto; }
 .update-layout { display: grid; grid-template-columns: var(--update-list-width) minmax(0, 1fr); gap: var(--space-5); }
 .update-list { min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); }
 .update-list-item { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; width: 100%; padding: var(--space-3); text-align: left; border: var(--border-width) solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--color-text-primary); font: inherit; font-size: var(--font-size-sm); }
@@ -42,7 +41,6 @@
 @media (max-width: 480px) {
   .update-create-fields { --update-form-columns: 1; gap: 0; }
   .update-create-dialog .library-dialog-actions { flex-wrap: wrap; }
-  .update-create-dialog .library-dialog-actions > button { flex: 1; }
   .schedule-result { flex-wrap: wrap; }
   .schedule-result-content { flex-basis: 100%; }
   .schedule-result-actions { margin-left: auto; }

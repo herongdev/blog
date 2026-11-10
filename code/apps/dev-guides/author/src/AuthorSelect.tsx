@@ -1,6 +1,8 @@
 import type { ReactNode, Ref } from 'react';
 import * as Select from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
+import type { AuthorControlSize } from './AuthorUI';
+import './author-ui.css';
 
 export type AuthorSelectOption = { value: string; label: string; disabled?: boolean };
 type Props = {
@@ -14,6 +16,9 @@ type Props = {
   className?: string;
   icon?: ReactNode;
   triggerRef?: Ref<HTMLButtonElement>;
+  size?: AuthorControlSize;
+  'aria-describedby'?: string;
+  'aria-invalid'?: boolean | 'true' | 'false' | 'grammar' | 'spelling';
 };
 
 // Radix reserves an empty item value for clearing. Encode every option so an
@@ -21,13 +26,13 @@ type Props = {
 const encode = (value: string) => `option:${value}`;
 const decode = (value: string) => value.slice('option:'.length);
 
-export default function AuthorSelect({ value, onValueChange, options, label, id, disabled, placeholder = '请选择', className = '', icon, triggerRef }: Props) {
+export default function AuthorSelect({ value, onValueChange, options, label, id, disabled, placeholder = '请选择', className = '', icon, triggerRef, size = 'default', 'aria-describedby': describedBy, 'aria-invalid': invalid }: Props) {
   const selected = options.find((option) => option.value === value);
   const unavailable = value !== '' && !selected;
   const choices = unavailable ? [{ value, label: '原选项已不可用', disabled: true }, ...options] : options;
   const radixValue = selected || unavailable ? encode(value) : '';
   return <Select.Root value={radixValue} onValueChange={(next) => onValueChange(decode(next))} disabled={disabled || options.length === 0}>
-    <Select.Trigger ref={triggerRef} id={id} className={`author-select-trigger ${className}`} aria-label={label}>
+    <Select.Trigger ref={triggerRef} id={id} className={`author-select-trigger ${className}`} aria-label={label} aria-describedby={describedBy} aria-invalid={invalid} data-size={size}>
       {icon}<span className="author-select-value"><Select.Value placeholder={placeholder}>{selected?.label ?? (unavailable ? '原选项已不可用' : undefined)}</Select.Value></span>
       <Select.Icon className="author-select-icon"><ChevronDown size={16} aria-hidden="true" /></Select.Icon>
     </Select.Trigger>

@@ -11,13 +11,13 @@ function DropTarget({ folderId, placement, disabled }: { folderId: string | null
 export function FolderDragRow({ folder, selected, disabled, children }: { folder: LibraryFolder; selected: boolean; disabled: boolean; children: ReactNode }) {
   const { setNodeRef, setActivatorNodeRef, attributes, listeners, isDragging } = useDraggable({ id: `directory:${folder.id}`, disabled, data: { libraryKind: 'folder', folder } });
   return <div ref={setNodeRef} className={`library-folder-row ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''}`}>
-    <IconButton ref={setActivatorNodeRef} type="button" className="library-drag-handle" {...attributes} {...listeners} disabled={disabled} aria-label={`拖动目录 ${folder.name}`}><GripVertical size={14} aria-hidden="true" /></IconButton>
+    <IconButton size="touch" ref={setActivatorNodeRef} type="button" className="library-drag-handle" {...attributes} {...listeners} disabled={disabled} aria-label={`拖动目录 ${folder.name}`}><GripVertical size={14} aria-hidden="true" /></IconButton>
     {children}<DropTarget folderId={folder.id} placement="before" disabled={disabled} /><DropTarget folderId={folder.id} placement="inside" disabled={disabled} /><DropTarget folderId={folder.id} placement="after" disabled={disabled} />
   </div>;
 }
 export function ArticleDragRow({ item, disabled, children, style }: { item: LibraryArticle; disabled: boolean; children: ReactNode; style?: CSSProperties }) {
   const { setNodeRef, setActivatorNodeRef, attributes, listeners, isDragging } = useDraggable({ id: `directory-article:${item.kind}/${item.slug}`, disabled, data: { libraryKind: 'article', articleKey: `${item.kind}/${item.slug}`, title: item.title } });
-  return <li ref={setNodeRef} className={`library-article-row ${isDragging ? 'is-dragging' : ''}`} style={style}><IconButton ref={setActivatorNodeRef} type="button" className="library-drag-handle" {...attributes} {...listeners} disabled={disabled} aria-label={`拖动归类 ${item.title}`}><GripVertical size={14} aria-hidden="true" /></IconButton>{children}</li>;
+  return <li ref={setNodeRef} className={`library-article-row ${isDragging ? 'is-dragging' : ''}`} style={style}><IconButton size="touch" ref={setActivatorNodeRef} type="button" className="library-drag-handle" {...attributes} {...listeners} disabled={disabled} aria-label={`拖动归类 ${item.title}`}><GripVertical size={14} aria-hidden="true" /></IconButton>{children}</li>;
 }
 export function RootDropTarget({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
   return <div className="library-root-drop">{children}<DropTarget folderId={null} placement="inside" disabled={disabled} /></div>;

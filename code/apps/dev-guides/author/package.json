@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node server.mjs",
-    "build": "tsc --noEmit && vite build",
+    "build": "pnpm run check:ui && tsc --noEmit && vite build",
+    "check:ui": "node ../../../scripts/check-author-controls.mjs --self-test && node ../../../scripts/check-author-controls.mjs",
     "typecheck": "tsc --noEmit",
     "test": "node --test test/*.test.mjs"
   },

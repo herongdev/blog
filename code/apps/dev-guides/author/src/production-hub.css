@@ -1,0 +1,30 @@
+.production-hub { max-width: 1440px; min-width: 0; min-height: calc(100dvh - var(--author-header-height) - var(--size-touch)); margin-inline: auto; padding: var(--space-3) var(--author-workspace-gutter) var(--space-6); }
+.production-hub-heading { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-4); min-height: var(--size-touch); margin-bottom: var(--space-4); }
+.production-hub-heading h1 { margin: 0; font-size: var(--font-size-2xl); line-height: var(--leading-page-title); }
+.production-hub .schedule-board, .production-hub .production-list { max-width: none; margin: 0; padding: 0; }
+.production-hub .schedule-heading-actions { margin-left: auto; }
+.author-toolbar-filters > .author-select-trigger { width: auto; max-width: 100%; }
+.author-toolbar-filters .schedule-view-nav { flex-wrap: nowrap; }
+@media (max-width: 600px) {
+  .author-toolbar-filters .schedule-view-nav svg, .author-toolbar-filters .schedule-view-nav .schedule-count { display: none; }
+  .author-toolbar-actions, .author-toolbar-actions .schedule-heading-actions { gap: var(--space-1); }
+}
+.production-view-switch { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--space-1); }
+.production-view-switch button[aria-pressed='true'] { color: var(--color-accent); border-color: var(--color-border-control); background: var(--color-accent-subtle); }
+.production-view-switch button:hover { background: var(--color-surface-hover); }
+.schedule-row-heading { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.schedule-row-heading .schedule-title { flex: 1; }
+.schedule-production-summary { flex: 0 1 auto; max-width: 46%; color: var(--color-text-muted); font-size: var(--font-size-xs); line-height: var(--leading-compact); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.schedule-production-summary.tone-warning { color: var(--color-text-warning-strong); }
+.schedule-production-summary.tone-complete { color: var(--color-text-success-badge); }
+.schedule-production-summary.is-stale { color: var(--color-text-muted); }
+.schedule-production-error { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-3); font-size: var(--font-size-sm); color: var(--color-text-warning-strong); }
+
+@media (max-width: 600px) {
+  .production-hub { padding: var(--space-4) var(--space-3) var(--space-8); }
+  .production-hub-heading { gap: var(--space-2); }
+  .production-hub-heading h1 { font-size: var(--font-size-xl); }
+  .production-hub-heading .production-view-switch { flex-basis: 100%; }
+  .schedule-row-heading { display: block; }
+  .schedule-production-summary { display: block; max-width: 100%; }
+}

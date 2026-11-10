@@ -12,6 +12,8 @@ const require = createRequire(import.meta.url);
 const Select = require('@radix-ui/react-select');
 const components = new Map();
 const loadComponent = (name) => {
+  // CSS is verified by the UI contract/build and actual rendering, not this Node adapter test.
+  if (name.endsWith('.css')) return {};
   if (components.has(name)) return components.get(name);
   const source = readFileSync(new URL(`../src/${name}.tsx`, import.meta.url), 'utf8');
   const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
@@ -72,7 +74,9 @@ test('icon buttons preserve native refs, handlers and aria state through Radix a
   const IconButton = loadComponent('IconButton').default;
   const ref = React.createRef(); const onClick = () => {};
   const button = IconButton.render({ 'aria-label': '更多操作', 'aria-pressed': true, disabled: true, onClick }, ref);
-  assert.equal(button.type, 'button');
+  const { AuthorButton } = loadComponent('AuthorButton');
+  const native = AuthorButton.render(button.props, ref);
+  assert.equal(native.type, 'button');
   assert.equal(button.props.type, 'button');
   assert.equal(button.props.ref, ref);
   assert.equal(button.props.onClick, onClick);
@@ -84,6 +88,36 @@ test('icon buttons preserve native refs, handlers and aria state through Radix a
   assert.match(markup, /aria-expanded="false"/);
   assert.match(markup, /aria-label="更多操作"/);
   assert.match(markup, /data-business-id="topic"/);
+});
+
+test('shared controls retain native form constraints, refs and explicit submit behavior', () => {
+  const { AuthorButton, AuthorInput, AuthorTextarea } = loadComponent('AuthorUI');
+  const ref = React.createRef(), onChange = () => {};
+  const input = AuthorInput.render({ type: 'date', value: '2026-11-10', required: true, min: '2026-01-01', disabled: true, onChange, 'aria-describedby': 'date-help' }, ref);
+  assert.equal(input.type, 'input');
+  assert.equal(input.props.ref, ref);
+  assert.equal(input.props.onChange, onChange);
+  for (const [key, expected] of Object.entries({ type: 'date', value: '2026-11-10', required: true, min: '2026-01-01', disabled: true, 'aria-describedby': 'date-help' })) assert.equal(input.props[key], expected);
+  const textarea = AuthorTextarea.render({ rows: 5, maxLength: 500, defaultValue: '保留原稿', onChange }, ref);
+  assert.equal(textarea.props.rows, 5);
+  assert.equal(textarea.props.maxLength, 500);
+  assert.equal(textarea.props.defaultValue, '保留原稿');
+  assert.equal(AuthorButton.render({}, null).props.type, 'button');
+  assert.equal(AuthorButton.render({ type: 'submit', name: 'action', value: 'save' }, null).props.type, 'submit');
+});
+
+test('shared fields connect visible labels and persistent errors to inputs and Radix triggers', () => {
+  const { AuthorField, AuthorInput } = loadComponent('AuthorUI');
+  const input = renderToStaticMarkup(React.createElement(AuthorField, { label: '标题', error: '请填写标题' }, React.createElement(AuthorInput, { id: 'topic-title', 'aria-describedby': 'existing-help', required: true })));
+  assert.match(input, /for="topic-title"/);
+  assert.match(input, /id="topic-title"/);
+  assert.match(input, /aria-invalid="true"/);
+  assert.match(input, /aria-describedby="existing-help [^"]+-error"/);
+  assert.match(input, /role="alert">请填写标题/);
+  const select = renderToStaticMarkup(React.createElement(AuthorField, { label: '封面', error: '请选择封面' }, React.createElement(AuthorSelect, { ...base, id: 'field-cover' })));
+  assert.match(select, /for="field-cover"/);
+  assert.match(select, /role="combobox"[^>]*aria-invalid="true"/);
+  assert.match(select, /aria-describedby="[^"]+-error"/);
 });
 
 test('shared dialogs retain focus handlers, disabled close and automatic/custom description ids', () => {
