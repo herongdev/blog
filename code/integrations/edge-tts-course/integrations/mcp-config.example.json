@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "yunxi-course-local": {
+      "command": "/Users/ronnie/Documents/my-project/blog/code/integrations/edge-tts-course/.venv/bin/python",
+      "args": [
+        "/Users/ronnie/Documents/my-project/blog/code/integrations/edge-tts-course/mcp_server.py"
+      ],
+      "cwd": "/Users/ronnie/Documents/my-project/blog/code/integrations/edge-tts-course"
+    }
+  }
+}

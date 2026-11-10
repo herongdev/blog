@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>微课视频</title>
+  <link rel="stylesheet" href="/tokens.css">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img src="/assets/hr-elephant.png" alt="HR 小象"><span>微课视频</span></div>
+    <div class="document-state"><span id="save-state" role="status" aria-live="polite">正在读取文稿</span></div>
+    <div class="toolbar">
+      <button id="save-button" disabled>保存修改</button>
+      <button id="render-button" disabled>仅更新画面</button>
+      <button id="generate-button" class="primary" disabled>生成视频</button>
+    </div>
+  </header>
+
+  <div id="message" class="notice" role="status" aria-live="polite" hidden>
+    <span id="message-text"></span><button id="reload-button" hidden>重新载入文稿</button><button id="dismiss-message" class="quiet">关闭提示</button>
+  </div>
+
+  <main class="workspace">
+    <aside class="scene-sidebar" aria-label="文稿场景">
+      <div class="section-label">场景 <span id="scene-count"></span></div>
+      <nav id="scene-list" aria-label="选择场景"></nav>
+      <div class="sidebar-actions">
+        <button id="import-button" disabled>导入新文本</button>
+        <button id="help-button" class="quiet">使用说明</button>
+      </div>
+    </aside>
+
+    <section class="script-panel" aria-label="文稿编辑">
+      <div class="script-heading">
+        <p id="project-title" class="project-title">读取中</p>
+        <div class="heading-line"><h1 id="scene-title">文稿</h1><span id="scene-rate" class="small-label"></span></div>
+        <p class="editor-intro">修改台词，设置每句后的最少停顿。</p>
+      </div>
+      <div id="cue-list" class="cue-list"><p class="loading-text">正在读取现有工程</p></div>
+    </section>
+
+    <aside class="preview-panel" aria-label="画面和生成结果">
+      <div class="preview-tabs" role="tablist" aria-label="预览内容">
+        <button id="scene-tab" role="tab" aria-selected="true" aria-controls="scene-preview">当前画面</button>
+        <button id="video-tab" role="tab" aria-selected="false" aria-controls="video-preview">上次成片</button>
+      </div>
+      <section id="scene-preview" role="tabpanel" aria-labelledby="scene-tab">
+        <p id="preview-caption" class="preview-caption">选择一句台词预览画面</p>
+        <div class="preview-stage"><img id="preview-image" alt="所选台词对应的画面" hidden><p id="preview-placeholder">正在读取画面</p></div>
+      </section>
+      <section id="video-preview" role="tabpanel" aria-labelledby="video-tab" hidden>
+        <p id="video-caption" class="preview-caption">最近一次生成的视频</p>
+        <div class="preview-stage"><video id="output-video" controls playsinline preload="metadata" hidden></video><p id="video-placeholder">尚未生成视频</p></div>
+      </section>
+      <div class="output-actions"><button id="open-output" disabled>打开成片</button><button id="open-folder" class="quiet">打开输出文件夹</button></div>
+      <div class="voice-summary"><strong>云希</strong><span>开场 −3% · 正文 −5%</span><span>音高 +0Hz · 音量 +0%</span></div>
+      <div id="job-state" class="job-state" aria-live="polite"><span id="job-status">就绪</span><p id="job-detail">保存后即可生成视频。</p></div>
+      <details id="log-details" class="log-details"><summary>查看生成日志</summary><pre id="run-log">暂无本次运行日志。</pre><button id="refresh-log" class="quiet">刷新日志</button></details>
+    </aside>
+  </main>
+
+  <footer class="footer"><span id="script-summary">本机文稿</span><label>外观 <select id="theme-select" aria-label="外观"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></label></footer>
+
+  <dialog id="import-dialog" aria-labelledby="import-title">
+    <form id="import-form">
+      <div class="dialog-heading"><h2 id="import-title">导入新文本</h2><button type="button" id="close-import" class="quiet">关闭</button></div>
+      <p class="dialog-copy">新文稿将替换当前可编辑内容，现有文稿会自动备份。按空行拆成场景，再按句子拆分；不会改写你的文字。</p>
+      <label class="field-label" for="import-name">视频标题</label>
+      <input id="import-name" name="title" placeholder="输入标题" maxlength="160" required>
+      <label class="field-label" for="import-text">完整文本</label>
+      <textarea id="import-text" name="text" class="import-text" placeholder="在这里粘贴完整文本。不同段落之间留一个空行。" required></textarea>
+      <p id="import-error" class="field-error" role="alert" hidden></p>
+      <div class="dialog-actions"><button type="button" id="cancel-import">取消</button><button type="submit" id="confirm-import" class="primary">导入文稿</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-heading"><h2 id="help-title">使用说明</h2><button id="close-help" class="quiet">关闭</button></div>
+    <ol class="help-list">
+      <li><strong>改台词：</strong>左侧选场景，直接修改中间的文字，点击“保存修改”。</li>
+      <li><strong>改停顿：</strong>修改该句的“句后最少停顿”，单位为秒。原声自带的停顿会保留。</li>
+      <li><strong>生成：</strong>改过台词后选“生成视频”；只改停顿或画面可选“仅更新画面”。</li>
+      <li><strong>看结果：</strong>完成后自动打开 MP4，也可点“打开成片”或“打开输出文件夹”。</li>
+    </ol>
+    <p class="dialog-copy">修改台词时，仅重新配音受影响的完整场景；未改场景复用原声。只改停顿不会重新请求配音。文字未对应已有原声时，“仅更新画面”会停止并提示。</p>
+    <p class="dialog-copy">“当前画面”用于检查排版；字幕高亮和最终时长在生成后依据真实声音安排。导入新文本默认使用文字画面，可逐句选择已有画面。</p>
+    <div class="dialog-actions"><button id="help-done" class="primary">知道了</button></div>
+  </dialog>
+</body>
+</html>

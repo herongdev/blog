@@ -1,0 +1,6 @@
+# Local course editor: no paid API and no public server.
+[mcp_servers.course_video]
+command = "/Users/ronnie/Documents/my-project/blog/code/integrations/edge-tts-course/.venv/bin/python"
+args = ["/Users/ronnie/Documents/my-project/blog/code/integrations/edge-tts-course/mcp_server.py"]
+startup_timeout_sec = 10
+tool_timeout_sec = 120

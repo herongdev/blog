@@ -1,0 +1,9 @@
+.venv/
+.bin/
+narration/
+output/
+__pycache__/
+*.pyc
+.pipeline.lock
+projects/history/
+微课视频.app/

@@ -1,0 +1,411 @@
+{
+  "title": "ChatGPT / Codex 做长任务：一直聊、新开会话，还是分叉？",
+  "approved_script_source": "长任务微课-新版口播与分镜-v2.md / render_v2.py",
+  "scenes": [
+    {
+      "id": "intro",
+      "captions": [
+        "你是不是也这样？",
+        "一个聊天，用着用着，",
+        "工作、产品、技术全混在一起。",
+        "继续聊，怕 AI 越来越不靠谱。",
+        "新开，又怕前面的理解丢了。",
+        "不分开，下次又找不到。",
+        "先别按聊天轮数做决定。",
+        "问问：还是刚才那件事吗？"
+      ],
+      "cues": [
+        {
+          "text": "你是不是也这样？",
+          "visual_state": "intro",
+          "pause_after_min_seconds": 2
+        },
+        {
+          "text": "一个聊天，用着用着，",
+          "visual_state": "mixed",
+          "pause_after_min_seconds": 0.35
+        },
+        {
+          "text": "工作、产品、技术全混在一起。",
+          "visual_state": "mixed",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "继续聊，怕 AI 越来越不靠谱。",
+          "visual_state": "worries",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "新开，又怕前面的理解丢了。",
+          "visual_state": "worries",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "不分开，下次又找不到。",
+          "visual_state": "worries",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "先别按聊天轮数做决定。",
+          "visual_state": "question",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "问问：还是刚才那件事吗？",
+          "visual_state": "question",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-3%"
+    },
+    {
+      "id": "continue",
+      "captions": [
+        "比如，我们在做网站搜索。",
+        "问题还没解决，AI 正常推进，",
+        "那就继续聊。"
+      ],
+      "cues": [
+        {
+          "text": "比如，我们在做网站搜索。",
+          "visual_state": "search",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "问题还没解决，AI 正常推进，",
+          "visual_state": "search",
+          "pause_after_min_seconds": 0.35
+        },
+        {
+          "text": "那就继续聊。",
+          "visual_state": "continue",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-5%"
+    },
+    {
+      "id": "check",
+      "captions": [
+        "觉得它开始变笨了？",
+        "先做一个小检查。",
+        "我们现在要完成什么？",
+        "哪些要求已经定了？",
+        "下一步准备做什么？",
+        "核对它说的对不对。",
+        "一次答错，不代表聊天废了。",
+        "先纠正，再看看是否能推进。",
+        "如果关键要求持续丢失，",
+        "纠正后仍然明显跑偏，",
+        "核对真实进度，考虑交接新开。"
+      ],
+      "cues": [
+        {
+          "text": "觉得它开始变笨了？",
+          "visual_state": "drift",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "先做一个小检查。",
+          "visual_state": "check",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "我们现在要完成什么？",
+          "visual_state": "check-goal",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "哪些要求已经定了？",
+          "visual_state": "check-rules",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "下一步准备做什么？",
+          "visual_state": "check-next",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "核对它说的对不对。",
+          "visual_state": "check-result",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "一次答错，不代表聊天废了。",
+          "visual_state": "check-result",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "先纠正，再看看是否能推进。",
+          "visual_state": "correct",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "如果关键要求持续丢失，",
+          "visual_state": "drift",
+          "pause_after_min_seconds": 0.35
+        },
+        {
+          "text": "纠正后仍然明显跑偏，",
+          "visual_state": "drift",
+          "pause_after_min_seconds": 0.35
+        },
+        {
+          "text": "核对真实进度，考虑交接新开。",
+          "visual_state": "handoff",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-5%"
+    },
+    {
+      "id": "new",
+      "captions": [
+        "另一种情况：搜索做完了。",
+        "现在要开发登录功能。",
+        "仍是同一个网站，但换了任务。",
+        "可以在同一个 Project 直接新开。",
+        "不用每次写一篇交接报告。",
+        "可是新聊天知道旧决定吗？",
+        "Project 可以提供相关背景，",
+        "但不保证每条结论都准确带上。"
+      ],
+      "cues": [
+        {
+          "text": "另一种情况：搜索做完了。",
+          "visual_state": "searchdone",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "现在要开发登录功能。",
+          "visual_state": "project",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "仍是同一个网站，但换了任务。",
+          "visual_state": "project",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "可以在同一个 Project 直接新开。",
+          "visual_state": "project-new",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "不用每次写一篇交接报告。",
+          "visual_state": "project-new",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "可是新聊天知道旧决定吗？",
+          "visual_state": "project-question",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "Project 可以提供相关背景，",
+          "visual_state": "project-question",
+          "pause_after_min_seconds": 0.35
+        },
+        {
+          "text": "但不保证每条结论都准确带上。",
+          "visual_state": "project-question",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-5%"
+    },
+    {
+      "id": "combine",
+      "captions": [
+        "比如之前分别讨论了：",
+        "数据库、页面、还有权限。",
+        "现在做登录，要用到其中三条决定。",
+        "只找出需要的结论，",
+        "核对之后，带进新聊天。",
+        "不要搬运三份聊天记录。"
+      ],
+      "cues": [
+        {
+          "text": "比如之前分别讨论了：",
+          "visual_state": "three",
+          "pause_after_min_seconds": 0.35
+        },
+        {
+          "text": "数据库、页面、还有权限。",
+          "visual_state": "three",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "现在做登录，要用到其中三条决定。",
+          "visual_state": "extract",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "只找出需要的结论，",
+          "visual_state": "extract",
+          "pause_after_min_seconds": 0.35
+        },
+        {
+          "text": "核对之后，带进新聊天。",
+          "visual_state": "extract-done",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "不要搬运三份聊天记录。",
+          "visual_state": "extract-done",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-5%"
+    },
+    {
+      "id": "handoff",
+      "captions": [
+        "如果是接着没做完的任务呢？",
+        "还要带上已完成、待办和下一步。",
+        "这才叫交接。"
+      ],
+      "cues": [
+        {
+          "text": "如果是接着没做完的任务呢？",
+          "visual_state": "handoff",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "还要带上已完成、待办和下一步。",
+          "visual_state": "handoff-details",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "这才叫交接。",
+          "visual_state": "handoff-details",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-5%"
+    },
+    {
+      "id": "fork",
+      "captions": [
+        "想保留方案 A，再试方案 B？",
+        "那就分叉。",
+        "分叉不是一键清空旧历史。",
+        "也不保证更快。"
+      ],
+      "cues": [
+        {
+          "text": "想保留方案 A，再试方案 B？",
+          "visual_state": "fork",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "那就分叉。",
+          "visual_state": "fork",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "分叉不是一键清空旧历史。",
+          "visual_state": "fork-limit",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "也不保证更快。",
+          "visual_state": "fork-limit",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-5%"
+    },
+    {
+      "id": "quiz",
+      "captions": [
+        "来试一下：搜索做完，转做登录，",
+        "只需要已有项目说明，怎么办？",
+        "直接新开。",
+        "如果还需要旧聊天的三条决定？",
+        "找出来、核对，再带过去。"
+      ],
+      "cues": [
+        {
+          "text": "来试一下：搜索做完，转做登录，",
+          "visual_state": "quiz",
+          "pause_after_min_seconds": 0.35
+        },
+        {
+          "text": "只需要已有项目说明，怎么办？",
+          "visual_state": "quiz",
+          "pause_after_min_seconds": 2.0
+        },
+        {
+          "text": "直接新开。",
+          "visual_state": "quiz-answer",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "如果还需要旧聊天的三条决定？",
+          "visual_state": "quiz2",
+          "pause_after_min_seconds": 2.0
+        },
+        {
+          "text": "找出来、核对，再带过去。",
+          "visual_state": "quiz2-answer",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-5%"
+    },
+    {
+      "id": "close",
+      "captions": [
+        "所以，不是越长就越该换。",
+        "看任务变没变，还缺什么信息。",
+        "把聊天分清，把有用的结论留下。",
+        "下次就不用考古了。",
+        "关注我，下回见。"
+      ],
+      "cues": [
+        {
+          "text": "所以，不是越长就越该换。",
+          "visual_state": "close",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "看任务变没变，还缺什么信息。",
+          "visual_state": "close",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "把聊天分清，把有用的结论留下。",
+          "visual_state": "close",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "下次就不用考古了。",
+          "visual_state": "end",
+          "pause_after_min_seconds": 0.75
+        },
+        {
+          "text": "关注我，下回见。",
+          "visual_state": "end",
+          "pause_after_min_seconds": 0.75
+        }
+      ],
+      "suggested_rate": "-5%"
+    }
+  ],
+  "variants": {
+    "full": {
+      "scene_ids": [
+        "intro",
+        "continue",
+        "check",
+        "new",
+        "combine",
+        "handoff",
+        "fork",
+        "quiz",
+        "close"
+      ]
+    }
+  }
+}

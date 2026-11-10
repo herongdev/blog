@@ -1,0 +1,120 @@
+/* Canonical visual tokens shared by the local WKWebView and Edge view. */
+:root {
+  color-scheme: light;
+  --canvas: #f8f4ed;
+  --surface: #fffdf9;
+  --surface-muted: #f1ebe3;
+  --input: #fffefa;
+  --text: #302b27;
+  --text-secondary: #665d56;
+  --text-tertiary: #766b63;
+  --border: #ddd3c7;
+  --border-strong: #b8a99c;
+  --accent: #a64f34;
+  --accent-hover: #8f412b;
+  --accent-soft: #f2e1d6;
+  --on-accent: #fffdf9;
+  --focus: #a64f34;
+  --error: #a6312b;
+  --error-surface: #fff0eb;
+  --success: #416344;
+  --success-surface: #e9efe5;
+  --preview-surface: #eae2d8;
+  --scrim: #17141180;
+  --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-xs: 12px;
+  --font-sm: 13px;
+  --font-md: 14px;
+  --font-input: 16px;
+  --font-lg: 20px;
+  --font-heading: 23px;
+  --line-height: 1.6;
+  --heading-line-height: 1.4;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-strong: 600;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --border-width: 1px;
+  --focus-width: 2px;
+  --focus-offset: 3px;
+  --control-height: 36px;
+  --topbar-height: 72px;
+  --footer-height: 38px;
+  --sidebar-width: 176px;
+  --preview-width: 318px;
+  --editor-min-width: 360px;
+  --preview-height: 390px;
+  --preview-ratio: 9 / 16;
+  --brand-width: 43px;
+  --brand-height: 28px;
+  --pause-width: 72px;
+  --select-width: 144px;
+  --dialog-width: 650px;
+  --dialog-max-height: 88vh;
+  --notice-max-height: 120px;
+  --log-max-height: 240px;
+  --import-min-height: 220px;
+  --preview-max-height: 45vh;
+  --disabled-opacity: .5;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #211e1b;
+  --surface: #292521;
+  --surface-muted: #342d27;
+  --input: #211e1b;
+  --text: #f5eee5;
+  --text-secondary: #d1c4b6;
+  --text-tertiary: #baac9d;
+  --border: #4f453b;
+  --border-strong: #7e6b59;
+  --accent: #df9b7d;
+  --accent-hover: #efb798;
+  --accent-soft: #4b342a;
+  --on-accent: #2d1d15;
+  --focus: #df9b7d;
+  --error: #ffb6a4;
+  --error-surface: #4a2923;
+  --success: #b2d0a6;
+  --success-surface: #2b3827;
+  --preview-surface: #181614;
+  --scrim: #000000a0;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    color-scheme: dark;
+    --canvas: #211e1b;
+    --surface: #292521;
+    --surface-muted: #342d27;
+    --input: #211e1b;
+    --text: #f5eee5;
+    --text-secondary: #d1c4b6;
+    --text-tertiary: #baac9d;
+    --border: #4f453b;
+    --border-strong: #7e6b59;
+    --accent: #df9b7d;
+    --accent-hover: #efb798;
+    --accent-soft: #4b342a;
+    --on-accent: #2d1d15;
+    --focus: #df9b7d;
+    --error: #ffb6a4;
+    --error-surface: #4a2923;
+    --success: #b2d0a6;
+    --success-surface: #2b3827;
+    --preview-surface: #181614;
+    --scrim: #000000a0;
+  }
+}
+/* Same desktop composition, compact sizing for an ordinary narrow app window. */
+@media (max-width: 1080px) {
+  :root { --sidebar-width: 150px; --preview-width: 278px; --editor-min-width: 300px; --space-8: 24px; }
+}
