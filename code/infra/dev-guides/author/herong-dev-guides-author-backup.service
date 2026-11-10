@@ -15,3 +15,5 @@ ReadWritePaths=/var/backups/herong-dev-guides-author
 # Read-only SQLite connections may recreate WAL coordination files after shutdown.
 # The backup subprocess uses the database owner; the DB itself is opened mode=ro.
 ReadWritePaths=-/var/lib/herong-dev-guides-author/publishing
+# The production workflow uses independent WAL databases under the private project.
+ReadWritePaths=-/var/lib/herong-dev-guides-author/project/.production-workflow

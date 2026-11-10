@@ -1,0 +1,4082 @@
+[
+  {
+    "label": "desktop-light-schedule",
+    "controls": [
+      {
+        "height": 36,
+        "kind": "author-button  author-icon-button theme-button",
+        "role": "切换到深色主题",
+        "width": 36,
+        "x": 1388,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "kind": "author-button  ",
+        "role": "本周排期",
+        "width": 102,
+        "x": 96,
+        "y": 107
+      },
+      {
+        "height": 36,
+        "kind": "author-button  ",
+        "role": "全部进度",
+        "width": 102,
+        "x": 202,
+        "y": 107
+      },
+      {
+        "height": 36,
+        "kind": "author-search-field",
+        "role": "DIV",
+        "width": 480,
+        "x": 36,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "kind": "author-button  ",
+        "role": "当前排期",
+        "width": 82,
+        "x": 528,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "kind": "author-button  ",
+        "role": "历史教程0",
+        "width": 94,
+        "x": 614,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "kind": "author-button  author-icon-button schedule-icon-button",
+        "role": "查看排期规则",
+        "width": 36,
+        "x": 1214,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "kind": "author-button  author-icon-button schedule-icon-button",
+        "role": "刷新排期",
+        "width": 36,
+        "x": 1258,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "kind": "author-button author-button-responsive-icon ",
+        "role": "新建选题",
+        "width": 102,
+        "x": 1302,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "kind": "author-search-field",
+        "role": "DIV",
+        "width": 259,
+        "x": 36,
+        "y": 215
+      },
+      {
+        "height": 36,
+        "kind": "author-button  author-icon-button help-tip-trigger",
+        "role": "目录操作说明",
+        "width": 36,
+        "x": 113,
+        "y": 263
+      },
+      {
+        "height": 36,
+        "kind": "author-button  author-icon-button library-more",
+        "role": "刷新目录和内容",
+        "width": 36,
+        "x": 153,
+        "y": 263
+      },
+      {
+        "height": 36,
+        "kind": "author-button  ",
+        "role": "新建目录",
+        "width": 102,
+        "x": 193,
+        "y": 263
+      },
+      {
+        "height": 36,
+        "kind": "author-button  author-icon-button help-tip-trigger",
+        "role": "候选选题与目录说明",
+        "width": 36,
+        "x": 468,
+        "y": 410
+      },
+      {
+        "height": 36,
+        "kind": "author-button  ",
+        "role": "添加已有内容",
+        "width": 128,
+        "x": 1255,
+        "y": 410
+      },
+      {
+        "height": 44,
+        "kind": "author-button  author-icon-button schedule-icon-button schedule-grip",
+        "role": "拖动排序：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "x": 349,
+        "y": 463
+      },
+      {
+        "height": 44,
+        "kind": "author-button  author-icon-button schedule-icon-button",
+        "role": "继续制作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "x": 1251,
+        "y": 463
+      },
+      {
+        "height": 44,
+        "kind": "author-button  author-icon-button schedule-icon-button schedule-transfer",
+        "role": "移入本周：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "x": 1295,
+        "y": 463
+      },
+      {
+        "height": 44,
+        "kind": "author-button  author-icon-button schedule-icon-button",
+        "role": "更多操作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "x": 1339,
+        "y": 463
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "light",
+    "width": 1440
+  },
+  {
+    "label": "desktop-light-progress",
+    "controls": [
+      {
+        "height": 36,
+        "kind": "author-button  author-icon-button theme-button",
+        "role": "切换到深色主题",
+        "width": 36,
+        "x": 1388,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "kind": "author-button  ",
+        "role": "本周排期",
+        "width": 102,
+        "x": 96,
+        "y": 107
+      },
+      {
+        "height": 36,
+        "kind": "author-button  ",
+        "role": "全部进度",
+        "width": 102,
+        "x": 202,
+        "y": 107
+      },
+      {
+        "height": 36,
+        "kind": "author-search-field",
+        "role": "DIV",
+        "width": 480,
+        "x": 36,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "kind": "author-select-trigger ",
+        "role": "制作状态",
+        "width": 102,
+        "x": 528,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "kind": "author-button  author-icon-button ",
+        "role": "刷新制作进度",
+        "width": 36,
+        "x": 1368,
+        "y": 163
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "light",
+    "width": 1440
+  },
+  {
+    "label": "320-light-schedule",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "本周排期",
+        "width": 110,
+        "y": 157
+      },
+      {
+        "height": 44,
+        "name": "全部进度",
+        "width": 110,
+        "y": 157
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 296,
+        "y": 217
+      },
+      {
+        "height": 44,
+        "name": "当前排期",
+        "width": 70,
+        "y": 269
+      },
+      {
+        "height": 44,
+        "name": "历史教程0",
+        "width": 70,
+        "y": 269
+      },
+      {
+        "height": 44,
+        "name": "查看排期规则",
+        "width": 44,
+        "y": 269
+      },
+      {
+        "height": 44,
+        "name": "刷新排期",
+        "width": 44,
+        "y": 269
+      },
+      {
+        "height": 44,
+        "name": "新建选题",
+        "width": 44,
+        "y": 269
+      },
+      {
+        "height": 44,
+        "name": "共享目录",
+        "width": 296,
+        "y": 329
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 296,
+        "y": 381
+      },
+      {
+        "height": 44,
+        "name": "目录操作说明",
+        "width": 44,
+        "y": 437
+      },
+      {
+        "height": 44,
+        "name": "刷新目录和内容",
+        "width": 44,
+        "y": 437
+      },
+      {
+        "height": 44,
+        "name": "新建目录",
+        "width": 110,
+        "y": 437
+      },
+      {
+        "height": 44,
+        "name": "候选选题与目录说明",
+        "width": 44,
+        "y": 808
+      },
+      {
+        "height": 44,
+        "name": "添加已有内容",
+        "width": 140,
+        "y": 860
+      },
+      {
+        "height": 44,
+        "name": "拖动排序：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 936
+      },
+      {
+        "height": 44,
+        "name": "继续制作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 936
+      },
+      {
+        "height": 44,
+        "name": "更多操作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 936
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-progress",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "本周排期",
+        "width": 110,
+        "y": 157
+      },
+      {
+        "height": 44,
+        "name": "全部进度",
+        "width": 110,
+        "y": 157
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 296,
+        "y": 217
+      },
+      {
+        "height": 44,
+        "name": "制作状态",
+        "width": 110,
+        "y": 269
+      },
+      {
+        "height": 44,
+        "name": "刷新制作进度",
+        "width": 44,
+        "y": 269
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-library",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "添加内容",
+        "width": 104,
+        "y": 176
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 288,
+        "y": 232
+      },
+      {
+        "height": 44,
+        "name": "目录操作说明",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "刷新目录和内容",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "新建目录",
+        "width": 110,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-add-video-dialog",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "添加内容",
+        "width": 104,
+        "y": 176
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 288,
+        "y": 232
+      },
+      {
+        "height": 44,
+        "name": "目录操作说明",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "刷新目录和内容",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "新建目录",
+        "width": 110,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "关闭添加内容",
+        "width": 44,
+        "y": 221
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 358
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 504
+      },
+      {
+        "height": 44,
+        "name": "取消",
+        "width": 56,
+        "y": 523
+      },
+      {
+        "height": 44,
+        "name": "创建并添加视频",
+        "width": 131,
+        "y": 523
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-add-resource-dialog",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "添加内容",
+        "width": 104,
+        "y": 176
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 288,
+        "y": 232
+      },
+      {
+        "height": 44,
+        "name": "目录操作说明",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "刷新目录和内容",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "新建目录",
+        "width": 110,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "关闭添加内容",
+        "width": 44,
+        "y": 221
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 358
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 504
+      },
+      {
+        "height": 44,
+        "name": "取消",
+        "width": 56,
+        "y": 523
+      },
+      {
+        "height": 44,
+        "name": "创建并添加资源",
+        "width": 131,
+        "y": 523
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-add-article-dialog",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "添加内容",
+        "width": 104,
+        "y": 176
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 288,
+        "y": 232
+      },
+      {
+        "height": 44,
+        "name": "目录操作说明",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "刷新目录和内容",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "新建目录",
+        "width": 110,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "关闭添加内容",
+        "width": 44,
+        "y": 232
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 348
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 494
+      },
+      {
+        "height": 44,
+        "name": "取消",
+        "width": 56,
+        "y": 512
+      },
+      {
+        "height": 44,
+        "name": "创建并写文章",
+        "width": 116,
+        "y": 512
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-folder-dialog",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "添加内容",
+        "width": 104,
+        "y": 176
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 288,
+        "y": 232
+      },
+      {
+        "height": 44,
+        "name": "目录操作说明",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "刷新目录和内容",
+        "width": 44,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "新建目录",
+        "width": 110,
+        "y": 288
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 438
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 510
+      },
+      {
+        "height": 44,
+        "name": "关闭目录操作",
+        "width": 44,
+        "y": 227
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 363
+      },
+      {
+        "height": 44,
+        "name": "上级目录",
+        "width": 254,
+        "y": 449
+      },
+      {
+        "height": 44,
+        "name": "取消",
+        "width": 56,
+        "y": 517
+      },
+      {
+        "height": 44,
+        "name": "保存",
+        "width": 56,
+        "y": 517
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-content-production-empty",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": -69
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 92
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 92
+      },
+      {
+        "height": 44,
+        "name": "文章版本说明",
+        "width": 44,
+        "y": 233
+      },
+      {
+        "height": 44,
+        "name": "保存",
+        "width": 80,
+        "y": 281
+      },
+      {
+        "height": 44,
+        "name": "工具",
+        "width": 148,
+        "y": 447
+      },
+      {
+        "height": 44,
+        "name": "文章所在目录",
+        "width": 254,
+        "y": 499
+      },
+      {
+        "height": 44,
+        "name": "导入 Markdown",
+        "width": 159,
+        "y": 551
+      },
+      {
+        "height": 44,
+        "name": "Markdown 导入说明",
+        "width": 44,
+        "y": 551
+      },
+      {
+        "height": 44,
+        "name": "添加截图",
+        "width": 110,
+        "y": 599
+      },
+      {
+        "height": 44,
+        "name": "截图使用说明",
+        "width": 44,
+        "y": 599
+      },
+      {
+        "height": 44,
+        "name": "内容类型",
+        "width": 254,
+        "y": 1193
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 1279
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 1365
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 1451
+      },
+      {
+        "height": 90,
+        "name": "TEXTAREA",
+        "width": 254,
+        "y": 1545
+      },
+      {
+        "height": 44,
+        "name": "添加",
+        "width": 80,
+        "y": 1705
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 228,
+        "y": 1828
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 228,
+        "y": 1914
+      },
+      {
+        "height": 90,
+        "name": "TEXTAREA",
+        "width": 228,
+        "y": 2004
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 2165
+      },
+      {
+        "height": 44,
+        "name": "加入发布内容",
+        "width": 140,
+        "y": 2492
+      },
+      {
+        "height": 44,
+        "name": "返回文章与发布",
+        "width": 155,
+        "y": 1179
+      },
+      {
+        "height": 44,
+        "name": "保存",
+        "width": 80,
+        "y": 1179
+      }
+    ],
+    "height": 800,
+    "overflow": [
+      {
+        "left": 29,
+        "name": "",
+        "right": 1029,
+        "tag": "TEXTAREA"
+      }
+    ],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-video",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "上传新版本",
+        "width": 125,
+        "y": 360
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-成片.mp4",
+        "width": 44,
+        "y": 655
+      },
+      {
+        "height": 44,
+        "name": "选择账号与发布",
+        "width": 155,
+        "y": 724
+      },
+      {
+        "height": 44,
+        "name": "保存原片与剪辑工程",
+        "width": 161,
+        "y": 820
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-assets",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "下载素材包",
+        "width": 125,
+        "y": 391
+      },
+      {
+        "height": 44,
+        "name": "上传文件",
+        "width": 110,
+        "y": 391
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 288,
+        "y": 443
+      },
+      {
+        "height": 44,
+        "name": "筛选素材类型",
+        "width": 110,
+        "y": 495
+      },
+      {
+        "height": 44,
+        "name": "上传分类",
+        "width": 110,
+        "y": 495
+      },
+      {
+        "height": 44,
+        "name": "上传文件夹",
+        "width": 125,
+        "y": 547
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-素材.png",
+        "width": 44,
+        "y": 610
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-成片.mp4",
+        "width": 44,
+        "y": 666
+      },
+      {
+        "height": 44,
+        "name": "保存说明",
+        "width": 110,
+        "y": 790
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 138,
+        "y": 871
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 138,
+        "y": 871
+      },
+      {
+        "height": 90,
+        "name": "TEXTAREA",
+        "width": 288,
+        "y": 960
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-image-preview",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": -296
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": -135
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": -135
+      },
+      {
+        "height": 44,
+        "name": "下载素材包",
+        "width": 125,
+        "y": 84
+      },
+      {
+        "height": 44,
+        "name": "上传文件",
+        "width": 110,
+        "y": 84
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 288,
+        "y": 136
+      },
+      {
+        "height": 44,
+        "name": "筛选素材类型",
+        "width": 110,
+        "y": 188
+      },
+      {
+        "height": 44,
+        "name": "上传分类",
+        "width": 110,
+        "y": 188
+      },
+      {
+        "height": 44,
+        "name": "上传文件夹",
+        "width": 125,
+        "y": 240
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-素材.png",
+        "width": 44,
+        "y": 303
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-素材.png",
+        "width": 44,
+        "y": 359
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-成片.mp4",
+        "width": 44,
+        "y": 416
+      },
+      {
+        "height": 44,
+        "name": "保存说明",
+        "width": 110,
+        "y": 540
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 138,
+        "y": 621
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 138,
+        "y": 621
+      },
+      {
+        "height": 90,
+        "name": "TEXTAREA",
+        "width": 288,
+        "y": 710
+      },
+      {
+        "height": 44,
+        "name": "关闭提示",
+        "width": 44,
+        "y": 17
+      },
+      {
+        "height": 44,
+        "name": "关闭文件预览",
+        "width": 44,
+        "y": 254
+      },
+      {
+        "height": 44,
+        "name": "下载原文件",
+        "width": 125,
+        "y": 502
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-content-publish",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新发布状态",
+        "width": 44,
+        "y": 360
+      },
+      {
+        "height": 44,
+        "name": "保存并生成预览",
+        "width": 155,
+        "y": 508
+      },
+      {
+        "height": 44,
+        "name": "平台视频发布说明",
+        "width": 44,
+        "y": 628
+      },
+      {
+        "height": 44,
+        "name": "选择账号与发布",
+        "width": 155,
+        "y": 680
+      },
+      {
+        "height": 44,
+        "name": "更换版本",
+        "width": 86,
+        "y": 762
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-update-records",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新",
+        "width": 80,
+        "y": 391
+      },
+      {
+        "height": 44,
+        "name": "创建更新",
+        "width": 110,
+        "y": 391
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-update-dialog-after-fix",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新",
+        "width": 80,
+        "y": 391
+      },
+      {
+        "height": 44,
+        "name": "创建更新",
+        "width": 110,
+        "y": 391
+      },
+      {
+        "height": 44,
+        "name": "关闭创建更新",
+        "width": 44,
+        "y": 137
+      },
+      {
+        "height": 44,
+        "name": "更新原因",
+        "width": 254,
+        "y": 324
+      },
+      {
+        "height": 44,
+        "name": "更新范围",
+        "width": 254,
+        "y": 413
+      },
+      {
+        "height": 90,
+        "name": "TEXTAREA",
+        "width": 254,
+        "y": 493
+      },
+      {
+        "height": 44,
+        "name": "取消",
+        "width": 56,
+        "y": 607
+      },
+      {
+        "height": 44,
+        "name": "创建并加入候选",
+        "width": 155,
+        "y": 607
+      }
+    ],
+    "dialog": "创建更新任务",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-production-empty",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "内容标题说明",
+        "width": 44,
+        "y": 321
+      },
+      {
+        "height": 44,
+        "name": "制作说明",
+        "width": 44,
+        "y": 369
+      },
+      {
+        "height": 44,
+        "name": "重新读取制作档案",
+        "width": 44,
+        "y": 421
+      },
+      {
+        "height": 44,
+        "name": "重新读取调研与拍摄资料",
+        "width": 44,
+        "y": 638
+      },
+      {
+        "height": 44,
+        "name": "开始制作",
+        "width": 110,
+        "y": 647
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "390-light-production-stages",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "内容标题说明",
+        "width": 44,
+        "y": 321
+      },
+      {
+        "height": 44,
+        "name": "制作说明",
+        "width": 44,
+        "y": 369
+      },
+      {
+        "height": 44,
+        "name": "交接 Markdown",
+        "width": 159,
+        "y": 421
+      },
+      {
+        "height": 44,
+        "name": "JSON",
+        "width": 67,
+        "y": 421
+      },
+      {
+        "height": 44,
+        "name": "暂停",
+        "width": 80,
+        "y": 421
+      },
+      {
+        "height": 44,
+        "name": "重新读取制作档案",
+        "width": 44,
+        "y": 473
+      },
+      {
+        "height": 44,
+        "name": "选择制作阶段",
+        "width": 240,
+        "y": 661
+      },
+      {
+        "height": 44,
+        "name": "连续制作",
+        "width": 110,
+        "y": 661
+      },
+      {
+        "height": 44,
+        "name": "标题与封面方向要求",
+        "width": 44,
+        "y": 717
+      },
+      {
+        "height": 44,
+        "name": "记录阻塞",
+        "width": 110,
+        "y": 717
+      },
+      {
+        "height": 44,
+        "name": "重新读取调研与拍摄资料",
+        "width": 44,
+        "y": 818
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 1031
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 1159
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 1121
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 1166
+      },
+      {
+        "height": 44,
+        "name": "选择制作稿版本",
+        "width": 154,
+        "y": 827
+      },
+      {
+        "height": 44,
+        "name": "对照另一版本",
+        "width": 118,
+        "y": 827
+      },
+      {
+        "height": 44,
+        "name": "本次修改说明",
+        "width": 358,
+        "y": 1277
+      },
+      {
+        "height": 44,
+        "name": "保存稿件",
+        "width": 110,
+        "y": 1329
+      },
+      {
+        "height": 44,
+        "name": "提交审阅",
+        "width": 110,
+        "y": 1381
+      },
+      {
+        "height": 44,
+        "name": "确认这个版本",
+        "width": 140,
+        "y": 1381
+      },
+      {
+        "height": 44,
+        "name": "需要修改",
+        "width": 86,
+        "y": 1381
+      },
+      {
+        "height": 44,
+        "name": "版本确认说明",
+        "width": 44,
+        "y": 1429
+      },
+      {
+        "height": 44,
+        "name": "记录",
+        "width": 56,
+        "y": 1531
+      },
+      {
+        "height": 44,
+        "name": "关联产物说明",
+        "width": 44,
+        "y": 1692
+      },
+      {
+        "height": 44,
+        "name": "关联现有产物",
+        "width": 140,
+        "y": 1692
+      },
+      {
+        "height": 44,
+        "name": "继续下一步",
+        "width": 125,
+        "y": 1889
+      }
+    ],
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 390,
+    "theme": "light",
+    "width": 390
+  },
+  {
+    "label": "390-light-production-check-dialog",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": -1078
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": -917
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": -917
+      },
+      {
+        "height": 44,
+        "name": "内容标题说明",
+        "width": 44,
+        "y": -768
+      },
+      {
+        "height": 44,
+        "name": "制作说明",
+        "width": 44,
+        "y": -720
+      },
+      {
+        "height": 44,
+        "name": "交接 Markdown",
+        "width": 159,
+        "y": -668
+      },
+      {
+        "height": 44,
+        "name": "JSON",
+        "width": 67,
+        "y": -668
+      },
+      {
+        "height": 44,
+        "name": "暂停",
+        "width": 80,
+        "y": -668
+      },
+      {
+        "height": 44,
+        "name": "重新读取制作档案",
+        "width": 44,
+        "y": -616
+      },
+      {
+        "height": 44,
+        "name": "选择制作阶段",
+        "width": 240,
+        "y": -428
+      },
+      {
+        "height": 44,
+        "name": "连续制作",
+        "width": 110,
+        "y": -428
+      },
+      {
+        "height": 44,
+        "name": "标题与封面方向要求",
+        "width": 44,
+        "y": -372
+      },
+      {
+        "height": 44,
+        "name": "记录阻塞",
+        "width": 110,
+        "y": -372
+      },
+      {
+        "height": 44,
+        "name": "重新读取调研与拍摄资料",
+        "width": 44,
+        "y": -271
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": -58
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 70
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 32
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 77
+      },
+      {
+        "height": 44,
+        "name": "选择制作稿版本",
+        "width": 154,
+        "y": -262
+      },
+      {
+        "height": 44,
+        "name": "对照另一版本",
+        "width": 118,
+        "y": -262
+      },
+      {
+        "height": 44,
+        "name": "本次修改说明",
+        "width": 358,
+        "y": 188
+      },
+      {
+        "height": 44,
+        "name": "保存稿件",
+        "width": 110,
+        "y": 240
+      },
+      {
+        "height": 44,
+        "name": "提交审阅",
+        "width": 110,
+        "y": 292
+      },
+      {
+        "height": 44,
+        "name": "确认这个版本",
+        "width": 140,
+        "y": 292
+      },
+      {
+        "height": 44,
+        "name": "需要修改",
+        "width": 86,
+        "y": 292
+      },
+      {
+        "height": 44,
+        "name": "版本确认说明",
+        "width": 44,
+        "y": 340
+      },
+      {
+        "height": 44,
+        "name": "记录",
+        "width": 56,
+        "y": 442
+      },
+      {
+        "height": 44,
+        "name": "关联产物说明",
+        "width": 44,
+        "y": 603
+      },
+      {
+        "height": 44,
+        "name": "关联现有产物",
+        "width": 140,
+        "y": 603
+      },
+      {
+        "height": 44,
+        "name": "继续下一步",
+        "width": 125,
+        "y": 800
+      },
+      {
+        "height": 44,
+        "name": "关闭制作操作",
+        "width": 44,
+        "y": 104
+      },
+      {
+        "height": 44,
+        "name": "检查项目",
+        "width": 316,
+        "y": 224
+      },
+      {
+        "height": 44,
+        "name": "实际检查方式",
+        "width": 316,
+        "y": 308
+      },
+      {
+        "height": 44,
+        "name": "检查结果",
+        "width": 316,
+        "y": 393
+      },
+      {
+        "height": 44,
+        "name": "检查依据说明",
+        "width": 44,
+        "y": 449
+      },
+      {
+        "height": 44,
+        "name": "检查依据",
+        "width": 316,
+        "y": 501
+      },
+      {
+        "height": 90,
+        "name": "检查说明与限制",
+        "width": 316,
+        "y": 586
+      },
+      {
+        "height": 44,
+        "name": "取消",
+        "width": 56,
+        "y": 696
+      },
+      {
+        "height": 44,
+        "name": "记录实际检查",
+        "width": 116,
+        "y": 696
+      }
+    ],
+    "dialog": "记录实际检查",
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 390,
+    "theme": "light",
+    "width": 390
+  },
+  {
+    "label": "390-dark-production-stages",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到浅色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "内容标题说明",
+        "width": 44,
+        "y": 321
+      },
+      {
+        "height": 44,
+        "name": "制作说明",
+        "width": 44,
+        "y": 369
+      },
+      {
+        "height": 44,
+        "name": "交接 Markdown",
+        "width": 159,
+        "y": 421
+      },
+      {
+        "height": 44,
+        "name": "JSON",
+        "width": 67,
+        "y": 421
+      },
+      {
+        "height": 44,
+        "name": "暂停",
+        "width": 80,
+        "y": 421
+      },
+      {
+        "height": 44,
+        "name": "重新读取制作档案",
+        "width": 44,
+        "y": 473
+      },
+      {
+        "height": 44,
+        "name": "选择制作阶段",
+        "width": 240,
+        "y": 661
+      },
+      {
+        "height": 44,
+        "name": "连续制作",
+        "width": 110,
+        "y": 661
+      },
+      {
+        "height": 44,
+        "name": "标题与封面方向要求",
+        "width": 44,
+        "y": 717
+      },
+      {
+        "height": 44,
+        "name": "记录阻塞",
+        "width": 110,
+        "y": 717
+      },
+      {
+        "height": 44,
+        "name": "重新读取调研与拍摄资料",
+        "width": 44,
+        "y": 818
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 1031
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 1159
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 1121
+      },
+      {
+        "height": 44,
+        "name": "复制原文",
+        "width": 110,
+        "y": 1166
+      },
+      {
+        "height": 44,
+        "name": "选择制作稿版本",
+        "width": 154,
+        "y": 827
+      },
+      {
+        "height": 44,
+        "name": "对照另一版本",
+        "width": 118,
+        "y": 827
+      },
+      {
+        "height": 44,
+        "name": "本次修改说明",
+        "width": 358,
+        "y": 1277
+      },
+      {
+        "height": 44,
+        "name": "保存稿件",
+        "width": 110,
+        "y": 1329
+      },
+      {
+        "height": 44,
+        "name": "提交审阅",
+        "width": 110,
+        "y": 1381
+      },
+      {
+        "height": 44,
+        "name": "确认这个版本",
+        "width": 140,
+        "y": 1381
+      },
+      {
+        "height": 44,
+        "name": "需要修改",
+        "width": 86,
+        "y": 1381
+      },
+      {
+        "height": 44,
+        "name": "版本确认说明",
+        "width": 44,
+        "y": 1429
+      },
+      {
+        "height": 44,
+        "name": "记录",
+        "width": 56,
+        "y": 1531
+      },
+      {
+        "height": 44,
+        "name": "关联产物说明",
+        "width": 44,
+        "y": 1692
+      },
+      {
+        "height": 44,
+        "name": "关联现有产物",
+        "width": 140,
+        "y": 1692
+      },
+      {
+        "height": 44,
+        "name": "继续下一步",
+        "width": 125,
+        "y": 1889
+      }
+    ],
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 390,
+    "theme": "dark",
+    "width": 390
+  },
+  {
+    "label": "1440-dark-article",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到浅色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "添加内容",
+        "width": 100,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 255,
+        "y": 147
+      },
+      {
+        "height": 36,
+        "name": "目录操作说明",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "刷新目录和内容",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "新建目录",
+        "width": 102,
+        "y": 195
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 321
+      },
+      {
+        "height": 36,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 36,
+        "y": 325
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 393
+      },
+      {
+        "height": 36,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 36,
+        "y": 397
+      },
+      {
+        "height": 36,
+        "name": "返回",
+        "width": 76,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "刷新内容状态",
+        "width": 36,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "文章版本说明",
+        "width": 36,
+        "y": 156
+      },
+      {
+        "height": 36,
+        "name": "保存",
+        "width": 76,
+        "y": 156
+      },
+      {
+        "height": 36,
+        "name": "工具",
+        "width": 148,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "文章所在目录",
+        "width": 113,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "导入 Markdown",
+        "width": 146,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "Markdown 导入说明",
+        "width": 36,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "添加截图",
+        "width": 102,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "截图使用说明",
+        "width": 36,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "内容类型",
+        "width": 515,
+        "y": 1048
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1048
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1130
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1130
+      },
+      {
+        "height": 80.4,
+        "name": "TEXTAREA",
+        "width": 1046,
+        "y": 1216
+      },
+      {
+        "height": 36,
+        "name": "添加",
+        "width": 76,
+        "y": 1345
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 498,
+        "y": 1464
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 498,
+        "y": 1464
+      },
+      {
+        "height": 80.4,
+        "name": "TEXTAREA",
+        "width": 1012,
+        "y": 1546
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 1046,
+        "y": 1702
+      },
+      {
+        "height": 36,
+        "name": "加入发布内容",
+        "width": 128,
+        "y": 1953
+      },
+      {
+        "height": 36,
+        "name": "保存",
+        "width": 76,
+        "y": 1030
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "dark",
+    "width": 1440
+  },
+  {
+    "label": "1440-light-article",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到深色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "添加内容",
+        "width": 100,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 255,
+        "y": 147
+      },
+      {
+        "height": 36,
+        "name": "目录操作说明",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "刷新目录和内容",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "新建目录",
+        "width": 102,
+        "y": 195
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 321
+      },
+      {
+        "height": 36,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 36,
+        "y": 325
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 393
+      },
+      {
+        "height": 36,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 36,
+        "y": 397
+      },
+      {
+        "height": 36,
+        "name": "返回",
+        "width": 76,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "刷新内容状态",
+        "width": 36,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "文章版本说明",
+        "width": 36,
+        "y": 156
+      },
+      {
+        "height": 36,
+        "name": "保存",
+        "width": 76,
+        "y": 156
+      },
+      {
+        "height": 36,
+        "name": "工具",
+        "width": 148,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "文章所在目录",
+        "width": 113,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "导入 Markdown",
+        "width": 146,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "Markdown 导入说明",
+        "width": 36,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "添加截图",
+        "width": 102,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "截图使用说明",
+        "width": 36,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "内容类型",
+        "width": 515,
+        "y": 1048
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1048
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1130
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1130
+      },
+      {
+        "height": 80.4,
+        "name": "TEXTAREA",
+        "width": 1046,
+        "y": 1216
+      },
+      {
+        "height": 36,
+        "name": "添加",
+        "width": 76,
+        "y": 1345
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 498,
+        "y": 1464
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 498,
+        "y": 1464
+      },
+      {
+        "height": 80.4,
+        "name": "TEXTAREA",
+        "width": 1012,
+        "y": 1546
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 1046,
+        "y": 1702
+      },
+      {
+        "height": 36,
+        "name": "加入发布内容",
+        "width": 128,
+        "y": 1953
+      },
+      {
+        "height": 36,
+        "name": "保存",
+        "width": 76,
+        "y": 1030
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "light",
+    "width": 1440
+  },
+  {
+    "label": "1440-light-markdown-import",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到深色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "添加内容",
+        "width": 100,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 255,
+        "y": 147
+      },
+      {
+        "height": 36,
+        "name": "目录操作说明",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "刷新目录和内容",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "新建目录",
+        "width": 102,
+        "y": 195
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 321
+      },
+      {
+        "height": 36,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 36,
+        "y": 325
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 393
+      },
+      {
+        "height": 36,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 36,
+        "y": 397
+      },
+      {
+        "height": 36,
+        "name": "返回",
+        "width": 76,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "刷新内容状态",
+        "width": 36,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "文章版本说明",
+        "width": 36,
+        "y": 156
+      },
+      {
+        "height": 36,
+        "name": "保存",
+        "width": 76,
+        "y": 156
+      },
+      {
+        "height": 36,
+        "name": "工具",
+        "width": 148,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "文章所在目录",
+        "width": 113,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "导入 Markdown",
+        "width": 146,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "Markdown 导入说明",
+        "width": 36,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "添加截图",
+        "width": 102,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "截图使用说明",
+        "width": 36,
+        "y": 338
+      },
+      {
+        "height": 36,
+        "name": "内容类型",
+        "width": 515,
+        "y": 1048
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1048
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1130
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 515,
+        "y": 1130
+      },
+      {
+        "height": 80.4,
+        "name": "TEXTAREA",
+        "width": 1046,
+        "y": 1216
+      },
+      {
+        "height": 36,
+        "name": "添加",
+        "width": 76,
+        "y": 1345
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 498,
+        "y": 1464
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 498,
+        "y": 1464
+      },
+      {
+        "height": 80.4,
+        "name": "TEXTAREA",
+        "width": 1012,
+        "y": 1546
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 1046,
+        "y": 1702
+      },
+      {
+        "height": 36,
+        "name": "加入发布内容",
+        "width": 128,
+        "y": 1953
+      },
+      {
+        "height": 36,
+        "name": "保存",
+        "width": 76,
+        "y": 1030
+      },
+      {
+        "height": 44,
+        "name": "取消导入 Markdown",
+        "width": 44,
+        "y": 213
+      },
+      {
+        "height": 36,
+        "name": "选择 .md 文件",
+        "width": 133,
+        "y": 307
+      },
+      {
+        "height": 36,
+        "name": "取消",
+        "width": 52,
+        "y": 735
+      },
+      {
+        "height": 36,
+        "name": "解析预览",
+        "width": 78,
+        "y": 735
+      }
+    ],
+    "dialog": "导入 Markdown",
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "light",
+    "width": 1440
+  },
+  {
+    "label": "320-light-markdown-error-dialog",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "文章版本说明",
+        "width": 44,
+        "y": 313
+      },
+      {
+        "height": 44,
+        "name": "保存",
+        "width": 80,
+        "y": 361
+      },
+      {
+        "height": 44,
+        "name": "工具",
+        "width": 148,
+        "y": 551
+      },
+      {
+        "height": 44,
+        "name": "文章所在目录",
+        "width": 254,
+        "y": 603
+      },
+      {
+        "height": 44,
+        "name": "导入 Markdown",
+        "width": 159,
+        "y": 655
+      },
+      {
+        "height": 44,
+        "name": "Markdown 导入说明",
+        "width": 44,
+        "y": 655
+      },
+      {
+        "height": 44,
+        "name": "添加截图",
+        "width": 110,
+        "y": 703
+      },
+      {
+        "height": 44,
+        "name": "截图使用说明",
+        "width": 44,
+        "y": 703
+      },
+      {
+        "height": 44,
+        "name": "内容类型",
+        "width": 254,
+        "y": 1297
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 1383
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 1469
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 1555
+      },
+      {
+        "height": 90,
+        "name": "TEXTAREA",
+        "width": 254,
+        "y": 1649
+      },
+      {
+        "height": 44,
+        "name": "添加",
+        "width": 80,
+        "y": 1809
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 228,
+        "y": 1932
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 228,
+        "y": 2018
+      },
+      {
+        "height": 90,
+        "name": "TEXTAREA",
+        "width": 228,
+        "y": 2108
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 254,
+        "y": 2269
+      },
+      {
+        "height": 44,
+        "name": "加入发布内容",
+        "width": 140,
+        "y": 2596
+      },
+      {
+        "height": 44,
+        "name": "返回文章与发布",
+        "width": 155,
+        "y": 1283
+      },
+      {
+        "height": 44,
+        "name": "保存",
+        "width": 80,
+        "y": 1283
+      },
+      {
+        "height": 44,
+        "name": "取消导入 Markdown",
+        "width": 44,
+        "y": 92
+      },
+      {
+        "height": 44,
+        "name": "选择 .md 文件",
+        "width": 145,
+        "y": 202
+      },
+      {
+        "height": 44,
+        "name": "取消",
+        "width": 56,
+        "y": 652
+      },
+      {
+        "height": 44,
+        "name": "解析预览",
+        "width": 86,
+        "y": 652
+      }
+    ],
+    "dialog": "导入 Markdown",
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-article-history",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "文章版本说明",
+        "width": 44,
+        "y": 356
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-article-history-preview",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": -65
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 96
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 96
+      },
+      {
+        "height": 44,
+        "name": "文章版本说明",
+        "width": 44,
+        "y": 280
+      },
+      {
+        "height": 44,
+        "name": "恢复为工作稿",
+        "width": 140,
+        "y": 473
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-publishing-new",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "刷新",
+        "width": 80,
+        "y": 142
+      },
+      {
+        "height": 44,
+        "name": "选择视频",
+        "width": 296,
+        "y": 575
+      },
+      {
+        "height": 44,
+        "name": "上传视频",
+        "width": 110,
+        "y": 631
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 296,
+        "y": 815
+      },
+      {
+        "height": 138,
+        "name": "TEXTAREA",
+        "width": 296,
+        "y": 901
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 296,
+        "y": 1081
+      },
+      {
+        "height": 44,
+        "name": "选择封面",
+        "width": 296,
+        "y": 1167
+      },
+      {
+        "height": 44,
+        "name": "上传封面",
+        "width": 110,
+        "y": 1223
+      },
+      {
+        "height": 44,
+        "name": "管理账号",
+        "width": 110,
+        "y": 1312
+      },
+      {
+        "height": 44,
+        "name": "保存草稿",
+        "width": 86,
+        "y": 740
+      },
+      {
+        "height": 44,
+        "name": "预检查与预览",
+        "width": 140,
+        "y": 740
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-accounts-select",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": -123
+      },
+      {
+        "height": 44,
+        "name": "刷新",
+        "width": 80,
+        "y": 8
+      },
+      {
+        "height": 44,
+        "name": "平台",
+        "width": 264,
+        "y": 378
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 264,
+        "y": 464
+      },
+      {
+        "height": 44,
+        "name": "添加账号",
+        "width": 110,
+        "y": 524
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-light-records",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到深色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "刷新",
+        "width": 80,
+        "y": 142
+      },
+      {
+        "height": 44,
+        "name": "新建发布",
+        "width": 86,
+        "y": 607
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "light",
+    "width": 320
+  },
+  {
+    "label": "320-dark-records",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到浅色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "刷新",
+        "width": 80,
+        "y": 142
+      },
+      {
+        "height": 44,
+        "name": "新建发布",
+        "width": 86,
+        "y": 607
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "label": "320-dark-publishing-new",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到浅色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "刷新",
+        "width": 80,
+        "y": 142
+      },
+      {
+        "height": 44,
+        "name": "选择视频",
+        "width": 296,
+        "y": 575
+      },
+      {
+        "height": 44,
+        "name": "上传视频",
+        "width": 110,
+        "y": 631
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 296,
+        "y": 815
+      },
+      {
+        "height": 138,
+        "name": "TEXTAREA",
+        "width": 296,
+        "y": 901
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 296,
+        "y": 1081
+      },
+      {
+        "height": 44,
+        "name": "选择封面",
+        "width": 296,
+        "y": 1167
+      },
+      {
+        "height": 44,
+        "name": "上传封面",
+        "width": 110,
+        "y": 1223
+      },
+      {
+        "height": 44,
+        "name": "管理账号",
+        "width": 110,
+        "y": 1312
+      },
+      {
+        "height": 44,
+        "name": "保存草稿",
+        "width": 86,
+        "y": 740
+      },
+      {
+        "height": 44,
+        "name": "预检查与预览",
+        "width": 140,
+        "y": 740
+      }
+    ],
+    "height": 800,
+    "overflow": [],
+    "scrollWidth": 320,
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "label": "768-dark-publishing-new",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到浅色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "刷新",
+        "width": 76,
+        "y": 113
+      },
+      {
+        "height": 36,
+        "name": "选择视频",
+        "width": 332,
+        "y": 363
+      },
+      {
+        "height": 36,
+        "name": "上传视频",
+        "width": 102,
+        "y": 363
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 446,
+        "y": 543
+      },
+      {
+        "height": 122,
+        "name": "TEXTAREA",
+        "width": 446,
+        "y": 621
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 446,
+        "y": 785
+      },
+      {
+        "height": 36,
+        "name": "选择封面",
+        "width": 332,
+        "y": 863
+      },
+      {
+        "height": 36,
+        "name": "上传封面",
+        "width": 102,
+        "y": 863
+      },
+      {
+        "height": 36,
+        "name": "管理账号",
+        "width": 102,
+        "y": 948
+      },
+      {
+        "height": 36,
+        "name": "保存草稿",
+        "width": 78,
+        "y": 848
+      },
+      {
+        "height": 36,
+        "name": "预检查与预览",
+        "width": 128,
+        "y": 848
+      }
+    ],
+    "height": 900,
+    "overflow": [],
+    "scrollWidth": 768,
+    "theme": "dark",
+    "width": 768
+  },
+  {
+    "label": "1440-dark-accounts",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到浅色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "刷新",
+        "width": 76,
+        "y": 113
+      },
+      {
+        "height": 36,
+        "name": "平台",
+        "width": 76,
+        "y": 423
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 1046,
+        "y": 423
+      },
+      {
+        "height": 36,
+        "name": "添加账号",
+        "width": 102,
+        "y": 423
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "dark",
+    "width": 1440
+  },
+  {
+    "label": "1440-light-accounts",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到深色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "刷新",
+        "width": 76,
+        "y": 113
+      },
+      {
+        "height": 36,
+        "name": "平台",
+        "width": 76,
+        "y": 423
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 1046,
+        "y": 423
+      },
+      {
+        "height": 36,
+        "name": "添加账号",
+        "width": 102,
+        "y": 423
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "light",
+    "width": 1440
+  },
+  {
+    "label": "1440-dark-materials",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到浅色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "添加内容",
+        "width": 100,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 255,
+        "y": 147
+      },
+      {
+        "height": 36,
+        "name": "目录操作说明",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "刷新目录和内容",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "新建目录",
+        "width": 102,
+        "y": 195
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 321
+      },
+      {
+        "height": 36,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 36,
+        "y": 325
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 393
+      },
+      {
+        "height": 36,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 36,
+        "y": 397
+      },
+      {
+        "height": 36,
+        "name": "返回",
+        "width": 76,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "刷新内容状态",
+        "width": 36,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "下载素材包",
+        "width": 115,
+        "y": 218
+      },
+      {
+        "height": 36,
+        "name": "上传文件",
+        "width": 102,
+        "y": 218
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 686,
+        "y": 262
+      },
+      {
+        "height": 36,
+        "name": "筛选素材类型",
+        "width": 102,
+        "y": 262
+      },
+      {
+        "height": 36,
+        "name": "上传分类",
+        "width": 113,
+        "y": 262
+      },
+      {
+        "height": 36,
+        "name": "上传文件夹",
+        "width": 115,
+        "y": 262
+      },
+      {
+        "height": 36,
+        "name": "下载 UI验收-素材.png",
+        "width": 36,
+        "y": 321
+      },
+      {
+        "height": 36,
+        "name": "下载 UI验收-素材.png",
+        "width": 36,
+        "y": 377
+      },
+      {
+        "height": 36,
+        "name": "下载 UI验收-成片.mp4",
+        "width": 36,
+        "y": 434
+      },
+      {
+        "height": 36,
+        "name": "保存说明",
+        "width": 102,
+        "y": 554
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 536,
+        "y": 627
+      },
+      {
+        "height": 36,
+        "name": "INPUT",
+        "width": 536,
+        "y": 627
+      },
+      {
+        "height": 80.4,
+        "name": "TEXTAREA",
+        "width": 1088,
+        "y": 708
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "dark",
+    "width": 1440
+  },
+  {
+    "label": "390-dark-materials",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到浅色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "下载素材包",
+        "width": 125,
+        "y": 391
+      },
+      {
+        "height": 44,
+        "name": "上传文件",
+        "width": 110,
+        "y": 391
+      },
+      {
+        "height": 44,
+        "name": "DIV",
+        "width": 358,
+        "y": 443
+      },
+      {
+        "height": 44,
+        "name": "筛选素材类型",
+        "width": 110,
+        "y": 495
+      },
+      {
+        "height": 44,
+        "name": "上传分类",
+        "width": 110,
+        "y": 495
+      },
+      {
+        "height": 44,
+        "name": "上传文件夹",
+        "width": 125,
+        "y": 547
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-素材.png",
+        "width": 44,
+        "y": 610
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-素材.png",
+        "width": 44,
+        "y": 666
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-成片.mp4",
+        "width": 44,
+        "y": 723
+      },
+      {
+        "height": 44,
+        "name": "保存说明",
+        "width": 110,
+        "y": 847
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 173,
+        "y": 928
+      },
+      {
+        "height": 44,
+        "name": "INPUT",
+        "width": 173,
+        "y": 928
+      },
+      {
+        "height": 90,
+        "name": "TEXTAREA",
+        "width": 358,
+        "y": 1017
+      }
+    ],
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 390,
+    "theme": "dark",
+    "width": 390
+  },
+  {
+    "label": "390-dark-video",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 44,
+        "name": "切换到浅色主题",
+        "width": 44,
+        "y": 11
+      },
+      {
+        "height": 44,
+        "name": "返回",
+        "width": 42,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "刷新内容状态",
+        "width": 44,
+        "y": 172
+      },
+      {
+        "height": 44,
+        "name": "上传新版本",
+        "width": 125,
+        "y": 360
+      },
+      {
+        "height": 44,
+        "name": "下载 UI验收-成片.mp4",
+        "width": 44,
+        "y": 694
+      },
+      {
+        "height": 44,
+        "name": "选择账号与发布",
+        "width": 155,
+        "y": 764
+      },
+      {
+        "height": 44,
+        "name": "保存原片与剪辑工程",
+        "width": 161,
+        "y": 860
+      }
+    ],
+    "height": 844,
+    "overflow": [],
+    "scrollWidth": 390,
+    "theme": "dark",
+    "width": 390
+  },
+  {
+    "label": "1440-dark-video",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到浅色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "添加内容",
+        "width": 100,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 255,
+        "y": 147
+      },
+      {
+        "height": 36,
+        "name": "目录操作说明",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "刷新目录和内容",
+        "width": 36,
+        "y": 195
+      },
+      {
+        "height": 36,
+        "name": "新建目录",
+        "width": 102,
+        "y": 195
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 321
+      },
+      {
+        "height": 36,
+        "name": "内容操作：隔离验收：制作流程版本与恢复",
+        "width": 36,
+        "y": 325
+      },
+      {
+        "height": 44,
+        "name": "拖动归类 UI验收：输入、视频与制作素材",
+        "width": 44,
+        "y": 393
+      },
+      {
+        "height": 36,
+        "name": "内容操作：UI验收：输入、视频与制作素材",
+        "width": 36,
+        "y": 397
+      },
+      {
+        "height": 36,
+        "name": "返回",
+        "width": 76,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "刷新内容状态",
+        "width": 36,
+        "y": 103
+      },
+      {
+        "height": 36,
+        "name": "上传新版本",
+        "width": 115,
+        "y": 218
+      },
+      {
+        "height": 36,
+        "name": "下载 UI验收-成片.mp4",
+        "width": 36,
+        "y": 300
+      },
+      {
+        "height": 36,
+        "name": "选择账号与发布",
+        "width": 141,
+        "y": 362
+      },
+      {
+        "height": 36,
+        "name": "保存原片与剪辑工程",
+        "width": 143,
+        "y": 663
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "dark",
+    "width": 1440
+  },
+  {
+    "label": "1440-light-final-progress",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到深色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "本周排期",
+        "width": 102,
+        "y": 107
+      },
+      {
+        "height": 36,
+        "name": "全部进度",
+        "width": 102,
+        "y": 107
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 480,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "name": "制作状态",
+        "width": 102,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "name": "刷新制作进度",
+        "width": 36,
+        "y": 163
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "light",
+    "width": 1440
+  },
+  {
+    "label": "1440-light-final-schedule",
+    "tabId": "2",
+    "controls": [
+      {
+        "height": 36,
+        "name": "切换到深色主题",
+        "width": 36,
+        "y": 8
+      },
+      {
+        "height": 36,
+        "name": "本周排期",
+        "width": 102,
+        "y": 107
+      },
+      {
+        "height": 36,
+        "name": "全部进度",
+        "width": 102,
+        "y": 107
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 480,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "name": "当前排期",
+        "width": 82,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "name": "历史教程0",
+        "width": 94,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "name": "查看排期规则",
+        "width": 36,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "name": "刷新排期",
+        "width": 36,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "name": "新建选题",
+        "width": 102,
+        "y": 163
+      },
+      {
+        "height": 36,
+        "name": "DIV",
+        "width": 259,
+        "y": 215
+      },
+      {
+        "height": 36,
+        "name": "目录操作说明",
+        "width": 36,
+        "y": 263
+      },
+      {
+        "height": 36,
+        "name": "刷新目录和内容",
+        "width": 36,
+        "y": 263
+      },
+      {
+        "height": 36,
+        "name": "新建目录",
+        "width": 102,
+        "y": 263
+      },
+      {
+        "height": 36,
+        "name": "候选选题与目录说明",
+        "width": 36,
+        "y": 410
+      },
+      {
+        "height": 36,
+        "name": "添加已有内容",
+        "width": 128,
+        "y": 410
+      },
+      {
+        "height": 44,
+        "name": "拖动排序：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 463
+      },
+      {
+        "height": 44,
+        "name": "继续制作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 463
+      },
+      {
+        "height": 44,
+        "name": "移入本周：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 463
+      },
+      {
+        "height": 44,
+        "name": "更多操作：隔离验收：制作流程版本与恢复",
+        "width": 44,
+        "y": 463
+      }
+    ],
+    "height": 1000,
+    "overflow": [],
+    "scrollWidth": 1440,
+    "theme": "light",
+    "width": 1440
+  }
+]

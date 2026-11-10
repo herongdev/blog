@@ -58,7 +58,7 @@ def main():
         archive = Path(temporary) / (release + '.tar.gz')
         def safe(member):
             parts = Path(member.name).parts
-            if any(part in {'node_modules', 'drafts', '.git', '.astro', '.vite', 'test-results', '.history', '.library.json', '.schedule.json', '.filming.json', '.editorial-imports', '.editorial-curation', '.publishing-private', '.content-workspace', '.article-revisions', '.content-updates', '.vendor', '.venv', '__pycache__'} or part.startswith(('.env', '.schedule.json.', '.library.json.', '.filming.json.')) or part.endswith('.env') for part in parts):
+            if any(part in {'node_modules', 'drafts', '.git', '.astro', '.vite', 'test-results', '.history', '.library.json', '.schedule.json', '.filming.json', '.editorial-imports', '.editorial-curation', '.publishing-private', '.content-workspace', '.article-revisions', '.production-workflow', '.content-updates', '.vendor', '.venv', '__pycache__'} or part.startswith(('.env', '.schedule.json.', '.library.json.', '.filming.json.')) or part.endswith('.env') for part in parts):
                 return None
             if not (member.isfile() or member.isdir()):
                 raise RuntimeError('Do not bundle symlinks or irregular source files')
@@ -74,6 +74,14 @@ def main():
             # Public layouts depend on the shared chrome package. Include only
             # that workspace source, never sibling applications or private data.
             bundle.add(CODE / 'packages/site/chrome', arcname='code/packages/site/chrome', filter=safe)
+            # The author's build invokes this shared UI contract check. Include
+            # only the exact script, not the surrounding repository tooling.
+            bundle.add(CODE / 'scripts/check-author-controls.mjs', arcname='code/scripts/check-author-controls.mjs', filter=safe)
+            # The curation regression test reads these two committed research
+            # fixtures. Do not include the surrounding documentation or data.
+            for name in ['topics.json', 'creator-month-scan.json']:
+                relative = 'docs/dev-guides/editorial/2026-10-27/' + name
+                bundle.add(CODE / relative, arcname='code/' + relative, filter=safe)
             bundle.add(INFRA, arcname='code/infra/dev-guides/author', filter=safe)
         checksum = hashlib.sha256(archive.read_bytes()).hexdigest()
         subprocess.run([*scp, str(archive), 'root@101.96.210.172:' + BASE + '/incoming/'], check=True)
