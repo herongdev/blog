@@ -174,7 +174,7 @@ async function publishImage({ asset, env }) {
   return asset.url;
 }
 
-export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.env, publishImageAsset = publishImage, auth, apiHandler, articleRevisions }) {
+export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.env, publishImageAsset = publishImage, auth, apiHandler, articleRevisions, productionMcp, hasProductionEpisode }) {
   const roots = {
     draft: resolve(projectRoot, 'drafts'),
     content: resolve(projectRoot, 'src/content/tutorials'),
@@ -268,6 +268,9 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
       const expectedOrigin = onlineAuth?.origin ?? `http://127.0.0.1:${address.port}`;
       const url = new URL(request.url, expectedOrigin);
       const method = request.method;
+      // Only the narrowly scoped OAuth/MCP routes use bearer authorization.
+      // All existing author APIs keep their original browser session and CSRF checks.
+      if (productionMcp && await productionMcp.handlePublic(request, response, { url })) return;
       if (onlineAuth) {
         // Authentication handlers validate their own origin. Only the exact OAuth
         // callback may accept a cross-site navigation, with one-use state proof.
@@ -280,12 +283,14 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
       let currentSession;
       if (onlineAuth) {
         currentSession = await onlineAuth.session(request);
+        if (productionMcp && await productionMcp.handleAuthorize(request, response, { url, session: currentSession, csrfToken: currentSession?.csrfToken })) return;
         if (url.pathname.startsWith('/api/') && !currentSession) throw httpError(401, '请先登录');
         if (method !== 'GET' && method !== 'HEAD') {
           if (!currentSession) throw httpError(401, '请先登录');
           onlineAuth.checkCsrf(request, currentSession);
         }
-      } else if (method !== 'GET' && method !== 'HEAD' &&
+      } else if (productionMcp && await productionMcp.handleAuthorize(request, response, { url, session: { local: true }, csrfToken: sessionToken })) return;
+      else if (method !== 'GET' && method !== 'HEAD' &&
                  (request.headers.origin !== expectedOrigin || request.headers['x-author-token'] !== sessionToken)) {
         throw httpError(403, '本地编辑器验证失败');
       }
@@ -325,8 +330,18 @@ export function createAuthorServer({ projectRoot, frontend, mediaEnv = process.e
 
       const filmingMatch = /^\/api\/filming\/([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(url.pathname);
       if (filmingMatch && ['GET', 'PATCH'].includes(method)) {
+        const assertPreparationWritable = async () => {
+          if (method === 'PATCH' && hasProductionEpisode && await hasProductionEpisode(filmingMatch[1])) throw httpError(409, '拍摄准备已合并到制作，请刷新后继续；原有输入请先复制保留');
+        };
+        // Keep legacy preparation readable. Once a production exists, stale browser
+        // forms must preserve their unsaved input instead of writing a second source.
+        await assertPreparationWritable();
         const input = method === 'PATCH' ? await readJson(request, 256 * 1024) : null;
-        return sendJson(response, 200, await library.withArticlesMutation(() => input ? filming.patch(filmingMatch[1], input) : filming.read(filmingMatch[1])));
+        return sendJson(response, 200, await library.withArticlesMutation(async () => {
+          // A production may have been started while the PATCH body was arriving.
+          await assertPreparationWritable();
+          return input ? filming.patch(filmingMatch[1], input) : filming.read(filmingMatch[1]);
+        }));
       }
 
       if (url.pathname === '/api/drafts' && method === 'POST') {

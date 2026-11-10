@@ -10,6 +10,7 @@ import { createWorkspaceHandler } from './workspace-api.mjs';
 import { createUpdateTasks } from './update-tasks.mjs';
 import { createPublishManager } from './publish-manager.mjs';
 import { createLocalSitePreview } from './local-site-preview.mjs';
+import { createProductionRuntime } from './production-runtime.mjs';
 
 const authorRoot = fileURLToPath(new URL('.', import.meta.url));
 const projectRoot = resolve(process.env.DEV_GUIDES_AUTHOR_PROJECT_ROOT || resolve(authorRoot, '..'));
@@ -28,6 +29,7 @@ const publishing = await createPublishingService({
 });
 const revisions = await createArticleRevisions({ projectRoot });
 const workspace = await createContentWorkspace({ projectRoot });
+const production = await createProductionRuntime({ projectRoot, workspace, revisions, origin: 'http://127.0.0.1:' + port, localOnly: true });
 const updates = await createUpdateTasks({ projectRoot, revisions, workspace, publishing });
 let manager, sitePreview;
 if (process.env.DEV_GUIDES_AUTHOR_ENABLE_SITE_PREVIEW === 'true') {
@@ -43,7 +45,9 @@ if (process.env.DEV_GUIDES_AUTHOR_ENABLE_SITE_PREVIEW === 'true') {
 const server = createAuthorServer({
   projectRoot,
   articleRevisions: revisions,
-  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager, updates, localOnly: true, previewOrigins: sitePreview?.origins }),
+  productionMcp: production.mcp,
+  hasProductionEpisode: slug => production.service.store.list().some(episode => episode.slug === slug),
+  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager, production, updates, localOnly: true, previewOrigins: sitePreview?.origins }),
   frontend: (request, response) => vite.middlewares(request, response, () => {
     if (!response.headersSent) {
       response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -67,6 +71,7 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
   process.on(signal, async () => {
     await publishing.close();
     await workspace.close();
+    production.close();
     await sitePreview?.close();
     await vite.close();
     server.close();

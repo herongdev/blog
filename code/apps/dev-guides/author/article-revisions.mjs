@@ -349,6 +349,12 @@ export async function createArticleRevisions({ projectRoot, clock = () => new Da
   await initialize({ seedPublished: bootstrapPublished });
   return {
     initialize, read, version, restore,
+    /** Return only server-verified immutable metadata to the production archive. */
+    async snapshot(input, revision) {
+      const article = await version(input, revision);
+      const bytes = await getObject(revision);
+      return { revision, contentHash: revision, sizeBytes: bytes.length, title: metadata(bytes.toString('utf8'), true).data.title ?? input.slug, ...article };
+    },
     /** Offline maintenance only; no HTTP route and never writes working files. */
     async importPublishedBaseline(options) {
       return serialized(async () => {

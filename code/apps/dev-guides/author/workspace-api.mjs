@@ -1,7 +1,7 @@
 import { requirePublishableVideo } from './content-workspace.mjs';
 
 /** Composed after the host's existing session, Origin and CSRF checks. */
-export function createWorkspaceHandler({ workspace, revisions, publishing, manager, updates, localOnly = false, previewOrigins = {} }) {
+export function createWorkspaceHandler({ workspace, revisions, publishing, manager, production, updates, localOnly = false, previewOrigins = {} }) {
   function status() {
     if (!manager) return { enabled: false, active: null, lastJob: null, environments: { staging: null, production: null }, localOnly };
     const value = manager.getStatus();
@@ -9,6 +9,7 @@ export function createWorkspaceHandler({ workspace, revisions, publishing, manag
     return { ...value, localOnly };
   }
   return async (request, response, context) => {
+    if (production && await production.handle(request, response, context)) return true;
     if (updates && await updates.handle(request, response, context)) return true;
     if (await revisions.handle(request, response, context)) return true;
     const bridge = /^\/api\/workspaces\/([a-z0-9]+(?:-[a-z0-9]+)*)\/publishing-video$/.exec(context.url.pathname);

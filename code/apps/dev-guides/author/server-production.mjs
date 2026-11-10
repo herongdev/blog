@@ -9,6 +9,7 @@ import { createPublishingService } from './publishing/service.mjs';
 import { createArticleRevisions } from './article-revisions.mjs';
 import { createContentWorkspace } from './content-workspace.mjs';
 import { createWorkspaceHandler } from './workspace-api.mjs';
+import { createProductionRuntime } from './production-runtime.mjs';
 import { createUpdateTasks } from './update-tasks.mjs';
 
 const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,6 +31,7 @@ const publishing = await createPublishingService({
 });
 const revisions = await createArticleRevisions({ projectRoot: resolve(dataRoot, 'project') });
 const workspace = await createContentWorkspace({ projectRoot: resolve(dataRoot, 'project') });
+const production = await createProductionRuntime({ projectRoot: resolve(dataRoot, 'project'), workspace, revisions, origin, basePath });
 const updates = await createUpdateTasks({ projectRoot: resolve(dataRoot, 'project'), revisions, workspace, publishing });
 const manager = await createPublishManager({
   projectRoot: appRoot,
@@ -45,6 +47,8 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; cha
 const server = createAuthorServer({
   projectRoot: resolve(dataRoot, 'project'),
   articleRevisions: revisions,
+  productionMcp: production.mcp,
+  hasProductionEpisode: slug => production.service.store.list().some(episode => episode.slug === slug),
   auth: {
     provider: process.env.AUTHOR_AUTH_PROVIDER || 'password',
     wechat: {
@@ -56,7 +60,7 @@ const server = createAuthorServer({
     stateDirectory: resolve(dataRoot, 'auth'),
     bootstrapTokenFile: resolve(dataRoot, 'auth/bootstrap-token'),
   },
-  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager, updates }),
+  apiHandler: createWorkspaceHandler({ workspace, revisions, publishing, manager, production, updates }),
   frontend: async (request, response) => {
     try {
       const url = new URL(request.url, origin);
@@ -90,6 +94,7 @@ server.listen(port, '127.0.0.1', () => console.log('Online tutorial author servi
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => {
   await publishing.close();
   await workspace.close();
+  production.close();
   server.close(() => process.exit(0));
   setTimeout(() => process.exit(1), 25_000).unref();
 });
