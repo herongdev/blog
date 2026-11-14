@@ -12,9 +12,8 @@ language: en
 timezone: ""
 
 # URL
-## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://herongdev.github.io/blog
-root: /blog/
+url: https://herong.info
+root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -99,9 +98,5 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: landscape
 
-# Deployment
-## Docs: https://hexo.io/docs/one-command-deployment
-deploy:
-  type: git
-  repo: git@github.com:herongdev/blog.git
-  branch: gh-pages
+# Historical Hexo configuration; standalone blog deployment is retired.
+deploy: {}
