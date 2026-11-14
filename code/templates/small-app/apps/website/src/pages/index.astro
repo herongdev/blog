@@ -1,0 +1,46 @@
+---
+import { ArrowRight, Download } from '@lucide/astro';
+import product from '@app/config/product.json';
+import ThemeSwitch from '../components/ThemeSwitch.astro';
+import '@app/brand/base.css';
+import '@herongxhr/ui-react/styles.css';
+import '../styles/site.css';
+
+const storageKey = `${product.id}-theme`;
+const canonical = new URL('/', product.origin).href;
+const download = product.links.download;
+---
+<!doctype html>
+<html lang="zh-CN" data-theme-storage={storageKey}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{product.name}</title>
+    <meta name="description" content={product.description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={product.name} />
+    <meta property="og:description" content={product.description} />
+    <meta property="og:url" content={canonical} />
+    <script is:inline src="/theme-init.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+    <header class="site-header">
+      <nav class="shell header-inner" aria-label="主导航">
+        <a class="brand" href="/">{product.name}</a>
+        <div class="header-actions"><ThemeSwitch /><a class="button button-quiet" href="/admin/">管理后台</a></div>
+      </nav>
+    </header>
+    <main id="main" class="shell hero">
+      <p class="eyebrow">官方网站</p>
+      <h1>{product.name}</h1>
+      <p class="hero-description">{product.description}</p>
+      <div class="hero-action">
+        {download ? <a class="button button-primary" href={download}><Download aria-hidden="true" />下载应用</a>
+          : <a class="button button-primary" href="/admin/">打开管理后台<ArrowRight aria-hidden="true" /></a>}
+      </div>
+    </main>
+    <footer class="site-footer"><div class="shell footer-inner"><span>© {new Date().getFullYear()} {product.name}</span><a href="/admin/">管理后台</a></div></footer>
+  </body>
+</html>

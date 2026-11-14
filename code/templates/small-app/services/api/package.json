@@ -1,0 +1,9 @@
+{
+  "name": "@app/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "dependencies": { "@app/config": "workspace:*", "@herongxhr/identity-client": "0.1.0" },
+  "scripts": { "start": "node src/server.mjs", "check": "node --check src/server.mjs", "build": "node --check src/server.mjs" }
+}

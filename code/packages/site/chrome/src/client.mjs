@@ -32,6 +32,13 @@ export function initSiteChrome(document) {
     });
   }
 
+  function setPreference(value) {
+    theme.set(value);
+    refresh();
+    announceStorageFailure();
+    return root.dataset.hrThemeSaved === 'true';
+  }
+
   function closeMenus(focus = false) {
     document.querySelectorAll('[data-hr-menu][open]').forEach((menu) => {
       menu.open = false;
@@ -86,6 +93,13 @@ export function initSiteChrome(document) {
     theme.media.removeEventListener('change', onSystemChange);
     initialized.delete(document);
   };
-  initialized.set(document, { refresh, cleanup });
+  initialized.set(document, { refresh, cleanup, setPreference });
   return cleanup;
+}
+
+/** Keep progressive chrome and React controls on the same in-memory preference. */
+export function setSiteTheme(document, preference) {
+  if (!['light', 'dark', 'system', 'auto'].includes(preference)) throw new TypeError('Invalid theme preference.');
+  if (!initialized.has(document)) initSiteChrome(document);
+  return initialized.get(document)?.setPreference(preference) ?? false;
 }

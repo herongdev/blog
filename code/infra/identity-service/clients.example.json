@@ -1,0 +1,10 @@
+[
+  {
+    "clientId": "disktrace-admin",
+    "name": "DiskTrace 管理后台",
+    "secretHash": "REPLACE_WITH_SHA256_HEX_OF_A_RANDOM_CLIENT_SECRET",
+    "redirectUris": ["https://disktrace.herong.info/api/auth/callback"],
+    "ownerRole": "owner",
+    "enabled": true
+  }
+]

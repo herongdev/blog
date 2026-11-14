@@ -1,0 +1,35 @@
+/* Adapt the shared semantic tokens to Herong's existing palette and admin density. */
+:root {
+  --hr-ui-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --hr-ui-font-body: .875rem;
+  --hr-ui-font-small: .8125rem;
+  --hr-ui-font-lead: 1rem;
+  --hr-ui-icon-medium: 1.125rem;
+  --hr-ui-control-height: 2.25rem;
+  --hr-ui-leading-body: 1.6;
+  --hr-ui-motion-easing-standard: cubic-bezier(.2,.8,.2,1);
+  --hr-ui-color-canvas: var(--hr-brand-canvas);
+  --hr-ui-color-surface: var(--hr-brand-surface);
+  --hr-ui-color-surface-raised: var(--hr-brand-surface-hover);
+  --hr-ui-color-text: var(--hr-brand-ink);
+  --hr-ui-color-muted: var(--hr-brand-text);
+  --hr-ui-color-subtle: var(--hr-brand-muted);
+  --hr-ui-color-border: var(--hr-brand-line);
+  --hr-ui-color-border-strong: var(--hr-brand-line-strong);
+  --hr-ui-color-border-hover: var(--hr-brand-border);
+  --hr-ui-color-accent: var(--hr-brand-primary);
+  --hr-ui-color-accent-hover: var(--hr-brand-primary-hover);
+  --hr-ui-color-on-accent: var(--hr-brand-on-primary);
+  --hr-ui-color-accent-soft: var(--hr-brand-soft);
+  --hr-ui-color-focus: var(--hr-brand-focus);
+  --hr-ui-color-highlight: var(--hr-brand-soft);
+  --hr-ui-color-highlight-text: var(--hr-brand-primary);
+  --hr-ui-color-error: light-dark(#ad3434,#f3a4a4);
+  --hr-ui-color-error-bg: light-dark(#fff0f0,#3d2429);
+  --hr-ui-color-success: light-dark(#1c7046,#91d6ad);
+  --hr-ui-color-success-bg: light-dark(#eaf6ef,#213b2c);
+  --hr-ui-color-warning: light-dark(#875a11,#efcb8c);
+  --hr-ui-color-warning-bg: light-dark(#fff6e6,#352a19);
+  --hr-ui-shadow-dialog: 0 18px 80px rgb(0 0 0 / .25);
+  --hr-ui-shadow-popover: 0 8px 28px rgb(0 0 0 / .18);
+}

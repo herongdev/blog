@@ -1,0 +1,13 @@
+{
+  "name": "@herongxhr/identity-client",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "publishConfig": { "registry": "https://registry.npmjs.org/", "access": "public" },
+  "description": "Server-side Herong identity adapter for independent applications.",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "files": ["src/index.mjs", "src/index.d.ts"],
+  "types": "./src/index.d.ts",
+  "exports": { ".": { "types": "./src/index.d.ts", "import": "./src/index.mjs" } },
+  "scripts": { "build": "node --check src/index.mjs", "check": "node --check src/index.mjs" }
+}

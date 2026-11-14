@@ -1,0 +1,5 @@
+---
+import { WebsiteTheme } from './WebsiteTheme';
+import product from '@app/config/product.json';
+---
+<WebsiteTheme storageKey={`${product.id}-theme`} client:load />

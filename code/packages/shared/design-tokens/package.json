@@ -1,0 +1,12 @@
+{
+  "name": "@herongxhr/design-tokens",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "publishConfig": { "registry": "https://registry.npmjs.org/", "access": "public" },
+  "description": "Shared semantic design tokens for Herong applications.",
+  "type": "module",
+  "files": ["tokens.json", "tokens.css", "scripts/build.mjs"],
+  "exports": { "./tokens.json": "./tokens.json", "./tokens.css": "./tokens.css" },
+  "scripts": { "build": "node scripts/build.mjs", "check": "node scripts/build.mjs --check" },
+  "sideEffects": ["*.css"]
+}

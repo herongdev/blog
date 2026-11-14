@@ -1,0 +1,28 @@
+{
+  "name": "@herong/identity-admin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm -w run ui:build && vite --host 127.0.0.1",
+    "check": "pnpm -w run ui:build && tsc --noEmit",
+    "build": "pnpm -w run ui:build && vite build"
+  },
+  "dependencies": {
+    "@herong/site-chrome": "workspace:*",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "lucide-react": "1.72.0",
+    "@herongxhr/design-tokens": "workspace:*",
+    "@herongxhr/ui-react": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "vite": "8.3.8",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
+  },
+  "engines": {
+    "node": ">=22.23.4"
+  }
+}

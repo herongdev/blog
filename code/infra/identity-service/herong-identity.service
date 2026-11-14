@@ -1,0 +1,33 @@
+[Unit]
+Description=Herong application identity service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=herong-identity
+Group=herong-identity
+WorkingDirectory=/var/lib/herong-identity
+Environment=NODE_ENV=production
+Environment=IDENTITY_PUBLIC_DIR=/opt/herong-identity/current/public
+EnvironmentFile=/etc/herong-identity/service.env
+ExecStart=/opt/herong-runtime/node-v24.22.0/bin/node /opt/herong-identity/current/server.mjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=15
+StateDirectory=herong-identity
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/herong-identity
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryMax=192M
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target
