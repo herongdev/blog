@@ -24,6 +24,17 @@
 .knowledge-search__reset:hover { color:var(--home-accent); }
 .knowledge-search__notice { margin:18px 0; color:var(--home-muted); font-size:13px; }
 .knowledge-search__notice a { color:var(--home-accent); margin-inline:4px; text-decoration:underline; }
+.knowledge-recent { margin-top:clamp(32px,5vh,56px); }
+.knowledge-recent h2 { margin:0 0 10px; color:var(--home-ink); font-size:17px; font-weight:650; }
+.knowledge-recent ul { margin:0; padding:0; border-top:1px solid var(--home-line); list-style:none; }
+.knowledge-recent li { border-bottom:1px solid var(--home-line); }
+.knowledge-recent li a { display:flex; align-items:center; justify-content:space-between; gap:8px 24px; min-height:48px; padding:10px 0; color:var(--home-ink); font-size:15px; }
+.knowledge-recent__title { overflow-wrap:anywhere; }
+.knowledge-recent a:hover .knowledge-recent__title,
+.knowledge-recent a:focus-visible .knowledge-recent__title { color:var(--home-accent); text-decoration:underline; text-underline-offset:4px; }
+.knowledge-recent__meta { display:flex; flex-wrap:wrap; flex-shrink:0; align-items:center; gap:6px 16px; color:var(--home-muted); font-size:12px; }
+.knowledge-recent__meta time { font-variant-numeric:tabular-nums; }
+.knowledge-recent a[data-type="tutorial"] .knowledge-recent__type { color:var(--home-accent); }
 .knowledge-search.has-query { padding-top:36px; }
 .has-query .knowledge-search__hero { text-align:left; }
 .knowledge-search__filters { display:flex; flex-wrap:wrap; gap:4px 24px; margin-top:26px; border-bottom:1px solid var(--home-line); }
@@ -65,6 +76,7 @@
   .knowledge-search__choices--topics button { justify-self:start; }
   .knowledge-search__choices button { padding-inline:10px; }
   .knowledge-search__reset { grid-column:2; grid-row:1; min-height:44px; padding-block:0; }
+  .knowledge-recent li a { flex-direction:column; align-items:flex-start; gap:4px; }
   .knowledge-search.has-query { padding-top:24px; }
   .knowledge-search__filters { gap:0 18px; margin-top:18px; }
   .knowledge-search__filters button { font-size:13px; }

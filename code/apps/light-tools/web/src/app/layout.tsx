@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
 import "@herong/site-chrome/styles.css";
-import { themeBootstrapScript, BRAND_FAVICON_DATA_URL } from "@herong/site-chrome";
+import { themeBootstrapScript } from "@herong/site-chrome";
 import { AnalyticsTracker } from "@/components/site/AnalyticsTracker";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: "免费在线 PDF、图片、视频小工具，快速处理常见文件任务。",
   keywords: ["PDF 工具", "图片工具", "视频转 GIF", "文件处理"],
   icons: {
-    icon: [{ url: BRAND_FAVICON_DATA_URL, type: "image/svg+xml" }],
+    icon: [{ url: withBasePath("/favicon.svg"), type: "image/svg+xml" }],
     apple: [{ url: withBasePath("/apple-touch-icon.png"), sizes: "180x180", type: "image/png" }]
   },
   alternates: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     description: "免费在线 PDF、图片、视频小工具，快速处理常见文件任务。",
     type: "website",
     url: getSiteUrl(),
-    images: [{ url: getCanonicalUrl("/logo-hr.png"), width: 512, height: 512, alt: "何荣 HR" }]
+    images: [{ url: getCanonicalUrl("/logo-hr.png"), width: 512, height: 512, alt: "何荣本荣" }]
   },
   twitter: {
     card: "summary",

@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import '@herong/site-chrome/styles.css';
-import { renderHeader, renderFooter, themeBootstrapScript, BRAND_FAVICON_DATA_URL } from '@herong/site-chrome';
+import { renderHeader, renderFooter, themeBootstrapScript } from '@herong/site-chrome';
 import { AUTHOR_NAME, BLOCK_INDEXING, DEFAULT_SITE_URL, SITE_DESCRIPTION, SITE_NAME } from '../config/site.mjs';
 import { withBase } from '../lib/urls';
 
@@ -46,7 +46,7 @@ const header = renderHeader({
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={AUTHOR_NAME} />
-    <link rel="icon" type="image/svg+xml" href={BRAND_FAVICON_DATA_URL} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <link rel="apple-touch-icon" sizes="180x180" href={withBase('/apple-touch-icon.png')} />
     <meta name="robots" content={BLOCK_INDEXING ? 'noindex, nofollow, noarchive' : noindex ? 'noindex, follow' : 'index, follow'} />
     {!omitCanonical && <link rel="canonical" href={canonical} />}
@@ -60,7 +60,7 @@ const header = renderHeader({
     <meta property="og:image" content={brandImage} />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
-    <meta property="og:image:alt" content="何荣 HR" />
+    <meta property="og:image:alt" content="何荣本荣" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:image" content={brandImage} />
     {jsonLd && <script type="application/ld+json" set:html={safeJsonLd} />}

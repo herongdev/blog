@@ -1,14 +1,18 @@
 {
-  "source": "logo.svg (repository root; packaged copy: assets/logo-hr.svg)",
-  "sourceSha256": "63e5c01444c21b9108d8e02b163f55a830de2b6bb4df53886fb56de90b7297d7",
+  "sources": {
+    "brand/herong-benrong-horizontal-purple.svg": "3ff85e1215d00e3e528955eaf934432628a2992d866044c7466910805347c49e",
+    "brand/herong-benrong-horizontal-white.svg": "0b3b7ff105df9f61f5110a7bfcab664b208d3bdbe0bf6c4ccca7397b41364a43",
+    "brand/herong-benrong-stacked-purple.svg": "0d2bb7fa8937e91e5e24281bddf4cc2bd6503ea8609630cb6146ea2892415a2b",
+    "brand/herong-benrong-stacked-white.svg": "b20c67337ea69fab86ca61d64e5208cd559c7fe72d1f913503accf2b608368a5"
+  },
   "raster": {
     "logo-hr.png": {
       "size": 512,
-      "sha256": "3e64a632410001d82b9112395896a05ac9f35776ef83a94d14de64bf65aeac8b"
+      "sha256": "812d690bc464c03b49db39e8f74fcfc48c633c746a68f7e323fb82ba86d01ced"
     },
     "apple-touch-icon.png": {
       "size": 180,
-      "sha256": "1c39ebafc687fc386f7ced1fd7b23756584928b80e20c340ad4505d4d6042e5e"
+      "sha256": "5ac54461fb54ce111869930619e382344ff70c9608f3928a497040b223a78ec2"
     }
   }
 }

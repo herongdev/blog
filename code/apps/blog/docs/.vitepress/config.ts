@@ -1,5 +1,5 @@
 // VitePress 1 config is bundled as CJS; bundle the shared ESM source instead of requiring it.
-import { getNavigation, themeBootstrapScript, BRAND_FAVICON_DATA_URL, BRAND_LOGO_LIGHT_DATA_URL, BRAND_LOGO_DARK_DATA_URL } from '../../../../packages/site/chrome/src/index.mjs';
+import { getNavigation, themeBootstrapScript, BRAND_LOGO_LIGHT_DATA_URL, BRAND_LOGO_DARK_DATA_URL } from '../../../../packages/site/chrome/src/index.mjs';
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
@@ -75,7 +75,7 @@ const HEAD_LINKS: any[] = [
     {
       rel: "icon",
       type: "image/svg+xml",
-      href: BRAND_FAVICON_DATA_URL,
+      href: `${BASE}favicon.svg`,
     },
   ],
   [
@@ -273,7 +273,7 @@ export default {
       ["meta", { property: "og:image", content: canonicalUrl("/logo-hr.png") }],
       ["meta", { property: "og:image:width", content: "512" }],
       ["meta", { property: "og:image:height", content: "512" }],
-      ["meta", { property: "og:image:alt", content: "何荣 HR" }],
+      ["meta", { property: "og:image:alt", content: "何荣本荣" }],
       ["meta", { name: "twitter:card", content: "summary" }],
       ["meta", { name: "twitter:title", content: socialTitle }],
       ["meta", { name: "twitter:description", content: desc }],
@@ -338,7 +338,7 @@ export default {
     logo: {
       light: BRAND_LOGO_LIGHT_DATA_URL,
       dark: BRAND_LOGO_DARK_DATA_URL,
-      alt: "何荣 HR",
+      alt: "何荣本荣",
     },
     siteTitle: "何荣 / 项目档案",
     siteChrome: { guidesUrl: GUIDES_URL, toolsUrl: LIGHT_TOOLS_URL },

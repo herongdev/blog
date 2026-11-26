@@ -3,8 +3,7 @@ export { BRAND_LOGO_DATA_URL, BRAND_LOGO_LIGHT_DATA_URL, BRAND_LOGO_DARK_DATA_UR
 export { themeBootstrapScript } from './theme.mjs';
 
 export const CONTACT_EMAIL = 'herong2023@qq.com';
-export const BRAND_NAME = '何荣';
-export const BRAND_DESCRIPTION = '工具与技术资料';
+export const BRAND_NAME = '何荣本荣';
 export const FILING_NUMBER = '湘ICP备2024071383号-6';
 export const FILING_URL = 'https://beian.miit.gov.cn/';
 
@@ -60,7 +59,7 @@ export function renderHeader(options = {}) {
   const htmlLinks = links(items, options.active);
   return `<header class="hr-chrome hr-chrome-header" data-hr-chrome-header>
   <div class="hr-chrome__container hr-chrome-header__inner">
-    <a class="hr-chrome__brand" href="${escapeHtml(targets.home)}" aria-label="何荣首页"><img class="hr-chrome__logo hr-chrome__logo--light" src="${escapeHtml(BRAND_LOGO_LIGHT_DATA_URL)}" alt="" width="64" height="44"><img class="hr-chrome__logo hr-chrome__logo--dark" src="${escapeHtml(BRAND_LOGO_DARK_DATA_URL)}" alt="" width="64" height="44"><span class="hr-chrome__name">${BRAND_NAME}</span><span class="hr-chrome__edition">${BRAND_DESCRIPTION}</span></a>
+    <a class="hr-chrome__brand" href="${escapeHtml(targets.home)}" aria-label="何荣首页"><img class="hr-chrome__logo hr-chrome__logo--light" src="${escapeHtml(BRAND_LOGO_LIGHT_DATA_URL)}" alt="" width="64" height="44"><img class="hr-chrome__logo hr-chrome__logo--dark" src="${escapeHtml(BRAND_LOGO_DARK_DATA_URL)}" alt="" width="64" height="44"></a>
     <nav class="hr-chrome__nav" aria-label="主导航">${htmlLinks}</nav>
     <div class="hr-chrome__controls">
       <button class="hr-chrome__button hr-chrome__theme" type="button" data-hr-theme-toggle aria-label="切换深浅色模式" aria-pressed="false">${icon('sun', 'hr-chrome__sun')}${icon('moon', 'hr-chrome__moon')}</button>

@@ -1,6 +1,6 @@
 ---
 import { canonicalUrl, localUrl, NOINDEX, GUIDES_URL, TOOLS_URL } from '../config/site.mjs';
-import { renderHeader, renderFooter, themeBootstrapScript, BRAND_FAVICON_DATA_URL } from '@herong/site-chrome';
+import { renderHeader, renderFooter, themeBootstrapScript, BRAND_NAME } from '@herong/site-chrome';
 import '@herong/site-chrome/styles.css';
 import '../styles/site.css';
 import '../styles/project-visuals.css';
@@ -13,7 +13,7 @@ interface Props {
 }
 const { title, description, compact = false, noindex = false, schema } = Astro.props;
 const canonical = canonicalUrl(Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/');
-const website = { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${canonicalUrl('/')}#website`, name: '何荣 · 工具与技术资料', url: canonicalUrl('/'), inLanguage: 'zh-CN', author: { '@type': 'Person', name: '何荣', url: canonicalUrl('/about/') } };
+const website = { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${canonicalUrl('/')}#website`, name: BRAND_NAME, url: canonicalUrl('/'), inLanguage: 'zh-CN', author: { '@type': 'Person', name: '何荣', url: canonicalUrl('/about/') } };
 const structured = [website, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
 const pagePath = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\/$/, '').length);
 const active = pagePath.startsWith('/projects/') ? 'projects' : pagePath.startsWith('/products/') ? 'apps' : pagePath.startsWith('/about/') ? 'about' : undefined;
@@ -30,19 +30,19 @@ const header = renderHeader({ homeUrl: localUrl('/'), guidesUrl: GUIDES_URL, too
     <meta name="description" content={description} />
     <meta name="robots" content={NOINDEX || noindex ? 'noindex, nofollow' : 'index, follow'} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href={BRAND_FAVICON_DATA_URL} />
+    <link rel="icon" type="image/svg+xml" href={localUrl('/favicon.svg')} />
     <link rel="apple-touch-icon" sizes="180x180" href={localUrl('/apple-touch-icon.png')} />
     <link rel="alternate" type="application/rss+xml" title="何荣 · 历史文章 RSS" href={localUrl('/rss.xml')} />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="何荣 · 工具与技术资料" />
+    <meta property="og:site_name" content={BRAND_NAME} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={canonicalUrl('/logo-hr.png')} />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
-    <meta property="og:image:alt" content="何荣 HR" />
+    <meta property="og:image:alt" content="何荣本荣" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:image" content={canonicalUrl('/logo-hr.png')} />
     <script type="application/ld+json" set:html={JSON.stringify(structured).replace(/</g, '\\u003c')} />

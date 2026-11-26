@@ -36,8 +36,8 @@ a, button, input, textarea, select, summary { -webkit-tap-highlight-color: trans
   align-items: center;
 }
 .brand { gap: var(--space-2); font-weight: var(--font-weight-semibold); white-space: nowrap; }
-.author-brand-mark { --author-brand-width: 52px; --author-brand-height: 36px; display: inline-flex; flex-shrink: 0; width: var(--author-brand-width); height: var(--author-brand-height); }
-.author-brand-mark--large { --author-brand-width: 84px; --author-brand-height: 56px; }
+.author-brand-mark { --author-brand-width: 84px; --author-brand-height: 36px; display: inline-flex; flex-shrink: 0; width: var(--author-brand-width); height: var(--author-brand-height); }
+.author-brand-mark--large { --author-brand-width: 72px; --author-brand-height: 72px; }
 .author-brand-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .author-brand-mark .author-brand-mark__dark { display: none; }
 :root[data-theme='dark'] .author-brand-mark__light { display: none; }

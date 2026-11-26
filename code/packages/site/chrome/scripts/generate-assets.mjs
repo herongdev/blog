@@ -33,5 +33,5 @@ if (process.argv.includes('--check')) {
   console.log('Shared chrome assets match the canonical SVG and installed Lucide package.');
 } else {
   await fs.writeFile(target, generated);
-  console.log('Generated shared chrome icons and HR brand data URL.');
+  console.log('Generated shared chrome icons and brand data URLs.');
 }

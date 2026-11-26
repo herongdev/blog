@@ -2,8 +2,10 @@
 import { Search, X, ArrowRight, ArrowUpRight } from '@lucide/astro';
 import { GUIDES_URL, TUTORIAL_SEARCH_URL, localUrl } from '../config/site.mjs';
 import { TOPICS, PERIODS } from '../search/filters.mjs';
+import { loadRecentUpdates } from '../search/recent-updates.mjs';
 import '../styles/search.css';
 const guides = GUIDES_URL.endsWith('/') ? GUIDES_URL : `${GUIDES_URL}/`;
+const recentUpdates = await loadRecentUpdates({ includeTutorials: import.meta.env.PROD, logger: console });
 ---
 <section class="knowledge-search" data-search-home data-index={localUrl('/search-index/')} data-tutorials={TUTORIAL_SEARCH_URL} aria-labelledby="search-heading">
   <div class="knowledge-search__hero">
@@ -30,6 +32,22 @@ const guides = GUIDES_URL.endsWith('/') ? GUIDES_URL : `${GUIDES_URL}/`;
     </div>
     <noscript><p class="knowledge-search__notice">启用 JavaScript 后可搜索，也可以直接浏览<a href={localUrl('/posts/')}>历史文章</a>或<a href={guides}>教程目录</a>。</p></noscript>
   </div>
+  {recentUpdates.length > 0 && <section class="knowledge-recent" data-recent-updates aria-labelledby="recent-updates-heading">
+    <h2 id="recent-updates-heading">近期更新</h2>
+    <ul>
+      {recentUpdates.map(({ type, title, url, publishedAt }) => (
+        <li>
+          <a href={url} data-type={type}>
+            <span class="knowledge-recent__title">{title}</span>
+            <span class="knowledge-recent__meta">
+              <span class="knowledge-recent__type">{type === 'tutorial' ? '正式教程' : '历史文章'}</span>
+              <time datetime={publishedAt}>{publishedAt}</time>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>}
   <div class="knowledge-search__workspace" hidden>
     <div class="knowledge-search__filters" role="group" aria-label="搜索来源">
       <button type="button" data-source="all" aria-pressed="true">全部<span data-count="all"></span></button>
@@ -63,6 +81,7 @@ const guides = GUIDES_URL.endsWith('/') ? GUIDES_URL : `${GUIDES_URL}/`;
   const clear = root.querySelector<HTMLButtonElement>('.knowledge-search__clear')!;
   const submit = root.querySelector<HTMLButtonElement>('[type="submit"]')!;
   const workspace = root.querySelector<HTMLElement>('.knowledge-search__workspace')!;
+  const recent = root.querySelector<HTMLElement>('[data-recent-updates]');
   const status = root.querySelector<HTMLElement>('[role="status"]')!;
   const results = root.querySelector<HTMLElement>('.knowledge-search__results')!;
   const list = root.querySelector<HTMLOListElement>('ol')!;
@@ -82,6 +101,9 @@ const guides = GUIDES_URL.endsWith('/') ? GUIDES_URL : `${GUIDES_URL}/`;
   const sources: SearchSource[] = ['all', 'tutorial', 'article', 'tool'];
   let source: SearchSource = 'all', topic: SearchTopic = 'all', period: SearchPeriod = 'all';
   let query = '', displayed = 0, sequence = 0, composing = false;
+  function syncRecent() {
+    if (recent) recent.hidden = !workspace.hidden || Boolean(input.value.trim());
+  }
   function setFilters() {
     filters.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.source === source)));
     topicButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.topic === topic)));
@@ -117,6 +139,7 @@ const guides = GUIDES_URL.endsWith('/') ? GUIDES_URL : `${GUIDES_URL}/`;
     if (updateHistory) setUrl();
     const active = Boolean(query || topic !== 'all' || period !== 'all' || source !== 'all');
     root.classList.toggle('has-query', active); workspace.hidden = !active;
+    syncRecent();
     document.title = query ? `${query} · 搜索 · 何荣` : active ? '浏览内容 · 何荣' : originalTitle;
     robots.content = active ? 'noindex, follow' : originalRobots;
     if (!append) { displayed = 0; list.replaceChildren(); }
@@ -142,7 +165,7 @@ const guides = GUIDES_URL.endsWith('/') ? GUIDES_URL : `${GUIDES_URL}/`;
       error.hidden = false; status.textContent = '搜索未完成，请重试。';
     } finally { if (request === sequence) { results.setAttribute('aria-busy', 'false'); submit.disabled = false; } }
   }
-  input.addEventListener('input', () => { clear.hidden = !input.value; });
+  input.addEventListener('input', () => { clear.hidden = !input.value; syncRecent(); });
   input.addEventListener('compositionstart', () => { composing = true; });
   input.addEventListener('compositionend', () => { composing = false; });
   form.addEventListener('submit', (event) => { event.preventDefault(); if (!composing) void runSearch(); });

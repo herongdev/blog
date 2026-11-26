@@ -38,9 +38,10 @@ const BASE = import.meta.env.BASE_URL;
 const apiUrl = (path: string) => `${BASE}${path.replace(/^\//, '')}`;
 
 function AuthorBrand({ large = false }: { large?: boolean }) {
-  return <span className={`author-brand-mark${large ? ' author-brand-mark--large' : ''}`} role="img" aria-label="何荣 HR">
-    <img className="author-brand-mark__light" src={`${BASE}logo-hr-light.svg`} width="52" height="36" alt="" aria-hidden="true" />
-    <img className="author-brand-mark__dark" src={`${BASE}logo-hr-dark.svg`} width="52" height="36" alt="" aria-hidden="true" />
+  const asset = large ? 'logo-stacked' : 'logo-hr';
+  return <span className={`author-brand-mark${large ? ' author-brand-mark--large' : ''}`} role="img" aria-label="何荣本荣">
+    <img className="author-brand-mark__light" src={`${BASE}${asset}-light.svg`} alt="" />
+    <img className="author-brand-mark__dark" src={`${BASE}${asset}-dark.svg`} alt="" />
   </span>;
 }
 

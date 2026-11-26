@@ -51,7 +51,7 @@ async function filesUnder(directory) {
   }
   return result;
 }
-export async function loadPublicArticles({ docsDir = path.join(codeDir, 'apps/blog/docs') } = {}) {
+export async function loadPublicArticles({ docsDir = path.join(codeDir, 'apps/blog/docs'), metadataOnly = false } = {}) {
   // The allowlist is deliberate: never glob the repository, tutorials, author or private project tree.
   const files = await filesUnder(path.join(docsDir, 'posts'));
   const extra = path.join(docsDir, 'vue-progress-scroll-tutorial.md');
@@ -65,15 +65,22 @@ export async function loadPublicArticles({ docsDir = path.join(codeDir, 'apps/bl
     const { data, content } = parsed;
     if (!isPublicArticle(data, relative)) { excluded++; continue; }
     const title = (typeof data.title === 'string' && data.title.trim()) || content.match(/^#\s+(.+)$/m)?.[1]?.trim() || path.basename(filename, '.md');
+    const publishedAt = dateValue(data.publishedAt ?? data.date);
+    const id = 'article:' + relative;
+    const publicTitle = markdownText(title).slice(0, 240);
+    const url = new URL(articlePath(relative), formalOrigin).href;
+    const publication = publishedAt ? { publishedAt } : {};
+    if (metadataOnly) {
+      documents.push({ id, title: publicTitle, type: 'article', url, ...publication });
+      continue;
+    }
     const rawDescription = typeof data.description === 'string' ? data.description : typeof data.summary === 'string' ? data.summary : content;
     let summary = articleSummary(rawDescription, title);
     if (summary.startsWith(title)) summary = summary.slice(title.length).trim();
     if (!summary) summary = markdownText(content) || '原文未提供文字摘要。';
     summary = [...summary].slice(0, 140).join('');
-    const publishedAt = dateValue(data.publishedAt ?? data.date);
     const updatedAt = dateValue(data.updatedAt ?? data.updated ?? data.lastUpdated);
-    documents.push({ id: 'article:' + relative, title: markdownText(title).slice(0, 240), summary, type: 'article', url: new URL(articlePath(relative), formalOrigin).href,
-      ...(publishedAt ? { publishedAt } : {}), ...(updatedAt ? { updatedAt } : {}),
+    documents.push({ id, title: publicTitle, summary, type: 'article', url, ...publication, ...(updatedAt ? { updatedAt } : {}),
       ...(typeof data.software === 'string' ? { software: data.software.slice(0, 80) } : {}), ...(typeof data.version === 'string' ? { version: data.version.slice(0, 80) } : {}),
       keywords: [...words(data.keywords), ...words(data.tags)], aliases: words(data.aliases), body: markdownText(content).slice(0, 200000) });
   }

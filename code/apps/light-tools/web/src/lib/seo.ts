@@ -26,7 +26,7 @@ export function buildToolMetadata(tool: ToolDefinition): Metadata {
       description: tool.seo.description,
       type: "website",
       url,
-      images: [{ url: getCanonicalUrl("/logo-hr.png"), width: 512, height: 512, alt: "何荣 HR" }]
+      images: [{ url: getCanonicalUrl("/logo-hr.png"), width: 512, height: 512, alt: "何荣本荣" }]
     },
     twitter: {
       card: "summary",
